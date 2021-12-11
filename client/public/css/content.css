@@ -1,0 +1,197 @@
+*, *::before, *::after{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html{
+	font-size: 10px;
+}
+
+body{
+	min-height: 100vh;
+  	-webkit-font-smoothing: antialiased;
+  	-moz-osx-font-smoothing: grayscale;	
+  	font-size: 1.56rem;
+  	font-family: 'Poppins', sans-serif;
+  	color: #3F4254;
+  	background-color: #EEF0F8;
+}
+
+#app{
+	padding: 9.6rem 3rem 14rem 10rem;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+h1,h2,h3,h4,h5,h6,th{
+	font-weight: normal;
+}
+
+address{
+	font-style: normal;
+}
+
+a{
+	text-decoration: none;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+}
+
+button{
+	border: none;
+	cursor: pointer;
+	outline: none;
+	background-color: transparent;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	appearance: none;
+}
+
+button:focus{
+	outline: none;
+}
+
+button:disabled{
+	cursor: not-allowed;
+	opacity: 0.3;
+}
+
+input, select, textarea{
+	font-family: inherit;
+	font-weight: inherit;
+	font-size: inherit;
+	color: inherit;
+	outline: none;
+	appearance: none;
+}
+
+input:disabled, select:disabled, textarea:disabled{
+	cursor: not-allowed;
+	opacity: 0.3;
+}
+
+input:focus, select:focus {
+    outline-offset: 0;
+}
+
+.text-blue{
+	color: #3699FF;
+}
+
+.text-green{
+	color: #1BC5BD;
+}
+
+.text-red{
+	color: #F64E60;
+}
+
+.text-orange{
+	color: #FFA800;
+}
+
+.text-purple{
+	color: #8950FC;
+}
+
+.text-dark{
+	color: #181C32;
+}
+
+.text-dark-75{
+	color: #3F4254;
+}
+
+.text-dark-65{
+	color: #5E6278;
+}
+
+.text-dark-50{
+	color: #7E8299;
+}
+
+.text-dark-25{
+	color: #D1D3E0;
+}
+
+.text-muted{
+	color: #B5B5C3;
+}
+
+.text-white{
+	color: #FFFFFF;
+}
+
+.text-white-50 {
+	color: rgba(255,255,255,.5);
+}
+
+.text-black-50 {
+	color: rgba(0,0,0,.5);
+}
+
+.text-regular{
+	font-weight: 400;
+}
+
+.text-medium{
+	font-weight: 500;
+}
+
+.text-semi-bold{
+	font-weight: 600;
+}
+
+.text-bold{
+	font-weight: 700;
+}
+
+.text-left{
+	text-align: left;
+}
+
+.text-center{
+	text-align: center;
+}
+
+.text-right{
+	text-align: right;
+}
+
+.text-justify{
+	text-align: justify;
+}
+
+.text-lowercase{
+	text-transform: lowercase;
+}
+
+.text-uppercase{
+	text-transform: uppercase;
+}
+
+.text-capitalize{
+	text-transform: capitalize;
+}
+
+.text-underline{
+	text-decoration: underline;
+}
+
+.bg-white{
+	background-color: #FFFFFF;
+}
+
+.bg-gray-1{
+	background-color: #EEF0F8;
+}
+
+.bg-dark{
+	background-color: #131628;
+}

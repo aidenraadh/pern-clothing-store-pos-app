@@ -1,0 +1,394 @@
+@media only screen and (min-width: 1281px) {
+  html {
+    font-size: 0.78125vw;
+  }
+}
+
+/* html font size is 9.14px at 375 px, 1.6rem = 14.6px */
+@media only screen and (max-width: 1280px) {
+	html {
+	  font-size: calc(10px - ( (1280px - 100vw) * 0.0013043 ) );
+	}
+}
+
+/* html font size is 9.14px at 375 px, 1.6rem = 14.6px 
+@media only screen and (max-width: 1280px) {
+	html {
+	  font-size: calc(10px - ( (1280px - 100vw) * 0.00095 ) );
+	}
+}*/
+
+/*
+html font size is 8.75px at 375 px, 1.6rem = 14px
+@media only screen and (max-width: 1280px) {
+  html {
+    font-size: calc(10px - ( (1280px - 100vw) * 0.00138 ) );
+  }
+}
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Tablet Layout
+|--------------------------------------------------------------------------
+|
+*/
+
+@media only screen and (max-width: 1100px){	
+	#app{
+		padding: 9.6rem 4vw 18rem;
+	}
+
+	.topbar{
+		padding: 0 4vw;
+	}
+
+	.topbar .user-thumbnail .user-name{
+		width: 1px; height: 1px;
+		visibility: hidden;
+	}
+
+	.topbar .topbar-item.show-sidebar-btn{
+		display: flex;
+	}
+
+	.sidebar-main-navs-container{
+		position: static;
+		top: auto; left: auto;
+		height: auto; 
+	}	
+
+	.sidebar{
+		position: fixed; top: 0; left: 0;
+		width: 40vw;
+		min-height: 100vh;
+		overflow-y: auto;
+		background-color: #131628;
+		transform: translateX(-100%);
+		transition: transform 0.3s;
+	}
+
+	.sidebar.shown{
+		transform: translateX(0);
+	}	
+
+	.sidebar .hide-sidebar-btn{
+		display: inline-block;
+	}
+
+	.main-navs{
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		flex-direction: row;
+		background-color: #131628;
+	}
+	.main-navs li{
+		width: 100%;
+	}
+	.main-navs .sidebar-item{
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		font-size: 1.4rem;
+	}	
+
+	.sidebar-items-container .sidebar-item .text{
+		width: auto; height: auto;
+		padding-left: 1.4rem;
+		visibility: visible;
+	}
+
+	.modal .modal-content{
+		width: 80vw;
+	}
+
+	.hotel-rooms-container{
+		grid-template-columns: 12.57% 12.57% 12.57% 12.57% 12.57% 12.57% 12.57%;
+		grid-column-gap: 2%;
+	}
+
+	.hotel-rooms-container > .hotel-room{
+		margin-bottom: 14%;
+	}
+
+	.hotel-users-table table{
+		min-width: 70rem;
+	}
+
+	.hotel-pricings-card > .card-body{
+		grid-template-columns: 100%;
+		grid-column-gap: 0;
+	}
+
+	.hotel-pricings-card > .card-body > .guest-pricing{
+		margin-bottom: 4%;
+	}	
+
+	.hotel-pricings-card .price-details .details{
+		grid-template-columns: 24% 24% 24% 24%;
+		grid-column-gap: 1.3%;
+	}
+	
+	.hotel-pricings-card .price-details .details > span{
+		margin-bottom: 4%;
+	}
+
+	#login-page .login-forms{
+		width: 50vw;
+	}
+	#login-page::before{
+		background-size: 40% auto;
+	}
+
+	.floating-btn{
+		right: 7vw;
+		bottom: 6rem;
+	}
+	.media-viewer > .media{
+		max-width: 92vw;
+		max-height: 82vh;
+	}
+	.room-classes-nav{
+		width: 50%;
+	}
+}
+
+@media only screen and (max-width: 1000px){
+	.hotel-bookings-table table{
+		min-width: 93rem;
+	}
+	.rooms-list-card .card-body > div{
+		grid-template-columns: 12% 12% 12% 12% 12% 12% 12%;
+		column-gap: 2.6%;
+	}		
+}
+
+@media only screen and (max-width: 900px){
+	#hotel-rooms-details .tab-pane .grid-2{
+		grid-template-columns: 100%;
+		grid-column-gap: 0;
+	}
+
+	.footer{
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	#hotel-stats .grid-3{
+		grid-template-columns: 49% 49%;
+		grid-column-gap: 2%;
+	}
+
+	#hotel-stats .grid-3 .grid-item{
+		margin-bottom: 4%;
+	}
+}
+
+@media only screen and (max-width: 800px){
+	.hotel-bookings-expenses-cards{
+		grid-template-columns: 100%;
+	}	
+}
+
+/*
+|--------------------------------------------------------------------------
+| Mobile Layout
+|--------------------------------------------------------------------------
+*/
+
+@media only screen and (max-width: 700px){
+	#app{
+		padding: 9.6rem 3vw 10rem;
+	}
+	.sidebar{
+		width: 60vw;
+	}
+	.topbar{
+		padding: 0 3vw;
+	}
+	.main-navs .sidebar-item{
+		font-size: 1.4rem;
+	}		
+	.modal .modal-content{
+		width: 92vw;
+	}
+	.content-sized-modal.modal .modal-content{
+		width: 92vw !important;
+	}
+
+	.grid.grid-3{
+		grid-template-columns: auto auto;
+	}
+
+	.grid.collapsed-on-tablet{
+		grid-template-columns: auto;
+	}	
+
+	.media-viewer > .media{
+		width: 100vw;
+		max-height: 82vh;
+	}		
+
+	.hotel-rooms-container{
+		grid-template-columns: 22.75% 22.75% 22.75% 22.75%;
+		grid-column-gap: 3%;
+	}
+
+	.hotel-rooms-container > .hotel-room{
+		margin-bottom: 14%;
+	}
+
+	#user-profile > p{
+		width: 100%;
+		align-items: center;
+		flex-direction: column;
+	}
+
+	#user-profile .profile-picture{
+		margin-right: 0;
+		margin-bottom: 1rem;
+	}
+
+	#user-profile .info{
+		align-items: center;
+	}
+
+	#user-profile .info .user-details{
+		width: 100%;
+	}
+
+	.hotel-pricings-card .price-details .details{
+		grid-template-columns: 32% 32% 32%;
+		grid-column-gap: 2%;
+	}
+
+	#login-page {
+		background-size: 50% auto;
+	}	
+	
+	#login-page .login-forms{
+		width: 80vw;
+	}
+
+	#rooms-pricing-tabs .tab-item{
+		min-width: 16rem;
+	}
+
+	.create-guest-card .pricings-component > .days-applied{
+		width: 100%;
+	}	
+
+	.create-guest-card .pricings > .pricings-component{
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+	
+	.create-guest-card .pricings-component > .amount{
+		margin-bottom: 2rem;
+		width: 100%;
+	}
+
+	.create-guest-card .pricings-component > .amount > input{
+		text-align: center;
+	}	
+	
+	.create-guest-card .days-applied .checkbox{
+		width: 33%;
+	}
+
+	.create-guest-card .days-applied .checkbox > .checkmark{
+		flex-shrink: 0;
+	}	
+
+	.create-guest-card .days-applied .checkbox > .choice-name{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	.rooms-list-card .card-body > div{
+		grid-template-columns: 22.6% 22.6% 22.6% 22.6%;
+		column-gap: 3%;
+	}
+
+	#create_user_forms_modal .grid-2{
+		grid-template-columns: 100%;
+		column-gap: 0;
+	}
+
+	.update-profile .profile-section-label:nth-of-type(2) ~ .base-input{
+		width: 100%;
+		margin-bottom: 4%;
+	}
+
+	.update-profile .profile-section-label:nth-of-type(2) ~ .grid-2{
+		grid-template-columns: 100%;
+		column-gap: 0;
+	}
+
+	#expense_forms_modal .modal-body span:first-child{
+		flex-wrap: wrap;
+	}
+
+	#expense_forms_modal .modal-body span:first-child > .base-input{
+		width: 100%;
+	}
+
+	#receptionist_modal .modal-content{
+		width: 92vw;
+	}
+	.table-stats{
+		width: 100%;
+	}
+	.sliding-stats-container > .stats-card{
+		width: 80%;
+	}
+	.create-guest-card-container{
+		min-height: 54vh;
+	}
+	.full-on-mobile-btn{
+		width: 100%;
+	}	
+	.room-classes-nav{
+		width: 100%;
+	}
+	#edit-name-modal .base-input{
+		width: 100%;
+	}
+	.create-booking-card .plain-card{
+		width: 100%;
+		margin-bottom: 2rem;
+	}	
+	.create-booking-card .plain-card:last-of-type{
+		margin-bottom: 0;
+	}
+}
+
+@media only screen and (max-width: 600px){
+	#hotel-stats .grid-3{
+		grid-template-columns: 100%;
+	}
+
+	.make-booking-card .card-body > .rooms,
+	.make-booking-card .card-body > .services{
+		width: 100%;
+		float: none;
+	}
+	.grid.collapsed-on-mobile{
+		grid-template-columns: auto;
+	}	
+}
+
+@media only screen and (max-width: 500px){
+	#user-profile .update-profile .grid-2{
+		grid-template-columns: 100%;
+		grid-column-gap: 0;
+	}
+
+	#user-profile .update-profile .base-input{
+		width: 100%;
+	}	
+}

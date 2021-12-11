@@ -1,0 +1,2107 @@
+/*
+|--------------------------------------------------------------------------
+| Buttons
+|--------------------------------------------------------------------------
+*/
+/*
+----- LAYOUT STYLES -----
+This is the layout styles of the button
+
+<button class="btn with-icon|icon-only" type="button">
+	<!-- Your icon here -->
+	<span class="btn-text"><!-- Your text here --></span>
+</button>
+*/
+
+.btn{
+	display: inline-block;
+	position: relative;
+	padding: 0.6em 1em;
+	text-align: center;
+	font-size: 1.5rem;
+	border-radius: 0.55rem;
+	transition-property: background-color, color;
+	transition-duration: 0.2s, 0.2s;
+}
+
+.btn .btn-text{
+	display: inline-block;
+}
+
+/* .btn .svg-icon{
+	position: absolute;
+}
+ */
+.btn .svg-icon{
+	width: 1.5em;
+	height: 1.5em;
+}
+
+.btn.with-icon{
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.btn.with-icon .svg-icon{
+	width: 1.4em;
+	height: 1.4em;
+}
+
+.btn.with-icon .svg-icon svg{
+	width: 100%;
+	height: 100%;
+}
+
+.btn.with-icon .btn-text{
+	padding-left: 0.4em;
+}
+
+.btn.icon-only{
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0.36em !important;
+}
+
+.btn.icon-only .svg-icon{
+	position: static;
+}
+
+.btn.icon-only .svg-icon svg{
+	width: 1.44em;
+}
+
+
+.btn.icon-only .btn-text{
+	width: 1px; height: 1px;
+	visibility: hidden;overflow: hidden;
+}
+
+.btn.btn-sm{
+	padding: 0.4em 0.8rem;
+	font-size: 1.36rem;
+}
+
+.btn.btn-md{
+	font-size: 1.4rem;
+}
+
+.btn.btn-lg{
+	font-size: 1.5rem;	
+}
+
+
+/*
+----- PRIMARY BUTTON -----
+<button class="btn {layout_styles} btn-primary blue|green|red|orange|purple" type="button">
+	<!-- Your icon here -->
+	<span class="btn-text"><!-- Your text here --></span>
+</button>
+*/
+
+.btn-primary{
+	font-weight: normal;
+	color: #FFF;
+}
+
+.btn-primary:disabled::after{
+	content: '';
+	position: absolute; top: 0; left: 0;
+	width: 100%; height: 100%;
+	background-color: #FFFFFF;
+	opacity: 0.4;
+}
+
+
+.btn-primary .svg-icon .path{
+	fill: #FFFFFF;
+}
+
+.btn-primary.blue{
+	background-color: #6993FF;
+}
+
+.btn-primary.blue:hover, .btn-primary.blue.active{
+	background-color: #4A7DFF;
+}
+
+.btn-primary.green{
+	background-color: #1BC5BD;
+}
+
+.btn-primary.green:hover, .btn-primary.green.active{
+	background-color: #0BB7AF;
+}
+
+.btn-primary.red{
+	background-color: #F64E60;
+}
+
+.btn-primary.red:hover, .btn-primary.red.active{
+	background-color: #EE2D41;
+}
+
+.btn-primary.orange{
+	background-color: #FFA800;
+}
+
+.btn-primary.orange:hover, .btn-primary.orange.active{
+	background-color: #EE9D01;
+}
+
+.btn-primary.purple{
+	background-color: #8950FC;
+}
+
+.btn-primary.purple:hover, .btn-primary.purple.active{
+	background-color: #7337EE;
+}
+
+
+/*
+----- PRIMARY BUTTON -----
+<button class="btn {layout_styles} btn-light blue|green|red|orange|purple" type="button">
+	<!-- Your icon here -->
+	<span class="btn-text"><!-- Your text here --></span>
+</button>
+*/
+
+.btn-light{
+	font-weight: 500;
+}
+
+.btn-light:hover, .btn-light.active,
+.btn-light:hover .path, .btn-light.active .path{
+	color: #FFFFFF !important;
+	fill: #FFFFFF !important;
+}
+
+.btn-light.blue,
+.btn-light.blue .path{
+	color: #3699FF;
+	background-color: #E1F0FF;
+	fill: #3699FF;
+}
+
+
+.btn-light:hover.blue, .btn-light.active{
+	background-color: #3699FF;
+}
+
+.btn-light.green, .btn-light.green .path{
+	color: #1BC5BD;
+	fill: #1BC5BD;
+	background-color: #C9F7F5;
+}
+
+.btn-light.green:hover, .btn-light.green.active{
+	background-color: #1BC5BD;
+}
+
+.btn-light.red, .btn-light.red .path{
+	color: #F64E60;
+	fill: #F64E60;
+	background-color: #FFE2E5;
+}
+
+.btn-light.red:hover, .btn-light.red.active{
+	background-color: #F64E60;
+}
+
+.btn-light.orange, .btn-light.orange .path{
+	color: #FFA800;
+	fill: #FFA800;
+	background-color: #FFF4DE;
+}
+
+.btn-light.orange:hover, .btn-light.orange.active{
+	background-color: #FFA800;
+}
+
+.btn-light.purple, .btn-light.purple .path{
+	color: #8950FC;
+	fill: #8950FC;
+	background-color: rgba(137,80,252,0.14);
+}
+
+.btn-light.purple:hover, .btn-light.purple.active{
+	background-color: #8950FC;
+}
+
+/*
+----- BUTTONS GROUP -----
+All button in the group must be in the same size
+
+<div class="btn-group">
+	<button type="button" class="btn btn-lg btn-primary purple">		
+		<span class="btn-text">How to</span>
+	</button>
+	<button type="button" class="btn btn-lg btn-light green">		
+		<span class="btn-text">How to</span>
+	</button>					
+</div>	
+*/
+
+.btn-group{
+	display: flex;
+}
+
+.btn-group .btn{
+	border-radius: 0;
+}
+
+.btn-group .btn:first-child{
+	border-radius: 0.55rem 0 0 0.55rem;
+}
+
+.btn-group .btn:last-child{
+	border-radius: 0 0.55rem.55rem 0;	
+}
+
+/*
+|--------------------------------------------------------------------------
+| Navigations
+|--------------------------------------------------------------------------
+*/
+
+/*
+<nav>
+	<div class="topbar">
+		<a href=#
+		className="topbar-item app-brand flex-row content-center items-center">
+			img
+		</a>	
+		<ul class="left-widgets">
+			<button type="show-sidebar-btn>Show</button>
+			<li class="topbar-item">
+				<button type="button" class="toggle-sidebar"></button>
+			</li>		
+		</ul>
+		<ul class="right-widgets">
+			<li class="topbar-item">
+				<a href="#">
+					<!-- Text -->
+				</a>
+			</li>
+			<!-- Another item -->
+		</ul>
+	</div>
+	<div class="sidebar">
+		<button type="hide-sidebar-btn>Hide</button>
+		<ul class="main-navs sidebar-items-container">
+			<li>
+				<a class="sidebar-item" href="#">
+					<!-- Icons -->
+					<span class="text">Settings</span>		
+				</a>				
+			</li>
+			<!-- Another item -->
+		</ul>		
+		<ul class="sidebar-items-container">
+			<li>
+				<a class="sidebar-item" href="#">
+					<!-- Icons -->
+					<span class="text">Settings</span>		
+				</a>				
+			</li>
+			<!-- Another item -->
+		</ul>		
+	</div>
+</nav>
+*/
+
+.topbar{
+	position: fixed; top: 0; left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 2rem 0 10rem;
+	width: 100vw;
+	background-color: #FFFFFF;
+	box-shadow: 0px 10px 30px 0px rgba(82, 63, 105, 0.08);
+	z-index: 96;
+}
+
+.topbar .app-brand{
+	order: 2;
+}
+.topbar .app-brand > img{
+	width: 16rem;
+}
+
+.topbar .left-widgets, .topbar .right-widgets{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;	
+}
+
+.topbar .left-widgets{
+	order: 1;
+}
+
+.topbar .right-widgets{
+	order: 3;
+}
+
+.topbar ul{
+	list-style: none;
+}
+
+.topbar .topbar-item{
+	display: flex;
+	align-items: center;
+	padding: 1.2rem 0;
+}
+
+.topbar .topbar-item.show-sidebar-btn{
+	display: none;
+}
+
+.sidebar-main-navs-container{
+	position: fixed;
+	top: 0; left: 0;
+	height: 100vh; 
+	z-index: 97;
+	background-color: #131628;
+}
+
+.main-navs{
+	display: flex;
+	list-style-type: none;
+	flex-direction: column;
+	justify-content: flex-start;
+	background-color: #131628;
+	z-index: 96;
+}
+
+.sidebar{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	background-color: #131628;
+	overflow-y: auto;
+	z-index: 97;
+}
+
+.sidebar .hide-sidebar-btn{
+	display: none;
+	align-self: flex-end;
+	font-size: 3.4rem;
+	width: 4rem;
+	height: 4rem;
+	margin-top: 1.4rem;
+	margin-right: 1.4rem;
+}
+
+.sidebar-items-container{
+	display: flex;
+	flex-direction: column;
+	list-style-type: none;
+	width: 100%;
+}
+
+.sidebar-items-container > li{
+	width: 100%;
+}
+
+.sidebar .sidebar-item{
+	width: 100%;
+	flex-shrink: 0;
+}
+
+.sidebar-item{
+	display: flex;
+	align-items: center;
+	padding: 2rem;
+	color: #FFFFFF;
+}
+
+.sidebar-item .svg-icon > svg{
+	width: 1.8em;
+}
+
+.sidebar-item .svg-icon .path{
+	fill: #494B74;
+	transition: fill 0.3s;
+}
+
+.sidebar-item.active .svg-icon .path,
+.sidebar-item:hover .svg-icon .path,
+.sidebar-item:focus .svg-icon .path
+{
+	fill: #3699FF;
+}
+
+.sidebar-item .svg-icon .stroke{
+	stroke: #494B74;
+	transition: stroke 0.3s;
+}
+
+.sidebar-item.active .svg-icon .stroke,
+.sidebar-item:hover .svg-icon .stroke,
+.sidebar-item:focus .svg-icon .stroke
+{
+	stroke: #3699FF;
+}
+
+.sidebar-item .text{
+	display: inline-block;
+	width: 1px; height: 1px;
+	padding-left: 0;
+	visibility: hidden;
+	color: #A2A3B7;
+	overflow: hidden;
+}
+
+.sidebar-item.active .text,
+.sidebar-item:hover .text,
+.sidebar-item:focus .text
+{
+	color: #FFFFFF;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Dropdowns
+|--------------------------------------------------------------------------
+*/
+
+/* 
+<div class="dropdown bottom|right|left|top">
+    <button type="button" class="dropdown-toggle">Dropdown</button>
+    <section class="dropdown-menu">
+        <a class="dropdown-item" href="#">Item 1</a>
+        <a class="dropdown-item" href="#">Item 2</a>
+        <a class="dropdown-item" href="#">Item 3</a>
+		<a class="dropdown-item" href="#">Item 4</a>
+		<hr> <!-- optional -->
+		<a class="dropdown-item" href="#">Item 5</a>
+		<a class="dropdown-item" href="#">Item 6</a>
+    </section>
+</div>
+ */
+
+.dropdown{
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+
+.dropdown-menu{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    min-width: 20rem;
+    border-radius: 0.55rem;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 30px 0px rgba(82, 63, 105, 0.05);
+    opacity: 0;
+    visibility: hidden;
+    transition-property: opacity, transform;
+	transition-duration: 0.3s, 0.3s;
+	z-index: 95;
+}
+
+.dropdown-menu > hr{
+	display: block;
+	width: 100%;
+	height: 0.1rem;
+	border: none;
+	background-color: #D9D9D9;
+}
+
+.dropdown.bottom .dropdown-menu{
+	top: 126%; left: 0;
+	transform: translateY(4%);
+}
+
+.dropdown.bottom.pull-left .dropdown-menu{
+	left: 0;
+}
+
+.dropdown.bottom.pull-right .dropdown-menu{
+	left: auto;
+	right: 0;
+}
+
+.dropdown.right .dropdown-menu{
+	top: 0; left: 126%;
+	transform: translateX(4%);
+}
+
+.dropdown.right.pull-top .dropdown-menu{
+	top: 0;
+}
+
+.dropdown.right.pull-bottom .dropdown-menu{
+	top: auto;
+	bottom: 0;
+}
+
+.dropdown.left .dropdown-menu{
+	top: 0; right: 126%;
+	transform: translateX(-4%);
+}
+
+.dropdown.left.pull-top .dropdown-menu{
+	top: 0;
+}
+
+.dropdown.left.pull-bottom .dropdown-menu{
+	top: auto;
+	bottom: 0;
+}
+
+.dropdown.top .dropdown-menu{
+	bottom: 126%; left: 0;
+	transform: translateY(-4%);
+}
+
+.dropdown.top.pull-left .dropdown-menu{
+	left: 0;
+}
+
+.dropdown.top.pull-right .dropdown-menu{
+	left: auto;
+	right: 0;
+}
+
+.dropdown-item{
+    display: inline-block;
+    padding: 0.8rem 1rem;
+	cursor: pointer;
+	text-align: left;
+    font-size: 1.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover{
+    background-color: #f7f8fa;
+}
+
+.dropdown-menu.shown{
+    visibility: visible;
+    opacity: 1;
+    transform: translate(0);
+}
+/*
+|--------------------------------------------------------------------------
+| Table
+|--------------------------------------------------------------------------
+*/
+
+/*
+<div class="table-container">
+	<table>
+		<thead>
+			<tr>
+				<th>Heading 1</th>
+				<th>Heading 2</th>
+				<!-- Next heading -->
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Data 1</td>
+				<td>Data 2</td>
+				<!-- Next data -->
+			</tr>
+			<!-- Next row -->									
+		</tbody>
+	</table>
+</div>
+*/
+
+.table-container{
+	overflow-x: auto;
+}
+
+.table-container table{
+	width: 100%;
+	table-layout: auto;
+	border-collapse: collapse;
+}
+
+.table-container tr{
+	border-bottom: 0.1rem solid #D9D9D9;
+}
+
+.table-container tbody tr:last-child{
+	border-bottom: none;
+}
+
+.table-container th{
+	font-size: inherit;
+	font-weight: 500;
+	color: #6C7293;
+}
+
+.table-container th, .table-container td{
+	font-size: inherit;
+	text-align: center;
+	padding: 0.8em;
+	white-space: nowrap; 
+}
+
+.table-container tbody > tr.ribboned{
+	position: static;
+	padding-left: 0;
+}
+
+.table-container tbody > tr.ribboned::before{
+	display: none;
+}
+
+.table-container tbody > tr.ribboned > td:first-child{
+	position: relative;
+}
+
+.table-container tbody > tr.ribboned > td:first-child::before{
+	content: '';
+	position: absolute;
+	border-radius: 0.55rem;
+	top: 12%; left: 0;
+	height: 76%;
+	width: 0.4rem;
+}
+
+.table-container tbody > tr.ribboned.blue > td:first-child::before{
+	background-color: #3699FF;
+}
+
+.table-container tbody > tr.ribboned.green > td:first-child::before{
+	background-color: #1BC5BD;
+}
+
+.table-container tbody > tr.ribboned.red > td:first-child::before{
+	background-color: #F64E60;
+}
+
+.table-container tbody > tr.ribboned.orange > td:first-child::before{
+	background-color: #FFA800;
+}
+
+.table-container tbody > tr.ribboned.purple > td:first-child::before{
+	background-color: #8950FC;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Forms
+|--------------------------------------------------------------------------
+*/
+
+/*
+<span class="base-input outline|solid sm-input|md-input|lg-input">
+	<label for="form">Form name</label>
+	<input id="form" type="text" name="form">
+</span>
+
+<span class="base-input outline|solid sm-input|md-input|lg-input">
+	<label for="form">Form name</label>
+	<select id="form" name="form"></select>
+</span>
+
+<span class="base-input outline|solid sm-input|md-input|lg-input">
+	<label for="form">Form name</label>
+	<textarea id="form" name="form"></textarea>
+</span>
+*/
+
+.base-input{
+	display: inline-block;
+}
+
+.base-input label{
+	display: block;
+	margin-bottom: 0.8rem;
+	font-size: 1.46rem;
+}
+
+.base-input input, .base-input select, .base-input textarea{
+	display: inline-block;
+	padding: 0.6em 1em;
+	border-radius: 0.55rem;
+	color: inherit;
+	font-size: 1.4rem;
+}
+
+.base-input.sm-input input, .base-input.sm-input select,
+.base-input.sm-input textarea{
+	font-size: 1.36rem;
+}
+
+.base-input.md-input input, .base-input.md-input select,
+.base-input.md-input textarea{
+	font-size: 1.4rem;
+}
+
+.base-input.lg-input input, .base-input.lg-input select,
+.base-input.lg-input textarea{
+	font-size: 1.5rem;	
+}
+
+.base-input.outline input, .base-input.outline select,
+.base-input.outline textarea{
+	border: 0.2rem solid #E4E6EF;
+	transition: border-color 0.3s;
+}
+
+.base-input.outline input:focus, .base-input.outline select:focus,
+.base-input.outline textarea:focus{
+	border-color: #69B3FF;
+}
+
+.base-input.solid input, .base-input.solid select,
+.base-input.solid textarea{
+	border: none;
+	background-color: #F3F6F9;
+	transition: background-color 0.3s;
+}
+
+.base-input.solid input:focus, .base-input.solid select:focus,
+.base-input.solid textarea:focus{
+	background-color: #EBEDF3;
+}
+
+/*
+<span class="addon-input  sm-input|md-input|lg-input">
+	<label for="form">Form name</label>
+	<span class="flex-row">
+		<span class="addon" aria-hidde="true">
+			Addon
+		</span>
+		<input id="form" type="text" name="form">
+	</span>
+</span>
+*/
+
+.addon-input{
+	display: inline-block;
+}
+
+.addon-input label{
+	display: block;
+	margin-bottom: 0.8rem;
+	font-size: 1.4rem;
+}
+
+.addon-input .addon{
+	display: inline-block;
+	flex-shrink: 0;
+	padding: 0.6em 1em;
+	border-radius: 0.55rem 0 0 0.55rem;
+	font-size: 1.4rem;
+	color: inherit;
+	border: 0.2rem solid #E4E6EF;
+	border-right: none;
+	background-color: #F3F6F9;
+}
+
+.addon-input input:disabled + .addon,
+.addon-input select:disabled + .addon{
+	opacity: 0.2;
+}
+
+.addon-input input, .addon-input select{
+	display: inline-block;
+	padding: 0.6em 1em;
+	border-radius: 0 0.55rem 0.55rem 0;
+	font-size: 1.4rem;
+	color: inherit;
+	border: 0.2rem solid #E4E6EF;
+	transition: border-color 0.3s;	
+}
+
+.addon-input input:focus, .addon-input select:focus{
+	border-color: #69B3FF;
+}
+
+.addon-input.sm-input input, .addon-input.sm-input select,
+.addon-input.sm-input .addon{
+	font-size: 1.36rem;
+}
+
+.addon-input.md-input input, .addon-input.md-input select,
+.addon-input.md-input .addon{
+	font-size: 1.4rem;
+}
+
+.addon-input.lg-input input, .addon-input.lg-input select,
+.addon-input.lg-input .addon{
+	font-size: 1.5rem;	
+}
+
+/*
+<label class="multi-choice checkbox|radio basic|outline">
+	<span class="choice-name">Choice</span>
+	<input type="checkbox|radio">
+	<span class="checkmark">
+		<span></span>
+	</span>
+</label>
+*/
+
+.multi-choice{
+  	display: inline-flex;
+  	align-items: center;
+  	cursor: pointer;
+}
+
+.multi-choice input{
+  	position: absolute;
+  	opacity: 0;
+  	cursor: pointer;
+  	height: 1px;
+  	width: 1px;
+}
+
+.multi-choice .choice-name{
+	padding-left: 0.4em;
+	order: 2;
+}
+
+.multi-choice .checkmark{
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;	
+	order: 1;
+	height: 1.34em;
+	width: 1.34em;	
+}
+
+.multi-choice.checkbox .checkmark{
+	border-radius: 0.55rem;
+}
+
+.multi-choice.radio .checkmark{
+	border-radius: 100%;
+}
+
+.multi-choice.basic .checkmark{
+	background-color: #EBEDF3;
+	transition: background-color 0.2s ease;	
+}
+
+.multi-choice.basic input:checked ~ .checkmark{
+	background-color: #3699FF;
+}
+
+.multi-choice.outline .checkmark{
+	border: 2px solid #D1D3E0;
+	transition: border-color 0.2s ease;	
+}
+
+.multi-choice.outline input:checked ~ .checkmark{
+	border-color: #3699FF;
+}
+
+.multi-choice .checkmark > span{
+  	opacity: 0;
+  	transition: opacity 0.2s;
+}
+
+.multi-choice.checkbox .checkmark > span{
+	display: inline-block;
+	width: 0.67em; height: 0.33em;
+  	border-left: 0.134em solid;
+	border-bottom: 0.134em solid;
+	transform: rotate(-45deg);
+}
+
+.multi-choice.checkbox.basic .checkmark > span{
+	border-left-color: #FFFFFF;
+	border-bottom-color: #FFFFFF;
+}
+
+.multi-choice.checkbox.outline .checkmark > span{
+	border-left-color: #3699FF;
+	border-bottom-color: #3699FF;
+}
+
+.multi-choice.radio .checkmark > span{
+	display: inline-block;
+	border-radius: 100%;
+	width: 0.5em; height: 0.5em;
+}
+
+.multi-choice.radio.basic .checkmark > span{
+	background-color: #FFFFFF;
+}
+
+.multi-choice.radio.outline .checkmark > span{
+	background-color: #3699FF;
+}
+
+.multi-choice input:checked ~ .checkmark > span{
+	opacity: 1;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Search Box
+|--------------------------------------------------------------------------
+*/
+
+/*
+<span class="search-box base-input outline|solid sm-input|md-input|lg-input">
+	<label for="form">Form name</label>
+	<input id="form" type="text" name="form">
+	<ul class="search-results"></ul>
+</span>
+
+<span class="search-box addon-input sm-input|md-input|lg-input">
+	<label for="form">Form name</label>
+	<span class="flex-row">
+		<span class="addon" aria-hidde="true">
+			Addon
+		</span>
+		<input id="form" type="text" name="form">
+	</span>
+	<ul class="search-results"></ul>
+</span>
+*/
+
+.search-box{
+	position: relative;
+	overflow: visible;
+	z-index: 95;
+}
+
+.search-results-container{
+	position: absolute;
+	left: 0;
+	min-width: 100%;
+	max-height: 50vh;
+	border-radius: 0.55rem;
+	background-color: white;
+	box-shadow: 0px 0px 30px 0px rgba(82,63,105,0.2);
+	visibility: hidden;
+	opacity: 0;
+	overflow-y: auto;
+	transform: translateY(8%);
+    transition-property: opacity, transform;
+	transition-duration: 0.3s, 0.3s;
+}
+
+.search-results-container.visible{
+	visibility: visible;
+}
+
+.search-results-container.shown{
+	opacity: 1;
+	transform: translateY(4%);
+}
+
+.search-results-container > ul{
+	list-style-type: none;
+}
+
+.search-results-container > ul > li{
+	border-bottom: 2px solid #EBEDF3;
+}
+
+.search-results-container > ul > li:last-child{
+	border-bottom: none;
+}
+
+.search-result{
+	display: block;
+	width: 100%;
+	padding: 0.8rem 1rem;
+	cursor: pointer;
+	text-align: left;
+	font-size: 1.5rem;
+	transition: background-color 0.2s ease;
+}
+
+.search-result:hover{
+	background-color: #F7F8FA;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Cards
+|--------------------------------------------------------------------------
+*/
+
+.card{
+	border-radius: 0.55rem;
+	box-shadow: 0px 0px 30px 0px rgba(82, 63, 105, 0.05);
+}
+/*----- PLAIN CARD -----*/
+
+/*
+<div class="card plain-card">
+	Lorem ipsum
+</div>
+*/
+
+.card.plain-card{
+	padding: 1.8rem 2.2rem;
+	background-color: #FFFFFF;
+}
+/*
+----- SIMPLE CARD -----
+
+<div class="card simple-card">
+	<div class="card-header flex-row items-center content-space-between">
+		<h1 class="heading text-dark-75 text-medium">Heading</h1>
+		<div class="actions flex-row items-center">
+			<button class="btn btn-light btn-blue" type="button">
+				Filter
+			</button>			
+		</div>
+	</div>
+	<div class="card-body">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua.
+	</div>
+	<div className="card-footer"> <!-- optional -->
+	</div>
+</div>
+*/
+
+.card.simple-card{
+	display: block;
+	background-color: #FFFFFF;
+}
+
+.simple-card .card-header{
+	padding: 1.8rem 2.2rem;
+}
+
+.simple-card .card-header .heading{
+	font-size: 1.66rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;	
+}
+
+.simple-card .card-header .card-actions{
+	flex-shrink: 0;
+}
+
+.simple-card .card-header .card-actions > *{
+	margin-left: 1rem;
+}
+
+.simple-card .card-header .card-actions > *:first-child{
+	margin-left: 0;
+}
+
+.simple-card .card-body{
+	padding: 1.8rem 2.2rem;
+	border-top: 0.1rem solid #D9D9D9;
+}
+
+.simple-card .card-footer{
+	border-top: 0.1rem solid #D9D9D9;
+	padding: 1.8rem 2.2rem;
+}
+
+/*
+----- TABBED CARD -----
+
+<div class="card tabbed-card">
+	<ul class="tabs"role="tablist">
+		<li class="tab-item">
+			<a class="tab-link text-medium text-dark-75 active" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+				Home
+			</a>
+		</li>
+		<!-- Next tab -->
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active shown" id="home" role="tabpanel" aria-labelledby="home-tab">
+			Home tab
+		</div>
+		<!-- Next panel -->
+	</div>
+</div>
+*/
+
+.card.tabbed-card{
+	display: block;
+	background-color: #FFFFFF;
+}
+
+.tabbed-card .tabs{
+  	display: flex;
+  	list-style: none;
+  	overflow-x: auto;
+}
+
+.tabbed-card .tabs .tab-link{
+	padding: 1.4rem 1.8rem;
+}
+
+.tabbed-card .tab-content{
+	padding: 1.4rem 1.8rem;	
+}
+
+/*----- TOOL CARD -----*/
+
+.simple-card.tool-card .body-wrapper{
+	overflow: hidden;
+	transition: max-height 0.3s;
+}
+
+.simple-card.tool-card .toggle-btn svg{
+	transition: transform 0.3s;
+}
+
+.simple-card.tool-card.expanded .toggle-btn svg{
+	transform: rotate(180deg);
+}
+
+/*----- STATS CARD -----*/
+
+.stats-card{
+	display: flex;
+	border-radius: 0.55rem;
+	flex-direction: column;
+	align-items: flex-start;
+	text-align: left;
+	padding: 2rem 3rem;
+}
+
+.stats-card .main-label{
+	margin-top: 1.4rem;
+	font-weight: 500;
+	font-size: 1.6rem;
+	order: 2;
+}
+
+.stats-card .secondary-label{
+	margin-top: 1rem;
+	font-size: 1.5rem;
+	order: 3;
+}
+
+.stats-card .number-label{
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+	font-size: 1.8rem;	
+	order: 1;
+}
+
+.stats-card .number-label svg{
+	margin-right: 1rem;
+	width: 1.64em;
+}
+
+.stats-card.primary{
+	color: #FFFFFF;
+}
+.stats-card.primary .svg-icon .path{
+	fill: #FFFFFF;
+}
+
+.stats-card.primary.blue{
+	background-color: #3699FF;
+}
+
+.stats-card.primary.green{
+	background-color: #1BC5BD;
+}
+
+.stats-card.primary.red{
+	background-color: #F64E60;
+}
+
+.stats-card.primary.orange{
+	background-color: #FFA800;
+}
+
+.stats-card.primary.purple{
+	background-color: #8950FC;
+}
+
+.stats-card.light.blue,
+.stats-card.light.blue .svg-icon .path{
+	color: #3699FF;
+	background-color: #E1F0FF;
+	fill: #3699FF;
+}
+
+.stats-card.light.green,
+.stats-card.light.green .svg-icon .path{
+	color: #1BC5BD;
+	fill: #1BC5BD;
+	background-color: #C9F7F5;
+}
+
+.stats-card.light.red,
+.stats-card.light.red .svg-icon .path{
+	color: #F64E60;
+	fill: #F64E60;
+	background-color: #FFE2E5;
+}
+
+.stats-card.light.orange,
+.stats-card.light.orange .svg-icon .path{
+	color: #FFA800;
+	fill: #FFA800;
+	background-color: #FFF4DE;
+}
+
+.stats-card.light.purple,
+.stats-card.light.purple .svg-icon .path{
+	color: #8950FC;
+	fill: #8950FC;
+	background-color: rgba(137,80,252,0.14);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Kanban Board
+|--------------------------------------------------------------------------
+*/
+
+.kanban-board .heading{
+	padding: 1.4rem 1.8rem;
+	border-radius: 0.55rem 0.55rem 0 0;
+	font-size: 1.56rem;
+	background-color: #F3F6F9;
+}
+
+.kanban-board .body{
+	padding: 1.4rem 1.8rem;
+	border-radius: 0 0 0.55rem 0.55rem;
+	background-color: #F3F6F9;
+}
+
+.kanban-board.primary .heading{
+	color: #FFFFFF;
+}
+
+.kanban-board.primary.blue .heading{
+	background-color: #3699ff;
+}
+
+.kanban-board.primary.green .heading{
+	background-color: #1BC5BD;
+}
+
+.kanban-board.primary.red .heading{
+	background-color: #F64E60;
+}
+
+.kanban-board.primary.orange .heading{
+	background-color: #FFA800;
+}
+
+.kanban-board.primary.purple .heading{
+	background-color: #8950FC;
+}
+
+.kanban-board.light.blue .heading{
+	color: #3699ff;
+	background-color: #E1F0FF;
+}
+
+.kanban-board.light.green .heading{
+	color: #1BC5BD;
+	background-color: #C9F7F5;
+}
+
+.kanban-board.light.red .heading{
+	color: #F64E60;
+	background-color: #FFE2E5;
+}
+
+.kanban-board.light.orange .heading{
+	color: #FFA800;
+	background-color: #FFF4DE;
+}
+
+.kanban-board.light.purple .heading{
+	color: #8950FC;
+	background-color: rgba(137,80,252,0.14);
+}
+
+/*
+|--------------------------------------------------------------------------
+| SVG Icons
+|--------------------------------------------------------------------------
+*/
+
+.svg-icon{
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.svg-icon svg{
+	width: 1em;
+}
+
+.svg-icon .path{
+	fill: #000000;
+}
+
+.svg-icon .path.fade{
+	opacity: 0.3
+}
+
+.svg-icon.blue .path{
+	fill: #3699FF;
+}
+
+.svg-icon.green .path{
+	fill: #1BC5BD;
+}
+
+.svg-icon.red .path{
+	fill: #F64E60;
+}
+
+.svg-icon.orange .path{
+	fill: #FFA800;
+}
+
+.svg-icon.purple .path{
+	fill: #8950FC;
+}
+
+.svg-icon.gray .path{
+	fill: #868DB3;
+}
+
+.svg-icon.white .path{
+	fill: #FFFFFF;
+}
+
+.svg-icon .stroke{
+	fill: none;
+	stroke: #000000;
+}
+
+.svg-icon.blue .stroke{
+	stroke: #3699FF;
+}
+
+.svg-icon.green .stroke{
+	stroke: #1BC5BD;
+}
+
+.svg-icon.red .stroke{
+	stroke: #F64E60;
+}
+
+.svg-icon.orange .stroke{
+	stroke: #FFA800;
+}
+
+.svg-icon.purple .stroke{
+	stroke: #8950FC;
+}
+
+.svg-icon.gray .stroke{
+	stroke: #868DB3;
+}
+
+.svg-icon.white .stroke{
+	fill: #FFFFFF;
+}
+
+/*
+|--------------------------------------------------------------------------
+| User thumbnail
+|--------------------------------------------------------------------------
+*/
+
+.user-thumbnail{
+	display: flex;
+	align-items: center;
+}
+
+.user-thumbnail img{
+	width: 2.2em;
+	height: 2.2em;
+	border-radius: 0.55rem;
+	object-fit: cover;	
+}
+
+.user-thumbnail .user-name{
+	display: inline-block;
+	padding-left: 0.8rem;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Tabs
+|--------------------------------------------------------------------------
+*/
+
+/*
+------- SIMPLE TABS -------
+
+<ul class="tabs"role="tablist">
+	<li class="tab-item">
+		<a class="tab-link text-medium text-dark-2 active" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+			Home
+		</a>
+	</li>
+	<!-- Next tab -->
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active shown" id="home" role="tabpanel" aria-labelledby="home-tab">
+		Home tab
+	</div>
+	<!-- Next panel -->	
+</div>
+*/
+
+.tabs {
+  	display: flex;
+  	list-style: none;
+  	overflow-x: auto;
+}
+
+.tabs .tab-item {
+	display: inline-block;
+	width: 100%;
+}
+
+.tabs .tab-link {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1.4rem;
+	width: 100%;	
+  	font-size: 1.6rem;
+  	transition: color 0.3s;
+}
+
+.tabs .tab-link::before{
+	content: '';
+	position: absolute;
+	bottom: 0; left: 0;
+	width: 100%;	
+	height: 0.1rem;
+	background-color: #D9D9D9;
+	transition: background-color 0.2s;
+}
+
+.tabs .tab-link:hover, .tabs .tab-link:focus {
+	color: #3699FF;
+}
+
+.tabs .tab-link.active{
+	color: #3699FF;
+}
+
+.tabs .tab-link.active::before{
+	background-color: #3699FF;
+}
+
+.tab-content{
+  	display: flex;
+  	overflow: hidden;
+}
+
+.tab-content > .tab-pane {
+  	position: absolute;
+  	top: 0; left: -110%;
+  	overflow: hidden;
+  	width: 1px;
+  	height: 1px;
+  	flex-shrink: 0;
+  	opacity: 0;
+  	transition: opacity 0.3s ease;
+}
+
+.tab-content > .tab-pane.active{
+  	position: static;
+  	top: auto; left: auto;
+  	overflow: visible;
+  	width: 100%;
+  	height: auto;
+}
+
+.tab-content > .tab-pane.shown{
+  	opacity: 1;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Modal
+|--------------------------------------------------------------------------
+*/
+
+/*
+<section id="modalid" class="modal shown">
+	<div class="overlay">
+		<div class="modal-content shown">
+			<div class="modal-header">
+				<h6 class="heading text-dark-75 text-medium"><!-- heading --></h6>
+				<button class="cls-modal text-blue" type="button">×</button>
+			</div>
+			<div class="modal-body">
+				<!-- body -->
+			</div>
+			<div class="modal-footer">
+				<!-- foooter -->
+			</div>
+		</div>
+	</div>
+</section>
+*/
+
+.modal{
+	position: fixed;
+  	top: 0; left: 0;
+  	z-index: 98;
+  	width: 100vw;
+  	height: 100vh;
+  	visibility: hidden;
+}
+
+.modal.shown{
+  	visibility: visible;
+}
+
+.modal .overlay{
+  	position: absolute;
+  	top: 0; left: 0;
+  	display: flex;
+  	width: 100%;
+  	height: 100%;
+  	flex-direction: row;
+  	justify-content: center;
+  	align-items: center;
+  	background-color: rgba(0,0,0,0.3);
+  	opacity: 0;
+  	transition: opacity 0.3s;
+}
+
+.modal.shown .overlay{
+  	opacity: 1;
+}
+
+.modal .modal-content{
+  	width: 50vw;
+  	border-radius: 0.55rem;
+	opacity: 0;
+	transform: translateY(-8%);
+  	background-color: #FFFFFF;
+  	box-shadow: rgba(0, 0, 0, 0.1) 0px 6.5px 13px 0px;  
+	transition-property: opacity, transform;
+	transition-duration: 0.3s, 0.3s;
+	  
+}
+
+.modal .modal-content.shown{
+	transform: translateY(0);
+  	opacity: 1;
+}
+
+.modal .modal-header{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+  	padding: 1.4rem 1.8rem;
+  	border-bottom: 0.1rem solid #D9D9D9;
+  	border-radius: 0.55rem 0.55rem 0 0;
+}
+
+.modal-header .cls-modal{
+  	font-size: 2.6rem;
+}
+
+.modal-header .heading{
+  	font-size: 1.66rem;
+}
+
+.modal .modal-body{
+	width: 100%;
+	padding: 1.4rem 1.8rem;
+	overflow-y: auto;
+	max-height: 60vh;
+}  
+
+.modal .modal-footer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;	
+  	padding: 1.4rem 1.8rem;
+  	border-radius: 0 0 0.55rem 0.55rem;
+  	border-top: 0.1rem solid #D9D9D9;
+}
+
+.modal .modal-footer.align-center{
+	justify-content: center;
+}
+
+.modal .modal-footer.align-left{
+	justify-content: flex-start;
+}
+
+.content-sized-modal .modal-content{
+	width: auto;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Media Viewer
+|--------------------------------------------------------------------------
+*/
+
+.media-viewer{
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.3);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease;
+	z-index: 98;
+}
+
+.media-viewer.shown{
+	opacity: 1;
+	visibility: visible;
+}
+
+.media-viewer > button{
+	position: absolute;
+	top: 2rem; right: 2rem;
+	font-size: 3.6rem;
+}
+
+.media-viewer > .media{
+	max-width: 40vw;
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+.media-viewer > .media > *{
+	display: block;
+	width: 100%;
+	object-fit: cover;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Section Header
+|--------------------------------------------------------------------------
+*/
+
+/*
+<header class="section-header flex-row content-space-between items-center">
+	<h6 class="heading flex-row items-center text-semi-bold text-dark-2">Hotel {user_type}</h6>
+	<section class="header-actions flex-row items-center"> <!-- optional -->
+		some actions here
+	</section>
+</header>
+*/
+
+.section-header{
+	width: 100%;
+	margin-bottom: 2rem;
+}
+
+.section-header .heading{
+	margin-right: 1rem;
+	font-weight: 600;
+	font-size: 2rem;
+}
+
+.section-header .header-actions > *{
+	margin-left: 1rem;
+}
+
+.section-header .header-actions > *:first-child{
+	margin-left: 0;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Loading Screen
+|--------------------------------------------------------------------------
+*/
+
+.loading-screen{
+	position: fixed; top: 0; left: 0;
+	width: 100vw; height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0,0,0,0.3);
+	opacity: 0;
+	visibility: hidden;
+	z-index: 99;
+	transition: opacity 0.3s;
+}
+
+.loading-screen.dark-overlay{
+	background-color: rgba(0,0,0,0.3);
+}
+
+.loading-screen.transparent-overlay{
+	background-color: transparent;
+}
+
+.loading-screen.visible{
+	visibility: visible;
+}
+
+.loading-screen.shown{
+	opacity: 1;
+}
+
+.loading-screen .loading-text{
+	display: inline-block;
+	margin-bottom: 1rem;
+	font-size: 1.8rem;
+	color: #FFFFFF;
+}
+
+/* Ripple loading screen */
+
+/* 
+<div class="loading-screen" aria-hidden="true">
+	<span class="loading-text">Please wait...</span> <!-- Optional -->
+	<div class="lds-ripple">
+		<div></div>
+		<div></div>
+	</div>	
+</div>
+ */
+
+.lds-ripple{
+	display: inline-block;
+	position: relative;
+	width: 8rem;
+	height: 8rem;
+	transform: scale(0.4);
+	transition: transform 0.3s;
+}
+
+.loading-screen.shown .lds-ripple{
+	transform: scale(0.8);
+}
+
+.lds-ripple div{
+	position: absolute;
+	border: 0.4rem solid #fff;
+	border-radius: 50%;
+	animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.lds-ripple.white div{
+	border-color: #FFFFFF;
+}
+
+.lds-ripple.blue div{
+	border-color: #3699FF;
+}
+
+.lds-ripple div:nth-child(2){
+	animation-delay: -0.5s;
+}
+
+@keyframes lds-ripple{
+	0%{
+		top: 3.6rem;
+	  	left: 3.6rem;
+	  	width: 0;
+	  	height: 0;
+	  	opacity: 1;
+	}
+	100%{
+		top: 0;
+	  	left: 0;
+	  	width: 7.2rem;
+	  	height: 7.2rem;
+	  	opacity: 0;
+	}
+}
+
+.footer{
+	border-top: 1px dashed #DBDBDB;
+	padding: 1.6rem 3.2rem;
+	width: 100%;
+	font-size: 1.44rem;
+	line-height: 2.4em;
+	color: #DBDBDB;
+}
+
+.footer a{
+	text-decoration: underline;
+	color: #6993FF;
+}
+
+/*
+<div class="loading-screen" aria-hidden="true">
+	<span class="loading-text">Please wait...</span> <!-- Optional -->
+	<div class="spinner">
+		<div class="double-bounce1"></div>
+		<div class="double-bounce2"></div>
+	</div>	
+</div>
+*/
+
+/* .spinner{
+	width: 4rem;
+	height: 4rem;
+	position: relative;
+}
+  
+.double-bounce1, .double-bounce2{
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #FFFFFF;
+	opacity: 0.6;
+	position: absolute;
+	top: 0;
+	left: 0;
+	animation: sk-bounce 2.0s infinite ease-in-out;
+}
+  
+.double-bounce2{
+	animation-delay: -1.0s;
+}
+  
+ @keyframes sk-bounce{
+	 0%, 100%{
+		transform: scale(0.0);
+	}
+	50%{
+		transform: scale(1.0);
+	}
+ } */
+
+.label{
+	display: inline-block;
+	padding: 0.2em 0.6em;
+	border-radius: 0.55rem;
+}
+
+.label.light.blue{
+	color: #3699FF;
+	background-color: #E1F0FF; 
+}
+
+.label.light.green{
+	color: #1BC5BD;
+	background-color: #C9F7F5; 
+}
+
+.label.light.red{
+	color: #F64E60;
+	background-color: #FFE2E5; 
+}
+
+.label.light.orange{
+	color: #FFA800;
+	background-color: #FFF4DE; 
+}
+
+.label.light.purple{
+	color: #8950FC;
+	background-color: rgba(137,80,252,0.14); 
+}
+
+.label.light.gray{
+	color: #6C7293;
+	background-color: #EBEDF3;
+}
+
+.label.solid{
+	color: white;
+}
+
+.label.solid.blue{
+	background-color: #3699FF; 
+ }
+
+.label.solid.green{
+	background-color: #1BC5BD; 
+}
+
+.label.solid.red{
+	background-color: #F64E60; 
+}
+
+.label.solid.orange{
+	background-color: #FFA800; 
+}
+
+.label.solid.purple{
+	background-color: #8950FC; 
+}
+
+.img{
+	border-radius: 0.55rem;
+	object-fit: cover;
+ }
+
+.bordered-section{
+	padding: 1.2rem;
+	border: 2px solid #EBEDF3;
+	border-radius: 0.55rem;
+}
+
+.ribboned{
+	 position: relative;
+	 padding-left: 0.8em;
+}
+
+.ribboned::before{
+	content: '';
+	position: absolute;
+	top: 0; left: 0;
+	height: 100%;
+	width: 0.4rem;
+	border-radius: 0.55rem;
+}
+
+.ribboned.blue::before{
+	background-color: #3699FF;
+}
+
+.ribboned.green::before{
+	background-color: #1BC5BD;
+}
+
+.ribboned.red::before{
+	background-color: #F64E60;
+}
+
+.ribboned.orange::before{
+	background-color: #FFA800;
+}
+
+.ribboned.purple::before{
+	background-color: #8950FC;
+}
+
+.collapsible{
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.3s;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Accordion
+|--------------------------------------------------------------------------
+*/
+
+/*
+<div class="accordion white|solid expanded">
+	<header class="flex-row content-space-between items-center">
+		<h6 class="heading text-dark-75 text-medium flex-row items-center">
+			// Svg icon here (optional)				
+			Heading
+		</h6>
+		<button type="button" class="toggle flex-row content-end items-center">
+			// Svg icon here for						
+			<span class="sr-only">Toggle accordion</span>
+		</button>
+	</header>
+	<div class="body-wrapper">
+		<div class="body">
+			{this.props.body}
+		</div>
+	</div>
+</div>
+*/
+
+.accordion{
+	border-radius: 0.55rem;
+}
+
+.accordion > header{
+	position: relative;
+}
+
+.accordion > header .heading{
+	padding: 1.3rem 1.5rem;
+	font-size: 1.6rem;
+	flex-shrink: 0;
+	transition: color 0.3s;
+}
+
+.accordion.expanded > header .heading{
+	color: #3699FF;
+}
+
+.accordion > header .toggle{
+	position: absolute;
+	padding: 1.3rem 1.5rem;
+	top: 0; left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.accordion > header .heading svg{
+	width: 2.4rem;
+	margin-right: 0.6rem;
+}
+
+.accordion > header .toggle svg{
+	width: 2rem;
+	transition: transform 0.3s;
+}
+
+.accordion.expanded > header .toggle svg{
+	transform: rotate(90deg);
+}
+
+.accordion > header .path{
+	fill: #B5B5C3;
+}
+
+.accordion.expanded > header .path{
+	fill: #3699FF;
+}
+
+.accordion .body-wrapper{
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.3s;
+}
+
+.accordion .body{
+	padding: 1.3rem 1.5rem;
+}
+
+/* ----- WHITE TYPE ACCORDION ----- */
+.accordion.white{
+	background-color: #FFFFFF;
+	box-shadow: 0px 0px 30px 0px rgba(82, 63, 105, 0.05);
+}
+
+.accordion.solid > header{
+	border-radius: 0.55rem;
+	background-color: #F3F6F9;
+}
+
+.accordion.solid.expanded > header{
+	border-radius: 0.55rem 0.55rem 0 0;
+}
+
+.accordion.solid .body{
+	border: 0.2rem solid #F3F6F9;
+	border-top: none;
+	border-radius: 0 0 0.55rem 0.55rem;
+} 
+
+/* .accordion.solid .body-wrapper{
+	border: none
+}
+
+.accordion.solid.expanded .body-wrapper{
+	border: 0.1rem solid #D9D9D9;
+} */

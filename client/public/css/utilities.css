@@ -1,0 +1,100 @@
+.block{
+	display: block;
+}
+
+.inline{
+	display: inline;
+}
+
+.inline-block{
+	display: inline-block;
+}
+
+/*
+<div class="flex-row|flex-col">
+	<div class="col-1|col-2|..."></div>
+	<div class="col-1|col-2|..."></div>
+	<!-- ... -->
+</div>
+*/
+
+.flex-row{
+	display: flex;
+}
+
+.flex-row-rev{
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.flex-col{
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-col-rev{
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+.wrap{
+	flex-wrap: wrap;
+}
+
+.content-start{
+	justify-content: flex-start;
+}
+
+.content-end{
+	justify-content: flex-end;
+}
+
+.content-center{
+	justify-content: center;
+}
+
+.content-space-between{
+	justify-content: space-between;
+}
+
+.items-start{
+	align-items: flex-start;
+}
+
+.items-end{
+	align-items: flex-end;
+}
+
+.items-center{
+	align-items: center;
+}
+
+.sr-only{
+	display: block;
+	width: 1px; height: 1px;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+
+/*
+<div class="grid-3|grid-2">
+	<div class="item">Lorem ipsum</div>
+	<!-- -->
+</div>
+*/
+.grid{
+	display: grid;
+	grid-gap: 2.4rem;
+}
+.grid.grid-1{
+	grid-template-columns: auto;
+}
+
+.grid.grid-2{
+	grid-template-columns: auto auto;
+}
+
+.grid.grid-3{
+	grid-template-columns: auto auto auto;
+}

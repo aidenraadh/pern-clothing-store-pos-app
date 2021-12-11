@@ -1,0 +1,36 @@
+version: "3"
+services:
+  server:
+    build: ./server
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    env_file:
+      - ./server/.env
+    depends_on:
+      - db
+    command: npm run dev
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client/src:/app/src
+    env_file:
+      - ./client/.env
+    command: npm start  
+  db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=clothing_store_pos
+      - MYSQL_USER=aiden
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root    
+volumes:
+  mysql_data:
