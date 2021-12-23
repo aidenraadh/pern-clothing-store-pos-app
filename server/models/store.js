@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Store.init({
-    name: DataTypes.STRING,
+    name: DataTypes.STRING(100),
     owner_id: DataTypes.BIGINT.UNSIGNED,
   }, {
     sequelize,

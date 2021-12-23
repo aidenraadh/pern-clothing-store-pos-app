@@ -10,7 +10,7 @@ module.exports = {
       },
       name: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100)
       },
       owner_id: {
         type: Sequelize.DataTypes.BIGINT.UNSIGNED,
@@ -34,7 +34,7 @@ module.exports = {
     await queryInterface.addConstraint('Stores', {
       fields: ['owner_id'],
       type: 'foreign key',
-      name: 'fk_store_owner',
+      name: 'fk_stores_owner_id',
       references: {
         table: 'Owners',
         field: 'id',
@@ -43,7 +43,7 @@ module.exports = {
     })      
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint('Stores', 'fk_store_owner');
+    await queryInterface.removeConstraint('Stores', 'fk_stores_owner_id');
     await queryInterface.dropTable('Stores');
   }
 };

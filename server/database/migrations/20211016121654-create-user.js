@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       email: {
@@ -47,7 +47,7 @@ module.exports = {
     await queryInterface.addConstraint('Users', {
       fields: ['role_id'],
       type: 'foreign key',
-      name: 'fk_user_role',
+      name: 'fk_users_role_id',
       references: {
         table: 'Roles',
         field: 'id',
@@ -59,7 +59,7 @@ module.exports = {
     await queryInterface.addConstraint('Users', {
       fields: ['owner_id'],
       type: 'foreign key',
-      name: 'fk_user_owner',
+      name: 'fk_users_owner_id',
       references: {
         table: 'Owners',
         field: 'id',
@@ -69,8 +69,8 @@ module.exports = {
     
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint('Users', 'fk_user_role');
-    await queryInterface.removeConstraint('Users', 'fk_user_owner');
+    await queryInterface.removeConstraint('Users', 'fk_users_role_id');
+    await queryInterface.removeConstraint('Users', 'fk_users_owner_id');
     await queryInterface.dropTable('Users');
   }
 };

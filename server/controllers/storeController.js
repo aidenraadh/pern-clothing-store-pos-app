@@ -1,4 +1,4 @@
-const Store          = require('../models/index').Store
+const Store         = require('../models/index').Store
 const {Op}          = require("sequelize")
 const logger        = require('../utils/logger')
 const {checkSchema} = require('express-validator')

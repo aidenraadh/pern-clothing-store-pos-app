@@ -1,4 +1,5 @@
 const {validationResult} = require('express-validator')
+const logger             = require('../utils/logger')
 
 // Validate the user's input
 const validate = (req, res, next) => {
@@ -10,8 +11,8 @@ const validate = (req, res, next) => {
             })
         }
         next()  
-    } catch (error){
-        console.log(error)
+    } catch (err){
+        logger.error(err.message)
     }  
 }
 

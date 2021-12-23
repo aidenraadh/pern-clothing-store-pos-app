@@ -28,7 +28,7 @@ module.exports = {
     await queryInterface.addConstraint('Store_Inventories', {
       fields: ['store_id'],
       type: 'foreign key',
-      name: 'fk_store_id',
+      name: 'fk_store_inventories_store_id',
       references: {
         table: 'Stores',
         field: 'id',
@@ -40,11 +40,10 @@ module.exports = {
     await queryInterface.addConstraint('Store_Inventories', {
       fields: ['inventory_id'],
       type: 'foreign key',
-      name: 'fk_inventory_id',
+      name: 'fk_store_inventories_inventory_id',
       references: {
         table: 'Inventories',
         field: 'id',
-
       }
     })     
 
@@ -52,13 +51,13 @@ module.exports = {
     await queryInterface.addConstraint('Store_Inventories', {
       fields: ['store_id', 'inventory_id'],
       type: 'unique',
-      name: 'unq_store_inventory',
+      name: 'unq_store_inventories_store_id_inventory_id',
     })       
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint('Store_Inventories', 'fk_store_id');
-    await queryInterface.removeConstraint('Store_Inventories', 'fk_inventory_id');
-    await queryInterface.removeConstraint('Store_Inventories', 'unq_store_inventory');    
+    await queryInterface.removeConstraint('Store_Inventories', 'fk_store_inventories_store_id');
+    await queryInterface.removeConstraint('Store_Inventories', 'fk_store_inventories_inventory_id');
+    await queryInterface.removeConstraint('Store_Inventories', 'unq_store_inventories_store_id_inventory_id');    
     await queryInterface.dropTable('Store_Inventories');
   }
 };

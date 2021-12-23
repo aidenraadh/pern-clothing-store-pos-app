@@ -24,14 +24,6 @@ exports.store = async (req, res) => {
     try{
         const inventory = await Inventory.create({
             name: req.body.name, owner_id: req.user.owner_id,
-            production_prices: (
-                Object.keys(JSON.parse(req.body.production_prices)).length ? 
-                req.body.production_prices : null
-            ),
-            selling_prices: (
-                Object.keys(JSON.parse(req.body.selling_prices)).length ? 
-                req.body.selling_prices : null     
-            ),
         })
         res.send({
             inventory: inventory, message: 'Success storing inventory'
@@ -48,14 +40,6 @@ exports.update = async (req, res) => {
         await Inventory.update(
             {
                 name: req.body.name, owner_id: req.user.owner_id,
-                production_prices: (
-                    Object.keys(JSON.parse(req.body.production_prices)).length ? 
-                    req.body.production_prices : null
-                ),
-                selling_prices: (
-                    Object.keys(JSON.parse(req.body.selling_prices)).length ? 
-                    req.body.selling_prices : null
-                ),
             }, 
             {where: {id: req.params.id}}
         )
@@ -89,54 +73,6 @@ const schema = {
             }
         }
     },
-    production_prices: {
-        isJSON: {bail: true}, notEmpty: {bail: true}, errorMessage: 'Production prices is not valid',
-        // Make sure the size names inside production prices are match inside and selling prices
-        custom: {
-            bail: true,
-            options: (value, {req}) => {
-                try{
-                    const production_prices = JSON.parse(value)
-                    const selling_prices = JSON.parse(req.body.selling_prices)
-
-                    for (let size in production_prices) {
-                        if (!selling_prices.hasOwnProperty(size)) {
-                            throw new Error(
-                                'Sizes in production and selling prices are not matched'
-                            )
-                        }
-                    }
-                } catch(err) {
-                    throw new Error(err)
-                }
-                return true
-            }            
-        }        
-    },
-    selling_prices: {
-        isJSON: {bail: true}, notEmpty: {bail: true}, errorMessage: 'Selling prices is not valid',
-        // Make sure the size names inside selling prices are match inside and production prices
-        custom: {
-            bail: true,
-            options: (value, {req}) => {
-                try{
-                    const production_prices = JSON.parse(req.body.production_prices)
-                    const selling_prices = JSON.parse(value)
-
-                    for (let size in selling_prices) {
-                        if (!production_prices.hasOwnProperty(size)) {
-                            throw new Error(
-                                'Sizes in production and selling prices are not matched'
-                            )
-                        }
-                    }
-                } catch(err) {
-                    throw new Error(err)
-                }
-                return true
-            }            
-        }
-    }    
 }
 
 exports.storeRules = checkSchema(schema)

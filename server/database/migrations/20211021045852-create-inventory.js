@@ -10,16 +10,8 @@ module.exports = {
       },
       name: {
         allowNull: false,
-        type: Sequelize.STRING
-      },
-      production_prices: {
-        allowNull: true,
-        type: Sequelize.JSON
-      },      
-      selling_prices: {
-        allowNull: true,
-        type: Sequelize.JSON
-      },       
+        type: Sequelize.STRING(100)
+      },     
       owner_id: {
         type: Sequelize.DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
@@ -42,7 +34,7 @@ module.exports = {
     await queryInterface.addConstraint('Inventories', {
       fields: ['owner_id'],
       type: 'foreign key',
-      name: 'fk_inventory_owner',
+      name: 'fk_inventories_owner_id',
       references: {
         table: 'Owners',
         field: 'id',
@@ -51,7 +43,7 @@ module.exports = {
     })     
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint('Inventories', 'fk_inventory_owner');
+    await queryInterface.removeConstraint('Inventories', 'fk_inventories_owner_id');
     await queryInterface.dropTable('Inventories');
   }
 };

@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class StoreInvetory extends Model {
+  class InventorySize extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,16 +13,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  StoreInvetory.init({
-    store_id: DataTypes.BIGINT.UNSIGNED,
+  InventorySize.init({
+    name: DataTypes.STRING(100),
     inventory_id: DataTypes.BIGINT.UNSIGNED,
-    amount: DataTypes.JSON,
+    production_price: DataTypes.INTEGER.UNSIGNED,
+    selling_price: DataTypes.INTEGER.UNSIGNED,
   }, {
     sequelize,
-    tableName: 'Store_Inventories',    
-    modelName: 'StoreInvetory',
+    modelName: 'InventorySize',
+    tableName: 'Inventory_Sizes',
+    paranoid: true,
     createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    updatedAt: 'updated_at',    
+    deletedAt: 'deleted_at', 
   });
-  return StoreInvetory;
+  return InventorySize;
 };
