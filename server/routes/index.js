@@ -1,5 +1,3 @@
-const env             = process.env.NODE_ENV || 'development'
-const config          = require('../config/app')[env]
 const rootRouter      = require('express').Router()
 const authController  = require('../controllers/authController')
 const userController  = require('../controllers/userController')
@@ -7,22 +5,15 @@ const storeController = require('../controllers/storeController')
 const inventoryController = require('../controllers/inventoryController')
 const isAuth          = require('../middlewares/isAuth')
 const isNotAuth       = require('../middlewares/isNotAuth')
-const validate        = require('../middlewares/validate')
 
-const models = require('../models/index')
-const User = models.User
-const Role = models.Role
-const logger = require('../utils/logger')
+const joi = require('joi')
 
 rootRouter.get('/', async (req, res) => {
-    logger.error('error')
-    logger.info('info')
-    res.send('qwe');
+    res.send('asd')
 })
 
 rootRouter.post('/register', [
-    isNotAuth, authController.registerRules, 
-    validate, authController.register
+    isNotAuth, authController.register
 ])
 rootRouter.post('/login', [
     isNotAuth, authController.login
@@ -31,18 +22,15 @@ rootRouter.get('/profile', [
     isAuth, userController.show
 ])
 rootRouter.put('/profile', [
-    isAuth, userController.updateRules, 
-    validate, userController.update
+    isAuth, userController.update
 ])
 
 rootRouter.post('/stores', [
-    isAuth, storeController.storeRules, 
-    validate, storeController.store
+    isAuth, storeController.store
 ])
 
 rootRouter.put('/stores/:id', [
-    isAuth, storeController.updateRules, 
-    validate, storeController.update
+    isAuth, storeController.update
 ])
 
 rootRouter.get('/inventories', [
@@ -50,13 +38,11 @@ rootRouter.get('/inventories', [
 ])
 
 rootRouter.post('/inventories', [
-    isAuth, inventoryController.storeRules, 
-    validate, inventoryController.store
+    isAuth, inventoryController.store
 ])
 
 rootRouter.put('/inventories/:id', [
-    isAuth, inventoryController.updateRules, 
-    validate, inventoryController.update
+    isAuth, inventoryController.update
 ])
 
 

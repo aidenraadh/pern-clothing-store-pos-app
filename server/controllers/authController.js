@@ -1,6 +1,5 @@
 const jwt           = require('jsonwebtoken')
 const bcrypt        = require('bcrypt') 
-const {checkSchema} = require('express-validator')
 const path          = require('path')
 const logger        = require('../utils/logger')
 const fs            = require('fs')
@@ -56,35 +55,6 @@ exports.login = async (req, res) => {
         res.status(500).send(err.message)
     }  
 }
-
-exports.registerRules = checkSchema({
-    name: {
-        notEmpty: true,
-        errorMessage: 'Name is required',
-    },
-    email: {
-        isEmail: {
-            bail: true,
-            errorMessage: 'Email is not valid',
-        },
-        custom: {
-            bail: true,
-            options: value => {
-                return User.findOne({where: {email: value}}).then(user => {
-                    if(user){
-                        return Promise.reject('E-mail already in use')
-                    }
-                })
-            },
-        },
-    },
-    password: {
-        isLength: {
-            bail: true, options: {min: 8},
-            errorMessage: 'Password should be at least 8 chars long',
-        },
-    },    
-})
 
 const issueJWT = (user) => {
     const pathToKey = path.join(__dirname, '..', 'id_rsa_priv.pem')

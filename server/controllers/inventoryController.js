@@ -1,7 +1,6 @@
 const Inventory     = require('../models/index').Inventory
 const {Op}          = require("sequelize")
 const logger        = require('../utils/logger')
-const {checkSchema} = require('express-validator')
 
 exports.index = async (req, res) => {    
     try{
@@ -49,50 +48,3 @@ exports.update = async (req, res) => {
         res.status(500).send(err.message)
     }  
 }
-
-
-// Field rules schema
-const schema = {
-    name: {
-        isString: {bail: true}, notEmpty: {bail: true}, errorMessage: 'Inventory name is required',
-        custom: {
-            bail: true,
-            // Make sure the inventory name is unique by owner
-            options: (value, {req}) => {
-                let filters = {name: value, owner_id: req.user.owner_id}
-
-                // When the inventory is updated
-                if(req.params.id){ filters[Op.not] =  {id: req.params.id} }
-
-                return Inventory.findOne({where: filters})
-                .then(inventory => {
-                    if(inventory) return Promise.reject(
-                        `Inventory with name ${value} already exists`
-                    )
-                })
-            }
-        }
-    },
-}
-
-exports.storeRules = checkSchema(schema)
-
-exports.updateRules = checkSchema({
-    ...{
-        id: {
-            notEmpty: {bail: true}, isNumeric: {bail: true},
-            // Make sure the inventory is exist for the owner
-            custom: {
-                bail: true,
-                options: (value, {req}) => {
-                    return Inventory.findOne({where: {id: value, owner_id: req.user.owner_id}})
-                    .then(inventory => {
-                        if(!inventory) return Promise.reject('Inventory is not exist')
-                    })                    
-                }
-            }
-        }
-    },
-    ...schema
-})
-
