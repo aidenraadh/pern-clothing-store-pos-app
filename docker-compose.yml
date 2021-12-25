@@ -29,7 +29,7 @@ services:
       - mysql_data:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=clothing_store_pos
-      - MYSQL_USER=aiden
+      - MYSQL_USER=testuser
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_PASSWORD=root    
 volumes:

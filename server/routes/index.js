@@ -1,12 +1,10 @@
-const rootRouter      = require('express').Router()
-const authController  = require('../controllers/authController')
-const userController  = require('../controllers/userController')
-const storeController = require('../controllers/storeController')
+const rootRouter          = require('express').Router()
+const authController      = require('../controllers/authController')
+const userController      = require('../controllers/userController')
+const storeController     = require('../controllers/storeController')
 const inventoryController = require('../controllers/inventoryController')
-const isAuth          = require('../middlewares/isAuth')
-const isNotAuth       = require('../middlewares/isNotAuth')
-
-const joi = require('joi')
+const isAuth              = require('../middlewares/isAuth')
+const isNotAuth           = require('../middlewares/isNotAuth')
 
 rootRouter.get('/', async (req, res) => {
     res.send('asd')

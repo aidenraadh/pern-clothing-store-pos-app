@@ -1,19 +1,22 @@
-const Store         = require('../models/index').Store
-const {Op}          = require("sequelize")
-const logger        = require('../utils/logger')
+const Store      = require('../models/index').Store
+const {Op}       = require("sequelize")
+const Joi        = require('joi')
+const filterKeys = require('../utils/filterKeys')
+const logger     = require('../utils/logger')
 
-exports.store = async (req, res) => {    
-    try{
-        const store = await Store.create({
-            name: req.body.name, owner_id: req.user.owner_id,
-        })
-        res.send({
-            store: store, message: 'Success storing store'
-        })    
-    }
-    catch(err){
+exports.store = async (req, res) => {
+    try {
+        let inp = filterKeys(req.body, ['name'])
+
+        const {error, value} = validate(inp)
+        res.send({error: error, value: value})
+        // const store = await Store.create(data)
+        // res.send({
+        //     store: store, message: 'Success storing store'
+        // })    
+    } catch(err) {
         logger.error(err.message)
-        res.status(500).send(err.message)
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -29,3 +32,10 @@ exports.update = async (req, res) => {
     }  
 }
 
+const validate = (inp) => {
+    const schema = {
+        name: Joi.string().trim().max(8).alphanum().required()
+    }
+
+    return Joi.object(schema).validate(inp)
+}
