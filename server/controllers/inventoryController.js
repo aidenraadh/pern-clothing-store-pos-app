@@ -1,5 +1,6 @@
-const Inventory      = require('../models/index').Inventory
-const InventorySize  = require('../models/index').InventorySize
+const models         = require('../models/index')
+const Inventory      = models.Inventory
+const InventorySize  = models.InventorySize
 const {Op}           = require("sequelize")
 const Joi            = require('joi')
 const filterKeys     = require('../utils/filterKeys')
@@ -7,12 +8,20 @@ const logger         = require('../utils/logger')
 
 exports.index = async (req, res) => {    
     try {
-        const limit = parseInt(req.query.limit)
+        // Set filters
+        const filters = {owner_id: req.user.owner_id}
+        req.query.name ? filters.name = {[Op.like]: `%${req.query.name}%`} : null
 
+        // Set limit and offset
+        const limitOffset = {
+            limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
+            offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0
+        }
         const inventories = await Inventory.findAll({
-            where: {owner_id: req.user.owner_id},
+            where: filters,
+            include: ['sizes'],
             order: [['id', 'DESC']],
-            limit: limit ? limit : 10
+            ...limitOffset
         })
         res.send({inventories: inventories})
     } catch(err) {

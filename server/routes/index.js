@@ -6,21 +6,23 @@ const inventoryController = require('../controllers/inventoryController')
 const isAuth              = require('../middlewares/isAuth')
 const isNotAuth           = require('../middlewares/isNotAuth')
 
-const Inventory      = require('../models/index').Inventory
-const InventorySize      = require('../models/index').InventorySize
+const models = require('../models/index')
+const StoreInventory      = models.StoreInventory
 
 const Joi        = require('joi')
+const {Op}           = require("sequelize")
 const logger = require('../utils/logger')
 
 rootRouter.get('/', async (req, res) => {
     try {
-        const test = await Inventory.findOne({
-            where: {id: 1},
-            include: [{model: InventorySize, as: 'sizes'}]
+        const x = await StoreInventory.findOne({
+            where: {store_id: 1, inventory_id: 1},
+            include: ['store', 'inventory']
         })
-        res.send(test)
+        res.send(x)
 
     } catch (err) {
+        logger.error(err.message)
         res.send(err.message)        
     }
 })
