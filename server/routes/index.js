@@ -6,22 +6,20 @@ const inventoryController = require('../controllers/inventoryController')
 const isAuth              = require('../middlewares/isAuth')
 const isNotAuth           = require('../middlewares/isNotAuth')
 
+const Inventory      = require('../models/index').Inventory
+const InventorySize      = require('../models/index').InventorySize
+
 const Joi        = require('joi')
 const logger = require('../utils/logger')
 
 rootRouter.get('/', async (req, res) => {
     try {
-        const {error} = Joi.array().items(Joi.object({
-            id: Joi.number().integer(),
-            name: Joi.string().max(100),
-            production_price: Joi.number().integer(),
-            selling_price: Joi.number().integer()
-        })).validate([{
-            id: 'wewe',
-            name: 'Inventory 1',
-        }])
-        logger.info(error)
-        res.send(error)        
+        const test = await Inventory.findOne({
+            where: {id: 1},
+            include: [{model: InventorySize, as: 'sizes'}]
+        })
+        res.send(test)
+
     } catch (err) {
         res.send(err.message)        
     }
@@ -62,6 +60,10 @@ rootRouter.post('/inventories', [
 
 rootRouter.put('/inventories/:id', [
     isAuth, inventoryController.update
+])
+
+rootRouter.delete('/inventories/:id', [
+    isAuth, inventoryController.destroy
 ])
 
 
