@@ -6,8 +6,25 @@ const inventoryController = require('../controllers/inventoryController')
 const isAuth              = require('../middlewares/isAuth')
 const isNotAuth           = require('../middlewares/isNotAuth')
 
+const Joi        = require('joi')
+const logger = require('../utils/logger')
+
 rootRouter.get('/', async (req, res) => {
-    res.send('asd')
+    try {
+        const {error} = Joi.array().items(Joi.object({
+            id: Joi.number().integer(),
+            name: Joi.string().max(100),
+            production_price: Joi.number().integer(),
+            selling_price: Joi.number().integer()
+        })).validate([{
+            id: 'wewe',
+            name: 'Inventory 1',
+        }])
+        logger.info(error)
+        res.send(error)        
+    } catch (err) {
+        res.send(err.message)        
+    }
 })
 
 rootRouter.post('/register', [
@@ -29,6 +46,10 @@ rootRouter.post('/stores', [
 
 rootRouter.put('/stores/:id', [
     isAuth, storeController.update
+])
+
+rootRouter.delete('/stores/:id', [
+    isAuth, storeController.destroy
 ])
 
 rootRouter.get('/inventories', [

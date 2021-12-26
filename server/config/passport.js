@@ -24,7 +24,7 @@ const authenticate = async (payload, done) => {
         }
 
         // Check if the owner exists
-        const owner = await Owner.findOne({where: {id: user.owner_id}})
+        const owner = await Owner.findOne({where: {id: user.owner_id}, attributes: ['id']})
         if(!owner){
             return done(null, false)
         }
