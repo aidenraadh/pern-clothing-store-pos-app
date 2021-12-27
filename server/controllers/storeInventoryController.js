@@ -2,7 +2,6 @@ const models         = require('../models/index')
 const StoreInventory = models.StoreInventory
 const Store          = models.Store
 const Inventory      = models.Inventory
-const {Op}           = require("sequelize")
 const Joi            = require('joi')
 const filterKeys     = require('../utils/filterKeys')
 const logger         = require('../utils/logger')
@@ -24,18 +23,17 @@ exports.index = async (req, res) => {
 exports.store = async (req, res) => {    
     try {
         // Validate the input
-        const input = filterKeys(
+        const {values, errMsg} = await validateInput(req, filterKeys(
             req.body, ['store_id', 'inventory_id', 'amount']
-            )
-        const {values, errMsg} = await validateInput(req, input) 
+        )) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
         // Make sure the inventory is not stored yet
-        if(await isStoreInventoryExist(input.store_id, input.inventory_id))
+        if(await isStoreInventoryExist(values.store_id, values.inventory_id))
         {
             return res.status(400).send({
-                message: "The store's inventory already exist"
+                message: "This inventory already exists inside the store"
             })
         }           
         // Store the inventory inside the store
@@ -54,10 +52,9 @@ exports.store = async (req, res) => {
 exports.update = async (req, res) => {
     try {     
         // Validate the input
-        const input = filterKeys(
+        const {values, errMsg} = await validateInput(req, filterKeys(
             req.body, ['store_id', 'inventory_id', 'amount']
-        )
-        const {values, errMsg} = await validateInput(req, input) 
+        )) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -72,7 +69,7 @@ exports.update = async (req, res) => {
         await StoreInventory.update(
             {amount: values.amount}, 
             {where: {
-                store_id: input.store_id, inventory_id: input.inventory_id
+                store_id: values.store_id, inventory_id: values.inventory_id
             }}
         )   
         res.send({message: 'Success updating the stored inventory'})
@@ -90,10 +87,9 @@ exports.destroy = async (req, res) => {
                 message: "The store's inventory is not exist"
             })
         }
-        // Validate the input
-        const input = filterKeys(req.body, ['store_id', 'inventory_id'])
-
-        const {values, errMsg} = await validateInput(req, input) 
+        const {values, errMsg} = await validateInput(req, filterKeys(
+            req.body, ['store_id', 'inventory_id']
+        )) 
 
         if(errMsg){
             return res.status(400).send({message: errMsg})
@@ -108,6 +104,13 @@ exports.destroy = async (req, res) => {
         res.status(500).send(err.message)
     }  
 }
+
+/**
+ * 
+ * @param {object} req - The request body
+ * @param {object} input - Key-value pair of the user input
+ * @returns {object} - Validated and sanitized input with error message
+ */
 
 const validateInput = async (req, input) => {
     try {
@@ -164,13 +167,10 @@ const validateInput = async (req, input) => {
                 return JSON.stringify(amount)
             })            
         }
-
-        // Create the schema based on the input
+        // Create the schema based on the input key
         const schema = {}
-        for(const key in rules){
-            if(input.hasOwnPropety(key)){
-                schema[key] = rules[key]
-            }
+        for(const key in input){
+            if(rules.hasOwnPropety(key)){ schema[key] = rules[key] }
         }
         // Validate the input
         const values = await Joi.object(schema).validateAsync(input)
@@ -180,6 +180,13 @@ const validateInput = async (req, input) => {
         return {errMsg: err.message}
     }    
 }
+
+/**
+ * 
+ * @param {integer} storeId 
+ * @param {integer} inventoryId 
+ * @returns {boolean}
+ */
 
 const isStoreInventoryExist = async (storeId, inventoryId) => {
     try {

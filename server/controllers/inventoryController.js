@@ -33,7 +33,9 @@ exports.index = async (req, res) => {
 exports.store = async (req, res) => {    
     try {
         // Validate the input
-        const {values, errMsg} = await validateInput(req, ['name', 'inventory_sizes']) 
+        const {values, errMsg} = await validateInput(req, filter(
+            req.body, ['name', 'inventory_sizes']
+        )) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -60,12 +62,14 @@ exports.store = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
+        // Make sure the inventory is exists
         if(!await isInventoryExist(req.params.id, req.user.owner_id)){
             return res.status(400).send({message: 'Inventory is not exist'})
         }        
         // Validate the input
-        const {values, errMsg} = await validateInput(req, ['name', 'inventory_sizes']) 
-
+        const {values, errMsg} = await validateInput(req, filterKeys(
+            req.body, ['name', 'inventory_sizes']
+        )) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }        
@@ -79,8 +83,7 @@ exports.update = async (req, res) => {
             attributes: ['id', 'name', 'production_price', 'selling_price'],
             where: {inventory_id: req.params.id}
         })
-
-        // Delete the sizes
+        // Delete the sizes if there are any
         let inpSizeIds = values.inventory_sizes.map(size => parseInt(size.id))
         await InventorySize.destroy({
             where: {
@@ -89,8 +92,7 @@ exports.update = async (req, res) => {
                     .map(size => size.id)
             }
         })
-
-        // Update the sizes
+        // Update the sizes if there are any
         for(const size of existedSizes){
             for(const inpSize of values.inventory_sizes){
                 if(
@@ -112,8 +114,7 @@ exports.update = async (req, res) => {
                 }                
             }
         }
-
-        // Insert new sizes
+        // Insert new sizes if there are any
         const newSizes = values.inventory_sizes
             .filter(size => size.id === undefined)
             .map(size => ({
@@ -131,27 +132,35 @@ exports.update = async (req, res) => {
 
 exports.destroy = async (req, res) => {
     try{
+        // Make sure the inventory is exist
         if(!await isInventoryExist(req.params.id, req.user.owner_id)){
             return res.status(400).send({message: 'Inventory is not exist'})
         }
         await Inventory.destroy({where: {id: req.params.id}})
 
         res.send({message: 'Success deleting inventory'})        
+
     } catch(err) {
         logger.error(err.message)
         res.status(500).send(err.message)
     }  
 }
 
-const validateInput = async (req, inpKey) => {
-    try {
-        // Get all the input
-        const input = filterKeys(req.body, inpKey)
-        // Parse the inventory sizes
-        input.inventory_sizes = JSON.parse(input.inventory_sizes)
+/**
+ * 
+ * @param {object} req - The request body
+ * @param {object} input - Key-value pair of the user input
+ * @returns {object} - Validated and sanitized input with error message
+ */
 
-        // Validate the input
-        const values = await Joi.object({
+const validateInput = async (req, input) => {
+    try {
+        // Parse the inventory sizes if it exists in the input
+        if(input.inventory_sizes){
+            input.inventory_sizes = JSON.parse(input.inventory_sizes)
+        }
+        const rules = {
+            // Make sure the inventory name is unique
             name: Joi.string().required().trim().max(100).external(async (value, helpers) => {
                 const filters = {name: value, owner_id: req.user.id}
                 // When the inventory is updated
@@ -169,6 +178,7 @@ const validateInput = async (req, inpKey) => {
                 'string.max': 'The inventory name must below 100 characters',
             }),
 
+            // Make sure the size name of the inventory is unique
             inventory_sizes: Joi.array().required().items(Joi.object({
                 id: Joi.number().integer(),
                 name: Joi.string().required().trim().max(100),
@@ -196,13 +206,27 @@ const validateInput = async (req, inpKey) => {
                 })
                 return value
             })
-        }).validateAsync(input)
+        }
+        // Create the schema based on the input key
+        const schema = {}
+        for(const key in input){
+            if(rules.hasOwnPropety(key)){ schema[key] = rules[key] }
+        }        
+        // Validate the input
+        const values = await Joi.object(schema).validateAsync(input)
 
         return {values: values}
     } catch (err) {
         return {errMsg: err.message}
     }    
 }
+
+/**
+ * 
+ * @param {integer} inventoryId 
+ * @param {integer} ownerId 
+ * @returns {boolean}
+ */
 
 const isInventoryExist = async (inventoryId, ownerId) => {
     try {
