@@ -33,9 +33,11 @@ exports.store = async (req, res) => {
         if(await isStoreInventoryExist(values.store_id, values.inventory_id))
         {
             return res.status(400).send({
-                message: "This inventory already exists inside the store"
+                message: "This inventory is already exist inside the store"
             })
         }           
+        // Count total amount of the stored inventory
+        values.total_amount = countTotalAmount(values.amount)
         // Store the inventory inside the store
         const storeInventory = await StoreInventory.create(values)
 
@@ -50,24 +52,28 @@ exports.store = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
-    try {     
-        // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['store_id', 'inventory_id', 'amount']
-        )) 
-        if(errMsg){
-            return res.status(400).send({message: errMsg})
-        }
+    try {
         // Make sure the inventory stored is exists
-        if(!await isStoreInventoryExist(req.params.store_id, req.params.inventory_id))
+        if(!await isStoreInventoryExist(req.params.storeId, req.params.inventoryId))
         {
             return res.status(400).send({
                 message: "The store's inventory is not exist"
             })
-        }                 
+        }              
+        // Validate the input
+        const {values, errMsg} = await validateInput(req, {
+            store_id: req.params.storeId, 
+            inventory_id: req.params.inventoryId,
+            amount: req.body.amount
+        }) 
+        if(errMsg){
+            return res.status(400).send({message: errMsg})
+        }                
+        // Count total amount of the stored inventory
+        values.total_amount = countTotalAmount(values.amount)
         // Update the inventory
         await StoreInventory.update(
-            {amount: values.amount}, 
+            {amount: values.amount, total_amount: values.total_amount}, 
             {where: {
                 store_id: values.store_id, inventory_id: values.inventory_id
             }}
@@ -81,16 +87,17 @@ exports.update = async (req, res) => {
 
 exports.destroy = async (req, res) => {
     try{
-        if(!await isStoreInventoryExist(req.params.store_id, req.params.inventory_id))
+        // Make sure the inventory stored is exist
+        if(!await isStoreInventoryExist(req.params.storeId, req.params.inventoryId))
         {
             return res.status(400).send({
                 message: "The store's inventory is not exist"
             })
         }
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['store_id', 'inventory_id']
-        )) 
-
+        // Make sure the store and inventory is exist for the owner
+        const {values, errMsg} = await validateInput(req, {
+            store_id: req.params.storeId, inventory_id: req.params.inventoryId
+        }) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }         
@@ -150,7 +157,7 @@ const validateInput = async (req, input) => {
                 amount: Joi.number().required().integer().allow(''),
             })).external(async (value, helpers) => {
                 const inventory = await Inventory.findOne({
-                    where: {id: value, owner_id: req.user.id}, 
+                    where: {id: req.params.inventoryId, owner_id: req.user.id}, 
                     include: ['sizes']
                 })
                 // Filter the inventory amount
@@ -159,18 +166,19 @@ const validateInput = async (req, input) => {
                     value.forEach(inpSize => {
                         // Make sure the size stored is exist and the amount is not empty string
                         if(size.id == inpSize.id && inpSize.amount !== ''){
-                            amount[inpSize.id] = inpSize.amount
+                            amount[inpSize.id] = parseInt(inpSize.amount)
                         }
                     })
                 })
-                // Convert the invetory amount back to JSON
-                return JSON.stringify(amount)
+                // Convert the invetory amount back to JSON and return it
+                // if there are any size stored, otherwise return null
+                return Object.keys(amount).length ? JSON.stringify(amount) : null
             })            
         }
         // Create the schema based on the input key
         const schema = {}
         for(const key in input){
-            if(rules.hasOwnPropety(key)){ schema[key] = rules[key] }
+            if(rules.hasOwnProperty(key)){ schema[key] = rules[key] }
         }
         // Validate the input
         const values = await Joi.object(schema).validateAsync(input)
@@ -209,4 +217,21 @@ const isStoreInventoryExist = async (storeId, inventoryId) => {
         logger.error(err.message)
         return false
     }
+}
+
+/**
+ * 
+ * @param {JSON} amount 
+ * @returns {integer}
+ */
+
+const countTotalAmount = (amount) => 
+{
+    let totalAmount = 0
+    if(amount === null){ return totalAmount }
+    amount = JSON.parse(amount)
+    for(const sizeId in amount){
+        totalAmount += amount[sizeId]
+    }
+    return totalAmount
 }

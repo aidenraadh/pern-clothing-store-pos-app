@@ -93,7 +93,7 @@ const validateInput = async (req, input) => {
         // Create the schema based on the input key
         const schema = {}
         for(const key in input){
-            if(rules.hasOwnPropety(key)){ schema[key] = rules[key] }
+            if(rules.hasOwnProperty(key)){ schema[key] = rules[key] }
         }        
         // Validate the input
         const values = await Joi.object(schema).validateAsync(input)    

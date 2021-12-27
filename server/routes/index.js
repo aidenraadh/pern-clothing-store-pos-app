@@ -1,10 +1,11 @@
-const rootRouter          = require('express').Router()
-const authController      = require('../controllers/authController')
-const userController      = require('../controllers/userController')
-const storeController     = require('../controllers/storeController')
-const inventoryController = require('../controllers/inventoryController')
-const isAuth              = require('../middlewares/isAuth')
-const isNotAuth           = require('../middlewares/isNotAuth')
+const rootRouter               = require('express').Router()
+const authController           = require('../controllers/authController')
+const userController           = require('../controllers/userController')
+const storeController          = require('../controllers/storeController')
+const inventoryController      = require('../controllers/inventoryController')
+const storeInventoryController = require('../controllers/storeInventoryController')
+const isAuth                   = require('../middlewares/isAuth')
+const isNotAuth                = require('../middlewares/isNotAuth')
 
 const models = require('../models/index')
 const StoreInventory      = models.StoreInventory
@@ -66,6 +67,22 @@ rootRouter.put('/inventories/:id', [
 
 rootRouter.delete('/inventories/:id', [
     isAuth, inventoryController.destroy
+])
+
+rootRouter.get('/store-inventories', [
+    isAuth, storeInventoryController.index
+])
+
+rootRouter.post('/store-inventories', [
+    isAuth, storeInventoryController.store
+])
+
+rootRouter.put('/store-inventories/:storeId/:inventoryId', [
+    isAuth, storeInventoryController.update
+])
+
+rootRouter.delete('/store-inventories/:storeId/:inventoryId', [
+    isAuth, storeInventoryController.destroy
 ])
 
 

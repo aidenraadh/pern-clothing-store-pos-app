@@ -13,7 +13,11 @@ module.exports = {
       amount: {
         type: Sequelize.JSON,
         allowNull: true 
-      },       
+      },      
+      total_amount: {
+        type: Sequelize.SMALLINT.UNSIGNED,
+        allowNull: false 
+      },         
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

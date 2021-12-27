@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     store_id: DataTypes.BIGINT.UNSIGNED,
     inventory_id: DataTypes.BIGINT.UNSIGNED,
     amount: DataTypes.JSON,
+    total_amount: DataTypes.SMALLINT.UNSIGNED,
   }, {
     sequelize,
     tableName: 'Store_Inventories',    
