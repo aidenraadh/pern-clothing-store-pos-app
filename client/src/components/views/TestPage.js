@@ -1,13 +1,21 @@
 import {api, errorHandler} from '../Utils.js'
 import {logout} from '../Auth'
-import {Grid, SectionHeader} from '../Layouts'
-import Table from '../Table'
+import {SimpleCard, PlainCard, TabbedCard, StatsCard} from '../Cards'
+import { useState } from 'react'
 
-function TestView(props){
+const TestComp = () => {
+    const [num, setNum] = useState(0)
+    const increment = (prevNum) => (prevNum+1)
+    return (<>
+        {num}
+        <button type="button" onClick={() => {setNum(increment)}}>+</button>
+    </>)
+}
+function TestPage(props){
     return (<>
         <h1>asd</h1>
-        <Table/>
+        <TestComp/>
     </>)
 }
 
-export default TestView
+export default TestPage

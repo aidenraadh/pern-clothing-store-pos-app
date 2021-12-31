@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Grid(props){
 	const GridTag = props.tag
-	const classes = props.classes
+	const classes = props.classes ? ' '+props.classes : props.classes
 	const num_of_columns = parseInt(props.num_of_columns);
 	let collapsed_on;
 	switch(props.collapsed_on){
@@ -12,7 +12,7 @@ export function Grid(props){
 	}
 	
 	return (
-		<GridTag className={'grid grid-'+props.num_of_columns+collapsed_on+classes} {...props.attr}>
+		<GridTag className={'grid grid-'+num_of_columns+collapsed_on+classes} {...props.attr}>
 			{props.items.map((item, key) => (
 				<div className="grid-item" key={key}>
 					{item}
@@ -23,15 +23,14 @@ export function Grid(props){
 }
 
 Grid.defaultProps = {
-	tag: 'div', num_of_columns: '3', classes: '', attr: {},
-	collapsed_on: 'mobile',
-	items: [
-		'Text 1', 'Text 2', 'Text 3'
-	]
+	tag: 'div', classes: '', attr: {},
+	num_of_columns: '3', // Integer
+	collapsed_on: 'mobile', // 'mobile' or 'tablet'
+	items: ['Text 1', 'Text 2', 'Text 3'] // Array of string or JSX
 }
 
 export function SectionHeader(props){
-	const container_classes = props.container_classes
+	const container_classes = props.container_classes ? ' '+props.container_classes : ''
 	const HeaderTag = props.header_tag
 	const HeadingTag = props.heading_tag
 
@@ -51,6 +50,7 @@ export function SectionHeader(props){
 
 SectionHeader.defaultProps = {
 	container_classes: '', header_tag: 'div', heading_tag: 'h6',
-	heading: 'Heading', header_actions: 'Some actions here...',
+	heading: 'Heading', 
+	header_actions: 'Some actions here...', // String or JSX
 	container_attr: {},
 }

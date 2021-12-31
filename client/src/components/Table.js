@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function Table(props){
-	const container_classes = props.container_classes
+	const container_classes = props.container_classes ? ' '+props.container_classes : ''
 	const ribboned = props.ribboned
 	const ribbon_colors = ['blue', 'green', 'red', 'purple', 'orange'];
 	let current_ribbon = -1;
@@ -37,9 +37,10 @@ export default function Table(props){
 }
 
 Table.defaultProps = {
-	container_classes: '', container_attr: {}, ribboned: false,
-	headings: ['Heading 1', 'Heading 2'],
+	container_classes: '', container_attr: {}, 
+	ribboned: false, // Boolean
+	headings: ['Heading 1', 'Heading 2'], // Array of string or JSX
 	body: [
-		['Data 1', 'Data2']
+		['Data 1', 'Data2'] // Array of string or JSX
 	],
 }

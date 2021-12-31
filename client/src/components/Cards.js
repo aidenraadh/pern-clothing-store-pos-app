@@ -2,9 +2,9 @@ import React from 'react';
 import {SVGIcons} from './Misc.js';
 
 export function SimpleCard(props){
-	const CardTag = (props.cardTag ? props.cardTag : 'div');
-	const HeadingTag = (props.headingTag ? props.headingTag : 'h6');
-	const container_classes = (props.container_classes ? ' '+props.container_classes : '');
+	const CardTag = props.cardTag
+	const HeadingTag = props.headingTag 
+	const container_classes = props.container_classes ? ' '+props.container_classes : props.container_classes
 
 	return (
 		<CardTag className={'card simple-card'+container_classes} {...props.container_attr}>
@@ -28,45 +28,33 @@ export function SimpleCard(props){
 	);//
 }
 
-/*
-
-Example:
-
-<SimpleCard
-	heading={'Heading'}
-	body={
-		'Lorem ipsum dolor'
-	}
-	action={'some action button here...'} // optional
-	footer={'some footer'} // optional
-	cardTag={'article'} // optional
-	headingTag={'h5'} // optional
-	container_attr={{}} // optional
-	container_classes={'some classes here'} // optional
-/>
-*/
+SimpleCard.defaultProps = {
+	cardTag: 'div', 
+	heading: 'Heading', headingTag: 'h6',
+	body: 'Lorem ipsum', // String or JSX
+	action: '', // String or JSX
+	footer: '', // String or JSX
+	container_attr: {},
+	container_classes: ''
+}
 
 export function PlainCard(props){
-	const CardTag = (props.card_tag ? props.card_tag : 'div');
-	const classes = (props.classes ? ' '+props.classes : '');
+	const CardTag = props.cardTag
+	const classes = props.classes ? ' '+props.classes : props.classes
 
 	return (
 		<CardTag className={'card plain-card'+classes} {...props.attr}>
-			{props.content}
+			{props.body}
 		</CardTag>
 	);	
 }
 
-/*
-Example:
-
-<PlainCard
-	content={'Lorem ipsum'}
-	card_tag={'div'} // optional
-	classes={'some_classes'} // optional
-	attr={{ }} // optional
-/>
-*/
+PlainCard.defaultProps = {
+	cardTag: 'div', 
+	body: 'Lorem ipsum', // String or JSX
+	attr: {},
+	classes: ''
+}
 
 export class TabbedCard extends React.Component{
 	constructor(props){
@@ -92,7 +80,7 @@ export class TabbedCard extends React.Component{
 	changeCurrentPanel(e, panelID){
 		e.preventDefault();
 		this.setState((state) => {
-			const newPanelStats = state.panelStats.map((stats) => {
+			const newPanelStats = state.panelStats.map(stats => {
 				if(stats.id === state.currentPanelID){
 					return {id: stats.id, active: true, shown: false};
 				}
@@ -109,7 +97,7 @@ export class TabbedCard extends React.Component{
 
 	showCurrentPanel(){
 		this.setState((state) => {
-			const newPanelStats = state.panelStats.map((stats) => {
+			const newPanelStats = state.panelStats.map(stats => {
 				if(stats.id === state.currentPanelID){
 					return {id: stats.id, active: true, shown: true};
 				}
@@ -125,10 +113,10 @@ export class TabbedCard extends React.Component{
 	}	
 
 	render(){
-		const container_classes = (this.props.container_classes ? ' '+this.props.container_classes : '');
+		const containerClasses = this.props.containerClasses ? ' '+this.props.containerClasses : this.props.containerClasses
 
 		return (
-			<div className={'card tabbed-card'+container_classes} {...this.props.container_attr}>
+			<div className={'card tabbed-card'+containerClasses} {...this.props.containerAttr}>
 				<ul className="tabs"role="tablist">
 				{this.props.tabs.map((tab, key) => (
 	
@@ -165,6 +153,23 @@ export class TabbedCard extends React.Component{
 	}
 }
 
+TabbedCard.defaultProps = {
+	tabs: [ // Array of objects
+		{link: 'Home', panelID: 'home', panelContent:
+			'This is home tab.'
+		},
+		{link: 'Profile', panelID: 'profile', panelContent:
+			'This is profile tab.'
+		},
+		{link: 'Contact', panelID: 'contact', panelContent:
+			'This is contact tab.'
+		},										
+	],
+	currentPanelID: 'home', // String
+	containerClasses: '', 
+	containerAttr: {}
+}
+
 /*
 Example:
 
@@ -181,44 +186,40 @@ Example:
 		},										
 	]}
 	currentPanelID={'home'}
-	container_classes={'some class'} // optional
-	container_attr={{  }} // optional
+	containerClasses={'some class'} // optional
+	containerAttr={{  }} // optional
 />
 */
 
 export function StatsCard(props){
-	const CardTag = (props.card_tag ? props.card_tag : 'div');
-	const type = (props.type ? ' '+props.type : ' primary');
-	const color = (props.color ? ' '+props.color : ' blue');
-	const classes = (props.classes ? ' '+props.classes : '');
+	const CardTag = props.cardTag
+	const type = ' '+props.type
+	const color = ' '+props.color 
+	const classes = props.classes ? ' '+props.classes : props.classes
 
 	return (
 		<CardTag className={'stats-card'+type+color+classes} {...props.attr}>
-			<span className="main-label">{props.main_label}</span>
-			<span className="secondary-label">{props.secondary_label}</span>
+			<span className="main-label">{props.title}</span>
+			<span className="secondary-label">{props.subTitle}</span>
 			<span className="number-label">
 				{props.icon ? <SVGIcons name={props.icon} /> : ''}				
-				{props.number_label}
+				{props.number}
 			</span>			
 		</CardTag>
 	);
 }
 
-/* 
-Example: 
-
-<StatsCard
-	type={'primary'} // optional
-	color={'blue'} // optional
-	main_label={'Daily Earnings'} // optional
-	secondary_label={'All bookings'} // optional
-	number_label={'Rp. 300.000'} // optional
-	icon={'cart'}
-	card_tag={'div'} // optional
-	attr={{}} // optional
-	classes={'some classes here...'} // optional
-/>
- */
+StatsCard.defaultProps = {
+	cardTag: 'div', 
+	type: 'primary', // 'primary'|'light'
+	color: 'blue', // 'red'|'blue'|'yellow'|'green'|'purple'
+	title: 'Title', // String or JSX
+	subTitle: 'Subtitle', // String or JSX
+	number: '3000', // String or JSX
+	icon: 'cart', // String
+	attr: {},
+	classes: ''
+}
 
 export class ToolCard extends React.Component{
     constructor(props){

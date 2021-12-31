@@ -6,7 +6,7 @@ export function Buttons(props){
 	const BtnTag = props.tag
 	const icon = props.icon.name ? <SVGIcons name={props.icon.name}/> : ''
 	const iconStatus = props.icon.iconOnly ? ' icon-only' : (icon ? ' with-icon' : '')
-	const classes = ' '+props.classes
+	const classes = props.classes ? ' '+props.classes : props.classes
 	const attr = {...props.attr}
 	if(BtnTag === 'button' && !attr.type){
 		attr.type = 'button'
@@ -24,14 +24,21 @@ export function Buttons(props){
 
 Buttons.defaultProps = {
 	tag: 'button', text: 'Button', classes: '',
-	settings: {size: 'lg', type: 'primary', color: 'blue'},
-	icon: {name: '', iconOnly: false},
+	settings: {
+		size: 'lg', // 'lg'|'md'|'sm'
+		type: 'primary', // 'prmiary'|'light'
+		color: 'blue' // 'red'|'blue'|'yellow'|'green'|'purple'
+	},
+	icon: {
+		name: '', 
+		iconOnly: false // boolean
+	},
 	attr: {}
 }
 
 export function FloatingButton(props){
 	const BtnTag = props.tag;
-	const classes = props.classes
+	const classes = props.classes ? ' '+props.classes : props.classes
 	return (
 		<BtnTag className={'floating-btn flex-row items-center content-center text-white'+classes}
 		{...props.attr}>
@@ -47,7 +54,7 @@ FloatingButton.defaultProps = {
 
 export function ButtonGroup(props){
 	const Tag = props.tag
-	const classes = props.classes
+	const classes = props.classes ? ' '+props.classes : props.classes
 
 	return (
 		<Tag className={'btn-group'+classes} {...props.attr}>
@@ -61,5 +68,5 @@ ButtonGroup.defaultProps = {
 	buttons: (<>
 		<Buttons/>
 		<Buttons/>
-	</>)
+	</>) // JSX
 }
