@@ -31,7 +31,7 @@ Buttons.defaultProps = {
 
 export function FloatingButton(props){
 	const BtnTag = props.tag;
-	const classes = (props.classes ? ' '+props.classes : '');
+	const classes = props.classes
 	return (
 		<BtnTag className={'floating-btn flex-row items-center content-center text-white'+classes}
 		{...props.attr}>
@@ -46,8 +46,8 @@ FloatingButton.defaultProps = {
 }
 
 export function ButtonGroup(props){
-	const Tag = (props.tag ? props.tag : 'div');
-	const classes = (props.classes ? ' '+props.classes : '');
+	const Tag = props.tag
+	const classes = props.classes
 
 	return (
 		<Tag className={'btn-group'+classes} {...props.attr}>
