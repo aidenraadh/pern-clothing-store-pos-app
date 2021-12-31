@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {SVGIcons} from './Misc.js'
 
 
@@ -25,25 +24,10 @@ export function Buttons(props){
 
 Buttons.defaultProps = {
 	tag: 'button', text: 'Button', classes: '',
-	settings: {size: 'lg', type: 'light', color: 'blue'},
+	settings: {size: 'lg', type: 'primary', color: 'blue'},
 	icon: {name: '', iconOnly: false},
 	attr: {}
 }
-
-/*
-Example:
-<Buttons tag={'button'}
-	settings={{
-		size: 'lg', // required
-		type: 'light', // required
-		color: 'blue' // required
-	}}
-	text={'Text'}
-	icon={{ name: 'blocks', iconOnly: true|false }} // optional
-	attr={{ }} // optional
-	classes={'some classes'} // optional
-/>
-*/
 
 export function FloatingButton(props){
 	const BtnTag = props.tag;
@@ -56,15 +40,10 @@ export function FloatingButton(props){
 	);
 }
 
-/*
-Example:
-<FloatingButton
-	text={'Text'}
-	tag={'button'} // optional
-	attr={{ }} // optional
-	classes={'some classes'} // optional
-/>
-*/
+FloatingButton.defaultProps = {
+	tag: 'button', text: 'Button', classes: '',
+	attr: {}
+}
 
 export function ButtonGroup(props){
 	const Tag = (props.tag ? props.tag : 'div');
@@ -77,12 +56,10 @@ export function ButtonGroup(props){
 	);
 }
 
-/*
-Example:
-<ButtonsGroup
-	buttons={}
-	tag={'div'} // optional
-	attr={{ }} // optional
-	classes={'some classes'} // optional
-/>
-*/
+ButtonGroup.defaultProps = {
+	tag: 'div', classes: '', attr: {},
+	buttons: (<>
+		<Buttons/>
+		<Buttons/>
+	</>)
+}

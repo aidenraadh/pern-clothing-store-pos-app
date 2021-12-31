@@ -1,8 +1,8 @@
 import React from 'react';
 
 export function Grid(props){
-	const GridTag = (props.tag ? props.tag : 'div');
-	const classes = props.classes ? ' '+props.classes : '';
+	const GridTag = props.tag
+	const classes = props.classes
 	const num_of_columns = parseInt(props.num_of_columns);
 	let collapsed_on;
 	switch(props.collapsed_on){
@@ -19,27 +19,21 @@ export function Grid(props){
 				</div>
 			))}		
 		</GridTag>
-	) //;
+	)
 }
 
-/*
-Example:
-
-<Grid
-	num_of_columns={'3'} // max columns = 3
-	items={[
-		'Items', 'Items',
-	]}
-	tag={} // optional
-	attr={{}} // optional
-	classes={'someclasses'} // optional
-/>	
-*/
+Grid.defaultProps = {
+	tag: 'div', num_of_columns: '3', classes: '', attr: {},
+	collapsed_on: 'mobile',
+	items: [
+		'Text 1', 'Text 2', 'Text 3'
+	]
+}
 
 export function SectionHeader(props){
-	const container_classes = (props.container_classes ? ' '+props.container_classes : '');
-	const HeaderTag = (props.header_tag ? props.header_tag : 'div');
-	const HeadingTag = (props.heading_tag ? props.heading_tag : 'h6');
+	const container_classes = props.container_classes
+	const HeaderTag = props.header_tag
+	const HeadingTag = props.heading_tag
 
 	return (
 		<HeaderTag className={'section-header flex-row content-space-between items-center'+container_classes}
@@ -55,14 +49,8 @@ export function SectionHeader(props){
 	);
 }
 
-/*
-Example:
-<SectionHeader
-	heading={'Hotel '+user_type}
-	header_actions={'Some actions here...'} // optional
-	header_tag={'header'} // optional
-	heading_tag={'h2'} // optional
-	container_classes={'some classes here'} // optional
-	container_attr={{}} // optional
-/>
-*/
+SectionHeader.defaultProps = {
+	container_classes: '', header_tag: 'div', heading_tag: 'h6',
+	heading: 'Heading', header_actions: 'Some actions here...',
+	container_attr: {},
+}

@@ -10,7 +10,7 @@ import RegisterView from './components/views/RegisterView'
 import HomeView from './components/views/HomeView'
 import ProfileView from './components/views/ProfileView'
 import NotFoundView from './components/views/NotFoundView'
-import TestView from "./components/views/TestView";
+import TestPage from "./components/views/TestPage";
 
 import "./index.css";
 
@@ -24,7 +24,7 @@ function App(){
                     <Route path="/login" exact component={LoginView}/>
                     <ProtectedRoute path={'/'} exact component={HomeView}/>
                     <ProtectedRoute path={'/profile'} exact component={ProfileView}/>*/}
-                    <Route path="/test" exact component={TestView}/>
+                    <Route path="/test" exact component={TestPage}/>
                     
                     <Route path={'*'} component={NotFoundView}/>
                 </Switch>
