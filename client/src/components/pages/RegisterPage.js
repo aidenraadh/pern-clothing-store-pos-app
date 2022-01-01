@@ -4,25 +4,29 @@ import {Redirect} from "react-router"
 import {Link} from "react-router-dom"
 import {isAuth, login} from '../Auth'
 
-const requestLogin = (email, password) => {
+const requestRegister = (name, email, password) => {
     api
-        .post('/login', {
-            email: email, password: password
+        .post('/register', {
+            name: name, email: email, password: password
         })
         .then(response => login(response))
         .catch(error => {
-            // When the credentials are wrong
+            // Invalid input
             if(error.response.status === 400){
-                alert(error.response.data.message)
+                alert(error.response.data)
             }            
             // When the user already logged in on the server
             if(error.response.status === 401){
                 login()
             }
+            else{
+                console.log(error)
+            }
         })
 }
 
-const LoginView = (props) => {
+const RegisterPage = (props) => {
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     // When the user already authenticated
@@ -31,6 +35,10 @@ const LoginView = (props) => {
     }
 
     return (<>
+        <input type="text" name="name" value={name} 
+        onChange={(e) => setName(e.target.value)}
+        placeholder={'Name'}/>
+
         <input type="email" name="email" value={email} 
         onChange={(e) => setEmail(e.target.value)}
         placeholder={'Email'}/>
@@ -39,13 +47,13 @@ const LoginView = (props) => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder={'Password'}/>
         <br/>
-        <button type="button" onClick={() => requestLogin(email, password)}>
-            Login
+        <button type="button" onClick={() => requestRegister(name, email, password)}>
+            Register
         </button>
         <p>
-            Doesn't have an account? <Link to="/register">Register here</Link>
+            Already have account? <Link to="/login">Log in here</Link>
         </p>
     </>)
 }
 
-export default LoginView
+export default RegisterPage

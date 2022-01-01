@@ -1,13 +1,15 @@
+import {useState, useRef, useEffect} from 'react';
 import React from 'react';
 import {SVGIcons} from './Misc.js';
+import {Buttons} from './Buttons.js';
 
 export function SimpleCard(props){
 	const CardTag = props.cardTag
 	const HeadingTag = props.headingTag 
-	const container_classes = props.container_classes ? ' '+props.container_classes : props.container_classes
+	const containerClasses = props.containerClasses ? ' '+props.containerClasses : props.containerClasses
 
 	return (
-		<CardTag className={'card simple-card'+container_classes} {...props.container_attr}>
+		<CardTag className={'card simple-card'+containerClasses} {...props.containerAttr}>
 			<header className="card-header flex-row items-center content-space-between">
 				<HeadingTag className="heading text-dark-75 text-medium">{props.heading}</HeadingTag>
 				{(props.action ?
@@ -34,8 +36,8 @@ SimpleCard.defaultProps = {
 	body: 'Lorem ipsum', // String or JSX
 	action: '', // String or JSX
 	footer: '', // String or JSX
-	container_attr: {},
-	container_classes: ''
+	containerAttr: {},
+	containerClasses: ''
 }
 
 export function PlainCard(props){
@@ -56,101 +58,70 @@ PlainCard.defaultProps = {
 	classes: ''
 }
 
-export class TabbedCard extends React.Component{
-	constructor(props){
-		super(props);
+export function TabbedCard(props){
+	const [panelStates, setPanelStates] = useState(props.tabs.map(tab => (
+		tab.panelID === props.currentPanelID ?
+		{id: tab.panelID, active: true, shown: true} :
+		{id: tab.panelID, active: false, shown: false}
+	)))
 
-		this.state = {
-			panelStats: this.props.tabs.map((tab) => {
-				if(tab.panelID === this.props.currentPanelID){
-					return {id: tab.panelID, active: true, shown: true};
-				}
-				else{
-					return {id: tab.panelID, active: false, shown: false};
-				}
-			}),
+	const [currentPanelID, setCurrentPanelID] = useState(props.currentPanelID)
 
-			currentPanelID: this.props.currentPanelID
-		};
+	const containerClasses = props.containerClasses ? 
+	' '+props.containerClasses : props.containerClasses
 
-		this.changeCurrentPanel = this.changeCurrentPanel.bind(this);
-		this.showCurrentPanel = this.showCurrentPanel.bind(this);
+	// Hide the current panel and change the current panel ID
+	const changePanel = (e, panelID) => {
+		e.preventDefault()
+		// Hide the current panel
+		setPanelStates(panelStates => panelStates.map(state => (
+			state.id === currentPanelID ? {...state, shown: false} : state
+		)))
+		// Change the current panel ID
+		setCurrentPanelID(panelID)
 	}
 
-	changeCurrentPanel(e, panelID){
-		e.preventDefault();
-		this.setState((state) => {
-			const newPanelStats = state.panelStats.map(stats => {
-				if(stats.id === state.currentPanelID){
-					return {id: stats.id, active: true, shown: false};
-				}
-				else{
-					return stats;
-				}
-			});
-
-			return {
-				panelStats: newPanelStats, currentPanelID: panelID
-			};
-		});
+	// Activate and show the current panel and disable the previous panel
+	const showPanel = () => {
+		setPanelStates(panelStates => panelStates.map(state => (
+			state.id === currentPanelID ? 
+			{...state, active: true, shown: true} : {...state, active: false}
+		)))
 	}
 
-	showCurrentPanel(){
-		this.setState((state) => {
-			const newPanelStats = state.panelStats.map(stats => {
-				if(stats.id === state.currentPanelID){
-					return {id: stats.id, active: true, shown: true};
-				}
-				else{
-					return {id: stats.id, active: false, shown: false};
-				}
-			});
-
-			return {
-				panelStats: newPanelStats
-			};
-		});
-	}	
-
-	render(){
-		const containerClasses = this.props.containerClasses ? ' '+this.props.containerClasses : this.props.containerClasses
-
-		return (
-			<div className={'card tabbed-card'+containerClasses} {...this.props.containerAttr}>
-				<ul className="tabs"role="tablist">
-				{this.props.tabs.map((tab, key) => (
-	
-				  <li key={key} className="tab-item">
-				    <a className={'tab-link text-medium text-dark-75 '+(tab.panelID === this.state.currentPanelID ? 'active' : '')}
-				    	href={'#'+tab.panelID}
-				    	aria-controls={tab.panelID} aria-selected={(tab.panelID === this.state.currentPanelID ? 'true' : 'false')}
-				    	role="tab" data-toggle="tab" onClick={(e) => this.changeCurrentPanel(e, tab.panelID)}
-				    >
-				    	{tab.link}
-				    </a>
-				  </li>
-				  
-				))}
-				</ul>
-				<div className="tab-content">
-				{
-					this.props.tabs.map((tab, key) => (
-				  	<div key={key} className={
-				  			'tab-pane '+
-				  			(this.state.panelStats[key].active ? 'active ' : '')+
-				  			(this.state.panelStats[key].shown ? 'shown' : '')
-				  		}
-				  		id={tab.panelID} aria-labelledby={tab.panelID+'-tab'} role="tabpanel"
-				  		onTransitionEnd={this.showCurrentPanel}
-				  	>
-				  	  {tab.panelContent}
-				  	</div>	
-					))
-				}
-				</div>
+	return (
+		<div className={'card tabbed-card'+containerClasses} {...props.containerAttr}>
+			<ul className="tabs"role="tablist">
+			{props.tabs.map((tab, key) => (
+			  <li key={key} className="tab-item">
+			    <a className={'tab-link text-medium text-dark-75 '+(tab.panelID === currentPanelID ? 'active' : '')}
+			    	href={'#'+tab.panelID}
+			    	aria-controls={tab.panelID} aria-selected={(tab.panelID === currentPanelID ? 'true' : 'false')}
+			    	role="tab" data-toggle="tab" onClick={e => changePanel(e, tab.panelID)}
+			    >
+			    	{tab.link}
+			    </a>
+			  </li>
+			))}
+			</ul>
+			<div className="tab-content">
+			{
+				props.tabs.map((tab, key) => (
+			  	<div key={key} className={
+			  			'tab-pane '+
+			  			(panelStates[key].active ? 'active ' : '')+
+			  			(panelStates[key].shown ? 'shown' : '')
+			  		}
+			  		id={tab.panelID} aria-labelledby={tab.panelID+'-tab'} role="tabpanel"
+			  		onTransitionEnd={showPanel}
+			  	>
+			  	  {tab.panelContent}
+			  	</div>	
+				))
+			}
 			</div>
-		);
-	}
+		</div>
+	);
 }
 
 TabbedCard.defaultProps = {
@@ -169,27 +140,6 @@ TabbedCard.defaultProps = {
 	containerClasses: '', 
 	containerAttr: {}
 }
-
-/*
-Example:
-
-<TabbedCard
-	tabs={[
-		{link: 'Home', panelID: 'home', panelContent:
-			'This is home tab.'
-		},
-		{link: 'Profile', panelID: 'profile', panelContent:
-			'This is profile tab.'
-		},
-		{link: 'Contact', panelID: 'contact', panelContent:
-			'This is contact tab.'
-		},										
-	]}
-	currentPanelID={'home'}
-	containerClasses={'some class'} // optional
-	containerAttr={{  }} // optional
-/>
-*/
 
 export function StatsCard(props){
 	const CardTag = props.cardTag
@@ -221,86 +171,74 @@ StatsCard.defaultProps = {
 	classes: ''
 }
 
-export class ToolCard extends React.Component{
-    constructor(props){
-		super(props);
-		this.state = {
-			maxHeight: 0,
-		};
-		this.bodyWrapperRef = React.createRef();
-	}
+export function ToolCard(props){
+	const [maxHeight, setMaxHeight] = useState(0)
+	const bodyWrapperRef = useRef()
+	const Tag = props.tag 
+	const HeadingTag = props.headingTag
+	const expand = props.expand ? ' expanded' : ''
+	const classes = props.classes ? ` ${props.classes}` : ''	
 
-	componentDidUpdate(prevProps){
+	useEffect(() => {
+		setMaxHeight(
+			props.expand ? bodyWrapperRef.current.scrollHeight+'px' : 0
+		)
+	}, [props.expand, maxHeight])
 
-		if(prevProps.expanded !== this.props.expanded || prevProps.body !== this.props.body){
-
-			this.setState({
-				maxHeight: (this.props.expanded ? this.bodyWrapperRef.current.scrollHeight+'px' : 0)
-			});
-		}
-	}
-
-    render(){
-		const Tag = (this.props.tag ? this.props.tag : 'div');
-		const HeadingTag = (this.props.heading_tag ? this.props.heading_tag : 'h6');
-		const expanded = (this.props.expanded ? ' expanded' : '');
-		const classes = (this.props.classes ? ' '+this.props.classes : '');
-
-		return (
-			<Tag className={'card simple-card tool-card'+expanded+classes} {...this.props.attr}>
-				<header className="card-header flex-row items-center content-space-between">
-					<HeadingTag className="heading text-dark-75 text-medium">
-						{this.props.heading}
-					</HeadingTag>
-					<section className="card-actions flex-row items-center">						
-						{this.props.left_side_actions}
-						{this.props.toggle_button}
-						{this.props.right_side_actions}
-					</section>			
-				</header>
-				<div className="body-wrapper" ref={this.bodyWrapperRef}
-				style={{'maxHeight': this.state.maxHeight}}>
-					<div className="card-body">
-						{this.props.body}
-					</div>
-					{(this.props.footer ?
-					<footer className="card-footer">
-						{this.props.footer}
-					</footer> : ''
-					)}
+	return (
+		<Tag className={'card simple-card tool-card'+expand+classes} {...props.attr}>
+			<header className="card-header flex-row items-center content-space-between">
+				<HeadingTag className="heading text-dark-75 text-medium">
+					{props.heading}
+				</HeadingTag>
+				<section className="card-actions flex-row items-center">						
+					{props.leftSideActions}
+					{props.toggleButton}
+					{props.rightSideActions}
+				</section>			
+			</header>
+			<div className="body-wrapper" ref={bodyWrapperRef}
+			style={{'maxHeight': maxHeight}}>
+				<div className="card-body">
+					{props.body}
 				</div>
-			</Tag>
-		);
-    }
+				{(props.footer ?
+				<footer className="card-footer">
+					{props.footer}
+				</footer> : ''
+				)}
+			</div>
+		</Tag>
+	);	
 }
 
-/*
-Example:
-
-<ToolCard
-	heading={'Heading'}
-	body={'body'}
-	expanded={true|false} // a parent state representing whether 
-	// the tool card is exapnded or not
-	toggle_button={btn_jsx} // A button with 'toggle-btn' class 
-	// that can toggle to true or false the expanded props
-	left_side_actions={btn_jsx} // Some action buttons at the left side
-	// of the toggle button
-	right_side_actions={btn_jsx} // Some action buttons at the right side
-	// of the toggle button	
-	tag={'div'} // optional
-	heading_tag={'h6'} // optional
-	classes={'some classes'} // optional
-	attr={{  }} // optional
-/>
-*/
+ToolCard.defaultProps = {
+	tag: 'Section', 
+	headingTag: 'h6', // String
+	heading: 'Heading', // String or JSX
+	body: 'Lorem ipsum', // String or JSX
+	footer: '', // String or JSX
+	expand: false, // Boolean - This must be from the parent's state
+	toggleButton: <Buttons // Button JSX with 'toggle-btn' class, and a handler that change expand state inside parent
+		settings={{size: 'sm', type: 'light', color: 'blue'}} 
+		icon={{name: 'angle_up', iconOnly: true}}
+		classes={'toggle-btn'}
+		attr={{
+			onClick: () => {alert('Please attach handler that change expand property')}
+		}}
+	/>,
+	leftSideActions: null, // JSX
+	rightSideActions: null, // JSX
+	attr: {},
+	classes: '' // String
+}
 
 export function KanbanBoard(props){
-	const CardTag = (props.card_tag ? props.card_tag : 'section');
-	const HeadingTag = (props.heading_tag ? props.heading_tag : 'h6');
-	const type = (props.type ? ' '+props.type : ' primary');
-	const color = (props.color ? ' '+props.color : ' blue');
-	const classes = (props.classes ? ' '+props.classes : '');
+	const CardTag = props.cardTag
+	const HeadingTag = props.headingTag 
+	const type = ` ${props.type}`
+	const color = ` ${props.color}`
+	const classes = props.classes ? ` ${props.classes}` : ''
 
 	return (
         <CardTag className={'kanban-board'+type+color+classes} {...props.attr}>
@@ -312,15 +250,13 @@ export function KanbanBoard(props){
 	);
 }
 
-/* 
-Example: 
-
-<KanbanBoard
-	heading={'Heading'}
-	body={'body'}
-	type={'primary|light'} // optional
-	color={'red|green|blue|orange|purple'} // optional
-	classes={'someclasses'} // optional
-	attr={{}} // optional
-/>
- */
+KanbanBoard.defaultProps = {
+	cardTag: 'section', // String
+	headingTag: 'h6', // String
+	heading: 'Heading', // String or JSX
+	body: 'Lorem ipsum', // String or JSX
+	type: 'primary', // String
+	color: 'blue', // String
+	attr: {},
+	classes: '' // String
+}

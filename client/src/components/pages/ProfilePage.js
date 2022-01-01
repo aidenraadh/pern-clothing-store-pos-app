@@ -24,7 +24,7 @@ const updateProfile = (name, email, oldPassword, newPassword, setProfile) => {
         .catch(error => errorHandler(error))    
 }
 
-function ProfileView(){
+function ProfilePage(){
     const [profile, setProfile] = useState(getUser())
 
     const [newName, setNewName] = useState('')
@@ -86,4 +86,4 @@ function ProfileView(){
     </>)
 }
 
-export default ProfileView
+export default ProfilePage

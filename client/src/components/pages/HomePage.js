@@ -1,7 +1,7 @@
 import {api, errorHandler} from '../Utils.js'
 import {logout} from '../Auth'
 
-function HomeView(props){
+function HomePage(props){
     return (<>
         <h1>This is home</h1>
         <button type="button" onClick={logout}>
@@ -10,4 +10,4 @@ function HomeView(props){
     </>)
 }
 
-export default HomeView
+export default HomePage
