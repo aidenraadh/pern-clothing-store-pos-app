@@ -1,7 +1,7 @@
 import React from 'react';
 import {SVGIcons} from './Misc.js';
 
-export default class Navigationsw extends React.Component{
+export default class Navigations extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
@@ -79,7 +79,7 @@ export default class Navigationsw extends React.Component{
 						</button>								
 						<ul className="sidebar-items-container">
 						{this.props.sidebar_items.map((item, key) => (
-							<li key={key}>{item}</li>
+							<li key={key}>{item.content}</li>
 						))}
 						</ul>		
 					</section> : ''

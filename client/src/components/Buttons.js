@@ -4,17 +4,18 @@ import {SVGIcons} from './Misc.js'
 
 export function Button(props){
 	const BtnTag = props.tag
-	const icon = props.icon.name ? <SVGIcons name={props.icon.name}/> : ''
-	const iconStatus = props.icon.iconOnly ? ' icon-only' : (icon ? ' with-icon' : '')
+	const icon = props.iconName ? <SVGIcons name={props.iconName}/> : ''
+	const iconStatus = props.iconName && props.iconOnly ? ' icon-only' : (icon ? ' with-icon' : '')
 	const classes = props.classes ? ' '+props.classes : props.classes
 	const attr = {...props.attr}
+
 	if(BtnTag === 'button' && !attr.type){
 		attr.type = 'button'
 	}
 	return (
 		<BtnTag className={
-			'btn btn-'+props.settings.size+' btn-'+props.settings.type+' '+
-			props.settings.color+iconStatus+classes
+			'btn btn-'+props.size+' btn-'+props.type+' '+
+			props.color+iconStatus+classes
 		} {...attr}>
 			{icon}
 			<span className="btn-text">{props.text}</span>
@@ -23,17 +24,14 @@ export function Button(props){
 }
 
 Button.defaultProps = {
-	tag: 'button', text: 'Button', classes: '',
-	settings: {
-		size: 'lg', // 'lg'|'md'|'sm'
-		type: 'primary', // 'prmiary'|'light'
-		color: 'blue' // 'red'|'blue'|'yellow'|'green'|'purple'
-	},
-	icon: {
-		name: '', 
-		iconOnly: false // boolean
-	},
-	attr: {}
+	tag: 'button', text: 'Button',
+	size: 'lg', // 'lg'|'md'|'sm'
+	type: 'primary', // 'prmiary'|'light'
+	color: 'blue', // 'red'|'blue'|'yellow'|'green'|'purple'
+	iconName: '', // String
+	iconOnly: false, // Boolean
+	attr: {},
+	classes: '',
 }
 
 export function FloatingButton(props){
