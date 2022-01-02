@@ -6,14 +6,14 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT.UNSIGNED
+        type: Sequelize.BIGINT
       },
       name: {
         allowNull: false,
         type: Sequelize.STRING(100)
       },     
       owner_id: {
-        type: Sequelize.DataTypes.BIGINT.UNSIGNED,
+        type: Sequelize.DataTypes.BIGINT,
         allowNull: false,
       },       
       created_at: {

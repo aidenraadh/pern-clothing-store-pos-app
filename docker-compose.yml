@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 services:
   server:
     build: ./server
@@ -22,15 +22,15 @@ services:
       - ./client/.env
     command: npm start  
   db:
-    image: mysql:latest
+    image: postgres:latest
     ports:
       - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - pg_data:/var/lib/postgresql/data
     environment:
-      - MYSQL_DATABASE=clothing_store_pos
-      - MYSQL_USER=testuser
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_PASSWORD=root    
+      - POSTGRES_DB=clothing_store_pos
+      - POSTGRES_USER=testuser
+      - POSTGRES_ROOT_PASSWORD=root
+      - POSTGRES_PASSWORD=root    
 volumes:
-  mysql_data:
+  pg_data:

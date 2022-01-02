@@ -1581,7 +1581,7 @@ All button in the group must be in the same size
   	transition: opacity 0.3s;
 }
 
-.modal.shown .overlay{
+.modal .overlay.shown{
   	opacity: 1;
 }
 

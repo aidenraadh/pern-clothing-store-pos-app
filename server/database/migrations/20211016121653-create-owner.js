@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT.UNSIGNED,
+        type: Sequelize.BIGINT,
       },
       created_at: {
         allowNull: false,

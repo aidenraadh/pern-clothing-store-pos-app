@@ -3,7 +3,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Users', {
       id: {
-        type: Sequelize.BIGINT.UNSIGNED,
+        type: Sequelize.BIGINT,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -22,11 +22,11 @@ module.exports = {
         allowNull: false,
       },
       role_id: {
-        type: Sequelize.DataTypes.TINYINT.UNSIGNED,
+        type: Sequelize.DataTypes.SMALLINT,
         allowNull: false,
       },     
       owner_id: {
-        type: Sequelize.DataTypes.BIGINT.UNSIGNED,
+        type: Sequelize.DataTypes.BIGINT,
         allowNull: false,
       },                    
       created_at: {

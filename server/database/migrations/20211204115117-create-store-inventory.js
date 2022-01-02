@@ -3,11 +3,11 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Store_Inventories', {
       store_id: {
-        type: Sequelize.BIGINT.UNSIGNED,
+        type: Sequelize.BIGINT,
         allowNull: false  
       },
       inventory_id: {
-        type: Sequelize.BIGINT.UNSIGNED,
+        type: Sequelize.BIGINT,
         allowNull: false          
       },  
       amount: {
@@ -15,7 +15,7 @@ module.exports = {
         allowNull: true 
       },      
       total_amount: {
-        type: Sequelize.SMALLINT.UNSIGNED,
+        type: Sequelize.SMALLINT,
         allowNull: false 
       },         
       created_at: {

@@ -2,7 +2,7 @@ import React from 'react'
 import {SVGIcons} from './Misc.js'
 
 
-export function Buttons(props){
+export function Button(props){
 	const BtnTag = props.tag
 	const icon = props.icon.name ? <SVGIcons name={props.icon.name}/> : ''
 	const iconStatus = props.icon.iconOnly ? ' icon-only' : (icon ? ' with-icon' : '')
@@ -22,7 +22,7 @@ export function Buttons(props){
 	)
 }
 
-Buttons.defaultProps = {
+Button.defaultProps = {
 	tag: 'button', text: 'Button', classes: '',
 	settings: {
 		size: 'lg', // 'lg'|'md'|'sm'
@@ -66,7 +66,7 @@ export function ButtonGroup(props){
 ButtonGroup.defaultProps = {
 	tag: 'div', classes: '', attr: {},
 	buttons: (<>
-		<Buttons/>
-		<Buttons/>
+		<Button/>
+		<Button/>
 	</>) // JSX
 }

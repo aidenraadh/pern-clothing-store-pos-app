@@ -1,7 +1,8 @@
 const models         = require('../models/index')
+const Inventory      = models.Inventory
+const InventorySize  = models.InventorySize
 const StoreInventory = models.StoreInventory
 const Store          = models.Store
-const Inventory      = models.Inventory
 const Joi            = require('joi')
 const filterKeys     = require('../utils/filterKeys')
 const logger         = require('../utils/logger')
@@ -158,7 +159,7 @@ const validateInput = async (req, input) => {
             })).external(async (value, helpers) => {
                 const inventory = await Inventory.findOne({
                     where: {id: req.params.inventoryId, owner_id: req.user.id}, 
-                    include: ['sizes']
+                    include: [{model: InventorySize, as: 'sizes', attributes: ['id']}]
                 })
                 // Filter the inventory amount
                 const amount = {}

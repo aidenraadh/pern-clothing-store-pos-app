@@ -19,10 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   StoreInventory.init({
-    store_id: DataTypes.BIGINT.UNSIGNED,
-    inventory_id: DataTypes.BIGINT.UNSIGNED,
+    store_id: DataTypes.BIGINT,
+    inventory_id: DataTypes.BIGINT,
     amount: DataTypes.JSON,
-    total_amount: DataTypes.SMALLINT.UNSIGNED,
+    total_amount: DataTypes.SMALLINT,
   }, {
     sequelize,
     tableName: 'Store_Inventories',    

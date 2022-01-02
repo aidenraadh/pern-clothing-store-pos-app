@@ -6,11 +6,8 @@ import Navigation from './components/Navigation'
 import ProtectedRoute from './components/ProtectedRoute'
 
 import LoginPage from './components/pages/LoginPage'
-import RegisterPage from './components/pages/RegisterPage'
 import HomePage from './components/pages/HomePage'
-import ProfilePage from './components/pages/ProfilePage'
 import NotFoundPage from './components/pages/NotFoundPage'
-import TestPage from "./components/pages/TestPage";
 
 import "./index.css";
 
@@ -20,11 +17,8 @@ function App(){
             <Router>
                 <Navigation/>
                 <Switch>
-                    {/* <Route path="/register" exact component={RegisterView}/>
-                    <Route path="/login" exact component={LoginView}/>
-                    <ProtectedRoute path={'/'} exact component={HomeView}/>
-                    <ProtectedRoute path={'/profile'} exact component={ProfileView}/>*/}
-                    <Route path="/test" exact component={TestPage}/>
+                    <Route path="/login" exact component={LoginPage}/>
+                    <ProtectedRoute path={'/'} exact component={HomePage}/>
                     
                     <Route path={'*'} component={NotFoundPage}/>
                 </Switch>

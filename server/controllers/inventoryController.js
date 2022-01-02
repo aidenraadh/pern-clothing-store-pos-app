@@ -19,7 +19,10 @@ exports.index = async (req, res) => {
         }
         const inventories = await Inventory.findAll({
             where: filters,
-            include: ['sizes'],
+            include: [{
+                model: InventorySize, as: 'sizes', 
+                attributes: ['id', 'name', 'production_price', 'selling_price']
+            }],
             order: [['id', 'DESC']],
             ...limitOffset
         })

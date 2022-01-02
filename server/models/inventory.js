@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Inventory.init({
     name: DataTypes.STRING(100),
-    owner_id: DataTypes.BIGINT.UNSIGNED,
+    owner_id: DataTypes.BIGINT,
   }, {
     sequelize,
     modelName: 'Inventory',

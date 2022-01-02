@@ -2,6 +2,9 @@ import {useState}  from "react"
 import {api} from '../Utils'
 import {Redirect} from "react-router"
 import {Link} from "react-router-dom"
+
+import {Button} from '../Buttons'
+import {TextInput} from '../Forms'
 import {isAuth, login} from '../Auth'
 
 const requestLogin = (email, password) => {
@@ -31,20 +34,22 @@ const LoginPage = (props) => {
     }
 
     return (<>
-        <input type="email" name="email" value={email} 
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder={'Email'}/>
-
-        <input type="password" name="email" value={password} 
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder={'Password'}/>
-        <br/>
-        <button type="button" onClick={() => requestLogin(email, password)}>
-            Login
-        </button>
-        <p>
-            Doesn't have an account? <Link to="/register">Register here</Link>
-        </p>
+        <TextInput
+            formAttr={{
+                value: email, placeholder: 'Email', 
+                onChange: (e) => {setEmail(e.target.value)}
+            }} 
+        />
+        <TextInput
+            formAttr={{
+                type: 'password', value: password, placeholder: 'Password', 
+                onChange: (e) => {setPassword(e.target.value)}
+            }} 
+        />        
+        <Button 
+            attr={{onClick: () => {requestLogin(email, password)}}} 
+            text={'Login'}
+        />
     </>)
 }
 
