@@ -24,7 +24,7 @@ export default class Navigations extends React.Component{
 								LeftWidgets_JSX.push(
 									<button type="button" 
 									className="topbar-item show-sidebar-btn"
-									onClick={this.props.toggleSidebar}>
+									onClick={this.props.showSidebar}>
 										<SVGIcons
 											name={'article'} color={'blue'}
 											attr={{style: {width: '3rem'}}}
@@ -72,9 +72,9 @@ export default class Navigations extends React.Component{
 					</ul> : ''		
 					}
 					{this.props.sidebar_items ? 
-					<section className={'sidebar'+(this.props.sidebar_shown ? ' shown' : '')}>
+					<section className={'sidebar'+(this.props.sidebarShown ? ' shown' : '')}>
 						<button type="button" className="hide-sidebar-btn"
-						onClick={this.props.toggleSidebar}>
+						onClick={this.props.showSidebar}>
 							&times;
 						</button>								
 						<ul className="sidebar-items-container">
