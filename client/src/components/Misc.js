@@ -708,26 +708,24 @@ Example:
 */
 
 export function UserThumbnail(props){
-	const classes = (props.container_classes ? ' '+props.container_classes : '');
-	const Tag = (props.tagname ? props.tagname : 'div');
+	const classes = props.classes ? ` ${props.classes}` : ''
+	const Tag = props.tag
 
 	return (
-		<Tag className={'user-thumbnail'+classes} {...props.container_attr}>
-			<img src={props.img_url} />
-			<span className="user-name">{props.user_name}</span>
+		<Tag className={'user-thumbnail'+classes} {...props.attr}>
+			{props.imgUrl ? <img src={props.imgUrl} /> : ''}
+			<span className="user-name">{props.userName}</span>
 		</Tag>
 	);
 }
 
-/*
-Example:
-
-<UserThumbnail
-	img_url={'url'}
-	tagname={'div'} // optional
-	container_attr={{}} // optional
-/>
-*/
+UserThumbnail.defaultProps = {
+	tag: 'div', // String
+	userName: 'Name', // String
+	imgUrl: '', // String
+	classes: '', // String
+	attr: {}, // Objects
+}
 
 
 export class Collapsible extends React.Component{

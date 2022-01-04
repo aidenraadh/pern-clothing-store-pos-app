@@ -358,40 +358,21 @@ All button in the group must be in the same size
 	display: none;
 }
 
-.sidebar-main-navs-container{
-	position: fixed;
-	top: 0; left: 0;
-	height: 100vh; 
-	z-index: 97;
-	background-color: #131628;
-}
-
-.main-navs{
-	display: flex;
-	list-style-type: none;
-	flex-direction: column;
-	justify-content: flex-start;
-	background-color: #131628;
-	z-index: 96;
-}
-
 .sidebar{
+	position: fixed;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	background-color: #131628;
 	overflow-y: auto;
+	overflow-x: hidden;
+	max-width: 5.4rem;
+	min-height: 100vh;
+	transition: max-width 0.3s, transform 0.3s;
 	z-index: 97;
 }
-
-.sidebar .hide-sidebar-btn{
-	display: none;
-	align-self: flex-end;
-	font-size: 3.4rem;
-	width: 4rem;
-	height: 4rem;
-	margin-top: 1.4rem;
-	margin-right: 1.4rem;
+.sidebar.shown{
+	max-width: 28rem;
 }
 
 .sidebar-items-container{
@@ -406,15 +387,34 @@ All button in the group must be in the same size
 }
 
 .sidebar .sidebar-item{
-	width: 100%;
+	width: 28rem;
 	flex-shrink: 0;
-}
-
-.sidebar-item{
 	display: flex;
 	align-items: center;
-	padding: 2rem;
+	padding: 1.6rem 2rem 1.6rem 1.2rem;
 	color: #FFFFFF;
+}
+
+.sidebar .sidebar-item.toggle-sidebar-btn{
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	padding-left: 4.2rem;
+}
+
+
+.sidebar-item .svg-icon{
+	flex-shrink: 0;
+	margin-right: 1.4rem;
+}
+
+.sidebar .sidebar-item.toggle-sidebar-btn .svg-icon{
+	margin-right: 0rem;
+	transition: transform 0.3s;
+}
+
+.sidebar.shown .sidebar-item.toggle-sidebar-btn .svg-icon{
+	transform: rotate(-180deg);
 }
 
 .sidebar-item .svg-icon > svg{
@@ -447,11 +447,13 @@ All button in the group must be in the same size
 
 .sidebar-item .text{
 	display: inline-block;
-	width: 1px; height: 1px;
+	width: auto; height: auto;
+	visibility: visible;
 	padding-left: 0;
-	visibility: hidden;
 	color: #A2A3B7;
 	overflow: hidden;
+	font-size: 1.5rem;
+
 }
 
 .sidebar-item.active .text,

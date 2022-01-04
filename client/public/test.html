@@ -1,0 +1,43 @@
+<html>
+    <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <title>React App</title>
+    <style>
+        #test{
+            background-color: red;
+            max-width: 100px;
+            height: 100px;
+            transition: max-width 0.3s;
+            overflow: hidden;
+        }
+        #test.shown{
+            max-width: 500px;
+        }
+
+    </style>
+  </head>
+  <body>
+      <button id="button">expand</button>
+      <div id="test">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cumque doloribus sapiente architecto. Ad quia enim natus adipisci aut, qui blanditiis optio ipsam ea excepturi amet asperiores quis voluptatum accusantium! Ullam?
+      </div>
+      <script>
+          const div = document.getElementById('test')
+          const button = document.getElementById('button')
+          button.addEventListener('click', () => {
+              div.classList.contains('shown') ? div.classList.remove('shown') : div.classList.add('shown')
+        })
+      </script>
+  </body>
+</html>
+
+</html>
