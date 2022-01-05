@@ -20,9 +20,59 @@ export const errorHandler = (error) => {
         logout()
     }
     // Server error
-    else{alert('Server error')
+    else{
+		alert('Server error')
         console.log(error.response)
     }
+}
+
+/**
+ * Save the resource's index filters
+ * @param {string} key - The filter key of the resource
+ * @param {*} filters 
+ */
+
+export const saveResFilters = (key, filters) => {
+	let resourceFilters = localStorage.getItem('resource_filters')
+	if(!resourceFilters){
+		resourceFilters = {}
+	}
+	else{
+		resourceFilters = JSON.parse(resourceFilters)
+	}
+	resourceFilters[key] = {...resourceFilters[key], ...filters}
+	localStorage.setItem('resource_filters', JSON.stringify(resourceFilters))
+}
+
+/**
+ * Get the resource's filters
+ * @param {*} key - The filter key of the resource
+ * @returns {object} - The resource's filters
+ */
+
+export const getResFilters = (key) => {
+	let resourceFilters = localStorage.getItem('resource_filters')
+	if(!resourceFilters){
+		resourceFilters = {}
+	}
+	else{
+		resourceFilters = JSON.parse(resourceFilters)
+	}
+	return resourceFilters[key] ? resourceFilters[key] : {}
+}
+
+/**
+ * Get the query string from key-value pairs of queries
+ * @param {object} queries - Key-value pairs of the queries
+ * @returns {string}
+ */
+
+export const getQueryString = (queries) => {
+	let arrString = []
+	for(const key in queries){
+		arrString.push(`${key}=${queries[key]}`)
+	}
+	return arrString.length ? `?${arrString.join('&')}` : ''
 }
 
 // Parse a JSON value if it can

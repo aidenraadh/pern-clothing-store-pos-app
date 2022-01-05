@@ -8,6 +8,7 @@ export const isAuth = () => (
 export const logout = () => {
     localStorage.removeItem('jwt_token')
     localStorage.removeItem('user')
+    localStorage.removeItem('resource_filters')
     window.location.replace(`${window.location.origin}/login`);
 }
 // Store the user's token and data then redirect to home page

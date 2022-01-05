@@ -1,7 +1,7 @@
 import {useState, useRef, useEffect} from 'react';
 import React from 'react';
 import {SVGIcons} from './Misc.js';
-import {Buttons} from './Buttons.js';
+import {Button} from './Buttons.js';
 
 export function SimpleCard(props){
 	const CardTag = props.cardTag
@@ -219,7 +219,7 @@ ToolCard.defaultProps = {
 	body: 'Lorem ipsum', // String or JSX
 	footer: '', // String or JSX
 	expand: false, // Boolean - This must be from the parent's state
-	toggleButton: <Buttons // Button JSX with 'toggle-btn' class, and a handler that change expand state inside parent
+	toggleButton: <Button // Button JSX with 'toggle-btn' class, and a handler that change expand state inside parent
 		settings={{size: 'sm', type: 'light', color: 'blue'}} 
 		icon={{name: 'angle_up', iconOnly: true}}
 		classes={'toggle-btn'}

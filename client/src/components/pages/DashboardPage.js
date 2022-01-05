@@ -7,7 +7,7 @@ const callApi = () => {
        .then((response) => {console.log(response.data.inventories)})
 }
 
-function HomePage(props){
+function DashboardPage(props){
     return (<>
         <h1>This is home</h1>
         <Button 
@@ -21,4 +21,4 @@ function HomePage(props){
     </>)
 }
 
-export default HomePage
+export default DashboardPage

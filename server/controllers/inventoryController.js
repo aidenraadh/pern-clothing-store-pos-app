@@ -26,7 +26,10 @@ exports.index = async (req, res) => {
             order: [['id', 'DESC']],
             ...limitOffset
         })
-        res.send({inventories: inventories})
+        res.send({
+            inventories: inventories,
+            filters: {...filters, ...limitOffset}
+        })
     } catch(err) {
         logger.error(err.message)
         res.status(500).send(err.message)

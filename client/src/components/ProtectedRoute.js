@@ -10,7 +10,7 @@ function ProtectedRoute({component: Component, ...rest}){
     }
     return (
         <Route {...rest} render={
-                () => <Component/>
+                () => <Component {...rest}/>
             }
         />
     )
