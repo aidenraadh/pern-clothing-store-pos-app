@@ -18,7 +18,7 @@ const getInventories = (dispatchInventory, actionType = '', filters = {offset: 0
 
 function InventoryPage(props){
     // When the inventory resource is not set yet
-    if(!props.inventory.inventories.length){
+    if(!props.inventory.inventories){
         // Get the resource
         getInventories(props.dispatchInventory)
         // Return loading UI

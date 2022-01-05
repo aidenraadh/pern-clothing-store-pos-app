@@ -3,7 +3,7 @@ import { saveResFilters } from "../Utils";
 export const INVENTORY_FILTER_KEY = 'inventory'
 
 export const INVENTORY_INIT_STATE = {
-    inventories: [], // Array of inventories
+    inventories: null, // Array of inventories
 }
 export const INVENTORY_ACTIONS = {
     APPEND: 'APPEND', 
@@ -40,11 +40,11 @@ export const inventoryReducer = (state, action) => {
             return {
                 ...state, inventories: (() => {
                     let inventories = [...state.inventories]
-                    if(Array.isArray(indexes)){
+                    if(Array.isArray(action.payload.indexes)){
                         action.payload.indexes.forEach(index => {inventories.splice(index, 1)})
                         return inventories
                     }
-                    inventories.splice(indexes, 1)
+                    inventories.splice(action.payload.indexes, 1)
 
                     return inventories
                 })()

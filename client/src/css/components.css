@@ -641,7 +641,7 @@ All button in the group must be in the same size
 
 .table-container th, .table-container td{
 	font-size: inherit;
-	text-align: center;
+	text-align: left;
 	padding: 0.8em;
 	white-space: nowrap; 
 }
