@@ -74,14 +74,6 @@
 	width: 20rem;
 }
 
-#login-page{
-	width: 100%;
-	min-height: 100vh;
-	color: #FFFFFF;
-	background: url('../images/illustration-2.svg') no-repeat scroll 100% 100%;
-	background-size: 30% auto;	
-}
-
 #login-page .login-forms{
 	width: 30vw;
 	z-index: 1;
@@ -539,13 +531,6 @@
 	width: 10rem;
 }
 
-.error-page{
-	width: 100vw;
-	height: 100vh;
-	background: url('../images/error-bg-1.jpg') no-repeat scroll 0 0;
-	background-size: cover;
-}
-
 .error-page h1{
 	margin-bottom: 2rem;
 }
@@ -701,4 +686,8 @@
 
 #request-delete-modal .modal-content{
 	width: 36rem;
+}
+
+.inventories-container .name{
+	text-transform: capitalize;
 }

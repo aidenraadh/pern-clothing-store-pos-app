@@ -19,7 +19,7 @@ import './css/components.css';
 import './css/layouts.css';
 import './css/utilities.css';
 import './css/media-queries.css';
-// import './css/custom.css';
+import './css/custom.css';
 
 function App(){
     const [sidebarShown, setSidebarShown] = useState(false)
