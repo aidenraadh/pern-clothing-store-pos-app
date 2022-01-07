@@ -152,23 +152,33 @@ export function prettyTime(time, utc = false, with_time = false){
 	);
 }
 
-export function numToPrice(num){
+export function formatNum(num, sanitizeOnly = false){
+	// Return empty string if a number is not numeric
+	if(!num && num !== 0 && num !== '0'){
+		return ''
+	}
+	num = num.toString().replace(/\D/g, '')
+	num = num === '' ? '' : parseInt(num).toString()
+
+	// Return only sanitezed number
+	if(sanitizeOnly){ return num }
+	
 	// Convert num to string then to array
-	let price = num.toString().split('');
-	const price_length = price.length;
+	num = num.split('');
+	const price_length = num.length;
 
 	if(price_length > 3){
 		// Get the initial dot position
 		let dot_pos = (price_length % 3 ? price_length % 3 : 3);
 		// Add the dot to the initial position
-		price.splice( dot_pos, 0, '.' );
+		num.splice( dot_pos, 0, '.' );
 		// Add the dot again to the next 3 zeros
 		for (dot_pos += 4; dot_pos <= price_length; dot_pos += 4) {
-			price.splice( dot_pos, 0, '.' );
+			num.splice( dot_pos, 0, '.' );
 		}
 	}
 	// Convert array to string.
-	return price.join('');
+	return num.join('');
 }
 
 export function serializeObj(obj){

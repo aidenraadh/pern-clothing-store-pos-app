@@ -7,49 +7,61 @@ export const INVENTORY_INIT_STATE = {
 }
 export const INVENTORY_ACTIONS = {
     APPEND: 'APPEND', 
-    PREPEND: 'PREPEND', 
-    REMOVE: 'REMOVE'
+    PREPEND: 'PREPEND',
+    REPLACE: 'REPLACE',
+    REMOVE: 'REMOVE',
 }
 
 export const inventoryReducer = (state, action) => {
-    saveResFilters(INVENTORY_FILTER_KEY, action.payload.filters);
+    const {type, payload} = action
+    
+    saveResFilters(INVENTORY_FILTER_KEY, payload.filters);
 
-    switch(action.type){
+    switch(type){
         // Append inventory(s) to 'inventories'
         case INVENTORY_ACTIONS.APPEND: 
             return {
                 ...state, inventories: (
-                    Array.isArray(action.payload.inventories) ? 
-                    [...action.payload.inventories, ...state.inventories] : 
-                    [action.payload.inventories, ...state.inventories]
+                    Array.isArray(payload.inventories) ? 
+                    [...payload.inventories, ...state.inventories] : 
+                    [payload.inventories, ...state.inventories]
                 ) 
             }; 
         // Prepend array of inventory(s) to 'inventories'
         case INVENTORY_ACTIONS.PREPEND: 
             return {
                 ...state, inventories: (
-                    Array.isArray(action.payload.inventories) ? 
-                    [...state.inventories, ...action.payload.inventories] : 
-                    [...state.inventories, action.payload.inventories]                
+                    Array.isArray(payload.inventories) ? 
+                    [...state.inventories, ...payload.inventories] : 
+                    [...state.inventories, payload.inventories]                
                 )
             };
+        // Replace inventory inside 'inventories'
+        case INVENTORY_ACTIONS.REPLACE: 
+            return {
+                ...state, inventories: (() => {
+                    const inventories = [...state.inventories]
+                    inventories[payload.index] = payload.inventory
+                    return inventories
+                })()
+            };            
         // Remove inventory(s) from 'inventories'
         case INVENTORY_ACTIONS.REMOVE: 
             return {
                 ...state, inventories: (() => {
                     let inventories = [...state.inventories]
-                    if(Array.isArray(action.payload.indexes)){
-                        action.payload.indexes.forEach(index => {inventories.splice(index, 1)})
+                    if(Array.isArray(payload.indexes)){
+                        payload.indexes.forEach(index => {inventories.splice(index, 1)})
                         return inventories
                     }
-                    inventories.splice(action.payload.indexes, 1)
+                    inventories.splice(payload.indexes, 1)
 
                     return inventories
                 })()
             }; 
         // Refresh the inventory resource
         default: return {
-            inventories: action.payload.inventories
+            inventories: payload.inventories
         };
     }
 }

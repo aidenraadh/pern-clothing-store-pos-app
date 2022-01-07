@@ -46,7 +46,7 @@ exports.store = async (req, res) => {
             return res.status(400).send({message: errMsg})
         }
         // Store the inventory
-        const inventory = await Inventory.create({
+        let inventory = await Inventory.create({
             name: values.name, owner_id: req.user.owner_id
         })
         // Store the inventory sizes
@@ -57,6 +57,14 @@ exports.store = async (req, res) => {
                 selling_price: size.selling_price,
             }))
         )
+        // Get the inventory with its sizes
+        inventory = await Inventory.findOne({
+            where: {id: inventory.id},
+            include: [{
+                model: InventorySize, as: 'sizes', 
+                attributes: ['id', 'name', 'production_price', 'selling_price']
+            }],            
+        })
         res.send({
             inventory: inventory, message: 'Success storing inventory'
         })  
@@ -129,7 +137,18 @@ exports.update = async (req, res) => {
             
         await InventorySize.bulkCreate(newSizes)
 
-        res.send({message: 'Success updating inventory'})
+        // Get the inventory with its sizes
+        const inventory = await Inventory.findOne({
+            where: {id: inventory.id},
+            include: [{
+                model: InventorySize, as: 'sizes', 
+                attributes: ['id', 'name', 'production_price', 'selling_price']
+            }],            
+        })        
+        res.send({
+            inventory: inventory,
+            message: 'Success updating inventory'
+        })
     } catch(err) {
         logger.error(err.message)
         res.status(500).send(err.message)
@@ -185,7 +204,7 @@ const validateInput = async (req, input) => {
             }),
 
             // Make sure the size name of the inventory is unique
-            inventory_sizes: Joi.array().required().items(Joi.object({
+            inventory_sizes: Joi.array().required().allow([]).items(Joi.object({
                 id: Joi.number().integer(),
                 name: Joi.string().required().trim().max(100),
                 production_price: Joi.number().required().integer().allow(''),
