@@ -24,7 +24,6 @@ export const inventoryReducer = (state, action) => {
                     [action.payload.inventories, ...state.inventories]
                 ) 
             }; 
-            break;
         // Prepend array of inventory(s) to 'inventories'
         case INVENTORY_ACTIONS.PREPEND: 
             return {
@@ -34,7 +33,6 @@ export const inventoryReducer = (state, action) => {
                     [...state.inventories, action.payload.inventories]                
                 )
             };
-            break;
         // Remove inventory(s) from 'inventories'
         case INVENTORY_ACTIONS.REMOVE: 
             return {
@@ -49,7 +47,6 @@ export const inventoryReducer = (state, action) => {
                     return inventories
                 })()
             }; 
-            break;
         // Refresh the inventory resource
         default: return {
             inventories: action.payload.inventories
