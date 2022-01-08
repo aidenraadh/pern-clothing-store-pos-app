@@ -39,10 +39,16 @@ exports.update = async (req, res) => {
         )) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
-        }     
-        await Store.update(values, {where: {id: req.params.id}})
+        }
+        // Update the store
+        const store = await Store.findOne({where: {id: req.params.id}})
+        store.name = values.name
+        await store.save()
 
-        res.send({message: 'Success updating store'})
+        res.send({
+            store: store,
+            message: 'Success updating store'
+        })
     } catch(err) {
         logger.error(err.message)
         res.status(500).send(err.message)
@@ -59,7 +65,8 @@ exports.destroy = async (req, res) => {
 
         res.send({message: 'Success deleting store'})        
     } catch(err) {
-
+        logger.error(err.message)
+        res.status(500).send(err.message)
     }  
 }
 

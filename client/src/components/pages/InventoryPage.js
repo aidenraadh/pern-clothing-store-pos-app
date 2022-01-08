@@ -15,6 +15,7 @@ function InventoryPage(props){
     const [invSizes, dispatchInvSizes] = useReducer(sizesReducer, [])
     const [modalHeading, setModalHeading] = useState('')
     const [modalShown, setModalShown] = useState(false)
+    const [disableBtn , setDisableBtn] = useState(false)
 
     const createInventory = () => {
         setInvIndex('')
@@ -32,6 +33,21 @@ function InventoryPage(props){
         setModalHeading(`Edit ${name}`)
         setModalShown(true)
     }   
+    const apiCallbacks = {
+        before: () => {
+            setDisableBtn(true)
+        },
+        after: (response) => {
+            if(response.status == 200){
+                setModalShown(false)
+            }
+            // Bad input
+            else if(response.status == 400){
+                alert(response.data.message)
+            }
+            setDisableBtn(false)
+        }
+    }
     // When the inventory resource is not set yet
     if(!props.inventory.inventories){
         // Get the resource
@@ -66,35 +82,29 @@ function InventoryPage(props){
                             </button>,
                             <TextInput size={'sm'} formAttr={{
                                     value: size.name, onChange: (e) => {
-                                        dispatchInvSizes({
-                                            type: 'update', payload: {
-                                                index: index, key: 'name', 
-                                                value: e.target.value
-                                            }
-                                        })
+                                        dispatchInvSizes({type: 'update', payload: {
+                                            index: index, key: 'name', 
+                                            value: e.target.value
+                                        }})
                                     }
                                 }} 
                             />,
                             <TextInput size={'sm'} formAttr={{
                                     value: formatNum(size.production_price), 
                                     onChange: (e) => {
-                                        dispatchInvSizes({
-                                            type: 'update', payload: {
-                                                index: index, key: 'production_price', 
-                                                value: formatNum(e.target.value, true)
-                                            }
-                                        })
+                                        dispatchInvSizes({type: 'update', payload: {
+                                            index: index, key: 'production_price', 
+                                            value: formatNum(e.target.value, true)
+                                        }})
                                     }
                                 }} 
                             />,
                             <TextInput size={'sm'} formAttr={{
                                     value: formatNum(size.selling_price), onChange: (e) => {
-                                        dispatchInvSizes({
-                                            type: 'update', payload: {
-                                                index: index, key: 'selling_price', 
-                                                value: formatNum(e.target.value, true)
-                                            }
-                                        })
+                                        dispatchInvSizes({type: 'update', payload: {
+                                            index: index, key: 'selling_price', 
+                                            value: formatNum(e.target.value, true)
+                                        }})
                                     }
                                 }} 
                             />,
@@ -108,10 +118,11 @@ function InventoryPage(props){
             </>}        
             footer={
                 <Button size={'sm'} text={'Save Changes'} attr={{
+                        disabled: disableBtn,
                         onClick: () => {
-                            invIndex && invId ? 
-                            updateInventory(props.dispatchInventory, invIndex, invId, invName, invSizes) :
-                            storeInventory(props.dispatchInventory, invName, invSizes)
+                            invIndex !== '' && invId !== '' ? 
+                            updateInventory(invIndex, invId, invName, invSizes, props.dispatchInventory, apiCallbacks) :
+                            storeInventory(invName, invSizes, props.dispatchInventory, apiCallbacks)
                         }
                     }}
                 />                
@@ -179,35 +190,40 @@ const getInventories = (dispatchInventory, actionType = '', filters = {offset: 0
        .catch(err => errorHandler(err))
 }
 
-const storeInventory = (dispatchInventory, name, sizes) => {
-    console.log(name)
-    console.log(sizes)    
-    // api.post('/inventories', {
-    //         name: name, sizes: sizes
-    //     })
-    //    .then(response => {
-    //        dispatchInventory({
-    //            type: INVENTORY_ACTIONS.PREPEND, 
-    //            payload: {inventories: response.data.inventory}
-    //         })
-    //    })
-    //    .catch(err => errorHandler(err))
+const storeInventory = (name, sizes, dispatchInventory, callbacks) => { 
+    callbacks.before()
+    api.post('/inventories', {
+            name: name, inventory_sizes: JSON.stringify(sizes)
+        })
+       .then(response => {
+           callbacks.after(response)
+           dispatchInventory({
+               type: INVENTORY_ACTIONS.PREPEND, 
+               payload: {inventories: response.data.inventory}
+            })
+       })
+       .catch(err => {
+            callbacks.after(err.response)
+            errorHandler(err)
+       })
 }
 
-const updateInventory = (dispatchInventory, index, id, name, sizes) => {
-    console.log(id)
-    console.log(name)
-    console.log(sizes)
-    // api.put(`/inventories/${id}`, {
-    //         name: name, sizes: sizes
-    //     })
-    //    .then(response => {
-    //        dispatchInventory({
-    //            type: INVENTORY_ACTIONS.PREPEND, 
-    //            payload: {inventories: response.data.inventory}
-    //         })
-    //    })
-    //    .catch(err => errorHandler(err))
+const updateInventory = (index, id, name, sizes, dispatchInventory, callbacks) => {
+    callbacks.before()
+    api.put(`/inventories/${id}`, {
+            name: name, inventory_sizes: JSON.stringify(sizes)
+        })
+       .then(response => {
+           callbacks.after(response)
+           dispatchInventory({
+               type: INVENTORY_ACTIONS.REPLACE, 
+               payload: {inventory: response.data.inventory, index: index}
+            })
+       })
+       .catch(err => {
+           callbacks.after(err.response)
+           errorHandler(err)
+        })
 }
 
 export default InventoryPage

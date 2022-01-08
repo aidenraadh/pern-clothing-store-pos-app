@@ -46,7 +46,7 @@ exports.store = async (req, res) => {
             return res.status(400).send({message: errMsg})
         }
         // Store the inventory
-        let inventory = await Inventory.create({
+        const inventory = await Inventory.create({
             name: values.name, owner_id: req.user.owner_id
         })
         // Store the inventory sizes
@@ -57,16 +57,13 @@ exports.store = async (req, res) => {
                 selling_price: size.selling_price,
             }))
         )
-        // Get the inventory with its sizes
-        inventory = await Inventory.findOne({
-            where: {id: inventory.id},
-            include: [{
-                model: InventorySize, as: 'sizes', 
-                attributes: ['id', 'name', 'production_price', 'selling_price']
-            }],            
+        // Get the inventory's sizes
+        const sizes = await inventory.getSizes({
+            attributes: ['id', 'name', 'production_price', 'selling_price']
         })
         res.send({
-            inventory: inventory, message: 'Success storing inventory'
+            inventory: {...inventory.toJSON(), sizes: sizes}, 
+            message: 'Success storing inventory'
         })  
     } catch(err) {
         logger.error(err.message)   
@@ -88,21 +85,21 @@ exports.update = async (req, res) => {
             return res.status(400).send({message: errMsg})
         }        
         // Update the inventory
-        await Inventory.update(
-            {name: values.name}, 
-            {where: {id: req.params.id}}
-        )
+        const inventory = await Inventory.findOne({where: {id: req.params.id}})
+        inventory.name = values.name
+        await inventory.save()
+        
         // Get all existed sizes
         let existedSizes = await InventorySize.findAll({
             attributes: ['id', 'name', 'production_price', 'selling_price'],
             where: {inventory_id: req.params.id}
         })
         // Delete the sizes if there are any
-        let inpSizeIds = values.inventory_sizes.map(size => parseInt(size.id))
+        let inpSizeIds = values.inventory_sizes.map(size => parseInt(size.id))      
         await InventorySize.destroy({
             where: {
                 id: existedSizes
-                    .filter(size => !inpSizeIds.includes(size.id))
+                    .filter(size => !inpSizeIds.includes(parseInt(size.id)))
                     .map(size => size.id)
             }
         })
@@ -137,16 +134,12 @@ exports.update = async (req, res) => {
             
         await InventorySize.bulkCreate(newSizes)
 
-        // Get the inventory with its sizes
-        const inventory = await Inventory.findOne({
-            where: {id: inventory.id},
-            include: [{
-                model: InventorySize, as: 'sizes', 
-                attributes: ['id', 'name', 'production_price', 'selling_price']
-            }],            
-        })        
+        // Get the inventory's sizes
+        const sizes = await inventory.getSizes({
+            attributes: ['id', 'name', 'production_price', 'selling_price'],
+        })    
         res.send({
-            inventory: inventory,
+            inventory: {...inventory.toJSON(), sizes: sizes},
             message: 'Success updating inventory'
         })
     } catch(err) {
@@ -204,11 +197,11 @@ const validateInput = async (req, input) => {
             }),
 
             // Make sure the size name of the inventory is unique
-            inventory_sizes: Joi.array().required().allow([]).items(Joi.object({
+            inventory_sizes: Joi.array().required().items(Joi.object({
                 id: Joi.number().integer(),
                 name: Joi.string().required().trim().max(100),
-                production_price: Joi.number().required().integer().allow(''),
-                selling_price: Joi.number().required().integer().allow('')
+                production_price: Joi.number().required().integer().allow('', null),
+                selling_price: Joi.number().required().integer().allow('', null)
             })).external(async (value, helpers) => {
                 let sizeNames = []
                 value.forEach((size, key) => {
@@ -218,14 +211,14 @@ const validateInput = async (req, input) => {
                     }
                     // Save the size name
                     sizeNames.push(size.name)
-                    // If the production price is empty string, set it to null
+                    // If the production price is not numeric, set it to null
                     value[key].production_price = (
-                        value[key].production_price === '' ? 
+                        value[key].production_price !== 0 && !value[key].production_price ? 
                         null : value[key].production_price
                     )
-                    // If the selling price is empty string, set it to null
+                    // If the selling price is not numeric, set it to null
                     value[key].selling_price = (
-                        value[key].selling_price === '' ? 
+                        value[key].selling_price !== 0 && !value[key].selling_price ? 
                         null : value[key].selling_price
                     )                    
                 })

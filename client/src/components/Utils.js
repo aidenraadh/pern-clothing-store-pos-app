@@ -10,18 +10,14 @@ export const api = axios.create({
 })
 
 // Handle errors from API request
-export const errorHandler = (error) => {
-    // Bad user input
-    if(error.response.status === 400){
-        alert(error.response.data.message)
-    }            
+export const errorHandler = (error) => {        
     // User is not authenticated
-    else if(error.response.status === 401){
+    if(error.response.status === 401){
         logout()
     }
-    // Server error
-    else{
-		alert('Server error')
+    // Not user input error
+    else if(error.response.status !== 400){
+		alert(error.response)
         console.log(error.response)
     }
 }
@@ -154,7 +150,7 @@ export function prettyTime(time, utc = false, with_time = false){
 
 export function formatNum(num, sanitizeOnly = false){
 	// Return empty string if a number is not numeric
-	if(!num && num !== 0 && num !== '0'){
+	if(num !== 0 && !num){
 		return ''
 	}
 	num = num.toString().replace(/\D/g, '')

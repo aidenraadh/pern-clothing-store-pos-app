@@ -23,8 +23,8 @@ export const inventoryReducer = (state, action) => {
             return {
                 ...state, inventories: (
                     Array.isArray(payload.inventories) ? 
-                    [...payload.inventories, ...state.inventories] : 
-                    [payload.inventories, ...state.inventories]
+                    [...state.inventories, ...payload.inventories] : 
+                    [...state.inventories, payload.inventories]
                 ) 
             }; 
         // Prepend array of inventory(s) to 'inventories'
@@ -32,8 +32,8 @@ export const inventoryReducer = (state, action) => {
             return {
                 ...state, inventories: (
                     Array.isArray(payload.inventories) ? 
-                    [...state.inventories, ...payload.inventories] : 
-                    [...state.inventories, payload.inventories]                
+                    [...payload.inventories, ...state.inventories] : 
+                    [payload.inventories, ...state.inventories]                
                 )
             };
         // Replace inventory inside 'inventories'
