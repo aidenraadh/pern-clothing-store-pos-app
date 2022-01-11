@@ -8,26 +8,22 @@ const isAuth                   = require('../middlewares/isAuth')
 const isNotAuth                = require('../middlewares/isNotAuth')
 
 const models = require('../models/index')
-const StoreInventory      = models.StoreInventory
-
-const Joi        = require('joi')
+const Inventory      = models.Inventory
+const Sequelize = require('sequelize')
 const {Op}           = require("sequelize")
-const logger = require('../utils/logger')
 
-rootRouter.get('/', async (req, res) => {
-    try {
-        const x = await StoreInventory.findOne({
-            where: {store_id: 1, inventory_id: 1},
-            include: ['store', 'inventory']
-        })
-        res.send(x)
-
-    } catch (err) {
-        logger.error(err.message)
-        res.send(err.message)        
-    }
+rootRouter.get('/test', async (req, res) => {
+    const filters = [
+        Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), Sequelize.fn('lower', 'inVentorY 1'))
+    ]
+    filters.push({
+        [Op.not]: [{id: 1}]
+    })
+    const x = await Inventory.findOne({
+        where: filters
+    })
+    res.send({item: x})
 })
-
 rootRouter.post('/register', [
     isNotAuth, authController.register
 ])

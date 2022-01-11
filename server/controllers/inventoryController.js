@@ -1,6 +1,7 @@
 const models         = require('../models/index')
 const Inventory      = models.Inventory
 const InventorySize  = models.InventorySize
+const Sequelize      = require("sequelize")
 const {Op}           = require("sequelize")
 const Joi            = require('joi')
 const filterKeys     = require('../utils/filterKeys')
@@ -180,10 +181,13 @@ const validateInput = async (req, input) => {
         const rules = {
             // Make sure the inventory name is unique
             name: Joi.string().required().trim().max(100).external(async (value, helpers) => {
-                const filters = {name: value, owner_id: req.user.id}
+                const filters = [
+                    Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), Sequelize.fn('lower', 'inVentorY 1')),
+                    {owner_id: req.user.id}
+                ]                
                 // When the inventory is updated
                 if(req.params.id){
-                    filters[Op.not] = [{id: req.params.id}]
+                    filters.push({[Op.not]: [{id: req.params.id}]})                    
                 }
                 const inventory = await Inventory.findOne({
                     where: filters, attributes: ['id']

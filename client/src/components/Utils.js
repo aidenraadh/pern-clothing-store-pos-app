@@ -25,11 +25,13 @@ export const errorHandler = (error) => {
 /**
  * Save the resource's index filters
  * @param {string} key - The filter key of the resource
- * @param {*} filters 
+ * @param {object} filters - Key-value pairs of the filters
  */
 
 export const saveResFilters = (key, filters) => {
 	let resourceFilters = localStorage.getItem('resource_filters')
+	filters = filters ? {...filters} : {}
+	// Create resource_filter storage if it not exist
 	if(!resourceFilters){
 		resourceFilters = {}
 	}

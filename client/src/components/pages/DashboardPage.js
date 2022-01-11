@@ -3,8 +3,8 @@ import {logout} from '../Auth'
 import {Button} from '../Buttons'
 
 const callApi = () => {
-    api.get('/inventories')
-       .then((response) => {console.log(response.data.inventories)})
+    api.get('/test')
+       .then((response) => {console.log(response.data)})
 }
 
 function DashboardPage(props){

@@ -21,6 +21,10 @@ initPassport(passport)
 
 app.use('/', rootRouter)
 
+app.get('/', (req, res) => {
+    res.redirect(config['clientUrl'])
+})
+
 app.listen(config.serverPort, () => {
     console.log('Server started at port '+config.serverPort)
 })

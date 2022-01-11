@@ -14,7 +14,6 @@ export const INVENTORY_ACTIONS = {
 
 export const inventoryReducer = (state, action) => {
     const {type, payload} = action
-    
     saveResFilters(INVENTORY_FILTER_KEY, payload.filters);
 
     switch(type){

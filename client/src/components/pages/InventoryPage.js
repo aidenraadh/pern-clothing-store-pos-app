@@ -1,21 +1,26 @@
-import {useReducer, useState} from 'react'
+import {useReducer, useState, useRef} from 'react'
 import {INVENTORY_ACTIONS, INVENTORY_FILTER_KEY} from '../reducers/InventoryReducer'
 import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../Utils.js'
 import {Button} from '../Buttons'
-import {TextInput} from '../Forms'
+import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
 import {Modal} from '../Windows'
 import Table from '../Table'
 import {SVGIcons} from '../Misc'
 
 function InventoryPage(props){
+    const [disableBtn , setDisableBtn] = useState(false)
+    /* Create/edit inventory */
     const [invIndex, setInvIndex] = useState('')
     const [invId, setInvId] = useState('')
     const [invName, setInvName] = useState('')
     const [invSizes, dispatchInvSizes] = useReducer(sizesReducer, [])
     const [modalHeading, setModalHeading] = useState('')
     const [modalShown, setModalShown] = useState(false)
-    const [disableBtn , setDisableBtn] = useState(false)
+    /* Filter inventory */
+    const initFilters = useRef(getResFilters(INVENTORY_FILTER_KEY))
+    const [limit, setLimit] = useState(initFilters.current.limit ? initFilters.current.limit : 10)
+    const [filterModalShown, setFilterModalShown] = useState(false)
 
     const createInventory = () => {
         setInvIndex('')
@@ -40,6 +45,7 @@ function InventoryPage(props){
         after: (response) => {
             if(response.status == 200){
                 setModalShown(false)
+                // setFilterModalShown(false)
             }
             // Bad input
             else if(response.status == 400){
@@ -57,7 +63,8 @@ function InventoryPage(props){
     }
     return (<>
         <section className='flex-row content-end items-center' style={{marginBottom: '2rem'}}>
-            <Button text={'+ Create'} type={'primary'} size={'sm'} attr={{onClick: createInventory}}/>
+            <Button text={'Filter'} size={'sm'} iconName={'sort_1'} attr={{onClick: () => {setFilterModalShown(true)}}} />
+            <Button text={'+ Create'} size={'sm'} attr={{onClick: createInventory}}/>
         </section>
         <PlainCard
             body={<>
@@ -119,10 +126,12 @@ function InventoryPage(props){
             footer={
                 <Button size={'sm'} text={'Save Changes'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {
-                            invIndex !== '' && invId !== '' ? 
-                            updateInventory(invIndex, invId, invName, invSizes, props.dispatchInventory, apiCallbacks) :
-                            storeInventory(invName, invSizes, props.dispatchInventory, apiCallbacks)
+                        onClick: async () => {
+                            const response = await (
+                                invIndex !== '' && invId !== '' ? 
+                                updateInventory(invIndex, invId, invName, invSizes, props.dispatchInventory, apiCallbacks) :
+                                storeInventory(props.dispatchInventory, {name: invName, sizes: invSizes})
+                            )
                         }
                     }}
                 />                
@@ -130,6 +139,31 @@ function InventoryPage(props){
             shown={modalShown}
             toggleModal={() => {setModalShown(state => !state)}}
         />
+        <Modal
+            heading={'Filter'}
+            body={<>
+                <Select label={'Rows shown'} 
+                    formAttr={{value: limit, onChange: e => {setLimit(parseInt(e.target.value))}}}
+                    options={[
+                        {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
+                    ]}
+                />
+            </>}        
+            footer={
+                <Button size={'sm'} text={'Search'} attr={{
+                        disabled: disableBtn,
+                        onClick: async () => {
+                            setDisableBtn(true)
+                            const response = await getInventories(props.dispatchInventory, {limit: limit})
+                            if(response.status == 200){ setFilterModalShown(false) }
+                            setDisableBtn(false)
+                        }
+                    }}
+                />                
+            }
+            shown={filterModalShown}
+            toggleModal={() => {setFilterModalShown(state => !state)}}
+        />        
     </>)
 }
 
@@ -180,50 +214,54 @@ const GenerateInventories = ({inventories, editInventory}) => {
     </>)
 }
 
-const getInventories = (dispatchInventory, actionType = '', filters = {offset: 0}) => {
+const getInventories = async (dispatchInventory, filters = {}, actionType = '') => {
+    // Merged the applied filters with new filters
     filters = {...getResFilters(INVENTORY_FILTER_KEY), ...filters}
-
-    api.get(`/inventories${getQueryString(filters)}`)
-       .then(response => {
-           dispatchInventory({type: actionType, payload: response.data})
-       })
-       .catch(err => errorHandler(err))
+    // When the inventory is refreshed, set the offset to 0
+    if(actionType === ''){
+        filters.offset = 0
+    }
+    const response = await api.get(`/inventories${getQueryString(filters)}`)
+  
+    if(response.status && response.status == 200){
+        dispatchInventory({type: actionType, payload: response.data})
+        return response
+    }
+    else{
+        return response.response
+    }
 }
 
-const storeInventory = (name, sizes, dispatchInventory, callbacks) => { 
-    callbacks.before()
-    api.post('/inventories', {
-            name: name, inventory_sizes: JSON.stringify(sizes)
+const storeInventory = async (dispatchInventory, reqBody) => { 
+    const response = await api.post('/inventories', {
+        name: reqBody.name, inventory_sizes: JSON.stringify(reqBody.sizes)
+    })
+    if(response.status && response.status == 200){
+        dispatchInventory({
+            type: INVENTORY_ACTIONS.PREPEND, 
+            payload: {inventories: response.data.inventory}
         })
-       .then(response => {
-           callbacks.after(response)
-           dispatchInventory({
-               type: INVENTORY_ACTIONS.PREPEND, 
-               payload: {inventories: response.data.inventory}
-            })
-       })
-       .catch(err => {
-            callbacks.after(err.response)
-            errorHandler(err)
-       })
+        return response
+    }
+    else{
+        return response.response
+    }       
 }
 
-const updateInventory = (index, id, name, sizes, dispatchInventory, callbacks) => {
-    callbacks.before()
-    api.put(`/inventories/${id}`, {
-            name: name, inventory_sizes: JSON.stringify(sizes)
+const updateInventory = async (dispatchInventory, reqBody, index, id) => {
+    const response = await api.put(`/inventories/${id}`, {
+        name: reqBody.name, inventory_sizes: JSON.stringify(reqBody.sizes)
+    })
+    if(response.status && response.status == 200){
+        dispatchInventory({
+            type: INVENTORY_ACTIONS.REPLACE, 
+            payload: {inventory: response.data.inventory, index: index}
         })
-       .then(response => {
-           callbacks.after(response)
-           dispatchInventory({
-               type: INVENTORY_ACTIONS.REPLACE, 
-               payload: {inventory: response.data.inventory, index: index}
-            })
-       })
-       .catch(err => {
-           callbacks.after(err.response)
-           errorHandler(err)
-        })
+        return response
+    }
+    else{
+        return response.response
+    }           
 }
 
 export default InventoryPage
