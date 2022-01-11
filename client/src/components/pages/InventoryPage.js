@@ -38,22 +38,6 @@ function InventoryPage(props){
         setModalHeading(`Edit ${name}`)
         setModalShown(true)
     }   
-    const apiCallbacks = {
-        before: () => {
-            setDisableBtn(true)
-        },
-        after: (response) => {
-            if(response.status == 200){
-                setModalShown(false)
-                // setFilterModalShown(false)
-            }
-            // Bad input
-            else if(response.status == 400){
-                alert(response.data.message)
-            }
-            setDisableBtn(false)
-        }
-    }
     // When the inventory resource is not set yet
     if(!props.inventory.inventories){
         // Get the resource
@@ -127,11 +111,14 @@ function InventoryPage(props){
                 <Button size={'sm'} text={'Save Changes'} attr={{
                         disabled: disableBtn,
                         onClick: async () => {
+                            setDisableBtn(true)
                             const response = await (
                                 invIndex !== '' && invId !== '' ? 
                                 updateInventory(invIndex, invId, invName, invSizes, props.dispatchInventory, apiCallbacks) :
                                 storeInventory(props.dispatchInventory, {name: invName, sizes: invSizes})
                             )
+                            if(response.status == 200){ setModalShown(false) }
+                            setDisableBtn(false)
                         }
                     }}
                 />                
