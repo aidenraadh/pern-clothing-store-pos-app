@@ -37,9 +37,9 @@ function InventoryPage(props){
         dispatchInvSizes({payload: sizes})
         setModalHeading(`Edit ${name}`)
         setModalShown(true)
-    }   
+    }        
     // When the inventory resource is not set yet
-    if(!props.inventory.inventories){
+    if(props.inventory.inventories === null){
         // Get the resource
         getInventories(props.dispatchInventory)
         // Return loading UI
@@ -47,7 +47,10 @@ function InventoryPage(props){
     }
     return (<>
         <section className='flex-row content-end items-center' style={{marginBottom: '2rem'}}>
-            <Button text={'Filter'} size={'sm'} iconName={'sort_1'} attr={{onClick: () => {setFilterModalShown(true)}}} />
+            <Button text={'Filter'} size={'sm'} iconName={'sort_1'} attr={{
+                onClick: () => {setFilterModalShown(true)},
+                style: {marginRight: '1rem'}
+            }} />
             <Button text={'+ Create'} size={'sm'} attr={{onClick: createInventory}}/>
         </section>
         <PlainCard
@@ -109,16 +112,33 @@ function InventoryPage(props){
             </>}        
             footer={
                 <Button size={'sm'} text={'Save Changes'} attr={{
-                        disabled: disableBtn,
-                        onClick: async () => {
-                            setDisableBtn(true)
-                            const response = await (
-                                invIndex !== '' && invId !== '' ? 
-                                updateInventory(invIndex, invId, invName, invSizes, props.dispatchInventory, apiCallbacks) :
-                                storeInventory(props.dispatchInventory, {name: invName, sizes: invSizes})
-                            )
-                            if(response.status == 200){ setModalShown(false) }
-                            setDisableBtn(false)
+                    disabled: disableBtn,
+                        onClick: () => {invIndex !== '' && invId !== '' ? 
+                            updateInventory(
+                                props.dispatchInventory, {name: invName, inventory_sizes: invSizes}, 
+                                invId, invIndex, {
+                                before: () => {setDisableBtn(true)},
+                                success: () => {
+                                    setDisableBtn(false)
+                                    setModalShown(false)
+                                },
+                                failed: (error) => {
+                                    setDisableBtn(false)
+                                    errorHandler(error, {'400': () => {alert(error.response.data.message)}})
+                                }                                    
+                            }) : 
+                            storeInventory(
+                                props.dispatchInventory, {name: invName, inventory_sizes: invSizes}, {
+                                before: () => {setDisableBtn(true)},
+                                success: () => {
+                                    setDisableBtn(false)
+                                    setModalShown(false)
+                                },
+                                failed: (error) => {
+                                    setDisableBtn(false)
+                                    errorHandler(error, {'400': () => {alert(error.response.data.message)}})
+                                }
+                            })
                         }
                     }}
                 />                
@@ -139,12 +159,20 @@ function InventoryPage(props){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: async () => {
-                            setDisableBtn(true)
-                            const response = await getInventories(props.dispatchInventory, {limit: limit})
-                            if(response.status == 200){ setFilterModalShown(false) }
-                            setDisableBtn(false)
-                        }
+                        onClick: () => {getInventories(
+                            props.dispatchInventory, {limit: limit},
+                            {
+                                before: () => {setDisableBtn(true)},
+                                success: () => {
+                                    setDisableBtn(false)
+                                    setFilterModalShown(false)
+                                },
+                                failed: (error) => {
+                                    setDisableBtn(false)
+                                    setFilterModalShown(false)
+                                }                                
+                            }
+                        )}
                     }}
                 />                
             }
@@ -201,54 +229,77 @@ const GenerateInventories = ({inventories, editInventory}) => {
     </>)
 }
 
-const getInventories = async (dispatchInventory, filters = {}, actionType = '') => {
+const getInventories = (dispatchInventory, filters = {}, callbacks = {}, actionType = '') => {
     // Merged the applied filters with new filters
-    filters = {...getResFilters(INVENTORY_FILTER_KEY), ...filters}
+    filters = {
+        ...getResFilters(INVENTORY_FILTER_KEY), ...filters
+    }
     // When the inventory is refreshed, set the offset to 0
     if(actionType === ''){
         filters.offset = 0
     }
-    const response = await api.get(`/inventories${getQueryString(filters)}`)
-  
-    if(response.status && response.status == 200){
-        dispatchInventory({type: actionType, payload: response.data})
-        return response
+    if(callbacks.before){
+        callbacks.before()
     }
-    else{
-        return response.response
-    }
+    api.get(`/inventories${getQueryString(filters)}`)
+       .then(response => {
+            if(callbacks.success){
+                callbacks.success()
+            }               
+            dispatchInventory({type: actionType, payload: response.data})
+       })
+       .catch(error => {
+            if(callbacks.failed){
+                callbacks.failed(error)
+            }   
+            errorHandler(error) 
+       })
 }
 
-const storeInventory = async (dispatchInventory, reqBody) => { 
-    const response = await api.post('/inventories', {
-        name: reqBody.name, inventory_sizes: JSON.stringify(reqBody.sizes)
+const storeInventory = (dispatchInventory, reqBody, callbacks) => {
+    if(callbacks.before){
+        callbacks.before()
+    }    
+    api.post('/inventories', {
+        ...reqBody, inventory_sizes: JSON.stringify(reqBody.inventory_sizes)
     })
-    if(response.status && response.status == 200){
+    .then(response => {
+        if(callbacks.success){
+            callbacks.success()
+        }           
         dispatchInventory({
             type: INVENTORY_ACTIONS.PREPEND, 
             payload: {inventories: response.data.inventory}
         })
-        return response
-    }
-    else{
-        return response.response
-    }       
+    })
+    .catch(error => {
+        if(callbacks.failed){
+            callbacks.failed(error)
+        }             
+    })           
 }
 
-const updateInventory = async (dispatchInventory, reqBody, index, id) => {
-    const response = await api.put(`/inventories/${id}`, {
-        name: reqBody.name, inventory_sizes: JSON.stringify(reqBody.sizes)
-    })
-    if(response.status && response.status == 200){
+const updateInventory = (dispatchInventory, reqBody, id, index, callbacks) => {
+    if(callbacks.before){
+        callbacks.before()
+    }     
+    api.put(`/inventories/${id}`, {
+        ...reqBody, inventory_sizes: JSON.stringify(reqBody.inventory_sizes)
+    })     
+    .then(response => {
+        if(callbacks.success){
+            callbacks.success()
+        }           
         dispatchInventory({
             type: INVENTORY_ACTIONS.REPLACE, 
             payload: {inventory: response.data.inventory, index: index}
-        })
-        return response
-    }
-    else{
-        return response.response
-    }           
-}
+        })                
+    })
+    .catch(error => {
+        if(callbacks.failed){
+            callbacks.failed(error)
+        }             
+    })        
+} 
 
 export default InventoryPage

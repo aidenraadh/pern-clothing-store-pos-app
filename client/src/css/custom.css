@@ -688,6 +688,28 @@
 	width: 36rem;
 }
 
+.inventories-container .inventory{
+	padding: 1rem 0;
+	border-bottom: 0.1rem solid #D9D9D9;
+}
+
+.inventories-container .inventory:first-child{
+	padding: 0 0 1rem;
+	border-bottom: 0.1rem solid #D9D9D9;
+}
+
+.inventories-container .inventory:last-child{
+	padding: 1rem 0 0;
+	border-bottom: none;
+}
+
 .inventories-container .name{
 	text-transform: capitalize;
+}
+
+.inventories-container .actions > *{
+	margin-right: 1rem;
+}
+.inventories-container .actions > *:last-child{
+	margin-right: 0;
 }

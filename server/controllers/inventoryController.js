@@ -182,7 +182,7 @@ const validateInput = async (req, input) => {
             // Make sure the inventory name is unique
             name: Joi.string().required().trim().max(100).external(async (value, helpers) => {
                 const filters = [
-                    Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), Sequelize.fn('lower', 'inVentorY 1')),
+                    Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), Sequelize.fn('lower', value)),
                     {owner_id: req.user.id}
                 ]                
                 // When the inventory is updated

@@ -10,16 +10,14 @@ export const api = axios.create({
 })
 
 // Handle errors from API request
-export const errorHandler = (error) => {        
-    // User is not authenticated
-    if(error.response.status === 401){
-        logout()
-    }
-    // Not user input error
-    else if(error.response.status !== 400){
-		alert(error.response)
-        console.log(error.response)
-    }
+export const errorHandler = (error, callbacks = {}) => {
+	callbacks['401'] = () => {logout()}
+	callbacks['500'] = () => {alert(error.response.data.message)}   
+	for(const status in callbacks){
+		if(error.response.status == 401){ callbacks['401']() }
+		if(error.response.status == 500){ callbacks['500']() }
+		if(error.response.status == status){ callbacks[status]() }
+	} 
 }
 
 /**
