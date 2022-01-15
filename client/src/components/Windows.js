@@ -1,4 +1,6 @@
 import {useRef, useEffect} from 'react';
+import {Button} from './Buttons';
+import {SVGIcons} from './Misc';
 
 export function Modal(props){
     const modalRef = useRef()
@@ -62,25 +64,73 @@ Modal.defaultProps = {
 	attr: {} // Object
 }
 
-// export function confirmPopup(msg, trueCallback = null, falseCallback = null, callingComponent = null){
-// 	let status = confirm(msg);
-// 	if(status && trueCallback){
-// 		trueCallback(callingComponent);
-// 	}
-// 	else if(!status && falseCallback){
-// 		falseCallback(callingComponent);
-// 	}	
-// }
+export function ConfirmPopup(props){
+    const popupRef = useRef()
+    const classes = props.classes ? ` ${props.classes}` : ''
 
-// export function promptPopup(msg, defaultValue, trueCallback = null, falseCallback = null, callingComponent = null){
-// 	let input = prompt(msg, (defaultValue ? defaultValue : ''));
-// 	if(input && trueCallback){
-// 		trueCallback(input, callingComponent);
-// 	}
-// 	else if(!input && falseCallback){
-// 		falseCallback(input, callingComponent);
-// 	}	
-// }
+    useEffect(() => {
+        const popup = popupRef.current;
+        let popupOverlay = popup.children[0];
+        let popupContent = popupOverlay.children[0];
+
+        if(props.shown){
+            popup.classList.add('shown')
+            popupOverlay.classList.add('shown')
+            popupContent.classList.add('shown')
+        }
+        else{
+            if(popup.classList.contains('shown')){
+                popupContent.classList.remove('shown')
+                popupOverlay.classList.remove('shown')
+                popupOverlay.addEventListener('transitionend', () => {
+                    popup.classList.remove('shown')
+                }, {once: true})
+            }
+        }
+    }, [props.shown])
+
+    return (
+      	<section className={'confirm-popup'+classes} ref={popupRef} {...props.attr}>
+      		<div className="overlay">
+      			<div className="confirm-popup-content text-center">
+
+
+                      <div className='text-semi-bold flex-col content-center'>
+                          {props.icon ? <SVGIcons name={props.icon} color={props.iconColor} /> : ''}                          
+                          {props.title}
+                      </div>
+                      <div>{props.body}</div>
+                      <div>
+                          <Button type="light" size={'sm'} color={'blue'} text={props.confirmText} attr={{
+                              onClick: () => {
+                                  props.confirmCallback()
+                                  props.togglePopup()
+                              }
+                          }}/>
+                          <Button type="light" size={'sm'} color={'red'} text={props.cancelText} attr={{
+                                style: {marginLeft: '1rem'},
+                                onClick: props.togglePopup
+                          }}/>                          
+                      </div>
+      			</div>  		
+      		</div>          	
+      	</section>
+    )
+}
+
+ConfirmPopup.defaultProps = {
+    icon: '', // String
+    iconColor: 'blue', // String
+    title: 'Lorem ipsum', // String|JSX
+    body: 'Lorem ipsum', // String|JSX
+    confirmText: 'Yes', // String|JSX
+    cancelText: 'No', // String|JSX
+    shown: false, // Boolean - Must from parent's state
+    togglePopup: () => {alert('Please defined the togglePopup function')},
+    confirmCallback: () => {alert('Please defined the confirmCallback function')},
+    classes: '', // String
+	attr: {} // Object
+}
 
 // export class LoadingScreen extends React.Component{
 //     constructor(props){
@@ -150,81 +200,4 @@ Example:
 	loading_text={'Please wait...'} // optional
 	loader_color={'white|blue'} // optional
 />
-*/
-
-// export class MediaViewer extends React.Component{
-//     constructor(props){
-//         super(props);
-//         this.state = {
-//             shown: false,
-//         };
-
-//         this.toggleMediaViewer = this.toggleMediaViewer.bind(this);
-//     }
-
-//     generateMedia(){
-//         switch(this.props.media.type){
-//             case 'image': return (
-//                 <img src={this.props.media.src} />
-//             ); break;
-//             default: return 'media type is invalid';
-//         }
-//     }
-
-//     toggleMediaViewer(){
-//         this.setState((state) => ({
-//             shown: !(state.shown)
-//         }));
-//     }
-
-//     componentDidMount(){
-//         this.props.getToggleMediaViewer(
-//             this.props.media_viewer_name,
-//             this.toggleMediaViewer
-//         );
-//     }
-
-//     render(){
-//         const classes = (this.props.container_classes ? ' '+this.props.container_classes : '');
-
-//         return (
-//         <section id={this.props.media_viewer_name} className={
-//             'media-viewer flex-row content-center items-center'+(this.state.shown ? ' shown' : '')+
-//             classes
-//             }
-//             {...this.props.container_attr}
-//         >
-//             <button className="text-white"
-//                 type="button" onClick={() => this.toggleMediaViewer(false)}
-//             >
-//                 &times;
-//             </button>
-//             <div className="media">
-//                 {this.generateMedia()}
-//             </div>
-//         </section>
-//         );
-//     }
-// }
-
-/*
-
-Example:
-
-<MediaViewer
-	media_viewer_name={'media_viewer_name'}
-    getToggleMediaViewer={this.getToggleMediaViewer}
-    media={{
-        type: 'image|video|audio',
-        // Add another media attributes
-    }}
-/>
-*/
-
-/*
-	getToggleLDS(lds_name, toggle_lds){
-		this.setState({
-			[lds_name]: toggle_lds,
-		});
-	}
 */

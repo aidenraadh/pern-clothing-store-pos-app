@@ -10,7 +10,7 @@ const logger         = require('../utils/logger')
 exports.index = async (req, res) => {    
     try {
         // Set filters
-        const filters = {owner_id: req.user.owner_id}
+        const filters = {}
         req.query.name ? filters.name = {[Op.like]: `%${req.query.name}%`} : null
 
         // Set limit and offset
@@ -19,7 +19,7 @@ exports.index = async (req, res) => {
             offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0
         }
         const inventories = await Inventory.findAll({
-            where: filters,
+            where: {...filters, owner_id: req.user.owner_id},
             include: [{
                 model: InventorySize, as: 'sizes', 
                 attributes: ['id', 'name', 'production_price', 'selling_price']

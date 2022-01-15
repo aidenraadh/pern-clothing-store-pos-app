@@ -4,6 +4,7 @@ export const INVENTORY_FILTER_KEY = 'inventory'
 
 export const INVENTORY_INIT_STATE = {
     inventories: null, // Array of inventories
+    canLoadMore: true, // Wheter or not the inventories can be loaded more 
 }
 export const INVENTORY_ACTIONS = {
     APPEND: 'APPEND', 
@@ -24,7 +25,8 @@ export const inventoryReducer = (state, action) => {
                     Array.isArray(payload.inventories) ? 
                     [...state.inventories, ...payload.inventories] : 
                     [...state.inventories, payload.inventories]
-                ) 
+                ),
+                canLoadMore: payload.inventories.length < payload.filters.limit ? false : true
             }; 
         // Prepend array of inventory(s) to 'inventories'
         case INVENTORY_ACTIONS.PREPEND: 
@@ -33,7 +35,8 @@ export const inventoryReducer = (state, action) => {
                     Array.isArray(payload.inventories) ? 
                     [...payload.inventories, ...state.inventories] : 
                     [payload.inventories, ...state.inventories]                
-                )
+                ),
+
             };
         // Replace inventory inside 'inventories'
         case INVENTORY_ACTIONS.REPLACE: 
@@ -60,7 +63,8 @@ export const inventoryReducer = (state, action) => {
             }; 
         // Refresh the inventory resource
         default: return {
-            inventories: payload.inventories
+            ...state, inventories: [...payload.inventories],
+            canLoadMore: payload.inventories.length < payload.filters.limit ? false : true
         };
     }
 }

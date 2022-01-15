@@ -1,10 +1,10 @@
-import {useReducer, useState, useRef} from 'react'
+import {useReducer, useState, useEffect} from 'react'
 import {INVENTORY_ACTIONS, INVENTORY_FILTER_KEY} from '../reducers/InventoryReducer'
 import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
-import {Modal} from '../Windows'
+import {Modal, ConfirmPopup} from '../Windows'
 import Table from '../Table'
 import {SVGIcons} from '../Misc'
 
@@ -17,11 +17,45 @@ function InventoryPage(props){
     const [invSizes, dispatchInvSizes] = useReducer(sizesReducer, [])
     const [modalHeading, setModalHeading] = useState('')
     const [modalShown, setModalShown] = useState(false)
+    /* Delete inventory */
+    const [popupShown, setPopupShown] = useState(false)
     /* Filter inventory */
-    const initFilters = useRef(getResFilters(INVENTORY_FILTER_KEY))
-    const [limit, setLimit] = useState(initFilters.current.limit ? initFilters.current.limit : 10)
+    const initFilters = getResFilters(INVENTORY_FILTER_KEY)
+    const [limit, setLimit] = useState(initFilters.limit ? initFilters.limit : 10)
     const [filterModalShown, setFilterModalShown] = useState(false)
 
+    useEffect(() => {
+        if(props.inventory.inventories === null){
+            getInventories()
+        }
+    })
+    const getInventories = (actionType = '') => {
+        // Merged the applied filters with new filters
+        const filters = {
+            ...getResFilters(INVENTORY_FILTER_KEY), limit: limit
+        }
+        // When the inventory is refreshed, set the offset to 0
+        filters.offset = actionType === '' ? 0 : (filters.offset + filters.limit)
+
+        if(props.inventory.inventories !== null){
+            setDisableBtn(true)
+        }
+        api.get(`/inventories${getQueryString(filters)}`)
+           .then(response => {
+                if(props.inventory.inventories !== null){
+                    setDisableBtn(false)
+                    setFilterModalShown(false)
+                }                          
+                props.dispatchInventory({type: actionType, payload: response.data})
+           })
+           .catch(error => {
+                if(props.inventory.inventories !== null){
+                    setDisableBtn(false)
+                    setFilterModalShown(false)
+                }   
+                errorHandler(error) 
+           })
+    }    
     const createInventory = () => {
         setInvIndex('')
         setInvId('')
@@ -30,6 +64,24 @@ function InventoryPage(props){
         setModalHeading('Create New Inventory')      
         setModalShown(true)
     } 
+    const storeInventory = () => {
+        setDisableBtn(true)
+        api.post('/inventories', {
+            name: invName, inventory_sizes: JSON.stringify(invSizes)
+        })
+        .then(response => {
+            setDisableBtn(false)
+            setModalShown(false)           
+            props.dispatchInventory({
+                type: INVENTORY_ACTIONS.PREPEND, 
+                payload: {inventories: response.data.inventory}
+            })
+        })
+        .catch(error => {
+            setDisableBtn(false)
+            errorHandler(error, {'400': () => {alert(error.response.data.message)}})           
+        })           
+    }    
     const editInventory = (index, id, name, sizes) => {
         setInvIndex(index)
         setInvId(id)
@@ -37,14 +89,48 @@ function InventoryPage(props){
         dispatchInvSizes({payload: sizes})
         setModalHeading(`Edit ${name}`)
         setModalShown(true)
-    }        
-    // When the inventory resource is not set yet
-    if(props.inventory.inventories === null){
-        // Get the resource
-        getInventories(props.dispatchInventory)
-        // Return loading UI
-        return 'Loading...'
+    }    
+    const updateInventory = () => {
+        setDisableBtn(true)   
+        api.put(`/inventories/${invId}`, {
+            name: invName, inventory_sizes: JSON.stringify(invSizes)
+        })     
+        .then(response => {
+            setDisableBtn(false)
+            setModalShown(false)            
+            props.dispatchInventory({
+                type: INVENTORY_ACTIONS.REPLACE, 
+                payload: {inventory: response.data.inventory, index: invIndex}
+            })                
+        })
+        .catch(error => {
+            setDisableBtn(false)
+            errorHandler(error, {'400': () => {alert(error.response.data.message)}})               
+        })        
+    }    
+    const confirmDeleteInventory = (id, index) => {
+        setInvId(id)
+        setInvIndex(index)
+        setPopupShown(true)
+    }   
+    const deleteInventory = () => {
+        api.delete(`/inventories/${invId}`)     
+           .then(response => {        
+               props.dispatchInventory({
+                   type: INVENTORY_ACTIONS.REMOVE, 
+                   payload: {indexes: invIndex}
+               })                
+           })
+           .catch(error => {
+               setDisableBtn(false)
+               errorHandler(error, {'400': () => {alert(error.response.data.message)}})               
+           })          
     }
+    // When the inventory resource is not set yet
+    // Return loading UI
+    if(props.inventory.inventories === null){
+        return 'Loading...'
+    }    
     return (<>
         <section className='flex-row content-end items-center' style={{marginBottom: '2rem'}}>
             <Button text={'Filter'} size={'sm'} iconName={'sort_1'} attr={{
@@ -58,7 +144,15 @@ function InventoryPage(props){
                 <GenerateInventories 
                     inventories={props.inventory.inventories} 
                     editInventory={editInventory}
+                    confirmDeleteInventory={confirmDeleteInventory}
                 />
+                {
+                    props.inventory.canLoadMore ? 
+                    <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
+                    onClick={() => {getInventories(INVENTORY_ACTIONS.APPEND)}}>
+                        Load More
+                    </button> : ''
+                }                
             </>}
         />
         <Modal
@@ -112,33 +206,10 @@ function InventoryPage(props){
             </>}        
             footer={
                 <Button size={'sm'} text={'Save Changes'} attr={{
-                    disabled: disableBtn,
-                        onClick: () => {invIndex !== '' && invId !== '' ? 
-                            updateInventory(
-                                props.dispatchInventory, {name: invName, inventory_sizes: invSizes}, 
-                                invId, invIndex, {
-                                before: () => {setDisableBtn(true)},
-                                success: () => {
-                                    setDisableBtn(false)
-                                    setModalShown(false)
-                                },
-                                failed: (error) => {
-                                    setDisableBtn(false)
-                                    errorHandler(error, {'400': () => {alert(error.response.data.message)}})
-                                }                                    
-                            }) : 
-                            storeInventory(
-                                props.dispatchInventory, {name: invName, inventory_sizes: invSizes}, {
-                                before: () => {setDisableBtn(true)},
-                                success: () => {
-                                    setDisableBtn(false)
-                                    setModalShown(false)
-                                },
-                                failed: (error) => {
-                                    setDisableBtn(false)
-                                    errorHandler(error, {'400': () => {alert(error.response.data.message)}})
-                                }
-                            })
+                        disabled: disableBtn,
+                        onClick: () => {
+                            invIndex !== '' && invId !== '' ? 
+                            updateInventory() : storeInventory()
                         }
                     }}
                 />                
@@ -159,26 +230,22 @@ function InventoryPage(props){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getInventories(
-                            props.dispatchInventory, {limit: limit},
-                            {
-                                before: () => {setDisableBtn(true)},
-                                success: () => {
-                                    setDisableBtn(false)
-                                    setFilterModalShown(false)
-                                },
-                                failed: (error) => {
-                                    setDisableBtn(false)
-                                    setFilterModalShown(false)
-                                }                                
-                            }
-                        )}
+                        onClick: () => {getInventories()}
                     }}
                 />                
             }
             shown={filterModalShown}
             toggleModal={() => {setFilterModalShown(state => !state)}}
         />        
+        <ConfirmPopup
+            icon={'warning_1'}
+            title={'Warning'}
+            body={'Are you sure want to remove this inventory?'}
+            confirmText={'Remove'}
+            cancelText={'Cancel'}
+            shown={popupShown} togglePopup={() => {setPopupShown(state => !state)}} 
+            confirmCallback={deleteInventory}
+        />
     </>)
 }
 
@@ -205,7 +272,7 @@ const sizesReducer = (state, action) => {
     }
 }
 
-const GenerateInventories = ({inventories, editInventory}) => {
+const GenerateInventories = ({inventories, editInventory, confirmDeleteInventory}) => {
     return (<>
         <div className="inventories-container">
             {inventories.map((inventory, key) => (
@@ -221,6 +288,10 @@ const GenerateInventories = ({inventories, editInventory}) => {
                         />
                         <Button 
                             size={'sm'} type={'light'} text={'Delete'} color={'red'}
+                            attr={{onClick: () => {
+                                    confirmDeleteInventory(inventory.id, key)
+                                }
+                            }}                            
                         />                        
                     </span>             
                 </div>
@@ -228,78 +299,5 @@ const GenerateInventories = ({inventories, editInventory}) => {
         </div>    
     </>)
 }
-
-const getInventories = (dispatchInventory, filters = {}, callbacks = {}, actionType = '') => {
-    // Merged the applied filters with new filters
-    filters = {
-        ...getResFilters(INVENTORY_FILTER_KEY), ...filters
-    }
-    // When the inventory is refreshed, set the offset to 0
-    if(actionType === ''){
-        filters.offset = 0
-    }
-    if(callbacks.before){
-        callbacks.before()
-    }
-    api.get(`/inventories${getQueryString(filters)}`)
-       .then(response => {
-            if(callbacks.success){
-                callbacks.success()
-            }               
-            dispatchInventory({type: actionType, payload: response.data})
-       })
-       .catch(error => {
-            if(callbacks.failed){
-                callbacks.failed(error)
-            }   
-            errorHandler(error) 
-       })
-}
-
-const storeInventory = (dispatchInventory, reqBody, callbacks) => {
-    if(callbacks.before){
-        callbacks.before()
-    }    
-    api.post('/inventories', {
-        ...reqBody, inventory_sizes: JSON.stringify(reqBody.inventory_sizes)
-    })
-    .then(response => {
-        if(callbacks.success){
-            callbacks.success()
-        }           
-        dispatchInventory({
-            type: INVENTORY_ACTIONS.PREPEND, 
-            payload: {inventories: response.data.inventory}
-        })
-    })
-    .catch(error => {
-        if(callbacks.failed){
-            callbacks.failed(error)
-        }             
-    })           
-}
-
-const updateInventory = (dispatchInventory, reqBody, id, index, callbacks) => {
-    if(callbacks.before){
-        callbacks.before()
-    }     
-    api.put(`/inventories/${id}`, {
-        ...reqBody, inventory_sizes: JSON.stringify(reqBody.inventory_sizes)
-    })     
-    .then(response => {
-        if(callbacks.success){
-            callbacks.success()
-        }           
-        dispatchInventory({
-            type: INVENTORY_ACTIONS.REPLACE, 
-            payload: {inventory: response.data.inventory, index: index}
-        })                
-    })
-    .catch(error => {
-        if(callbacks.failed){
-            callbacks.failed(error)
-        }             
-    })        
-} 
 
 export default InventoryPage

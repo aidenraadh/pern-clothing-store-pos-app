@@ -1643,6 +1643,73 @@ All button in the group must be in the same size
 
 /*
 |--------------------------------------------------------------------------
+| Confirm Popup
+|--------------------------------------------------------------------------
+*/
+
+.confirm-popup{
+	position: fixed;
+  	top: 0; left: 0;
+  	z-index: 98;
+  	width: 100vw;
+  	height: 100vh;
+  	visibility: hidden;
+}
+
+.confirm-popup.shown{
+  	visibility: visible;
+}
+
+.confirm-popup .overlay{
+  	position: absolute;
+  	top: 0; left: 0;
+  	display: flex;
+  	width: 100%;
+  	height: 100%;
+  	flex-direction: row;
+  	justify-content: center;
+  	align-items: center;
+  	background-color: rgba(0,0,0,0.3);
+  	opacity: 0;
+  	transition: opacity 0.3s;
+}
+
+.confirm-popup .overlay.shown{
+  	opacity: 1;
+}
+
+.confirm-popup .confirm-popup-content{
+  	width: auto;
+	max-height: 60vh;
+	padding: 1.4rem 1.8rem;
+  	border-radius: 0.55rem;
+	opacity: 0;
+	transform: translateY(-8%);
+  	background-color: #FFFFFF;
+  	box-shadow: rgba(0, 0, 0, 0.1) 0px 6.5px 13px 0px;  
+	transition-property: opacity, transform;
+	transition-duration: 0.3s, 0.3s;
+}
+
+.confirm-popup .confirm-popup-content > div{
+	margin-bottom: 1.6rem;
+}
+.confirm-popup .confirm-popup-content > div:last-child{
+	margin-bottom: 0;
+}
+
+.confirm-popup .confirm-popup-content .svg-icon{
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.confirm-popup .confirm-popup-content.shown{
+	transform: translateY(0);
+  	opacity: 1;
+}
+
+/*
+|--------------------------------------------------------------------------
 | Media Viewer
 |--------------------------------------------------------------------------
 */

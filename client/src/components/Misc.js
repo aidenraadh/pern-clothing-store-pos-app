@@ -52,7 +52,7 @@ angle_left, calendar,angle_double_up,angle_double_right
 
 --------------- CODE ---------------
 
-stop,done_circle
+stop,done_circle, warning_1, warning_2,
 
 --------------- TEXT ---------------
 
@@ -688,7 +688,31 @@ export function SVGIcons(props){
 				</g>
 				</svg>
 			</span>			
-		),		
+		),	
+		warning_1: (
+			<span className={"svg-icon "+color} aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
+				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+					<rect x="0" y="0" width="24" height="24"/>
+					<circle className="path fade" cx="12" cy="12" r="10"/>
+					<rect className="path" x="11" y="7" width="2" height="8" rx="1"/>
+					<rect className="path" x="11" y="16" width="2" height="2" rx="1"/>
+				</g>
+				</svg>
+			</span>			
+		),
+		warning_2: (
+			<span className={"svg-icon "+color} aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
+				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+					<rect x="0" y="0" width="24" height="24"/>
+					<path className="path fade" d="M11.1669899,4.49941818 L2.82535718,19.5143571 C2.557144,19.9971408 2.7310878,20.6059441 3.21387153,20.8741573 C3.36242953,20.9566895 3.52957021,21 3.69951446,21 L21.2169432,21 C21.7692279,21 22.2169432,20.5522847 22.2169432,20 C22.2169432,19.8159952 22.1661743,19.6355579 22.070225,19.47855 L12.894429,4.4636111 C12.6064401,3.99235656 11.9909517,3.84379039 11.5196972,4.13177928 C11.3723594,4.22181902 11.2508468,4.34847583 11.1669899,4.49941818 Z"/>
+					<rect className="path" x="11" y="9" width="2" height="7" rx="1"/>
+					<rect className="path" x="11" y="17" width="2" height="2" rx="1"/>
+				</g>
+				</svg>
+			</span>			
+		),
 	};
 
 	return icons[props.name];
