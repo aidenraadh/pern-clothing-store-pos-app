@@ -5,6 +5,32 @@ const Joi        = require('joi')
 const filterKeys = require('../utils/filterKeys')
 const logger     = require('../utils/logger')
 
+exports.index = async (req, res) => {    
+    try {
+        // Set filters
+        const filters = {}
+        req.query.name ? filters.name = {[Op.like]: `%${req.query.name}%`} : null
+
+        // Set limit and offset
+        const limitOffset = {
+            limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
+            offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0
+        }
+        const stores = await Store.findAll({
+            where: {...filters, owner_id: req.user.owner_id},
+            order: [['id', 'DESC']],
+            ...limitOffset
+        })
+        res.send({
+            stores: stores,
+            filters: {...filters, ...limitOffset}
+        })
+    } catch(err) {
+        logger.error(err.message)
+        res.status(500).send(err.message)
+    }
+}
+
 exports.store = async (req, res) => {
     try {
         // Validate the input
