@@ -8,27 +8,28 @@ const logger     = require('../utils/logger')
 exports.index = async (req, res) => {    
     try {
         // Set filters
-        const filters = {}
+        const filters = {
+            where: {},
+            limitOffset: {
+                limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
+                offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
+            }
+        }
         if(req.query.name){
             const {value, error} = Joi.string().required().trim().validate(req.query.name)
             if(error === undefined){
-                filters.name = {[Op.iLike]: `%${value}%`}
+                filters.where.name = {[Op.iLike]: `%${value}%`}
             }
         }
-
-        // Set limit and offset
-        const limitOffset = {
-            limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
-            offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0
-        }
         const stores = await Store.findAll({
-            where: {...filters, owner_id: req.user.owner_id},
+            where: {...filters.where, owner_id: req.user.owner_id},
             order: [['id', 'DESC']],
-            ...limitOffset
+            ...filters.limitOffset
         })
+        if(filters.where.name){ filters.where.name = req.query.name.trim() }
         res.send({
             stores: stores,
-            filters: {...filters, ...limitOffset}
+            filters: {...filters.where, ...filters.limitOffset}
         })
     } catch(err) {
         logger.error(err.message)

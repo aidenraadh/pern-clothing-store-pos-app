@@ -18,7 +18,11 @@ function StorePage(props){
     const [popupShown, setPopupShown] = useState(false)
     /* Filter store */
     const initFilters = getResFilters(STORE_FILTER_KEY)
-    const [limit, setLimit] = useState(initFilters.limit ? initFilters.limit : 10)
+    const [filters, setFilters] = useState({
+        name: initFilters.name ? initFilters.name : '',
+        limit: initFilters.limit ? initFilters.limit : 10, 
+        offset: initFilters.offset ? initFilters.offset : 0, 
+    })
     const [filterModalShown, setFilterModalShown] = useState(false)
 
     useEffect(() => {
@@ -27,17 +31,15 @@ function StorePage(props){
         }
     })
     const getStores = (actionType = '') => {
-        // Merged the applied filters with new filters
-        const filters = {
-            ...getResFilters(STORE_FILTER_KEY), limit: limit
-        }
-        // When the store is refreshed, set the offset to 0
-        filters.offset = actionType === '' ? 0 : (filters.offset + filters.limit)
+        // Get the queries
+        const queries = {...filters}
+        // When the inventory is refreshed, set the offset to 0
+        queries.offset = actionType === '' ? 0 : (queries.offset + queries.limit)
 
         if(props.store.stores !== null){
             setDisableBtn(true)
         }
-        api.get(`/stores${getQueryString(filters)}`)
+        api.get(`/stores${getQueryString(queries)}`)
            .then(response => {
                 if(props.store.stores !== null){
                     setDisableBtn(false)
@@ -76,7 +78,7 @@ function StorePage(props){
                 errorHandler(error, {'400': () => {alert(error.response.data.message)}})           
             })           
     }    
-    const editStore = (index, id, name, sizes) => {
+    const editStore = (index, id, name) => {
         setStoreIndex(index)
         setStoreId(id)
         setStoreName(name)
@@ -132,6 +134,20 @@ function StorePage(props){
         </section>
         <PlainCard
             body={<>
+                <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
+                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
+                        iconName={'search'}
+                        formAttr={{value: filters.name, placeholder: 'Search store', onChange: (e) => {
+                                setFilters(state => ({...state, name: e.target.value}))
+                            }
+                        }} 
+                    />   
+                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                            style: {flexShrink: '0'},
+                            onClick: () => {getStores()}
+                        }}
+                    />                                       
+                </div>            
                 <GenerateStores 
                     stores={props.store.stores} 
                     editStore={editStore}
@@ -170,7 +186,12 @@ function StorePage(props){
             heading={'Filter'}
             body={<>
                 <Select label={'Rows shown'} 
-                    formAttr={{value: limit, onChange: e => {setLimit(parseInt(e.target.value))}}}
+                    formAttr={{
+                        value: filters.limit,
+                        onChange: e => {
+                            setFilters(state => ({...state, limit: parseInt(e.target.value)}))
+                        }
+                    }}
                     options={[
                         {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
                     ]}

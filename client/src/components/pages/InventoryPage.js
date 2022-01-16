@@ -34,10 +34,10 @@ function InventoryPage(props){
         }
     })
     const getInventories = (actionType = '') => {
-        // Merged the applied filters with new filters
+        // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === '' ? 0 : (filters.offset + filters.limit)
+        queries.offset = actionType === '' ? 0 : (queries.offset + queries.limit)
 
         if(props.inventory.inventories !== null){
             setDisableBtn(true)
@@ -143,6 +143,20 @@ function InventoryPage(props){
         </section>
         <PlainCard
             body={<>
+                <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
+                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
+                        iconName={'search'}
+                        formAttr={{value: filters.name, placeholder: 'Search inventory', onChange: (e) => {
+                                setFilters(state => ({...state, name: e.target.value}))
+                            }
+                        }} 
+                    />   
+                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                            style: {flexShrink: '0'},
+                            onClick: () => {getInventories()}
+                        }}
+                    />                                       
+                </div>
                 <GenerateInventories 
                     inventories={props.inventory.inventories} 
                     editInventory={editInventory}
@@ -277,10 +291,6 @@ const sizesReducer = (state, action) => {
             })()
         default: return action.payload;
     }
-}
-
-const filtersReducer = (state, action) => {
-
 }
 
 const GenerateInventories = ({inventories, editInventory, confirmDeleteInventory}) => {
