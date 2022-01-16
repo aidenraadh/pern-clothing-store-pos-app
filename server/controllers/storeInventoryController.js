@@ -171,7 +171,7 @@ const validateInput = async (req, input) => {
                         }
                     })
                 })
-                // Convert the invetory amount back to JSON and return it
+                // Convert the inventory amount back to JSON and return it
                 // if there are any size stored, otherwise return null
                 return Object.keys(amount).length ? JSON.stringify(amount) : null
             })            

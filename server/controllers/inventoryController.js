@@ -11,8 +11,12 @@ exports.index = async (req, res) => {
     try {
         // Set filters
         const filters = {}
-        req.query.name ? filters.name = {[Op.like]: `%${req.query.name}%`} : null
-
+        if(req.query.name){
+            const {value, error} = Joi.string().required().trim().validate(req.query.name)
+            if(error === undefined){
+                filters.name = {[Op.iLike]: `%${value}%`}
+            }
+        }
         // Set limit and offset
         const limitOffset = {
             limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,

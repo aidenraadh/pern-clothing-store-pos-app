@@ -21,7 +21,11 @@ function InventoryPage(props){
     const [popupShown, setPopupShown] = useState(false)
     /* Filter inventory */
     const initFilters = getResFilters(INVENTORY_FILTER_KEY)
-    const [limit, setLimit] = useState(initFilters.limit ? initFilters.limit : 10)
+    const [filters, setFilters] = useState({
+        name: initFilters.name ? initFilters.name : '',
+        limit: initFilters.limit ? initFilters.limit : 10, 
+        offset: initFilters.offset ? initFilters.offset : 0, 
+    })
     const [filterModalShown, setFilterModalShown] = useState(false)
 
     useEffect(() => {
@@ -31,16 +35,14 @@ function InventoryPage(props){
     })
     const getInventories = (actionType = '') => {
         // Merged the applied filters with new filters
-        const filters = {
-            ...getResFilters(INVENTORY_FILTER_KEY), limit: limit
-        }
+        const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        filters.offset = actionType === '' ? 0 : (filters.offset + filters.limit)
+        queries.offset = actionType === '' ? 0 : (filters.offset + filters.limit)
 
         if(props.inventory.inventories !== null){
             setDisableBtn(true)
         }
-        api.get(`/inventories${getQueryString(filters)}`)
+        api.get(`/inventories${getQueryString(queries)}`)
            .then(response => {
                 if(props.inventory.inventories !== null){
                     setDisableBtn(false)
@@ -221,7 +223,12 @@ function InventoryPage(props){
             heading={'Filter'}
             body={<>
                 <Select label={'Rows shown'} 
-                    formAttr={{value: limit, onChange: e => {setLimit(parseInt(e.target.value))}}}
+                    formAttr={{
+                        value: filters.limit,
+                        onChange: e => {
+                            setFilters(state => ({...state, limit: parseInt(e.target.value)}))
+                        }
+                    }}
                     options={[
                         {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
                     ]}
@@ -270,6 +277,10 @@ const sizesReducer = (state, action) => {
             })()
         default: return action.payload;
     }
+}
+
+const filtersReducer = (state, action) => {
+
 }
 
 const GenerateInventories = ({inventories, editInventory, confirmDeleteInventory}) => {
