@@ -36,7 +36,7 @@ export const saveResFilters = (key, filters) => {
 	else{
 		resourceFilters = JSON.parse(resourceFilters)
 	}
-	resourceFilters[key] = {...resourceFilters[key], ...filters}
+	resourceFilters[key] = {...filters}
 	localStorage.setItem('resource_filters', JSON.stringify(resourceFilters))
 }
 

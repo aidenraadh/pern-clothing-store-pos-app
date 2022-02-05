@@ -10,11 +10,56 @@ const logger         = require('../utils/logger')
 exports.index = async (req, res) => {    
     try {
         // Set limit and offset
-        const limitOffset = {
-            limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
-            offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0
+        const filters = {
+            where: {},
+            limitOffset: {
+                limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
+                offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
+            }
         }
+        if(req.query.store_id){
+            const {value, error} = Joi.number().required().integer().validate(req.query.store_id)
+            if(error === undefined){
+                filters.where.store_id = value
+            }            
+        }
+        const stores = await Store.findAll({
+            where: {owner_id: req.user.owner_id},
+            attributes: ['id', 'name'],
+            order: [['id', 'DESC']],
+        })
+        const storeInvs = await StoreInventory.findAll({
+            where: {...filters.where},
+            include: [
+                {
+                    model: Store, as: 'store', 
+                    attributes: ['id', 'name'],
+                    where: {owner_id: req.user.owner_id}
+                },
+                {
+                    model: Inventory, as: 'inventory', 
+                    attributes: ['id', 'name'],
+                    where: {owner_id: req.user.owner_id},
+                    include: [{
+                        model: InventorySize, as: 'sizes', 
+                        attributes: ['id', 'name', 'production_price', 'selling_price']                        
+                    }]
+                }                
+            ],
+            order: [['created_at', 'DESC']],
+            ...filters.limitOffset
+        })
 
+        res.send({
+            storeInvs: storeInvs, 
+            stores: stores,
+            filters: {
+                ...filters.where,
+                ...filters.limitOffset
+            }
+        })          
+
+        
     } catch(err) {
         logger.error(err.message)
         res.status(500).send(err.message)

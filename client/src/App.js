@@ -9,11 +9,13 @@ import {UserThumbnail} from './components/Misc'
 
 import {inventoryReducer, INVENTORY_INIT_STATE} from "./components/reducers/InventoryReducer";
 import {storeReducer, STORE_INIT_STATE} from "./components/reducers/StoreReducer";
+import {storeInventoryReducer, STOREINV_INIT_STATE} from "./components/reducers/StoreInventoryReducer";
 
 import LoginPage from './components/pages/LoginPage'
 import DashboardPage from './components/pages/DashboardPage'
 import InventoryPage from './components/pages/InventoryPage'
 import StorePage from './components/pages/StorePage'
+import StoreInventoryPage from './components/pages/StoreInventoryPage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
 import './css/content.css';
@@ -27,6 +29,7 @@ function App(){
     const [sidebarShown, setSidebarShown] = useState(false)
     const [inventory, dispatchInventory] = useReducer(inventoryReducer, INVENTORY_INIT_STATE)
     const [store, dispatchStore] = useReducer(storeReducer, STORE_INIT_STATE)
+    const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
 
     const user = getUser()
     return (
@@ -49,7 +52,10 @@ function App(){
                             },	   
                             {
                                 icon: 'layers', text: 'Store', link: 'stores'
-                            },	                                                                                                                                         																												
+                            },	   
+                            {
+                                icon: 'layers', text: 'Store Inventories', link: 'store-inventories'
+                            },	                                                                                                                                                                  																												
                         ]}	
                     /> : ''       
                 )}
@@ -62,7 +68,10 @@ function App(){
                         />
                         <ProtectedRoute path={'/stores'} exact component={StorePage}
                             store={store} dispatchStore={dispatchStore}
-                        />                        
+                        />     
+                        <ProtectedRoute path={'/store-inventories'} exact component={StoreInventoryPage}
+                            storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
+                        />                                                 
                         
                         <Route path={'*'} component={NotFoundPage}/>
                     </Switch>                    
