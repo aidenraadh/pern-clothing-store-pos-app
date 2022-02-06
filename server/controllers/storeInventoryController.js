@@ -124,7 +124,27 @@ exports.update = async (req, res) => {
                 store_id: values.store_id, inventory_id: values.inventory_id
             }}
         )   
-        res.send({message: 'Success updating the stored inventory'})
+        const storeInv = await StoreInventory.findOne({
+            where: {store_id: values.store_id, inventory_id: values.inventory_id},
+            include: [
+                {
+                    model: Store, as: 'store', 
+                    attributes: ['id', 'name'],
+                },
+                {
+                    model: Inventory, as: 'inventory', 
+                    attributes: ['id', 'name'],
+                    include: [{
+                        model: InventorySize, as: 'sizes', 
+                        attributes: ['id', 'name', 'production_price', 'selling_price']                        
+                    }]
+                }                
+            ],
+        })        
+        res.send({
+            storeInv: storeInv,
+            message: 'Success updating the stored inventory'
+        })
     } catch(err) {
         logger.error(err.message)
         res.status(500).send(err.message)
@@ -198,28 +218,21 @@ const validateInput = async (req, input) => {
             }),
 
             // Make sure the inventory amount per size is valid
-            amount: Joi.array().required().items(Joi.object({
-                id: Joi.number().required().integer(),
-                amount: Joi.number().required().integer().allow(''),
-            })).external(async (value, helpers) => {
-                const inventory = await Inventory.findOne({
-                    where: {id: req.params.inventoryId, owner_id: req.user.id}, 
-                    include: [{model: InventorySize, as: 'sizes', attributes: ['id']}]
-                })
-                // Filter the inventory amount
+            amount: Joi.required().external(async (value, helpers) => {
+                const inventorySizes = await InventorySize.findAll({
+                    where: {inventory_id: req.params.inventoryId}, 
+                    attributes: ['id']
+                })            
                 const amount = {}
-                inventory.sizes.forEach(size => {   
-                    value.forEach(inpSize => {
-                        // Make sure the size stored is exist and the amount is not empty string
-                        if(size.id == inpSize.id && inpSize.amount !== ''){
-                            amount[inpSize.id] = parseInt(inpSize.amount)
-                        }
-                    })
+                inventorySizes.forEach(size => {
+                    // Make sure the size is exists and is an integer > 0
+                    const qt = parseInt(value[size.id])
+                    if(qt){ amount[size.id] = qt }  
                 })
                 // Convert the inventory amount back to JSON and return it
                 // if there are any size stored, otherwise return null
-                return Object.keys(amount).length ? JSON.stringify(amount) : null
-            })            
+                return Object.keys(amount).length ? JSON.stringify(amount) : null                
+            })
         }
         // Create the schema based on the input key
         const schema = {}

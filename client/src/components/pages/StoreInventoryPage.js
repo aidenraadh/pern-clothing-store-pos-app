@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import {STOREINV_ACTIONS, STOREINV_FILTER_KEY} from '../reducers/StoreInventoryReducer'
-import {api, errorHandler, getResFilters, getQueryString} from '../Utils.js'
+import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
@@ -11,9 +11,7 @@ function StoreInventoryPage(props){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Edit store */
     const [storeInvIndex, setStoreInvIndex] = useState('')
-    const [invId, setInvId] = useState('')
-    const [storeId, setStoreId] = useState('')
-    const [invAmount, setInvAmount] = useState('')
+    const [storeInvAmount, setStoreInvAmount] = useState('')
     const [modalShown, setModalShown] = useState(false)
     /* Delete store */
     const [popupShown, setPopupShown] = useState(false)
@@ -31,6 +29,7 @@ function StoreInventoryPage(props){
             getStoreInv()
         }
     }, [])
+
     const getStoreInv = (actionType = '') => {
         // Get the queries
         const queries = {...filters}
@@ -57,50 +56,32 @@ function StoreInventoryPage(props){
            })
     }    
 
-    const editStoreInv = (index, invId, storeId) => {
+    const editStoreInv = (index) => {
+        const storeInv = props.storeInv.storeInvs[index]
         setStoreInvIndex(index)
-        setInvId(invId)
-        setStoreId(storeId)
+        setStoreInvAmount(storeInv.amount ? JSON.parse(storeInv.amount) : {})
         setModalShown(true)
-    }
-
-    const storeStoreInv = () => {
-        setDisableBtn(true)         
-    }     
-    // const updateStoreInv = () => {
-    //     setDisableBtn(true)   
-    //     api.put(`/store-inventories/${storeId}`, {name: storeName})     
-    //         .then(response => {
-    //             setDisableBtn(false)
-    //             setModalShown(false)            
-    //             props.dispatchStore({
-    //                 type: STORE_ACTIONS.REPLACE, 
-    //                 payload: {store: response.data.store, index: storeInvIndex}
-    //             })                
-    //         })
-    //         .catch(error => {
-    //             setDisableBtn(false)
-    //             errorHandler(error, {'400': () => {alert(error.response.data.message)}})               
-    //         })        
-    // }    
-    // const confirmDeleteStoreInv = (id, index) => {
-    //     setStoreId(id)
-    //     setStoreInvIndex(index)
-    //     setPopupShown(true)
-    // }   
-    // const deleteStoreInv = () => {
-    //     api.delete(`/stores/${storeId}`)     
-    //         .then(response => {        
-    //             props.dispatchStore({
-    //                 type: STORE_ACTIONS.REMOVE, 
-    //                 payload: {indexes: storeInvIndex}
-    //             })                
-    //         })
-    //         .catch(error => {
-    //             setDisableBtn(false)
-    //             errorHandler(error, {'400': () => {alert(error.response.data.message)}})               
-    //         })          
-    // }
+    } 
+    
+    const updateStoreInv = () => {
+        setDisableBtn(true)
+        const storeInv = props.storeInv.storeInvs[storeInvIndex]
+        api.put(`/store-inventories/${storeInv.store_id}/${storeInv.inventory_id}`, {
+                amount: JSON.stringify(storeInvAmount)
+            })
+            .then(response => {
+                setDisableBtn(false)
+                setModalShown(false)            
+                props.dispatchStoreInv({
+                    type: STOREINV_ACTIONS.REPLACE, 
+                    payload: {storeInv: response.data.storeInv, index: storeInvIndex}
+                })  
+            })
+            .catch(error => {
+                setDisableBtn(false)
+                errorHandler(error, {'400': () => {alert(error.response.data.message)}})                  
+            })
+    }       
     // When the store resource is not set yet
     // Return loading UI
     if(props.storeInv.storeInvs === null){
@@ -118,6 +99,7 @@ function StoreInventoryPage(props){
             body={<>
                 <GenerateStoreInv 
                     storeInvs={props.storeInv.storeInvs} 
+                    editStoreInv={editStoreInv}
                 />
                 {
                     props.storeInv.canLoadMore ? 
@@ -133,12 +115,26 @@ function StoreInventoryPage(props){
             body={<>
                 <Table
                     headings={['Size', 'Quantity', 'Production Price', 'Selling Price']}
-                    body={invAmount ?
-                        (() => {
-                            const storeInv = props.storeInv.storeInvs[storeInvIndex]
+                    body={(() => {
+                        const storeInv = props.storeInv.storeInvs[storeInvIndex]
+                        if(!storeInv){ return [] }
 
-                        })()
-                    : ''}
+                        return storeInv.inventory.sizes.map(size => ([
+                            size.name,
+                            <TextInput size={'sm'}
+                                formAttr={{
+                                    pattern: '[0-9]*', 
+                                    value: storeInvAmount[size.id] ? storeInvAmount[size.id] : '',
+                                    onChange: (e) => {setStoreInvAmount(state => ({
+                                        ...state, [size.id]: e.target.value
+                                    }))}
+                                }}
+                                containerAttr={{style: {width: '10rem'}}}
+                            />,
+                            `Rp. ${formatNum(size.production_price)}`,
+                            `Rp. ${formatNum(size.selling_price)}` 
+                        ]))
+                    })()}
                 />
             </>}        
             footer={
@@ -161,9 +157,13 @@ function StoreInventoryPage(props){
                             setFilters(state => ({...state, store_id: parseInt(e.target.value)}))
                         }
                     }}
-                    options={props.storeInv.stores.map(store => ({
-                        value: store.id, text: store.name
-                    }))}
+                    options={(() => {
+                        const options = [{value: '', text: 'All'}]
+                        props.storeInv.stores.forEach(store => {
+                            options.push({value: store.id, text: store.name})
+                        })
+                        return options
+                    })()}
                 />            
                 <Select label={'Rows shown'} 
                     formAttr={{
@@ -199,13 +199,16 @@ function StoreInventoryPage(props){
     </>)
 }
 
-const GenerateStoreInv = ({storeInvs, editStoreInv, confirmDeleteStoreInv}) => {
+const GenerateStoreInv = ({storeInvs, editStoreInv}) => {
     return (<>
         <div className="inventories-container">
             <Table
-                headings={['Inventory', 'Store']}
-                body={storeInvs.map(storeInv => [
-                    storeInv.inventory.name, storeInv.store.name 
+                headings={['Inventory', 'Store', 'Total Stored', 'Actions']}
+                body={storeInvs.map((storeInv, index) => [
+                    storeInv.inventory.name, storeInv.store.name, formatNum(storeInv.total_amount),
+                    <>
+                        <Button text={'Edit'} size={'sm'} attr={{onClick: () => {editStoreInv(index)}}} />
+                    </>
                 ])}
             />
         </div>    

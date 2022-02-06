@@ -10,7 +10,7 @@ const isNotAuth                = require('../middlewares/isNotAuth')
 const Joi            = require('joi')
 
 rootRouter.get('/test', (req, res) => {
-    const {value, error} = Joi.string().required().trim().validate('     ')
+    const {value, error} = Joi.object().keys({propery}).validate('     ')
     res.send({
         value: value,
         error: error

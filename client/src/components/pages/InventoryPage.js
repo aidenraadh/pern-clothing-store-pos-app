@@ -194,7 +194,7 @@ function InventoryPage(props){
                                 }} 
                             />,
                             <TextInput size={'sm'} formAttr={{
-                                    value: formatNum(size.production_price), 
+                                    value: formatNum(size.production_price), pattern: '[0-9]*', 
                                     onChange: (e) => {
                                         dispatchInvSizes({type: 'update', payload: {
                                             index: index, key: 'production_price', 
@@ -204,7 +204,8 @@ function InventoryPage(props){
                                 }} 
                             />,
                             <TextInput size={'sm'} formAttr={{
-                                    value: formatNum(size.selling_price), onChange: (e) => {
+                                    value: formatNum(size.selling_price), pattern: '[0-9]*',
+                                    onChange: (e) => {
                                         dispatchInvSizes({type: 'update', payload: {
                                             index: index, key: 'selling_price', 
                                             value: formatNum(e.target.value, true)
