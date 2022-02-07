@@ -1,13 +1,14 @@
 import {useState, useEffect} from 'react'
-import {STOREINV_ACTIONS, STOREINV_FILTER_KEY} from '../reducers/StoreInventoryReducer'
-import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../Utils.js'
-import {Button} from '../Buttons'
-import {TextInput, Select} from '../Forms'
-import {PlainCard} from '../Cards'
-import {Modal, ConfirmPopup} from '../Windows'
-import Table from '../Table'
+import {Link} from 'react-router-dom'
+import {STOREINV_ACTIONS, STOREINV_FILTER_KEY} from './../../reducers/StoreInventoryReducer'
+import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../../Utils.js'
+import {Button} from '../../Buttons'
+import {TextInput, Select} from '../../Forms'
+import {PlainCard} from '../../Cards'
+import {Modal, ConfirmPopup} from '../../Windows'
+import Table from '../../Table'
 
-function StoreInventoryPage(props){
+function IndexStoreInventoryPage(props){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Edit store */
     const [storeInvIndex, setStoreInvIndex] = useState('')
@@ -93,7 +94,9 @@ function StoreInventoryPage(props){
                 onClick: () => {setFilterModalShown(true)},
                 style: {marginRight: '1rem'}
             }} />
-            <Button text={'+ Create'} size={'sm'} attr={{onClick: () => {}}}/>
+            <Link to={'/store-inventories/create'}>
+                <Button tag={'span'} text={'+ Create'} size={'sm'} attr={{onClick: () => {}}}/>
+            </Link>
         </section>
         <PlainCard
             body={<>
@@ -101,13 +104,10 @@ function StoreInventoryPage(props){
                     storeInvs={props.storeInv.storeInvs} 
                     editStoreInv={editStoreInv}
                 />
-                {
-                    props.storeInv.canLoadMore ? 
-                    <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
-                    onClick={() => {getStoreInv(STOREINV_ACTIONS.APPEND)}}>
-                        Load More
-                    </button> : ''
-                }                
+                <LoadMoreBtn 
+                    canLoadMore={props.storeInv.canLoadMore}
+                    action={() => {getStoreInv(STOREINV_ACTIONS.APPEND)}}
+                />              
             </>}
         />
         <Modal
@@ -215,4 +215,14 @@ const GenerateStoreInv = ({storeInvs, editStoreInv}) => {
     </>)
 }
 
-export default StoreInventoryPage
+const LoadMoreBtn = ({canLoadMore, action}) => {
+    return (
+        canLoadMore ? 
+        <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
+        onClick={action}>
+            Load More
+        </button> : ''        
+    )
+}
+
+export default IndexStoreInventoryPage

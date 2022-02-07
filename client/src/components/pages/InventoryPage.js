@@ -162,13 +162,10 @@ function InventoryPage(props){
                     editInventory={editInventory}
                     confirmDeleteInventory={confirmDeleteInventory}
                 />
-                {
-                    props.inventory.canLoadMore ? 
-                    <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
-                    onClick={() => {getInventories(INVENTORY_ACTIONS.APPEND)}}>
-                        Load More
-                    </button> : ''
-                }                
+                <LoadMoreBtn 
+                    canLoadMore={props.inventory.canLoadMore}
+                    action={() => {getInventories(INVENTORY_ACTIONS.APPEND)}}
+                />                               
             </>}
         />
         <Modal
@@ -320,6 +317,16 @@ const GenerateInventories = ({inventories, editInventory, confirmDeleteInventory
             ))}
         </div>    
     </>)
+}
+
+const LoadMoreBtn = ({canLoadMore, action}) => {
+    return (
+        canLoadMore ? 
+        <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
+        onClick={action}>
+            Load More
+        </button> : ''        
+    )
 }
 
 export default InventoryPage

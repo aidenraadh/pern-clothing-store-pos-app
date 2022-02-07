@@ -7,13 +7,9 @@ const storeInventoryController = require('../controllers/storeInventoryControlle
 const isAuth                   = require('../middlewares/isAuth')
 const isNotAuth                = require('../middlewares/isNotAuth')
 
-const Joi            = require('joi')
-
-rootRouter.get('/test', (req, res) => {
-    const {value, error} = Joi.object().keys({propery}).validate('     ')
+rootRouter.get('/test', async (req, res) => {
     res.send({
-        value: value,
-        error: error
+        message: 'test'
     })
 })
 

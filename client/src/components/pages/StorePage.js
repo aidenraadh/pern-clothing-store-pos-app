@@ -153,6 +153,10 @@ function StorePage(props){
                     editStore={editStore}
                     confirmDeleteStore={confirmDeleteStore}
                 />
+                <LoadMoreBtn 
+                    canLoadMore={props.store.canLoadMore}
+                    action={() => {getStores(STORE_ACTIONS.APPEND)}}
+                />                  
                 {
                     props.store.canLoadMore ? 
                     <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
@@ -245,6 +249,16 @@ const GenerateStores = ({stores, editStore, confirmDeleteStore}) => {
             ))}
         </div>    
     </>)
+}
+
+const LoadMoreBtn = ({canLoadMore, action}) => {
+    return (
+        canLoadMore ? 
+        <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
+        onClick={action}>
+            Load More
+        </button> : ''        
+    )
 }
 
 export default StorePage

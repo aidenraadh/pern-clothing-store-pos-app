@@ -15,7 +15,8 @@ import LoginPage from './components/pages/LoginPage'
 import DashboardPage from './components/pages/DashboardPage'
 import InventoryPage from './components/pages/InventoryPage'
 import StorePage from './components/pages/StorePage'
-import StoreInventoryPage from './components/pages/StoreInventoryPage'
+import IndexStoreInventoryPage from './components/pages/store_inventory/IndexStoreInventoryPage'
+import CreateStoreInventoryPage from './components/pages/store_inventory/CreateStoreInventoryPage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
 import './css/content.css';
@@ -69,9 +70,12 @@ function App(){
                         <ProtectedRoute path={'/stores'} exact component={StorePage}
                             store={store} dispatchStore={dispatchStore}
                         />     
-                        <ProtectedRoute path={'/store-inventories'} exact component={StoreInventoryPage}
+                        <ProtectedRoute path={'/store-inventories'} exact component={IndexStoreInventoryPage}
                             storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
-                        />                                                 
+                        />        
+                        <ProtectedRoute path={'/store-inventories/create'} exact component={CreateStoreInventoryPage}
+                            storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
+                        />                                                                   
                         
                         <Route path={'*'} component={NotFoundPage}/>
                     </Switch>                    
