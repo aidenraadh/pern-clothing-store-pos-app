@@ -1,11 +1,12 @@
-const models         = require('../models/index')
-const Inventory      = models.Inventory
-const InventorySize  = models.InventorySize
-const StoreInventory = models.StoreInventory
-const Store          = models.Store
-const Joi            = require('joi')
-const filterKeys     = require('../utils/filterKeys')
-const logger         = require('../utils/logger')
+const models             = require('../models/index')
+const Inventory          = models.Inventory
+const InventorySize      = models.InventorySize
+const StoreInventory     = models.StoreInventory
+const StoreInventorySize = models.StoreInventorySize
+const Store              = models.Store
+const Joi                = require('joi')
+const filterKeys         = require('../utils/filterKeys')
+const logger             = require('../utils/logger')
 
 exports.index = async (req, res) => {    
     try {
@@ -44,7 +45,11 @@ exports.index = async (req, res) => {
                         model: InventorySize, as: 'sizes', 
                         attributes: ['id', 'name', 'production_price', 'selling_price']                        
                     }]
-                }                
+                },
+                {
+                    model: StoreInventorySize, as: 'sizes', 
+                    attributes: ['inventory_size_id', 'amount'],
+                }                             
             ],
             order: [['created_at', 'DESC']],
             ...filters.limitOffset
@@ -58,8 +63,6 @@ exports.index = async (req, res) => {
                 ...filters.limitOffset
             }
         })          
-
-        
     } catch(err) {
         logger.error(err.message)
         res.status(500).send(err.message)

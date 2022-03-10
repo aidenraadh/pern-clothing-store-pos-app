@@ -2,6 +2,12 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Store_Inventories', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.BIGINT
+      },      
       store_id: {
         type: Sequelize.BIGINT,
         allowNull: false  
@@ -9,15 +15,11 @@ module.exports = {
       inventory_id: {
         type: Sequelize.BIGINT,
         allowNull: false          
-      },  
-      amount: {
-        type: Sequelize.JSON,
-        allowNull: true 
-      },      
+      },            
       total_amount: {
-        type: Sequelize.SMALLINT,
-        allowNull: false 
-      },         
+        type: Sequelize.INTEGER,
+        allowNull: true          
+      },          
       created_at: {
         allowNull: false,
         type: Sequelize.DATE
@@ -49,19 +51,11 @@ module.exports = {
         table: 'Inventories',
         field: 'id',
       }
-    })     
-
-    // Add composite unique key to store_id and inventory_id
-    await queryInterface.addConstraint('Store_Inventories', {
-      fields: ['store_id', 'inventory_id'],
-      type: 'unique',
-      name: 'unq_store_inventories_store_id_inventory_id',
-    })       
+    })              
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeConstraint('Store_Inventories', 'fk_store_inventories_store_id');
     await queryInterface.removeConstraint('Store_Inventories', 'fk_store_inventories_inventory_id');
-    await queryInterface.removeConstraint('Store_Inventories', 'unq_store_inventories_store_id_inventory_id');    
     await queryInterface.dropTable('Store_Inventories');
   }
 };

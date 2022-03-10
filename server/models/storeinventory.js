@@ -16,13 +16,15 @@ module.exports = (sequelize, DataTypes) => {
       models.StoreInventory.belongsTo(
         models.Inventory, {foreignKey: 'inventory_id', as: 'inventory'}
       )      
+      models.StoreInventory.hasMany(
+        models.StoreInventorySize, {foreignKey: 'store_inventory_id', as: 'sizes', }
+      )      
     }
   };
   StoreInventory.init({
     store_id: DataTypes.BIGINT,
     inventory_id: DataTypes.BIGINT,
-    amount: DataTypes.JSON,
-    total_amount: DataTypes.SMALLINT,
+    total_amount: DataTypes.INTEGER,
   }, {
     sequelize,
     tableName: 'Store_Inventories',    
@@ -30,8 +32,6 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });
-
-  StoreInventory.removeAttribute('id');
 
   return StoreInventory;
 };
