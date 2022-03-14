@@ -2,6 +2,12 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Store_Inventory_Sizes', {
+      id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,      
+      },
       store_inventory_id: {
         type: Sequelize.BIGINT,
         allowNull: false  
@@ -36,7 +42,7 @@ module.exports = {
         table: 'Inventory_Sizes',
         field: 'id',
       }
-    })       
+    })                
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeConstraint('Store_Inventory_Sizes', 'fk_store_inventory_sizes_store_inventory_id');

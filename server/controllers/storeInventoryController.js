@@ -33,6 +33,10 @@ exports.index = async (req, res) => {
             where: {...filters.where},
             include: [
                 {
+                    model: StoreInventorySize, as: 'sizes', 
+                    attributes: ['store_inventory_id', 'inventory_size_id', 'amount'],
+                },
+                {
                     model: Store, as: 'store', 
                     attributes: ['id', 'name'],
                     where: {owner_id: req.user.owner_id}
@@ -45,11 +49,7 @@ exports.index = async (req, res) => {
                         model: InventorySize, as: 'sizes', 
                         attributes: ['id', 'name', 'production_price', 'selling_price']                        
                     }]
-                },
-                {
-                    model: StoreInventorySize, as: 'sizes', 
-                    attributes: ['inventory_size_id', 'amount'],
-                }                             
+                },                          
             ],
             order: [['created_at', 'DESC']],
             ...filters.limitOffset
