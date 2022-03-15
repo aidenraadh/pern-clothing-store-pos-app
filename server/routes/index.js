@@ -66,11 +66,11 @@ rootRouter.post('/store-inventories', [
     isAuth, storeInventoryController.store
 ])
 
-rootRouter.put('/store-inventories/:storeId/:inventoryId', [
+rootRouter.put('/store-inventories/:id', [
     isAuth, storeInventoryController.update
 ])
 
-rootRouter.delete('/store-inventories/:storeId/:inventoryId', [
+rootRouter.delete('/store-inventories/:id', [
     isAuth, storeInventoryController.destroy
 ])
 

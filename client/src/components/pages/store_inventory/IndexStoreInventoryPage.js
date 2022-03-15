@@ -12,7 +12,7 @@ function IndexStoreInventoryPage(props){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Edit store */
     const [storeInvIndex, setStoreInvIndex] = useState('')
-    const [storeInvAmount, setStoreInvAmount] = useState('')
+    const [storeInvSizes, setStoreInvSizes] = useState('')
     const [modalShown, setModalShown] = useState(false)
     /* Delete store */
     const [popupShown, setPopupShown] = useState(false)
@@ -60,7 +60,31 @@ function IndexStoreInventoryPage(props){
     const editStoreInv = (index) => {
         const storeInv = props.storeInv.storeInvs[index]
         setStoreInvIndex(index)
-        setStoreInvAmount(storeInv.amount ? JSON.parse(storeInv.amount) : {})
+        setStoreInvSizes(state => {
+            const invSizes = []
+            if(!storeInv){ return invSizes }
+            // Get all stored inventory's sizes
+            const storedSizeIds = storeInv.sizes.map(storedSize => storedSize.inventory_size_id)
+
+            storeInv.inventory.sizes.forEach(size => {
+                // When the stored size exists inside inventory sizes
+                if(storedSizeIds.includes(size.id)){
+                    invSizes.push({
+                        ...storeInv.sizes[ storedSizeIds.indexOf(size.id) ],
+                        name: size.name, production_price: size.production_price,
+                        selling_price: size.selling_price,                        
+                    })
+                }
+                else{
+                    invSizes.push({
+                        id: '', inventory_size_id: size.id, amount: '', 
+                        name: size.name, production_price: size.production_price,
+                        selling_price: size.selling_price,
+                    })
+                }
+            })
+            return invSizes
+        })
         setModalShown(true)
     } 
     
@@ -68,7 +92,7 @@ function IndexStoreInventoryPage(props){
         setDisableBtn(true)
         const storeInv = props.storeInv.storeInvs[storeInvIndex]
         api.put(`/store-inventories/${storeInv.store_id}/${storeInv.inventory_id}`, {
-                amount: JSON.stringify(storeInvAmount)
+                amount: JSON.stringify(storeInvSizes)
             })
             .then(response => {
                 setDisableBtn(false)
@@ -116,18 +140,19 @@ function IndexStoreInventoryPage(props){
                 <Table
                     headings={['Size', 'Quantity', 'Production Price', 'Selling Price']}
                     body={(() => {
-                        const storeInv = props.storeInv.storeInvs[storeInvIndex]
-                        if(!storeInv){ return [] }
+                        if(!storeInvSizes){ return [] }
 
-                        return storeInv.inventory.sizes.map(size => ([
+                        return storeInvSizes.map((size, index) => ([
                             size.name,
                             <TextInput size={'sm'}
                                 formAttr={{
                                     pattern: '[0-9]*', 
-                                    value: storeInvAmount[size.id] ? storeInvAmount[size.id] : '',
-                                    onChange: (e) => {setStoreInvAmount(state => ({
-                                        ...state, [size.id]: e.target.value
-                                    }))}
+                                    value: size.amount,
+                                    onChange: (e) => {setStoreInvSizes(state => {
+                                        const sizes = [...state]
+                                        sizes[index].amount = e.target.value
+                                        return sizes
+                                    })}
                                 }}
                                 containerAttr={{style: {width: '10rem'}}}
                             />,
@@ -139,10 +164,9 @@ function IndexStoreInventoryPage(props){
             </>}        
             footer={
                 <Button size={'sm'} text={'Save Changes'} attr={{
-                        disabled: disableBtn,
-                        onClick: () => {updateStoreInv()}
-                    }}
-                />                
+                    disabled: disableBtn,
+                    onClick: () => {updateStoreInv()}
+                }}/>                
             }
             shown={modalShown}
             toggleModal={() => {setModalShown(state => !state)}}

@@ -34,7 +34,7 @@ exports.index = async (req, res) => {
             include: [
                 {
                     model: StoreInventorySize, as: 'sizes', 
-                    attributes: ['store_inventory_id', 'inventory_size_id', 'amount'],
+                    attributes: ['id', 'inventory_size_id', 'amount'],
                 },
                 {
                     model: Store, as: 'store', 
@@ -50,7 +50,7 @@ exports.index = async (req, res) => {
                         attributes: ['id', 'name', 'production_price', 'selling_price']                        
                     }]
                 },                          
-            ],
+            ],        
             order: [['created_at', 'DESC']],
             ...filters.limitOffset
         })
@@ -258,17 +258,15 @@ const validateInput = async (req, input) => {
  * @returns {boolean}
  */
 
-const isStoreInventoryExist = async (storeId, inventoryId) => {
+const isStoreInventoryExist = async (id) => {
     try {
-        const {error1} = Joi.number().integer().validate(storeId)
-        const {error2} = Joi.number().integer().validate(inventoryId)
+        const {error} = Joi.number().integer().validate(id)
 
-        if(error1 || error2){
+        if(error){
             return false
         }
         const storeInventory = await StoreInventory.findOne({
-            attributes: ['store_id'],
-            where: {store_id: storeId, inventory_id: inventoryId},
+            attributes: ['id'], where: {id: id},
         })       
         // Make sure the store's inventory exists
         if(!storeInventory){

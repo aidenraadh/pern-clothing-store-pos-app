@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         models.Inventory, {foreignKey: 'inventory_id', as: 'inventory'}
       )      
       models.StoreInventory.hasMany(
-        models.StoreInventorySize, {foreignKey: 'store_inventory_id', as: 'sizes', }
+        models.StoreInventorySize, {foreignKey: 'store_inventory_id', as: 'sizes'}
       )      
     }
   };
