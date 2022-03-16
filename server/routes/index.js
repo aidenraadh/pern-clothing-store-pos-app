@@ -7,8 +7,25 @@ const storeInventoryController = require('../controllers/storeInventoryControlle
 const isAuth                   = require('../middlewares/isAuth')
 const isNotAuth                = require('../middlewares/isNotAuth')
 
+const models             = require('../models/index')
+const Inventory          = models.Inventory
+const Store          = models.Store
+const InventorySize      = models.InventorySize
+const StoreInventory      = models.StoreInventory
+
 rootRouter.get('/test', async (req, res) => {
+    const storeInvs = await StoreInventory.findOne({
+        where: {id: 1},
+        include: [
+            {
+                model: Store, as: 'store', 
+                attributes: ['id', 'name'],
+                where: {owner_id: 1}
+            },                       
+        ],        
+    })
     res.send({
+        data: storeInvs,
         message: 'test'
     })
 })

@@ -91,8 +91,8 @@ function IndexStoreInventoryPage(props){
     const updateStoreInv = () => {
         setDisableBtn(true)
         const storeInv = props.storeInv.storeInvs[storeInvIndex]
-        api.put(`/store-inventories/${storeInv.store_id}/${storeInv.inventory_id}`, {
-                amount: JSON.stringify(storeInvSizes)
+        api.put(`/store-inventories/${storeInv.id}`, {
+                updated_sizes: JSON.stringify(storeInvSizes)
             })
             .then(response => {
                 setDisableBtn(false)
