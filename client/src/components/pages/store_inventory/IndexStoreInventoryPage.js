@@ -5,6 +5,7 @@ import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../..
 import {Button} from '../../Buttons'
 import {TextInput, Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
+import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 import Table from '../../Table'
 
@@ -72,14 +73,14 @@ function IndexStoreInventoryPage(props){
                     invSizes.push({
                         ...storeInv.sizes[ storedSizeIds.indexOf(size.id) ],
                         name: size.name, production_price: size.production_price,
-                        selling_price: size.selling_price,                        
+                        selling_price: size.selling_price, isChanged: false              
                     })
                 }
                 else{
                     invSizes.push({
                         id: '', inventory_size_id: size.id, amount: '', 
                         name: size.name, production_price: size.production_price,
-                        selling_price: size.selling_price,
+                        selling_price: size.selling_price, isChanged: false
                     })
                 }
             })
@@ -96,7 +97,7 @@ function IndexStoreInventoryPage(props){
             })
             .then(response => {
                 setDisableBtn(false)
-                setModalShown(false)            
+                setModalShown(false)   
                 props.dispatchStoreInv({
                     type: STOREINV_ACTIONS.REPLACE, 
                     payload: {storeInv: response.data.storeInv, index: storeInvIndex}
@@ -151,6 +152,7 @@ function IndexStoreInventoryPage(props){
                                     onChange: (e) => {setStoreInvSizes(state => {
                                         const sizes = [...state]
                                         sizes[index].amount = e.target.value
+                                        sizes[index].isChanged = true
                                         return sizes
                                     })}
                                 }}
@@ -173,7 +175,7 @@ function IndexStoreInventoryPage(props){
         />
         <Modal
             heading={'Filter'}
-            body={<>
+            body={<Grid num_of_columns={1} items={[
                 <Select label={'Store'} 
                     formAttr={{
                         value: filters.store_id,
@@ -188,7 +190,7 @@ function IndexStoreInventoryPage(props){
                         })
                         return options
                     })()}
-                />            
+                />,
                 <Select label={'Rows shown'} 
                     formAttr={{
                         value: filters.limit,
@@ -199,8 +201,8 @@ function IndexStoreInventoryPage(props){
                     options={[
                         {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
                     ]}
-                />
-            </>}        
+                />                
+            ]}/>}        
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
@@ -229,7 +231,8 @@ const GenerateStoreInv = ({storeInvs, editStoreInv}) => {
             <Table
                 headings={['Inventory', 'Store', 'Total Stored', 'Actions']}
                 body={storeInvs.map((storeInv, index) => [
-                    storeInv.inventory.name, storeInv.store.name, formatNum(storeInv.total_amount),
+                    storeInv.inventory.name, storeInv.store.name, 
+                    storeInv.total_amount ? formatNum(storeInv.total_amount) : 0,
                     <>
                         <Button text={'Edit'} size={'sm'} attr={{onClick: () => {editStoreInv(index)}}} />
                     </>

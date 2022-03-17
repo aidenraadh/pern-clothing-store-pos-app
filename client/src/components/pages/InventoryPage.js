@@ -6,6 +6,7 @@ import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
 import {Modal, ConfirmPopup} from '../Windows'
 import Table from '../Table'
+import {Grid} from '../Layouts'
 import {SVGIcons} from '../Misc'
 
 function InventoryPage(props){
@@ -142,81 +143,85 @@ function InventoryPage(props){
             <Button text={'+ Create'} size={'sm'} attr={{onClick: createInventory}}/>
         </section>
         <PlainCard
-            body={<>
-                <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
-                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
-                        iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: 'Search inventory', onChange: (e) => {
-                                setFilters(state => ({...state, name: e.target.value}))
-                            }
-                        }} 
-                    />   
-                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
-                            style: {flexShrink: '0'},
-                            onClick: () => {getInventories()}
-                        }}
-                    />                                       
-                </div>
-                <GenerateInventories 
-                    inventories={props.inventory.inventories} 
-                    editInventory={editInventory}
-                    confirmDeleteInventory={confirmDeleteInventory}
-                />
-                <LoadMoreBtn 
-                    canLoadMore={props.inventory.canLoadMore}
-                    action={() => {getInventories(INVENTORY_ACTIONS.APPEND)}}
-                />                               
-            </>}
+            body={
+                <Grid num_of_columns={1} items={[
+                    <div className='flex-row items-center'>
+                        <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
+                            iconName={'search'}
+                            formAttr={{value: filters.name, placeholder: 'Search inventory', onChange: (e) => {
+                                    setFilters(state => ({...state, name: e.target.value}))
+                                }
+                            }} 
+                        />   
+                        <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                                style: {flexShrink: '0'},
+                                onClick: () => {getInventories()}
+                            }}
+                        />                                       
+                    </div>,
+                    <GenerateInventories 
+                        inventories={props.inventory.inventories} 
+                        editInventory={editInventory}
+                        confirmDeleteInventory={confirmDeleteInventory}
+                    />,
+                    <LoadMoreBtn 
+                        canLoadMore={props.inventory.canLoadMore}
+                        action={() => {getInventories(INVENTORY_ACTIONS.APPEND)}}
+                    />                                  
+                ]}/>
+            }
         />
         <Modal
             heading={modalHeading}
             body={<>
-                <TextInput size={'sm'} label={'Name'}
-                    formAttr={{value: invName, onChange: (e) => {setInvName(e.target.value)}}}
-                />
-                <Table
-                    headings={['', 'Size', 'Production Price', 'Selling Price']}
-                    body={invSizes.map((size, index) => (
-                        [
-                            <button type="button" onClick={() => {dispatchInvSizes({type: 'remove', payload: {index: index}})}}>
-                                <SVGIcons name={'close'} color={'red'} attr={{style: {fontSize: '1.8rem'}}}/>
-                            </button>,
-                            <TextInput size={'sm'} formAttr={{
-                                    value: size.name, onChange: (e) => {
-                                        dispatchInvSizes({type: 'update', payload: {
-                                            index: index, key: 'name', 
-                                            value: e.target.value
-                                        }})
-                                    }
-                                }} 
-                            />,
-                            <TextInput size={'sm'} formAttr={{
-                                    value: formatNum(size.production_price), pattern: '[0-9]*', 
-                                    onChange: (e) => {
-                                        dispatchInvSizes({type: 'update', payload: {
-                                            index: index, key: 'production_price', 
-                                            value: formatNum(e.target.value, true)
-                                        }})
-                                    }
-                                }} 
-                            />,
-                            <TextInput size={'sm'} formAttr={{
-                                    value: formatNum(size.selling_price), pattern: '[0-9]*',
-                                    onChange: (e) => {
-                                        dispatchInvSizes({type: 'update', payload: {
-                                            index: index, key: 'selling_price', 
-                                            value: formatNum(e.target.value, true)
-                                        }})
-                                    }
-                                }} 
-                            />,
-                        ]
-                    ))}
-                />
-                <button type="button" className="text-blue block" style={{margin: '1rem auto 0'}} 
-                onClick={() => {dispatchInvSizes({type: 'add'})}}>
-                    + New Size
-                </button>         
+                <Grid num_of_columns={1} items={[
+                    <TextInput size={'sm'} label={'Name'}
+                        formAttr={{value: invName, onChange: (e) => {setInvName(e.target.value)}}}
+                    />,
+                    <Table
+                        headings={['', 'Size', 'Production Price', 'Selling Price']}
+                        body={invSizes.map((size, index) => (
+                            [
+                                <button type="button" onClick={() => {dispatchInvSizes({type: 'remove', payload: {index: index}})}}>
+                                    <SVGIcons name={'close'} color={'red'} attr={{style: {fontSize: '1.8rem'}}}/>
+                                </button>,
+                                <TextInput size={'sm'} formAttr={{
+                                        value: size.name, onChange: (e) => {
+                                            dispatchInvSizes({type: 'update', payload: {
+                                                index: index, key: 'name', 
+                                                value: e.target.value
+                                            }})
+                                        }
+                                    }} 
+                                />,
+                                <TextInput size={'sm'} formAttr={{
+                                        value: formatNum(size.production_price), pattern: '[0-9]*', 
+                                        onChange: (e) => {
+                                            dispatchInvSizes({type: 'update', payload: {
+                                                index: index, key: 'production_price', 
+                                                value: formatNum(e.target.value, true)
+                                            }})
+                                        }
+                                    }} 
+                                />,
+                                <TextInput size={'sm'} formAttr={{
+                                        value: formatNum(size.selling_price), pattern: '[0-9]*',
+                                        onChange: (e) => {
+                                            dispatchInvSizes({type: 'update', payload: {
+                                                index: index, key: 'selling_price', 
+                                                value: formatNum(e.target.value, true)
+                                            }})
+                                        }
+                                    }} 
+                                />,
+                            ]
+                        ))}
+                    />,
+                    <button type="button" className="text-blue block" style={{margin: '0 auto'}} 
+                    onClick={() => {dispatchInvSizes({type: 'add'})}}>
+                        + New Size
+                    </button>                                      
+                ]}/>        
             </>}        
             footer={
                 <Button size={'sm'} text={'Save Changes'} attr={{
@@ -322,7 +327,7 @@ const GenerateInventories = ({inventories, editInventory, confirmDeleteInventory
 const LoadMoreBtn = ({canLoadMore, action}) => {
     return (
         canLoadMore ? 
-        <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
+        <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '0 auto'}} 
         onClick={action}>
             Load More
         </button> : ''        

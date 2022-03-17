@@ -85,7 +85,7 @@
 */
 .grid{
 	display: grid;
-	grid-gap: 2.4rem;
+	grid-gap: 1.4rem;
 }
 .grid.grid-1{
 	grid-template-columns: auto;
@@ -98,3 +98,8 @@
 .grid.grid-3{
 	grid-template-columns: auto auto auto;
 }
+
+.grid.grid-4{
+	grid-template-columns: auto auto auto auto;
+}
+

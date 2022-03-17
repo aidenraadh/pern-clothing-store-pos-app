@@ -12,20 +12,14 @@ const Inventory          = models.Inventory
 const Store          = models.Store
 const InventorySize      = models.InventorySize
 const StoreInventory      = models.StoreInventory
+const StoreInventorySize      = models.StoreInventorySize
 
 rootRouter.get('/test', async (req, res) => {
-    const storeInvs = await StoreInventory.findOne({
-        where: {id: 1},
-        include: [
-            {
-                model: Store, as: 'store', 
-                attributes: ['id', 'name'],
-                where: {owner_id: 1}
-            },                       
-        ],        
+    const test = await StoreInventorySize.sum('amount', {
+        where: {store_inventory_id: 1}
     })
     res.send({
-        data: storeInvs,
+        data: test,
         message: 'test'
     })
 })

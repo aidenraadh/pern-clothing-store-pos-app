@@ -103,8 +103,10 @@ exports.store = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
+        // Get the store inventory
+        let storeInv = await isStoreInventoryExist(req.params.id, req.user.owner_id)
         // Make sure the inventory stored is exists
-        if(!await isStoreInventoryExist(req.params.id, req.user.owner_id))
+        if(!storeInv)
         {
             return res.status(400).send({
                 message: "The store's inventory is not exist"
@@ -112,28 +114,24 @@ exports.update = async (req, res) => {
         }              
         // Validate the input
         const {values, errMsg} = await validateInput(req, {
-            updated_sizes: req.body.amount
+            updated_sizes: req.body.updated_sizes
         }) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
-        // Get the store inventory
-        let storeInv = await StoreInventory.findOne({
-            where: {id: req.params.id}
-        })
         // Get all the inventory sizes ids
         let currentSizeIds = await InventorySize.findAll({
             where: {inventory_id: storeInv.inventory_id},
             attributes: ['id'],
         })
-        currentSizeIds = currentSizeIds.map(size => size.id)
+        currentSizeIds = currentSizeIds.map(size => parseInt(size.id))
     
         const addedSizes = []
         const updatedSizes = []
         const removedSizes = []        
         // Loop through updated inventory sizes
         values.updated_sizes.forEach(size => {
-            if(currentSizeIds.includes(size.inventory_size_id) && size.isChanged){
+            if(currentSizeIds.includes(parseInt( size.inventory_size_id )) && size.isChanged){
                 // When id is empty string and there are amount stored
                 if(size.id === '' && size.amount){
                     addedSizes.push(size)
@@ -147,23 +145,42 @@ exports.update = async (req, res) => {
                     removedSizes.push(size)
                 }
             }
-        })
-        // Count total amount of the stored inventory
-        values.total_amount = countTotalAmount(values.amount)        
+        })           
         // Remove the size that doesn't already exists
         await StoreInventorySize.destroy({
             where: {
-                id: {[Op.notIn]: currentSizeIds}
+                store_inventory_id: req.params.id,
+                inventory_size_id: {[Op.notIn]: currentSizeIds}
             }
         })
         // Delete the stored size if there are any
+        await StoreInventorySize.destroy({
+            where: {
+                id: removedSizes.map(size => size.id)
+            }
+        })        
         // Update the stored size if there are any
+        for(const size of updatedSizes){
+            await StoreInventorySize.update(
+                {amount: size.amount}, 
+                {where: {id: size.id}}
+            )            
+        }        
         // Store the stored size if there are any
+        await StoreInventorySize.bulkCreate(addedSizes.map(size => ({
+            store_inventory_id: req.params.id, 
+            inventory_size_id: size.inventory_size_id, 
+            amount: size.amount
+        }))) 
+        // Count total amount of the stored inventory
+        const total_amount = await StoreInventorySize.sum('amount', {
+            where: {store_inventory_id: req.params.id}
+        })        
         // Update the store inventory
         await StoreInventory.update(
-            {total_amount: values.total_amount}, 
+            {total_amount: total_amount ? total_amount : null}, 
             {where: { id: req.params.id }}
-        )   
+        )          
         storeInv = await StoreInventory.findOne({
             where: {id: req.params.id},
             include: [
@@ -185,7 +202,6 @@ exports.update = async (req, res) => {
                 },                          
             ],        
             order: [['created_at', 'DESC']],
-            ...filters.limitOffset
         })       
         res.send({
             storeInv: storeInv,
@@ -234,16 +250,16 @@ exports.destroy = async (req, res) => {
 const validateInput = async (req, input) => {
     try {
         // Parse the inventory amount if it exists in the input
-        if(input.updatedSizes){
-            input.updatedSizes = JSON.parse(input.updatedSizes)
+        if(input.updated_sizes){
+            input.updated_sizes = JSON.parse(input.updated_sizes)
         }
-
         const rules = {
             updated_sizes: Joi.array().required().items(Joi.object({
                 id: Joi.number().required().integer().allow('', null),
                 inventory_size_id: Joi.number().required().integer(),
                 amount: Joi.number().required().integer().allow('', null),
-            }))
+                isChanged: Joi.boolean().required()
+            }).unknown(true))
         }
         // Create the schema based on the input key
         const schema = {}
@@ -263,7 +279,7 @@ const validateInput = async (req, input) => {
  * 
  * @param {integer} storeId 
  * @param {integer} inventoryId 
- * @returns {boolean}
+ * @returns {object|false}
  */
 
 const isStoreInventoryExist = async (id, ownerId) => {
@@ -274,7 +290,7 @@ const isStoreInventoryExist = async (id, ownerId) => {
             return false
         }
         const storeInventory = await StoreInventory.findOne({
-            where: {id: id}, attributes: ['id'],
+            where: {id: id},
             include: [
                 {
                     model: Store, as: 'store', 
@@ -287,23 +303,9 @@ const isStoreInventoryExist = async (id, ownerId) => {
         if(!storeInventory){
             return false
         }    
-        return true           
+        return storeInventory           
     } catch (err) {
         logger.error(err.message)
         return false
     }
-}
-
-/**
- * 
- * @param {JSON} amount 
- * @returns {integer}
- */
-
-const countTotalAmount = (sizes) => 
-{
-    let totalAmount = 0
-    if(sizes.length === 0){ return totalAmount }
-    sizes.forEach(size => {totalAmount += sizes.amount})
-    return totalAmount
 }
