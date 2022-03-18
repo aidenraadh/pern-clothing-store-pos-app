@@ -25,6 +25,9 @@ function IndexStoreInventoryPage(props){
         offset: initFilters.offset ? initFilters.offset : 0, 
     })
     const [filterModalShown, setFilterModalShown] = useState(false)
+    /* Error Popup */
+    const [errPopupShown, setErrPopupShown] = useState(false)
+    const [popupErrMsg, setErrPopupMsg] = useState('')    
 
     useEffect(() => {
         if(props.storeInv.storeInvs === null){
@@ -105,7 +108,10 @@ function IndexStoreInventoryPage(props){
             })
             .catch(error => {
                 setDisableBtn(false)
-                errorHandler(error, {'400': () => {alert(error.response.data.message)}})                  
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                     
+                }})                  
             })
     }       
     // When the store resource is not set yet
@@ -213,15 +219,15 @@ function IndexStoreInventoryPage(props){
             shown={filterModalShown}
             toggleModal={() => {setFilterModalShown(state => !state)}}
         />        
-        {/* <ConfirmPopup
-            icon={'warning_1'}
-            title={'Warning'}
-            body={'Are you sure want to remove this store?'}
-            confirmText={'Remove'}
-            cancelText={'Cancel'}
-            shown={popupShown} togglePopup={() => {setPopupShown(state => !state)}} 
-            confirmCallback={deleteStoreInv}
-        /> */}
+        <ConfirmPopup
+            shown={errPopupShown}
+            icon={'error_circle'}
+            iconColor={'red'}
+            title={"Can't Proceed"}
+            body={popupErrMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setErrPopupShown(state => !state)}} 
+        />  
     </>)
 }
 

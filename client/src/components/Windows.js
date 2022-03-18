@@ -101,16 +101,18 @@ export function ConfirmPopup(props){
                       </div>
                       <div>{props.body}</div>
                       <div>
-                          <Button type="light" size={'sm'} color={'blue'} text={props.confirmText} attr={{
+                          <Button type="light" size={'sm'} color={props.confirmBtnColor} text={props.confirmText} attr={{
                               onClick: () => {
                                   props.confirmCallback()
                                   props.togglePopup()
                               }
                           }}/>
-                          <Button type="light" size={'sm'} color={'red'} text={props.cancelText} attr={{
-                                style: {marginLeft: '1rem'},
-                                onClick: props.togglePopup
-                          }}/>                          
+                          {props.cancelText ? 
+                            <Button type="light" size={'sm'} color={props.cancelBtnColor} text={props.cancelText} attr={{
+                                    style: {marginLeft: '1rem'},
+                                    onClick: props.togglePopup
+                            }}/>                              
+                          : ''}                      
                       </div>
       			</div>  		
       		</div>          	
@@ -124,80 +126,12 @@ ConfirmPopup.defaultProps = {
     title: 'Lorem ipsum', // String|JSX
     body: 'Lorem ipsum', // String|JSX
     confirmText: 'Yes', // String|JSX
-    cancelText: 'No', // String|JSX
+    cancelText: '', // String|JSX
+    confirmBtnColor: 'blue', // String
+    cancelBtnColor: 'red', // String
     shown: false, // Boolean - Must from parent's state
     togglePopup: () => {alert('Please defined the togglePopup function')},
-    confirmCallback: () => {alert('Please defined the confirmCallback function')},
+    confirmCallback: () => {},
     classes: '', // String
 	attr: {} // Object
 }
-
-// export class LoadingScreen extends React.Component{
-//     constructor(props){
-//         super(props);
-//         this.state = {
-//             visibility: false,
-//             shown: false,
-//         };
-
-//         this.toggleLDS = this.toggleLDS.bind(this);
-//         this.concealLDS = this.concealLDS.bind(this);
-
-//     }
-
-//     toggleLDS(show_lds){
-//         if(show_lds){
-//             this.setState({
-//                 visibility: true,
-//                 shown: true,
-//             });
-//         }
-//         else{
-//             this.setState({ shown: false });
-//         }
-//     }
-
-//     concealLDS(){
-//         if(!this.state.shown){
-//             this.setState({ visibility: false });
-//         }
-//     }
-
-//     componentDidUpdate(prevProps){
-//         if(prevProps.lds_shown !== this.props.lds_shown){
-//             this.toggleLDS(this.props.lds_shown);
-//         }
-//     }
-
-//     render(){
-//         const visibility = (this.state.visibility ? ' visible' : '');
-//         const shown = (this.state.shown ? ' shown' : '');
-//         const loader_color = (this.props.loader_color ? ' '+this.props.loader_color : ' white');
-//         const overlay = (this.props.overlay ? ' '+this.props.overlay+'-overlay' : ' dark-overlay');
-
-//         return (<>
-//             <div className={'loading-screen'+overlay+visibility+shown}
-//             aria-hidden="true" onTransitionEnd={this.concealLDS}>
-//         	    {(this.props.loading_text ? 
-//                 <span className="loading-text">{this.props.loading_text}</span> : ''
-//                 )}
-//             	<div className={"lds-ripple"+loader_color}>
-//             		<div></div>
-//             		<div></div>
-//             	</div>	
-//             </div>
-//         </>);
-//     }
-// }
-
-/*
-
-Example:
-
-<LoadingScreen
-    lds_shown={this.state.lds_shown} // Boolean
-	overlay={'dark|transparent'} // optional
-	loading_text={'Please wait...'} // optional
-	loader_color={'white|blue'} // optional
-/>
-*/

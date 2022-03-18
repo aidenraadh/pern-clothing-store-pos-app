@@ -213,15 +213,15 @@ export function ToolCard(props){
 }
 
 ToolCard.defaultProps = {
-	tag: 'Section', 
+	tag: 'section', 
 	headingTag: 'h6', // String
 	heading: 'Heading', // String or JSX
 	body: 'Lorem ipsum', // String or JSX
 	footer: '', // String or JSX
 	expand: false, // Boolean - This must be from the parent's state
 	toggleButton: <Button // Button JSX with 'toggle-btn' class, and a handler that change expand state inside parent
-		settings={{size: 'sm', type: 'light', color: 'blue'}} 
-		icon={{name: 'angle_up', iconOnly: true}}
+		size={'sm'} type={'light'} color={'blue'}
+		iconName={'angle_up'} iconOnly={true}
 		classes={'toggle-btn'}
 		attr={{
 			onClick: () => {alert('Please attach handler that change expand property')}

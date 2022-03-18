@@ -1679,9 +1679,9 @@ All button in the group must be in the same size
 }
 
 .confirm-popup .confirm-popup-content{
-  	width: auto;
+  	max-width: 40vw;
 	max-height: 60vh;
-	padding: 1.4rem 1.8rem;
+	padding: 2.2rem 2.2rem;
   	border-radius: 0.55rem;
 	opacity: 0;
 	transform: translateY(-8%);

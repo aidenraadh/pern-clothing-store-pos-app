@@ -28,6 +28,9 @@ function InventoryPage(props){
         offset: initFilters.offset ? initFilters.offset : 0, 
     })
     const [filterModalShown, setFilterModalShown] = useState(false)
+    /* Error Popup */
+    const [errPopupShown, setErrPopupShown] = useState(false)
+    const [popupErrMsg, setErrPopupMsg] = useState('')
 
     useEffect(() => {
         if(props.inventory.inventories === null){
@@ -82,7 +85,10 @@ function InventoryPage(props){
         })
         .catch(error => {
             setDisableBtn(false)
-            errorHandler(error, {'400': () => {alert(error.response.data.message)}})           
+            errorHandler(error, {'400': () => {
+                setErrPopupShown(true)
+                setErrPopupMsg(error.response.data.message)                
+            }})           
         })           
     }    
     const editInventory = (index, id, name, sizes) => {
@@ -108,7 +114,10 @@ function InventoryPage(props){
         })
         .catch(error => {
             setDisableBtn(false)
-            errorHandler(error, {'400': () => {alert(error.response.data.message)}})               
+            errorHandler(error, {'400': () => {
+                setErrPopupShown(true)
+                setErrPopupMsg(error.response.data.message)
+            }})               
         })        
     }    
     const confirmDeleteInventory = (id, index) => {
@@ -126,7 +135,10 @@ function InventoryPage(props){
            })
            .catch(error => {
                setDisableBtn(false)
-               errorHandler(error, {'400': () => {alert(error.response.data.message)}})               
+               errorHandler(error, {'400': () => {
+                   setErrPopupShown(true)
+                   setErrPopupMsg(error.response.data.message)                   
+               }})               
            })          
     }
     // When the inventory resource is not set yet
@@ -270,6 +282,15 @@ function InventoryPage(props){
             shown={popupShown} togglePopup={() => {setPopupShown(state => !state)}} 
             confirmCallback={deleteInventory}
         />
+        <ConfirmPopup
+            shown={errPopupShown}
+            icon={'error_circle'}
+            iconColor={'red'}
+            title={"Can't Proceed"}
+            body={popupErrMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setErrPopupShown(state => !state)}} 
+        />        
     </>)
 }
 

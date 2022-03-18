@@ -24,6 +24,9 @@ function StorePage(props){
         offset: initFilters.offset ? initFilters.offset : 0, 
     })
     const [filterModalShown, setFilterModalShown] = useState(false)
+    /* Error Popup */
+    const [errPopupShown, setErrPopupShown] = useState(false)
+    const [popupErrMsg, setErrPopupMsg] = useState('')    
 
     useEffect(() => {
         if(props.store.stores === null){
@@ -75,7 +78,10 @@ function StorePage(props){
             })
             .catch(error => {
                 setDisableBtn(false)
-                errorHandler(error, {'400': () => {alert(error.response.data.message)}})           
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                      
+                }})           
             })           
     }    
     const editStore = (index, id, name) => {
@@ -98,7 +104,10 @@ function StorePage(props){
             })
             .catch(error => {
                 setDisableBtn(false)
-                errorHandler(error, {'400': () => {alert(error.response.data.message)}})               
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                      
+                }})               
             })        
     }    
     const confirmDeleteStore = (id, index) => {
@@ -116,7 +125,10 @@ function StorePage(props){
             })
             .catch(error => {
                 setDisableBtn(false)
-                errorHandler(error, {'400': () => {alert(error.response.data.message)}})               
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                      
+                }})               
             })          
     }
     // When the store resource is not set yet
@@ -220,6 +232,15 @@ function StorePage(props){
             shown={popupShown} togglePopup={() => {setPopupShown(state => !state)}} 
             confirmCallback={deleteStore}
         />
+        <ConfirmPopup
+            shown={errPopupShown}
+            icon={'error_circle'}
+            iconColor={'red'}
+            title={"Can't Proceed"}
+            body={popupErrMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setErrPopupShown(state => !state)}} 
+        />          
     </>)
 }
 
