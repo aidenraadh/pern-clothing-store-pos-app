@@ -27,10 +27,12 @@ module.exports = (sequelize, DataTypes) => {
     total_amount: DataTypes.INTEGER,
   }, {
     sequelize,
+    paranoid: true,
     tableName: 'Store_Inventories',    
     modelName: 'StoreInventory',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
   });
 
   return StoreInventory;

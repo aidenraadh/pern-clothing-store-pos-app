@@ -26,7 +26,6 @@ export const storeInventoryReducer = (state, action) => {
                     [...state.storeInvs, ...payload.storeInvs] : 
                     [...state.storeInvs, payload.storeInvs]
                 ),
-                canLoadMore: payload.storeInvs.length < payload.filters.limit ? false : true
             }; 
         // Prepend array of inventory(s) to 'inventories'
         case STOREINV_ACTIONS.PREPEND: 

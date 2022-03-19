@@ -74,27 +74,62 @@ exports.store = async (req, res) => {
     try {
         // Validate the input
         const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['store_id', 'inventory_id', 'amount']
+            req.body, ['store_id', 'stored_invs']
         )) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
-        // Make sure the inventory is not stored yet
-        if(await isStoreInventoryExist(req.params.id, req.user.owner_id))
-        {
-            return res.status(400).send({
-                message: "This inventory is already exist inside the store"
-            })
-        }           
-        // Count total amount of the stored inventory
-        values.total_amount = countTotalAmount(values.amount)
-        // Store the inventory inside the store
-        const storeInventory = await StoreInventory.create(values)
+        
+        // Store the inventories to the store
+        let storeInvs = await StoreInventory.bulkCreate(values.stored_invs.storedInvs.map(inv => ({
+            store_id: values.store_id, inventory_id: inv.id, 
+            total_amount: inv.total_amount
+        })))
+        // Store the inventory sizes to the store
+        const storeInvSizes = []
 
-        res.send({
-            storeInventory: storeInventory, 
-            message: 'Success storing inventory inside the store'
-        })  
+        values.stored_invs.storedInvs.forEach(inv => {
+            inv.sizes.forEach(size => {
+                storeInvSizes.push({
+                    store_inventory_id: storeInvs.find(storeInv => (
+                        parseInt(inv.id) === parseInt(storeInv.inventory_id)
+                    )).id,
+                    inventory_size_id: size.id,
+                    amount: size.amount
+                })
+            })
+        })
+        await StoreInventorySize.bulkCreate(storeInvSizes)
+
+        storeInvs = await StoreInventory.findAll({
+            where: {id: storeInvs.map(storeInv => storeInv.id)},
+            include: [
+                {
+                    model: StoreInventorySize, as: 'sizes', 
+                    attributes: ['id', 'inventory_size_id', 'amount'],
+                },
+                {
+                    model: Store, as: 'store', 
+                    attributes: ['id', 'name'],
+                    where: {owner_id: req.user.owner_id}
+                },
+                {
+                    model: Inventory, as: 'inventory', 
+                    attributes: ['id', 'name'],
+                    where: {owner_id: req.user.owner_id},
+                    include: [{
+                        model: InventorySize, as: 'sizes', 
+                        attributes: ['id', 'name', 'production_price', 'selling_price']                        
+                    }]
+                },                          
+            ],        
+            order: [['created_at', 'DESC']],
+        })        
+        res.status(200).send({
+            storeInvs: storeInvs,
+            alrStoredInvs: values.stored_invs.alrStoredInvs,
+            message: 'Success updating the stored inventory'
+        })      
     } catch(err) {
         logger.error(err.message)   
         res.status(500).send(err.message)
@@ -249,11 +284,98 @@ exports.destroy = async (req, res) => {
 
 const validateInput = async (req, input) => {
     try {
-        // Parse the inventory amount if it exists in the input
+        // Parse the updated sizes if it exists in the input
         if(input.updated_sizes){
             input.updated_sizes = JSON.parse(input.updated_sizes)
         }
+        // Parse the stored inventories if it exists in the input
+        if(input.stored_invs){
+            input.stored_invs = JSON.parse(input.stored_invs)
+        }        
         const rules = {
+            store_id: Joi.number().required().integer().external(async (value, helpers) => {
+                const store = await Store.findOne({
+                    where: {id: value, owner_id: req.user.owner_id}
+                })
+                if(!store){
+                    throw {message: 'The store is not exist'}
+                }
+                return value
+            }),
+            stored_invs: Joi.array().required().items(Joi.object({
+                id: Joi.number().required().integer(),
+
+                sizes: Joi.array().required().items(Joi.object({
+                    id: Joi.number().required().integer(),
+                    amount: Joi.number().required().integer().allow('', null),
+                }).unknown(true)),
+
+            }).unknown(true)).external(async (value, helpers) => {
+                const invIds = value.map(inv => inv.id)
+                /* ------ Make sure there are no duplicate inventories ------ */
+
+                // Get all the duplicated inventory ID
+                const duplicated = invIds.filter((id, index, idArr) => (
+                    idArr.indexOf(id, (index+1)) !== -1
+                ))
+                if(duplicated.length){
+                    throw {message: 'There are duplicate inventories'}
+                }
+                /* ------------------------------------------------------------ */
+                
+                /* ------ Remove all the inventories that already stored  ------ */
+
+                // Get all the inventory that already stored
+                const alrStoredInvs = await StoreInventory.findAll({
+                    where: {inventory_id: invIds, store_id: input.store_id},
+                    attributes: ['inventory_id'],
+                    include: [{
+                        model: Inventory, as: 'inventory', 
+                        attributes: ['name'],
+                    }]
+                })
+                const alrStoredInvIds = alrStoredInvs.map(inv => parseInt(inv.inventory_id))
+                // Filter the inventories
+                const storedInvs = value.filter(inv => (
+                    !alrStoredInvIds.includes(parseInt(inv.id))
+                ))
+                /* ------------------------------------------------------------ */
+
+
+                /* ------------ Make sure the stored size is exists  ------------ */
+
+                // Get all the inventory and its sizes
+                const invAndSizes = await Inventory.findAll({
+                    where: {id: storedInvs.map(inv => inv.id)},
+                    attributes: ['id'],
+                    include: [{
+                        model: InventorySize, as: 'sizes', 
+                        attributes: ['id']                        
+                    }]
+                })
+                storedInvs.forEach((storedInv, index, self) => {
+                    let totalAmount = 0
+                    const sanitizedSizes = []
+                    const sizeIds = invAndSizes.find(invAndSize => (
+                        parseInt(invAndSize.id) === parseInt(storedInv.id)
+                    ))
+                    .sizes.map(size => parseInt(size.id))
+
+                    storedInv.sizes.forEach(size => {
+                        if(sizeIds.includes(parseInt(size.id)) && size.amount){
+                            sanitizedSizes.push(size)
+                            totalAmount += size.amount
+                        }
+                    })
+                    self[index].sizes = sanitizedSizes
+                    self[index].total_amount = totalAmount ? totalAmount : null
+                })
+                /* ------------------------------------------------------------ */
+                return {
+                    storedInvs: storedInvs, alrStoredInvs: alrStoredInvs
+                }
+            }),       
+
             updated_sizes: Joi.array().required().items(Joi.object({
                 id: Joi.number().required().integer().allow('', null),
                 inventory_size_id: Joi.number().required().integer(),

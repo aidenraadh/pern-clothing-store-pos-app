@@ -1,4 +1,5 @@
 import {useState, useEffect, useReducer} from 'react'
+import {STOREINV_ACTIONS} from './../../reducers/StoreInventoryReducer'
 import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, SelectAddon} from '../../Forms'
@@ -15,6 +16,12 @@ function CreateStoreInventoryPage(props){
     const [searchedInv, setSearchedInv] = useState([])
     const [modalShown, setModalShown] = useState(false)
     const [invName, setInvName] = useState('')
+    /* Error Popup */
+    const [errPopupShown, setErrPopupShown] = useState(false)
+    const [popupErrMsg, setErrPopupMsg] = useState('')
+    /* Success Popup */
+    const [succPopupShown, setSuccPopupShown] = useState(false)
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')    
 
     useEffect(() => {
         if(stores === null){ getStores() }
@@ -22,7 +29,11 @@ function CreateStoreInventoryPage(props){
 
     const getStores = () => {
         api.get(`/stores`)
-           .then(response => { setStores(response.data.stores) })
+           .then(response => {
+               const stores = response.data.stores
+               setStores(stores)
+               setStoreId(stores[0] ? stores[0].id : null)
+            })
            .catch(error => { errorHandler(error) })        
     }
     const getInv = () => {
@@ -35,7 +46,29 @@ function CreateStoreInventoryPage(props){
            })        
     }
     const storeInvs = () => {
-        console.log(addedInvs)
+        api.post(`/store-inventories`, {
+                stored_invs: JSON.stringify(addedInvs),
+                store_id: storeId
+            })
+           .then(response => {
+               console.log(response)
+               props.dispatchStoreInv({
+                   type: STOREINV_ACTIONS.APPEND,
+                   payload: {storeInvs: response.data.storeInvs}
+                })
+                setSuccPopupShown(true)
+                setSuccPopupMsg(<p>
+                    Storing inventories: {response.storeInvs.length} success,
+                    {response.alrStoredInvs.length} failed
+                </p>)                  
+           })
+           .catch(error => { 
+            //    console.log(error)
+            //     errorHandler(error, {'400': () => {
+            //         setErrPopupShown(true)
+            //         setErrPopupMsg(error.response.data.message)                
+            //     }})                  
+           })          
     }
     // When the stores is not set yet return loading UI
     if(stores === null){
@@ -44,7 +77,7 @@ function CreateStoreInventoryPage(props){
     return (<>
         <Grid num_of_columns={1} items={(() => {
             const items = addedInvs.map((inventory, key) => (
-                <ToolCard key={key} heading={inventory.name} expand={inventory.toolCardExpand}
+                <ToolCard heading={inventory.name} expand={inventory.toolCardExpand}
                     body={inventory.sizes.length ? <Grid
                         num_of_columns={4} items={inventory.sizes.map((size, sizeKey) => (
                             <TextInput key={sizeKey} label={`Amount ${size.name}`} size={'sm'} formAttr={{
@@ -88,7 +121,7 @@ function CreateStoreInventoryPage(props){
                     options={stores.map(store => ({
                         value: store.id, text: store.name
                     }))}
-                    formAttr={{onClick: (e) => { setStoreId(e.target.value) }}}
+                    formAttr={{onChange: (e) => { setStoreId(e.target.value) }}}
                 />                
             )
             // Add select inventory btn at the end
@@ -130,7 +163,25 @@ function CreateStoreInventoryPage(props){
             </>}        
             shown={modalShown}
             toggleModal={() => {setModalShown(state => !state)}}
-        />           
+        />     
+        <ConfirmPopup
+            shown={succPopupShown}
+            icon={'done_circle'}
+            iconColor={'blue'}
+            title={"Success"}
+            body={popupSuccMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+        />            
+        <ConfirmPopup
+            shown={errPopupShown}
+            icon={'error_circle'}
+            iconColor={'red'}
+            title={"Can't Proceed"}
+            body={popupErrMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setErrPopupShown(state => !state)}} 
+        />              
     </>)
 }
 

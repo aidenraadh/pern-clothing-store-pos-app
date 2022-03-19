@@ -15,11 +15,19 @@ const StoreInventory      = models.StoreInventory
 const StoreInventorySize      = models.StoreInventorySize
 
 rootRouter.get('/test', async (req, res) => {
-    const test = await StoreInventorySize.sum('amount', {
-        where: {store_inventory_id: 1}
-    })
+    const arr = [
+        {
+            a: 'asd',
+            b: [1,2,3]
+        },
+        {
+            a: 'asd',
+            b: [4,5,6]
+        }
+    ]
+    const data = arr.find(item => (item.a === 'asd'))
     res.send({
-        data: test,
+        data: data,
         message: 'test'
     })
 })
