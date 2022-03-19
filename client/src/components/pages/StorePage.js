@@ -49,6 +49,7 @@ function StorePage(props){
                     setFilterModalShown(false)
                 }                          
                 props.dispatchStore({type: actionType, payload: response.data})
+                setFilters(getResFilters(STORE_FILTER_KEY))
            })
            .catch(error => {
                 if(props.store.stores !== null){

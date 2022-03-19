@@ -21,17 +21,23 @@ exports.index = async (req, res) => {
         }
         if(req.query.store_id){
             const {value, error} = Joi.number().required().integer().validate(req.query.store_id)
-            if(error === undefined){
-                filters.where.store_id = value
-            }            
+            if(error === undefined){ filters.where.store_id = value }            
         }
+        if(req.query.name){
+            const {value, error} = Joi.string().required().trim().validate(req.query.name)
+            if(error === undefined){ filters.where.name = value }
+        }        
         const stores = await Store.findAll({
             where: {owner_id: req.user.owner_id},
             attributes: ['id', 'name'],
             order: [['id', 'DESC']],
         })
         const storeInvs = await StoreInventory.findAll({
-            where: {...filters.where},
+            where: (() => {
+                const where = {...filters.where}
+                delete where.name
+                return where
+            })(),
             include: [
                 {
                     model: StoreInventorySize, as: 'sizes', 
@@ -45,7 +51,11 @@ exports.index = async (req, res) => {
                 {
                     model: Inventory, as: 'inventory', 
                     attributes: ['id', 'name'],
-                    where: {owner_id: req.user.owner_id},
+                    where: (() => {
+                        let where = {owner_id: req.user.owner_id}
+                        if(filters.where.name){ where.name = {[Op.iLike]: `%${filters.where.name}%`} }
+                        return where
+                    })(),
                     include: [{
                         model: InventorySize, as: 'sizes', 
                         attributes: ['id', 'name', 'production_price', 'selling_price']                        

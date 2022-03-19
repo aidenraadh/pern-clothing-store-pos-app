@@ -1,6 +1,5 @@
 import {useState, useEffect, useReducer} from 'react'
-import {STOREINV_ACTIONS} from './../../reducers/StoreInventoryReducer'
-import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../../Utils.js'
+import {api, errorHandler, formatNum} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, SelectAddon} from '../../Forms'
 import {ToolCard} from '../../Cards'
@@ -36,8 +35,8 @@ function CreateStoreInventoryPage(props){
             })
            .catch(error => { errorHandler(error) })        
     }
-    const getInv = () => {
-        api.get(`/inventories?name=${invName}`)
+    const getInvs = () => {
+        api.get(`/inventories?name=${invName}&limit=20`)
            .then(response => {
                 setSearchedInv(response.data.inventories)     
            })
@@ -51,23 +50,23 @@ function CreateStoreInventoryPage(props){
                 store_id: storeId
             })
            .then(response => {
-               console.log(response)
-               props.dispatchStoreInv({
-                   type: STOREINV_ACTIONS.APPEND,
-                   payload: {storeInvs: response.data.storeInvs}
-                })
-                setSuccPopupShown(true)
-                setSuccPopupMsg(<p>
-                    Storing inventories: {response.storeInvs.length} success,
-                    {response.alrStoredInvs.length} failed
-                </p>)                  
+                setSuccPopupMsg(<>
+                    <p>
+                        Storing inventories: {response.data.storeInvs.length} success, {response.data.alrStoredInvs.length} failed
+                    </p>
+                    <ul style={{textAlign: 'left', listStylePosition: 'inside', marginTop: '2rem'}}>
+                        {response.data.alrStoredInvs.map(inv => (
+                            <li>{inv.inventory.name} already stored</li>
+                        ))}
+                    </ul>   
+                </>)                  
+                setSuccPopupShown(true)               
            })
            .catch(error => { 
-            //    console.log(error)
-            //     errorHandler(error, {'400': () => {
-            //         setErrPopupShown(true)
-            //         setErrPopupMsg(error.response.data.message)                
-            //     }})                  
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                
+                }})                  
            })          
     }
     // When the stores is not set yet return loading UI
@@ -77,9 +76,10 @@ function CreateStoreInventoryPage(props){
     return (<>
         <Grid num_of_columns={1} items={(() => {
             const items = addedInvs.map((inventory, key) => (
-                <ToolCard heading={inventory.name} expand={inventory.toolCardExpand}
-                    body={inventory.sizes.length ? <Grid
-                        num_of_columns={4} items={inventory.sizes.map((size, sizeKey) => (
+                <ToolCard key={key} heading={inventory.name} expand={inventory.toolCardExpand}
+                    body={inventory.sizes.length ? 
+                    <Grid num_of_columns={4} 
+                        items={inventory.sizes.map((size, sizeKey) => (
                             <TextInput key={sizeKey} label={`Amount ${size.name}`} size={'sm'} formAttr={{
                                 value: formatNum(size.amount),
                                 onChange: (e) => {
@@ -117,7 +117,7 @@ function CreateStoreInventoryPage(props){
             ))
             // Add select store form at the beginning
             items.unshift(
-                <SelectAddon addon={'Select store'}
+                <SelectAddon key={'x'} addon={'Select store'}
                     options={stores.map(store => ({
                         value: store.id, text: store.name
                     }))}
@@ -125,15 +125,20 @@ function CreateStoreInventoryPage(props){
                 />                
             )
             // Add select inventory btn at the end
-            items.push([
-                <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
+            items.push(
+                <button key={'y'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
                 onClick={() => {setModalShown(true)}}>
                     + Add Inventory
-                </button>,       
-                <Button size={'md'} text={'Store inventories'} attr={{
+                </button>                       
+            )
+            items.push(    
+                <div key={'s'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>,                      
+            )
+            items.push(
+                <Button key={'z'} size={'md'} text={'Store inventories'} attr={{
                     onClick: storeInvs
                 }} />                         
-            ])
+            )                        
             return items
         })()}/>    
         <Modal
@@ -148,7 +153,7 @@ function CreateStoreInventoryPage(props){
                     />   
                     <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
-                        onClick: () => {getInv()}
+                        onClick: () => {getInvs()}
                     }}/>                                       
                 </div>
                 <Table

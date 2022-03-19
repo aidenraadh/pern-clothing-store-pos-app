@@ -17,16 +17,17 @@ exports.index = async (req, res) => {
         }
         if(req.query.name){
             const {value, error} = Joi.string().required().trim().validate(req.query.name)
-            if(error === undefined){
-                filters.where.name = {[Op.iLike]: `%${value}%`}
-            }
+            if(error === undefined){ filters.where.name = value }
         }
         const stores = await Store.findAll({
-            where: {...filters.where, owner_id: req.user.owner_id},
+            where: (() => {
+                const where = {...filters.where, owner_id: req.user.owner_id}
+                if(where.name){ where.name =  {[Op.iLike]: `%${where.name}%`}}
+                return where
+            })(),
             order: [['id', 'DESC']],
             ...filters.limitOffset
         })
-        if(filters.where.name){ filters.where.name = req.query.name.trim() }
         res.send({
             stores: stores,
             filters: {...filters.where, ...filters.limitOffset}

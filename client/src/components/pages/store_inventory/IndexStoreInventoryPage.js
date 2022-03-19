@@ -11,15 +11,16 @@ import Table from '../../Table'
 
 function IndexStoreInventoryPage(props){
     const [disableBtn , setDisableBtn] = useState(false)
-    /* Edit store */
+    /* Edit store inventory */
     const [storeInvIndex, setStoreInvIndex] = useState('')
     const [storeInvSizes, setStoreInvSizes] = useState('')
     const [modalShown, setModalShown] = useState(false)
-    /* Delete store */
+    /* Delete store inventory */
     const [popupShown, setPopupShown] = useState(false)
-    /* Filter store */
+    /* Filter store inventory */
     const initFilters = getResFilters(STOREINV_FILTER_KEY)
     const [filters, setFilters] = useState({
+        name: initFilters.name ? initFilters.name : '',
         store_id: initFilters.store_id ? initFilters.store_id : '',
         limit: initFilters.limit ? initFilters.limit : 10, 
         offset: initFilters.offset ? initFilters.offset : 0, 
@@ -31,16 +32,15 @@ function IndexStoreInventoryPage(props){
 
     useEffect(() => {
         if(props.storeInv.storeInvs === null){
-            getStoreInv()
+            getStoreInvs()
         }
     }, [])
 
-    const getStoreInv = (actionType = '') => {
+    const getStoreInvs = (actionType = '') => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === '' ? 0 : (queries.offset + queries.limit)
-
         if(props.storeInv.storeInvs !== null){
             setDisableBtn(true)
         }
@@ -51,6 +51,7 @@ function IndexStoreInventoryPage(props){
                     setFilterModalShown(false)
                 }                          
                 props.dispatchStoreInv({type: actionType, payload: response.data})
+                setFilters(getResFilters(STOREINV_FILTER_KEY))
            })
            .catch(error => {
                 if(props.storeInv.storeInvs !== null){
@@ -126,18 +127,32 @@ function IndexStoreInventoryPage(props){
                 style: {marginRight: '1rem'}
             }} />
             <Link to={'/store-inventories/create'}>
-                <Button tag={'span'} text={'+ Create'} size={'sm'} attr={{onClick: () => {}}}/>
+                <Button tag={'span'} text={'+ Store new'} size={'sm'} attr={{onClick: () => {}}}/>
             </Link>
         </section>
         <PlainCard
             body={<>
+                <div className='flex-row items-center'>
+                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
+                        iconName={'search'}
+                        formAttr={{value: filters.name, placeholder: 'Search inventory', onChange: (e) => {
+                                setFilters(state => ({...state, name: e.target.value}))
+                            }
+                        }} 
+                    />   
+                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                            style: {flexShrink: '0'},
+                            onClick: () => {getStoreInvs()}
+                        }}
+                    />                                       
+                </div>
                 <GenerateStoreInv 
                     storeInvs={props.storeInv.storeInvs} 
                     editStoreInv={editStoreInv}
                 />
                 <LoadMoreBtn 
                     canLoadMore={props.storeInv.canLoadMore}
-                    action={() => {getStoreInv(STOREINV_ACTIONS.APPEND)}}
+                    action={() => {getStoreInvs(STOREINV_ACTIONS.APPEND)}}
                 />              
             </>}
         />
@@ -190,7 +205,7 @@ function IndexStoreInventoryPage(props){
                         }
                     }}
                     options={(() => {
-                        const options = [{value: '', text: 'All'}]
+                        const options = [{value: '', text: 'All stores'}]
                         props.storeInv.stores.forEach(store => {
                             options.push({value: store.id, text: store.name})
                         })
@@ -212,7 +227,7 @@ function IndexStoreInventoryPage(props){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStoreInv()}
+                        onClick: () => {getStoreInvs()}
                     }}
                 />                
             }

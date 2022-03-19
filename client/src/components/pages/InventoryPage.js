@@ -53,6 +53,7 @@ function InventoryPage(props){
                     setFilterModalShown(false)
                 }                          
                 props.dispatchInventory({type: actionType, payload: response.data})
+                setFilters(getResFilters(INVENTORY_FILTER_KEY))
            })
            .catch(error => {
                 if(props.inventory.inventories !== null){
@@ -152,7 +153,7 @@ function InventoryPage(props){
                 onClick: () => {setFilterModalShown(true)},
                 style: {marginRight: '1rem'}
             }} />
-            <Button text={'+ Create'} size={'sm'} attr={{onClick: createInventory}}/>
+            <Button text={'+ New'} size={'sm'} attr={{onClick: createInventory}}/>
         </section>
         <PlainCard
             body={
