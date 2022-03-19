@@ -772,7 +772,7 @@ All button in the group must be in the same size
 */
 
 .addon-input{
-	display: inline-block;
+	display: block;
 }
 
 .addon-input label{
@@ -799,7 +799,8 @@ All button in the group must be in the same size
 }
 
 .addon-input input, .addon-input select{
-	display: inline-block;
+	display: block;
+	width: 100%;
 	padding: 0.6em 1em;
 	border-radius: 0 0.55rem 0.55rem 0;
 	font-size: 1.4rem;
@@ -1070,7 +1071,8 @@ All button in the group must be in the same size
 	font-size: 1.66rem;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;	
+    text-overflow: ellipsis;
+	text-transform: capitalize;	
 }
 
 .simple-card .card-header .card-actions{
