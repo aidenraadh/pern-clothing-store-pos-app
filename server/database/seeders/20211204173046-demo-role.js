@@ -13,7 +13,12 @@ module.exports = {
         name: 'Owner',
         created_at: currentTime,
         updated_at: currentTime          
-      },      
+      },     
+      {
+        name: 'Employee',
+        created_at: currentTime,
+        updated_at: currentTime          
+      },        
     ]
     await queryInterface.bulkInsert('Roles', roles);
   },

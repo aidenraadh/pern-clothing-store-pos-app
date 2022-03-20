@@ -25,8 +25,15 @@ module.exports = {
         type: Sequelize.DATE
       }  
     });
+    // Add unique constraint to name
+    await queryInterface.addConstraint('Roles', {
+      fields: ['name'],
+      type: 'unique',
+      name: 'unq_roles',
+    })      
   },
   down: async (queryInterface, Sequelize) => {
+    await queryInterface.removeConstraint('Roles', 'unq_roles');    
     await queryInterface.dropTable('Roles');
   }
 };

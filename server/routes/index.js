@@ -6,6 +6,7 @@ const inventoryController      = require('../controllers/inventoryController')
 const storeInventoryController = require('../controllers/storeInventoryController')
 const isAuth                   = require('../middlewares/isAuth')
 const isNotAuth                = require('../middlewares/isNotAuth')
+const authorize                = require('../middlewares/authorize')
 
 const models             = require('../models/index')
 const Inventory          = models.Inventory
@@ -13,19 +14,11 @@ const Store          = models.Store
 const InventorySize      = models.InventorySize
 const StoreInventory      = models.StoreInventory
 const StoreInventorySize      = models.StoreInventorySize
+const Role      = models.Role
 
-rootRouter.get('/test', async (req, res) => {
-    const arr = [
-        {
-            a: 'asd',
-            b: [1,2,3]
-        },
-        {
-            a: 'asd',
-            b: [4,5,6]
-        }
-    ]
-    const data = arr.find(item => (item.a === 'asd'))
+rootRouter.get('/test', isAuth, async (req, res) => {
+    const data = req.user.owner_id
+    console.log(req.user)
     res.send({
         data: data,
         message: 'test'
@@ -62,7 +55,7 @@ rootRouter.delete('/stores/:id', [
 ])
 
 rootRouter.get('/inventories', [
-    isAuth, inventoryController.index
+    isAuth, authorize(['owner', 'employee']), inventoryController.index
 ])
 
 rootRouter.post('/inventories', [

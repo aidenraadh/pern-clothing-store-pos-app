@@ -1,10 +1,11 @@
-const JwtStrategy = require('passport-jwt').Strategy
-const ExtractJwt  = require('passport-jwt').ExtractJwt
-const path        = require('path')
-const fs          = require('fs')
-const logger      = require('../utils/logger')
-const User        = require('../models/index').User
-const Owner       = require('../models/index').Owner
+const JwtStrategy   = require('passport-jwt').Strategy
+const ExtractJwt    = require('passport-jwt').ExtractJwt
+const path          = require('path')
+const fs            = require('fs')
+const logger        = require('../utils/logger')
+const User          = require('../models/index').User
+const Owner         = require('../models/index').Owner
+const StoreEmployee = require('../models/index').StoreEmployee
 
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem')
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8')
@@ -18,7 +19,16 @@ const opts = {
 const authenticate = async (payload, done) => {  
     try{
         // Check if the user exists
-        const user = await User.findOne({where: {id: payload.sub}})
+        const user = await User.findOne({
+            where: {id: payload.sub},
+            include: [
+                // Get the user's store employee if exists
+                {
+                    model: StoreEmployee, as: 'storeEmployee', 
+                    attributes: ['id', 'store_id'],
+                }
+            ]                
+        })
         if(!user){
             return done(null, false)
         }

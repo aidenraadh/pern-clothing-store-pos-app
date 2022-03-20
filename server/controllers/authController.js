@@ -4,6 +4,7 @@ const path          = require('path')
 const logger        = require('../utils/logger')
 const fs            = require('fs')
 const User          = require('../models/index').User
+const StoreEmployee = require('../models/index').StoreEmployee
 
 exports.register = async (req, res) => {    
     try{     
@@ -46,7 +47,16 @@ exports.login = async (req, res) => {
 
         res.send({
             message: 'Success',
-            user: await User.findOne({where: {id: user.id}}),
+            user: await User.findOne({
+                where: {id: user.id}, 
+                include: [
+                    // Get the user's store employee if exists
+                    {
+                        model: StoreEmployee, as: 'storeEmployee', 
+                        attributes: ['id', 'store_id'],
+                    }
+                ]                
+            }),
             token: jwt.token,
             expiresIn: jwt.expiresIn
         })          
