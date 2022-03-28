@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasOne(
         models.StoreEmployee, {foreignKey: 'user_id', as: 'storeEmployee'}
       )           
+      models.User.belongsTo(
+        models.Owner, {foreignKey: 'owner_id', as: 'owner'}
+      )      
+      models.User.belongsTo(
+        models.Role, {foreignKey: 'role_id', as: 'role'}
+      )        
     }
   };
   User.init({

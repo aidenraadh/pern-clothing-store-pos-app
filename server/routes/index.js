@@ -39,51 +39,51 @@ rootRouter.put('/profile', [
 ])
 
 rootRouter.get('/stores', [
-    isAuth, storeController.index
+    isAuth, authorize(['owner']), storeController.index
 ])
 
 rootRouter.post('/stores', [
-    isAuth, storeController.store
+    isAuth, authorize(['owner']), storeController.store
 ])
 
 rootRouter.put('/stores/:id', [
-    isAuth, storeController.update
+    isAuth, authorize(['owner']), storeController.update
 ])
 
 rootRouter.delete('/stores/:id', [
-    isAuth, storeController.destroy
+    isAuth, authorize(['owner']), storeController.destroy
 ])
 
 rootRouter.get('/inventories', [
-    isAuth, authorize(['owner', 'employee']), inventoryController.index
+    isAuth, authorize(['owner']), inventoryController.index
 ])
 
 rootRouter.post('/inventories', [
-    isAuth, inventoryController.store
+    isAuth, authorize(['owner']), inventoryController.store
 ])
 
 rootRouter.put('/inventories/:id', [
-    isAuth, inventoryController.update
+    isAuth, authorize(['owner']), inventoryController.update
 ])
 
 rootRouter.delete('/inventories/:id', [
-    isAuth, inventoryController.destroy
+    isAuth, authorize(['owner']), inventoryController.destroy
 ])
 
 rootRouter.get('/store-inventories', [
-    isAuth, storeInventoryController.index
+    isAuth, authorize(['owner', 'employee']), storeInventoryController.index
 ])
 
 rootRouter.post('/store-inventories', [
-    isAuth, storeInventoryController.store
+    isAuth, authorize(['owner']), storeInventoryController.store
 ])
 
 rootRouter.put('/store-inventories/:id', [
-    isAuth, storeInventoryController.update
+    isAuth, authorize(['owner']), storeInventoryController.update
 ])
 
 rootRouter.delete('/store-inventories/:id', [
-    isAuth, storeInventoryController.destroy
+    isAuth, authorize(['owner']), storeInventoryController.destroy
 ])
 
 

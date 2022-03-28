@@ -3,9 +3,12 @@ const ExtractJwt    = require('passport-jwt').ExtractJwt
 const path          = require('path')
 const fs            = require('fs')
 const logger        = require('../utils/logger')
-const User          = require('../models/index').User
-const Owner         = require('../models/index').Owner
-const StoreEmployee = require('../models/index').StoreEmployee
+
+const models        = require('../models/index')
+const Role          = models.Role
+const User          = models.User
+const Owner         = models.Owner
+const StoreEmployee = models.StoreEmployee
 
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem')
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8')
@@ -22,6 +25,14 @@ const authenticate = async (payload, done) => {
         const user = await User.findOne({
             where: {id: payload.sub},
             include: [
+                // Get the user's owner
+                {
+                    model: Owner, as: 'owner',  attributes: ['id'],
+                },  
+                // Get the user's role
+                {
+                    model: Role, as: 'role',  attributes: ['name'],
+                },                              
                 // Get the user's store employee if exists
                 {
                     model: StoreEmployee, as: 'storeEmployee', 
@@ -32,12 +43,9 @@ const authenticate = async (payload, done) => {
         if(!user){
             return done(null, false)
         }
-
-        // Check if the owner exists
-        const owner = await Owner.findOne({where: {id: user.owner_id}, attributes: ['id']})
-        if(!owner){
+        if(!user.owner){
             return done(null, false)
-        }
+        }        
 
         return done(null, user)
     } catch (err){

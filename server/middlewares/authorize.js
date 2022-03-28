@@ -1,30 +1,17 @@
-const {Op}   = require("sequelize")
-const models = require('../models/index')
-const Role   = models.Role
-const Store  = models.Store
-const StoreEmployee  = models.StoreEmployee
+const Store  = require('../models/index').Store
 
 const authorize = (roles) => {
     return async (req, res, next) => {
         try {
-            const authorizedRoles = await Role.findAll({
-                where: {
-                    [Op.or]: roles.map(role => ({
-                        name: {[Op.iLike]: `%${role}%`}
-                    }))
-                },
-                attributes: ['id', 'name']
-            })
-            const userRole = authorizedRoles.find((role) => (
-                parseInt(role.id) === parseInt(req.user.role_id)
-            ))
+            const userRole = req.user.role.name.toLowerCase()
+            roles = roles.map(role => role.toLowerCase())
+
             // Make sure the user's role exists in the authorized roles
-            if(!userRole){
+            if(!roles.includes(userRole)){
                 return res.status(401).send('Unauthorized. This user is not authorized to any of the roles.')
             }
-            // For employee role only, make sure the user's storeEmployee exists
-            // and the store where user is employed exists
-            if(userRole.name.toLowerCase() === 'employee'){
+            // For employee role only, make sure the store where user is employed exists
+            if(userRole === 'employee'){
                 if(req.user.storeEmployee){
                     const store = await Store.findOne({
                         where: {id: req.user.storeEmployee.store_id}, attributes: ['id']
@@ -34,13 +21,13 @@ const authorize = (roles) => {
                     }                
                 }
                 else{
-                    res.send.status(401).send('Unauthorized. This user is not employed to any of the stores.')
+                    return res.send.status(401).send('Unauthorized. This user is not employed to any of the stores.')
                 }
             }
     
             next()            
         } catch (error) {
-            return res.send.status(401).send({message: 'asd'})
+            return res.send.status(500).send({message: 'Server error'})
         }
     }
 }
