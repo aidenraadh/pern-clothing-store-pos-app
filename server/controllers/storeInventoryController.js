@@ -11,31 +11,36 @@ const logger             = require('../utils/logger')
 
 exports.index = async (req, res) => {    
     try {
-        // Set limit and offset
+        const userRole = req.user.role.name.toLowerCase()
+        // Set filters
         const filters = {
-            where: {},
+            whereStoreInv: {},
+            whereInv: {},
             limitOffset: {
                 limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
                 offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
             }
         }
-        if(req.query.store_id){
+        if(req.query.store_id && userRole !== 'employee'){
             const {value, error} = Joi.number().required().integer().validate(req.query.store_id)
-            if(error === undefined){ filters.where.store_id = value }            
+            if(error === undefined){ filters.whereStoreInv.store_id = value }            
         }
         if(req.query.name){
             const {value, error} = Joi.string().required().trim().validate(req.query.name)
-            if(error === undefined){ filters.where.name = value }
-        }        
-        const stores = await Store.findAll({
+            if(error === undefined){ filters.whereInv.name = value }
+        }     
+        // Get all the stores   
+        const stores = userRole === 'employee' ? [] : 
+        await Store.findAll({
             where: {owner_id: req.user.owner_id},
             attributes: ['id', 'name'],
             order: [['id', 'DESC']],
         })
         const storeInvs = await StoreInventory.findAll({
             where: (() => {
-                const where = {...filters.where}
-                delete where.name
+                const where = {...filters.whereStoreInv}
+                // When user is employee, the store ID must be the store where they employed
+                if(userRole === 'employee'){ where.store_id = req.user.storeEmployee.store_id }
                 return where
             })(),
             include: [
@@ -52,13 +57,18 @@ exports.index = async (req, res) => {
                     model: Inventory, as: 'inventory', 
                     attributes: ['id', 'name'],
                     where: (() => {
-                        let where = {owner_id: req.user.owner_id}
-                        if(filters.where.name){ where.name = {[Op.iLike]: `%${filters.where.name}%`} }
+                        let where = {...filters.whereInv, owner_id: req.user.owner_id}
+                        if(where.name){ where.name = {[Op.iLike]: `%${where.name}%`} }
                         return where
                     })(),
                     include: [{
                         model: InventorySize, as: 'sizes', 
-                        attributes: ['id', 'name', 'production_price', 'selling_price']                        
+                        attributes: (() => {
+                            const attr = ['id', 'name', 'selling_price']
+                            // When user is owner, get also the production price
+                            if(userRole === 'owner'){ attr.push('production_price') }
+                            return attr
+                        })()                       
                     }]
                 },                          
             ],        
@@ -70,7 +80,8 @@ exports.index = async (req, res) => {
             storeInvs: storeInvs, 
             stores: stores,
             filters: {
-                ...filters.where,
+                ...filters.whereStoreInv,
+                ...filters.whereInv,
                 ...filters.limitOffset
             }
         })          

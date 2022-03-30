@@ -157,35 +157,49 @@ function IndexStoreInventoryPage(props){
             </>}
         />
         <Modal
-            heading={'Edit Amount'}
+            heading={'Details'}
             body={<>
                 <Table
-                    headings={['Size', 'Quantity', 'Production Price', 'Selling Price']}
+                    headings={(() => {
+                        const headings = ['Size', 'Quantity', 'Selling Price']
+                        if(props.user.role.name === 'owner'){
+                           headings.splice(2, 0, 'Production Price') 
+                        }
+                        return headings
+                    })()}
                     body={(() => {
                         if(!storeInvSizes){ return [] }
-
-                        return storeInvSizes.map((size, index) => ([
-                            size.name,
-                            <TextInput size={'sm'}
-                                formAttr={{
-                                    pattern: '[0-9]*', 
-                                    value: size.amount,
-                                    onChange: (e) => {setStoreInvSizes(state => {
-                                        const sizes = [...state]
-                                        sizes[index].amount = e.target.value
-                                        sizes[index].isChanged = true
-                                        return sizes
-                                    })}
-                                }}
-                                containerAttr={{style: {width: '10rem'}}}
-                            />,
-                            `Rp. ${formatNum(size.production_price)}`,
-                            `Rp. ${formatNum(size.selling_price)}` 
-                        ]))
+                        if(props.user.role.name === 'owner'){
+                            return storeInvSizes.map((size, index) => ([
+                                size.name,
+                                <TextInput size={'sm'}
+                                    formAttr={{
+                                        pattern: '[0-9]*', 
+                                        value: size.amount,
+                                        onChange: (e) => {setStoreInvSizes(state => {
+                                            const sizes = [...state]
+                                            sizes[index].amount = e.target.value
+                                            sizes[index].isChanged = true
+                                            return sizes
+                                        })}
+                                    }}
+                                    containerAttr={{style: {width: '10rem'}}}
+                                />,
+                                `Rp. ${formatNum(size.production_price)}`,
+                                `Rp. ${formatNum(size.selling_price)}` 
+                            ]))
+                        }
+                        if(props.user.role.name === 'employee'){
+                            return storeInvSizes.map((size, index) => ([
+                                size.name,
+                                formatNum(size.amount),
+                                `Rp. ${formatNum(size.selling_price)}` 
+                            ]))
+                        }                        
                     })()}
                 />
             </>}        
-            footer={
+            footer={props.user.role.name === 'employee' ? '' :
                 <Button size={'sm'} text={'Save Changes'} attr={{
                     disabled: disableBtn,
                     onClick: () => {updateStoreInv()}
@@ -196,34 +210,43 @@ function IndexStoreInventoryPage(props){
         />
         <Modal
             heading={'Filter'}
-            body={<Grid num_of_columns={1} items={[
-                <Select label={'Store'} 
-                    formAttr={{
-                        value: filters.store_id,
-                        onChange: e => {
-                            setFilters(state => ({...state, store_id: parseInt(e.target.value)}))
-                        }
-                    }}
-                    options={(() => {
-                        const options = [{value: '', text: 'All stores'}]
-                        props.storeInv.stores.forEach(store => {
-                            options.push({value: store.id, text: store.name})
-                        })
-                        return options
-                    })()}
-                />,
-                <Select label={'Rows shown'} 
-                    formAttr={{
-                        value: filters.limit,
-                        onChange: e => {
-                            setFilters(state => ({...state, limit: parseInt(e.target.value)}))
-                        }
-                    }}
-                    options={[
-                        {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
-                    ]}
-                />                
-            ]}/>}        
+            body={<Grid num_of_columns={1} 
+                items={(() => {
+                    const items = [
+                        <Select label={'Rows shown'} 
+                            formAttr={{
+                                value: filters.limit,
+                                onChange: e => {
+                                    setFilters(state => ({...state, limit: parseInt(e.target.value)}))
+                                }
+                            }}
+                            options={[
+                                {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
+                            ]}
+                        />                      
+                    ]
+                    if(props.user.role.name === 'owner'){
+                        items.unshift(
+                            <Select label={'Store'} 
+                                formAttr={{
+                                    value: filters.store_id,
+                                    onChange: e => {
+                                        setFilters(state => ({...state, store_id: parseInt(e.target.value)}))
+                                    }
+                                }}
+                                options={(() => {
+                                    const options = [{value: '', text: 'All stores'}]
+                                    props.storeInv.stores.forEach(store => {
+                                        options.push({value: store.id, text: store.name})
+                                    })
+                                    return options
+                                })()}
+                            />                 
+                        )
+                    }
+                    return items                
+                })()}
+            />}
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
@@ -255,7 +278,9 @@ const GenerateStoreInv = ({storeInvs, editStoreInv}) => {
                     storeInv.inventory.name, storeInv.store.name, 
                     storeInv.total_amount ? formatNum(storeInv.total_amount) : 0,
                     <>
-                        <Button text={'Edit'} size={'sm'} attr={{onClick: () => {editStoreInv(index)}}} />
+                        <Button text={'View'} size={'sm'} 
+                            attr={{onClick: () => {editStoreInv(index)}}}
+                        />
                     </>
                 ])}
             />

@@ -33,6 +33,7 @@ function App(){
     const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
 
     const user = getUser()
+    if(user){ user.role.name = user.role.name.toLowerCase() }
 
     return (
         <ErrorBoundary>
@@ -71,18 +72,18 @@ function App(){
                 <div id="app">
                     <Switch>                  
                         <Route path="/login" exact component={LoginPage}/>
-                        <ProtectedRoute path={'/'} exact component={DashboardPage}/>
+                        <ProtectedRoute path={'/'} exact user={user} component={DashboardPage}/>
                         <ProtectedRoute path={'/inventories'} exact component={InventoryPage}
-                            inventory={inventory} dispatchInventory={dispatchInventory}
+                            user={user} inventory={inventory} dispatchInventory={dispatchInventory}
                         />
                         <ProtectedRoute path={'/stores'} exact component={StorePage}
-                            store={store} dispatchStore={dispatchStore}
+                            user={user} store={store} dispatchStore={dispatchStore}
                         />     
                         <ProtectedRoute path={'/store-inventories'} exact component={IndexStoreInventoryPage}
-                            storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
+                            user={user} storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
                         />        
                         <ProtectedRoute path={'/store-inventories/create'} exact component={CreateStoreInventoryPage}
-                            storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
+                            user={user} storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
                         />                                                                   
                         
                         <Route path={'*'} component={NotFoundPage}/>
