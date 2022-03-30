@@ -10,6 +10,8 @@ import {UserThumbnail} from './components/Misc'
 import {inventoryReducer, INVENTORY_INIT_STATE} from "./components/reducers/InventoryReducer";
 import {storeReducer, STORE_INIT_STATE} from "./components/reducers/StoreReducer";
 import {storeInventoryReducer, STOREINV_INIT_STATE} from "./components/reducers/StoreInventoryReducer";
+import {ownerReducer, OWNER_INIT_STATE} from "./components/reducers/OwnerReducer";
+import {employeeReducer, EMPLOYEE_INIT_STATE} from "./components/reducers/EmployeeReducer";
 
 import LoginPage from './components/pages/LoginPage'
 import DashboardPage from './components/pages/DashboardPage'
@@ -17,6 +19,7 @@ import InventoryPage from './components/pages/InventoryPage'
 import StorePage from './components/pages/StorePage'
 import IndexStoreInventoryPage from './components/pages/store_inventory/IndexStoreInventoryPage'
 import CreateStoreInventoryPage from './components/pages/store_inventory/CreateStoreInventoryPage'
+import UserPage from './components/pages/UserPage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
 import './css/content.css';
@@ -31,9 +34,29 @@ function App(){
     const [inventory, dispatchInventory] = useReducer(inventoryReducer, INVENTORY_INIT_STATE)
     const [store, dispatchStore] = useReducer(storeReducer, STORE_INIT_STATE)
     const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
+    const [owner, dispatchOwner] = useReducer(ownerReducer, OWNER_INIT_STATE)
+    const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)
 
     const user = getUser()
     if(user){ user.role.name = user.role.name.toLowerCase() }
+
+    const sidebarItems = {
+        dashboard: {
+            icon: 'layers', text: 'Dashboard', link: ''
+        },     
+        inventory: {
+            icon: 'hanger', text: 'Inventory', link: 'inventories'
+        },
+        store: {
+            icon: 'layers', text: 'Store', link: 'stores'
+        },
+        store_inventory: {
+            icon: 'layers', text: 'Store Inventories', link: 'store-inventories'
+        },
+        user: {
+            icon: 'group', text: 'Users', link: 'users'
+        },         
+    }
 
     return (
         <ErrorBoundary>
@@ -47,25 +70,21 @@ function App(){
                             <UserThumbnail userName={user.name} />
                         ]}
                         sidebarItems={(() => {
-                            let sidebarItems = [
-                                {
-                                    icon: 'layers', text: 'Dashboard', link: ''
-                                },	            
-                                {
-                                    icon: 'layers', text: 'Store Inventories', link: 'store-inventories'
-                                },	             
-                            ]
-                            if(user.role.name.toLowerCase() === 'owner'){
-                                sidebarItems.splice(1, 0,
-                                    {
-                                        icon: 'hanger', text: 'Inventory', link: 'inventories'
-                                    },	   
-                                    {
-                                        icon: 'layers', text: 'Store', link: 'stores'
-                                    },	            
-                                )
+                            let sidebarItemNames = []
+                            const userRole = user.role.name.toLowerCase()
+                            switch(userRole){
+                                case 'owner': 
+                                    sidebarItemNames = ['dashboard','inventory','store','store_inventory','user'];
+                                    break;
+
+                                case 'employee':
+                                    sidebarItemNames = ['dashboard','store_inventory'];
+                                    break;
+
+                                default: sidebarItemNames = []; break;
                             }
-                            return sidebarItems                            
+                            return sidebarItemNames.map(name => sidebarItems[name])
+                          
                         })()}	
                     /> : ''       
                 )}
@@ -84,7 +103,11 @@ function App(){
                         />        
                         <ProtectedRoute path={'/store-inventories/create'} exact component={CreateStoreInventoryPage}
                             user={user} storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
-                        />                                                                   
+                        /> 
+                        <ProtectedRoute path={'/users'} exact component={UserPage}
+                            user={user} owner={owner} dispatchOwner={dispatchOwner} 
+                            employee={employee} dispatchEmployee={dispatchEmployee}
+                        />                                                                                            
                         
                         <Route path={'*'} component={NotFoundPage}/>
                     </Switch>                    
