@@ -3,6 +3,9 @@ const Store  = require('../models/index').Store
 const authorize = (roles) => {
     return async (req, res, next) => {
         try {
+            if(roles === 'all'){
+                return next() 
+            }
             const userRole = req.user.role.name.toLowerCase()
             roles = roles.map(role => role.toLowerCase())
 

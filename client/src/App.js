@@ -33,6 +33,7 @@ function App(){
     const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
 
     const user = getUser()
+
     return (
         <ErrorBoundary>
             <Router>
@@ -44,20 +45,27 @@ function App(){
                         rightWidgets={[
                             <UserThumbnail userName={user.name} />
                         ]}
-                        sidebarItems={[
-                            {
-                                icon: 'layers', text: 'Dashboard', link: ''
-                            },		
-                            {
-                                icon: 'hanger', text: 'Inventory', link: 'inventories'
-                            },	   
-                            {
-                                icon: 'layers', text: 'Store', link: 'stores'
-                            },	   
-                            {
-                                icon: 'layers', text: 'Store Inventories', link: 'store-inventories'
-                            },	                                                                                                                                                                  																												
-                        ]}	
+                        sidebarItems={(() => {
+                            let sidebarItems = [
+                                {
+                                    icon: 'layers', text: 'Dashboard', link: ''
+                                },	            
+                                {
+                                    icon: 'layers', text: 'Store Inventories', link: 'store-inventories'
+                                },	             
+                            ]
+                            if(user.role.name.toLowerCase() === 'owner'){
+                                sidebarItems.splice(1, 0,
+                                    {
+                                        icon: 'hanger', text: 'Inventory', link: 'inventories'
+                                    },	   
+                                    {
+                                        icon: 'layers', text: 'Store', link: 'stores'
+                                    },	            
+                                )
+                            }
+                            return sidebarItems                            
+                        })()}	
                     /> : ''       
                 )}
                 <div id="app">

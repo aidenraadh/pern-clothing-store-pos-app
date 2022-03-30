@@ -71,7 +71,7 @@ rootRouter.delete('/inventories/:id', [
 ])
 
 rootRouter.get('/store-inventories', [
-    isAuth, authorize(['owner', 'employee']), storeInventoryController.index
+    isAuth, authorize('all'), storeInventoryController.index
 ])
 
 rootRouter.post('/store-inventories', [

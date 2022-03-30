@@ -3,8 +3,10 @@ const bcrypt        = require('bcrypt')
 const path          = require('path')
 const logger        = require('../utils/logger')
 const fs            = require('fs')
-const User          = require('../models/index').User
-const StoreEmployee = require('../models/index').StoreEmployee
+const models        = require('../models/index')
+const User          = models.User
+const StoreEmployee = models.StoreEmployee
+const Role          = models.Role
 
 exports.register = async (req, res) => {    
     try{     
@@ -49,7 +51,11 @@ exports.login = async (req, res) => {
             message: 'Success',
             user: await User.findOne({
                 where: {id: user.id}, 
-                include: [
+                    include: [
+                    // Get the user's role
+                    {
+                        model: Role, as: 'role',  attributes: ['name'],
+                    },                      
                     // Get the user's store employee if exists
                     {
                         model: StoreEmployee, as: 'storeEmployee', 
