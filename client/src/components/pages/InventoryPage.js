@@ -36,7 +36,7 @@ function InventoryPage(props){
         if(props.inventory.inventories === null){
             getInventories()
         }
-    })
+    }, [])
     const getInventories = (actionType = '') => {
         // Get the queries
         const queries = {...filters}

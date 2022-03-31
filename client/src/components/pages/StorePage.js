@@ -32,7 +32,7 @@ function StorePage(props){
         if(props.store.stores === null){
             getStores()
         }
-    })
+    }, [])
     const getStores = (actionType = '') => {
         // Get the queries
         const queries = {...filters}

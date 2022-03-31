@@ -21,19 +21,21 @@ exports.index = async (req, res) => {
             }
         }
         // Make sure the user's role exists
-        let {role_id, error} = Joi.number().required().integer().validate(req.query.role_id)
+        let role = null
+        const {value, error} = Joi.string().required().validate(req.query.role)
         if(error === undefined){
-            const role = await Role.findOne({where: {
-                name: {[Op.iLike]: 'owner'}
-            }})
-            role_id = role.id
+            role = await Role.findOne({
+                where: {name: {[Op.iLike]: `%${value}%`}},
+                attributes: ['id']
+            })
         }
         // Get the users by role
         const users = await User.findAll({
-            where: {role_id: role_id},
+            where: {role_id: role ? role.id : 0, owner_id: req.user.owner_id},
             order: [['id', 'DESC']],
             ...filters.limitOffset
         })
+       
         res.send({
             users: users,
             filters: {...filters.where, ...filters.limitOffset}
@@ -85,6 +87,24 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {    
     try{
 
+    }
+    catch(err){
+        logger.error(err.message)
+        res.status(500).send(err)
+    }
+}
+
+exports.getEmployeeStore = async (req, res) => {    
+    try{
+        // Get all stores
+        const stores = await Store.findAll({
+            where: {owner_id: req.user.owner_id},
+            attributes: ['id', 'name'],
+            order: [['id', 'DESC']],
+        }) 
+        res.send({
+            stores: stores,
+        })
     }
     catch(err){
         logger.error(err.message)

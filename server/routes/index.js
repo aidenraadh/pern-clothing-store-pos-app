@@ -31,11 +31,11 @@ rootRouter.post('/register', [
 rootRouter.post('/login', [
     isNotAuth, authController.login
 ])
-rootRouter.get('/profile', [
-    isAuth, userController.show
+rootRouter.get('/users', [
+    isAuth, authorize(['owner']), userController.index
 ])
-rootRouter.put('/profile', [
-    isAuth, userController.update
+rootRouter.get('/users/employee-stores', [
+    isAuth, authorize(['owner']), userController.getEmployeeStore
 ])
 
 rootRouter.get('/stores', [
