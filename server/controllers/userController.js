@@ -32,6 +32,21 @@ exports.index = async (req, res) => {
         // Get the users by role
         const users = await User.findAll({
             where: {role_id: role ? role.id : 0, owner_id: req.user.owner_id},
+            include: (() => {
+                let include = []
+                // Get the user's store employee if the queried user is employee
+                if(req.query.role === 'employee'){
+                    include.push({
+                        model: StoreEmployee, as: 'storeEmployee', 
+                        attributes: ['user_id', 'store_id'],
+                        include: [{
+                            model: Store, as: 'store', 
+                            attributes: ['name'],
+                        }]
+                    })
+                }
+                return include
+            })(),
             order: [['id', 'DESC']],
             ...filters.limitOffset
         })
