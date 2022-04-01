@@ -126,9 +126,11 @@ function IndexStoreInventoryPage(props){
                 onClick: () => {setFilterModalShown(true)},
                 style: {marginRight: '1rem'}
             }} />
-            <Link to={'/store-inventories/create'}>
-                <Button tag={'span'} text={'+ Store new'} size={'sm'} attr={{onClick: () => {}}}/>
-            </Link>
+            {props.user.role.name === 'employee' ? '' :
+                <Link to={'/store-inventories/create'}>
+                    <Button tag={'span'} text={'+ Store new'} size={'sm'} attr={{onClick: () => {}}}/>
+                </Link>            
+            }
         </section>
         <PlainCard
             body={<>

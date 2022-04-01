@@ -34,8 +34,24 @@ rootRouter.post('/login', [
 rootRouter.get('/users', [
     isAuth, authorize(['owner']), userController.index
 ])
+rootRouter.post('/users', [
+    isAuth, authorize(['owner']), userController.store
+])
+
+rootRouter.put('/users/:id', [
+    isAuth, authorize(['owner']), userController.update
+])
+
+rootRouter.delete('/users/:id', [
+    isAuth, authorize(['owner']), userController.delete
+])
+
 rootRouter.get('/users/employee-stores', [
-    isAuth, authorize(['owner']), userController.getEmployeeStore
+    isAuth, authorize(['owner']), userController.getEmployeeStores
+])
+
+rootRouter.get('/users/user-roles', [
+    isAuth, authorize(['owner']), userController.getUserRoles
 ])
 
 rootRouter.get('/stores', [
