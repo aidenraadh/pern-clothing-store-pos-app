@@ -67,16 +67,6 @@ exports.index = async (req, res) => {
     }
 }
 
-exports.show = async (req, res) => {    
-    try{
-        res.send({user: req.user})
-    }
-    catch(err){
-        logger.error(err.message)
-        res.status(500).send(err)
-    }
-}
-
 exports.store = async (req, res) => {    
     try{
         // Validate the input
@@ -135,9 +125,13 @@ exports.store = async (req, res) => {
 
 exports.update = async (req, res) => {
     try{
-        // Get user and make sure it exists and the user's role is not super admin or owner
+        // Get user and make sure it exists and the user's role is not super admin or owner,
+        // also make sure the owner_id is the same as the auth user
         const user = await User.findOne({
-            where: {id: req.params.id, role_id: {[Op.notIn]: [1,2]}},
+            where: {
+                id: req.params.id, role_id: {[Op.notIn]: [1,2]},
+                owner_id: req.user.owner_id
+            },
             include: [
                 // Get the user's store employee
                 {
@@ -187,9 +181,11 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {    
     try{
-        // Get user and make sure it exists and the user's role is not super admin or owner
+        // Get user and make sure it exists and the user's role is not super admin or owner,
+        // also make sure the owner_id is the same as the auth user
         const user = await User.findOne({
-            where: {id: req.params.id, role_id: {[Op.notIn]: [1,2]}},
+            id: req.params.id, role_id: {[Op.notIn]: [1,2]},
+            owner_id: req.user.owner_id
         })   
         if(!user){
             return res.status(400).send({message: 'The user is not exists, or cannot be updated'})
