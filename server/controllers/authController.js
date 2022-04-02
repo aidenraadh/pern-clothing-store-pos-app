@@ -76,14 +76,17 @@ const issueJWT = (user) => {
     const pathToKey = path.join(__dirname, '..', 'id_rsa_priv.pem')
     const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8')
 
+    const currentTime = Date.now()
+    const expiresIn = currentTime / 1000 + (3600 * 24) // 1 day
+
     const payload = {
         sub: user.id,
-        iat: Date.now(),
+        iat: currentTime,
+        exp: expiresIn
     }
-    const expiresIn = '1d'
 
     const signedToken = jwt.sign(payload, PRIV_KEY, {
-        expiresIn: expiresIn, algorithm: 'RS256'
+        algorithm: 'RS256'
     })
     return {
         token: 'Bearer '+signedToken,
