@@ -189,6 +189,17 @@ export function getBaseName(file_url){
 	return file_url.replace(/.*\//, '');
 }
 
+/**
+ * 
+ * @param {event} e 
+ * @param {string} targetKey
+ * @param {function} callback 
+ */
+
+export function keyHandler(e, targetKey, callback){
+	if(e.key === targetKey){ callback() }
+}
+
 // export function initDropzone(id, form_name = 'file', request_urls, request_headers = {}, settings = {}){
 // 	// Remove previously created dropozone hidden input
 // 	let dz_hidden_inputs = document.querySelectorAll('input.dz-hidden-input');

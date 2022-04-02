@@ -73,37 +73,6 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		width: 80vw;
 	}
 
-	.hotel-rooms-container{
-		grid-template-columns: 12.57% 12.57% 12.57% 12.57% 12.57% 12.57% 12.57%;
-		grid-column-gap: 2%;
-	}
-
-	.hotel-rooms-container > .hotel-room{
-		margin-bottom: 14%;
-	}
-
-	.hotel-users-table table{
-		min-width: 70rem;
-	}
-
-	.hotel-pricings-card > .card-body{
-		grid-template-columns: 100%;
-		grid-column-gap: 0;
-	}
-
-	.hotel-pricings-card > .card-body > .guest-pricing{
-		margin-bottom: 4%;
-	}	
-
-	.hotel-pricings-card .price-details .details{
-		grid-template-columns: 24% 24% 24% 24%;
-		grid-column-gap: 1.3%;
-	}
-	
-	.hotel-pricings-card .price-details .details > span{
-		margin-bottom: 4%;
-	}
-
 	#login-page .login-forms{
 		width: 50vw;
 	}
@@ -119,47 +88,22 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		max-width: 92vw;
 		max-height: 82vh;
 	}
-	.room-classes-nav{
-		width: 50%;
-	}
 }
 
-@media only screen and (max-width: 1000px){
-	.hotel-bookings-table table{
-		min-width: 93rem;
-	}
-	.rooms-list-card .card-body > div{
-		grid-template-columns: 12% 12% 12% 12% 12% 12% 12%;
-		column-gap: 2.6%;
-	}		
+@media only screen and (max-width: 1000px){		
 }
 
 @media only screen and (max-width: 900px){
-	#hotel-rooms-details .tab-pane .grid-2{
-		grid-template-columns: 100%;
-		grid-column-gap: 0;
-	}
 
 	.footer{
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 	}
-
-	#hotel-stats .grid-3{
-		grid-template-columns: 49% 49%;
-		grid-column-gap: 2%;
-	}
-
-	#hotel-stats .grid-3 .grid-item{
-		margin-bottom: 4%;
-	}
 }
 
 @media only screen and (max-width: 800px){
-	.hotel-bookings-expenses-cards{
-		grid-template-columns: 100%;
-	}	
+
 }
 
 /*
@@ -201,15 +145,6 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		max-height: 82vh;
 	}		
 
-	.hotel-rooms-container{
-		grid-template-columns: 22.75% 22.75% 22.75% 22.75%;
-		grid-column-gap: 3%;
-	}
-
-	.hotel-rooms-container > .hotel-room{
-		margin-bottom: 14%;
-	}
-
 	#user-profile > p{
 		width: 100%;
 		align-items: center;
@@ -229,11 +164,6 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		width: 100%;
 	}
 
-	.hotel-pricings-card .price-details .details{
-		grid-template-columns: 32% 32% 32%;
-		grid-column-gap: 2%;
-	}
-
 	#login-page {
 		background-size: 50% auto;
 	}	
@@ -242,98 +172,18 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		width: 80vw;
 	}
 
-	#rooms-pricing-tabs .tab-item{
-		min-width: 16rem;
-	}
-
-	.create-guest-card .pricings-component > .days-applied{
-		width: 100%;
-	}	
-
-	.create-guest-card .pricings > .pricings-component{
-		flex-direction: column;
-		justify-content: flex-start;
-	}
-	
-	.create-guest-card .pricings-component > .amount{
-		margin-bottom: 2rem;
-		width: 100%;
-	}
-
-	.create-guest-card .pricings-component > .amount > input{
-		text-align: center;
-	}	
-	
-	.create-guest-card .days-applied .checkbox{
-		width: 33%;
-	}
-
-	.create-guest-card .days-applied .checkbox > .checkmark{
-		flex-shrink: 0;
-	}	
-
-	.create-guest-card .days-applied .checkbox > .choice-name{
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	
-	.rooms-list-card .card-body > div{
-		grid-template-columns: 22.6% 22.6% 22.6% 22.6%;
-		column-gap: 3%;
-	}
-
-	#create_user_forms_modal .grid-2{
-		grid-template-columns: 100%;
-		column-gap: 0;
-	}
-
-	.update-profile .profile-section-label:nth-of-type(2) ~ .base-input{
-		width: 100%;
-		margin-bottom: 4%;
-	}
-
-	.update-profile .profile-section-label:nth-of-type(2) ~ .grid-2{
-		grid-template-columns: 100%;
-		column-gap: 0;
-	}
-
-	#expense_forms_modal .modal-body span:first-child{
-		flex-wrap: wrap;
-	}
-
-	#expense_forms_modal .modal-body span:first-child > .base-input{
-		width: 100%;
-	}
-
-	#receptionist_modal .modal-content{
-		width: 92vw;
-	}
 	.table-stats{
 		width: 100%;
 	}
 	.sliding-stats-container > .stats-card{
 		width: 80%;
 	}
-	.create-guest-card-container{
-		min-height: 54vh;
-	}
 	.full-on-mobile-btn{
 		width: 100%;
 	}	
-	.room-classes-nav{
-		width: 100%;
-	}
-	#edit-name-modal .base-input{
-		width: 100%;
-	}
-	.create-booking-card .plain-card{
-		width: 100%;
-		margin-bottom: 2rem;
+	.confirm-popup .confirm-popup-content{
+		max-width: 92vw;
 	}	
-	.create-booking-card .plain-card:last-of-type{
-		margin-bottom: 0;
-	}
 }
 
 @media only screen and (max-width: 600px){

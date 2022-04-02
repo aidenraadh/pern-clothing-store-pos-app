@@ -16,9 +16,9 @@ This is the layout styles of the button
 .btn{
 	display: inline-block;
 	position: relative;
-	padding: 0.6em 1em;
+	padding: 0.6em 1.2em;
 	text-align: center;
-	font-size: 1.5rem;
+	font-size: 1.38rem;
 	border-radius: 0.55rem;
 	transition-property: background-color, color;
 	transition-duration: 0.2s, 0.2s;
@@ -44,6 +44,7 @@ This is the layout styles of the button
 }
 
 .btn.with-icon .svg-icon{
+	margin-right: 0.2rem;
 	width: 1.4em;
 	height: 1.4em;
 }
@@ -61,7 +62,7 @@ This is the layout styles of the button
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
-	padding: 0.36em !important;
+	padding: 0.58em !important;
 }
 
 .btn.icon-only .svg-icon{
@@ -79,16 +80,15 @@ This is the layout styles of the button
 }
 
 .btn.btn-sm{
-	padding: 0.4em 0.8rem;
-	font-size: 1.36rem;
+	font-size: 1.26rem;
 }
 
 .btn.btn-md{
-	font-size: 1.4rem;
+	font-size: 1.38rem;
 }
 
 .btn.btn-lg{
-	font-size: 1.5rem;	
+	font-size: 1.52rem;	
 }
 
 
@@ -247,7 +247,7 @@ All button in the group must be in the same size
 }
 
 .btn-group .btn:last-child{
-	border-radius: 0 0.55rem.55rem 0;	
+	border-radius: 0 0.55rem .55rem 0;	
 }
 
 /*
@@ -632,7 +632,7 @@ All button in the group must be in the same size
 }
 
 .table-container th{
-	font-size: 0.92em;
+	font-size: 0.96em;
 	font-weight: 500;
 	color: #6C7293;
 }
@@ -715,7 +715,7 @@ All button in the group must be in the same size
 .base-input input, .base-input select, .base-input textarea{
 	width: 100%;
 	display: inline-block;
-	padding: 0.6em 1em;
+	padding: 0.5em 1.1em;
 	border-radius: 0.55rem;
 	color: inherit;
 	font-size: 1.4rem;
@@ -723,17 +723,17 @@ All button in the group must be in the same size
 
 .base-input.sm-input input, .base-input.sm-input select,
 .base-input.sm-input textarea{
-	font-size: 1.36rem;
+	font-size: 1.27rem;
 }
 
 .base-input.md-input input, .base-input.md-input select,
 .base-input.md-input textarea{
-	font-size: 1.4rem;
+	font-size: 1.39rem;
 }
 
 .base-input.lg-input input, .base-input.lg-input select,
 .base-input.lg-input textarea{
-	font-size: 1.5rem;	
+	font-size: 1.53rem;		
 }
 
 .base-input.outline input, .base-input.outline select,

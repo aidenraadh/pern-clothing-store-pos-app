@@ -1,6 +1,6 @@
 import {useReducer, useState, useEffect} from 'react'
 import {INVENTORY_ACTIONS, INVENTORY_FILTER_KEY} from '../reducers/InventoryReducer'
-import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../Utils.js'
+import {api, errorHandler, getResFilters, getQueryString, formatNum, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
@@ -159,11 +159,13 @@ function InventoryPage(props){
             body={
                 <Grid num_of_columns={1} items={[
                     <div className='flex-row items-center'>
-                        <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
+                        <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                             iconName={'search'}
-                            formAttr={{value: filters.name, placeholder: 'Search inventory', onChange: (e) => {
+                            formAttr={{value: filters.name, placeholder: 'Search inventory', 
+                                onChange: (e) => {
                                     setFilters(state => ({...state, name: e.target.value}))
-                                }
+                                },
+                                onKeyUp: (e) => {keyHandler(e, 'Enter', getInventories)}
                             }} 
                         />   
                         <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
@@ -188,7 +190,7 @@ function InventoryPage(props){
             heading={modalHeading}
             body={<>
                 <Grid num_of_columns={1} items={[
-                    <TextInput size={'sm'} label={'Name'}
+                    <TextInput size={'md'} label={'Name'}
                         formAttr={{value: invName, onChange: (e) => {setInvName(e.target.value)}}}
                     />,
                     <Table
@@ -198,7 +200,7 @@ function InventoryPage(props){
                                 <button type="button" onClick={() => {dispatchInvSizes({type: 'remove', payload: {index: index}})}}>
                                     <SVGIcons name={'close'} color={'red'} attr={{style: {fontSize: '1.8rem'}}}/>
                                 </button>,
-                                <TextInput size={'sm'} formAttr={{
+                                <TextInput size={'md'} formAttr={{
                                         value: size.name, onChange: (e) => {
                                             dispatchInvSizes({type: 'update', payload: {
                                                 index: index, key: 'name', 
@@ -207,7 +209,7 @@ function InventoryPage(props){
                                         }
                                     }} 
                                 />,
-                                <TextInput size={'sm'} formAttr={{
+                                <TextInput size={'md'} formAttr={{
                                         value: formatNum(size.production_price), pattern: '[0-9]*', 
                                         onChange: (e) => {
                                             dispatchInvSizes({type: 'update', payload: {
@@ -217,7 +219,7 @@ function InventoryPage(props){
                                         }
                                     }} 
                                 />,
-                                <TextInput size={'sm'} formAttr={{
+                                <TextInput size={'md'} formAttr={{
                                         value: formatNum(size.selling_price), pattern: '[0-9]*',
                                         onChange: (e) => {
                                             dispatchInvSizes({type: 'update', payload: {
@@ -252,7 +254,7 @@ function InventoryPage(props){
         <Modal
             heading={'Filter'}
             body={<>
-                <Select label={'Rows shown'} 
+                <Select label={'Rows shown'}
                     formAttr={{
                         value: filters.limit,
                         onChange: e => {

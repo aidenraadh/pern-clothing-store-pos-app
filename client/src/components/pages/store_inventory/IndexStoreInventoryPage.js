@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {STOREINV_ACTIONS, STOREINV_FILTER_KEY} from './../../reducers/StoreInventoryReducer'
-import {api, errorHandler, getResFilters, getQueryString, formatNum} from '../../Utils.js'
+import {api, errorHandler, getResFilters, getQueryString, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
@@ -135,11 +135,13 @@ function IndexStoreInventoryPage(props){
         <PlainCard
             body={<>
                 <div className='flex-row items-center'>
-                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
+                    <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: 'Search inventory', onChange: (e) => {
+                        formAttr={{value: filters.name, placeholder: 'Search inventory', 
+                            onChange: (e) => {
                                 setFilters(state => ({...state, name: e.target.value}))
-                            }
+                            },
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', getStoreInvs)}
                         }} 
                     />   
                     <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
@@ -174,7 +176,7 @@ function IndexStoreInventoryPage(props){
                         if(props.user.role.name === 'owner'){
                             return storeInvSizes.map((size, index) => ([
                                 size.name,
-                                <TextInput size={'sm'}
+                                <TextInput size={'md'}
                                     formAttr={{
                                         pattern: '[0-9]*', 
                                         value: size.amount,

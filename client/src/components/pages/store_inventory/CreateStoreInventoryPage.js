@@ -1,5 +1,5 @@
 import {useState, useEffect, useReducer} from 'react'
-import {api, errorHandler, formatNum} from '../../Utils.js'
+import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, SelectAddon} from '../../Forms'
 import {ToolCard} from '../../Cards'
@@ -147,9 +147,12 @@ function CreateStoreInventoryPage(props){
                 <div className='flex-row items-center'>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: invName, placeholder: 'Search inventory', onChange: (e) => {
-                            setInvName(e.target.value)
-                        }}} 
+                        formAttr={{value: invName, placeholder: 'Search inventory', 
+                            onChange: (e) => {
+                                setInvName(e.target.value)
+                            },
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', getInvs)}
+                        }} 
                     />   
                     <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},

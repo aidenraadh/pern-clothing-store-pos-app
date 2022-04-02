@@ -1,4 +1,4 @@
-import {useState, useReducer} from "react";
+import {useState, useEffect, useReducer} from "react";
 import ErrorBoundary from './components/ErrorBoundary'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
@@ -35,7 +35,7 @@ function App(){
     const [store, dispatchStore] = useReducer(storeReducer, STORE_INIT_STATE)
     const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
     const [owner, dispatchOwner] = useReducer(ownerReducer, OWNER_INIT_STATE)
-    const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)
+    const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)     
 
     const user = getUser()
     if(user){ user.role.name = user.role.name.toLowerCase() }
@@ -48,10 +48,10 @@ function App(){
             icon: 'hanger', text: 'Inventory', link: 'inventories'
         },
         store: {
-            icon: 'layers', text: 'Store', link: 'stores'
+            icon: 'ecm004', text: 'Store', link: 'stores'
         },
         store_inventory: {
-            icon: 'layers', text: 'Store Inventories', link: 'store-inventories'
+            icon: 'gen017', text: 'Store Inventories', link: 'store-inventories'
         },
         user: {
             icon: 'group', text: 'Users', link: 'users'
@@ -65,7 +65,7 @@ function App(){
                     isAuth() ?
                     <Navigations
                         sidebarShown={sidebarShown}
-                        toggleSidebar={() => {setSidebarShown(state => !state)}}
+                        toggleSidebar={setSidebarShown}
                         rightWidgets={[
                             <UserThumbnail userName={user.name} />
                         ]}
@@ -105,8 +105,8 @@ function App(){
                             user={user} storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
                         /> 
                         <ProtectedRoute path={'/users'} exact component={UserPage}
-                            user={user} owner={owner} dispatchOwner={dispatchOwner} 
-                            employee={employee} dispatchEmployee={dispatchEmployee}
+                            user={user} owner={owner} dispatchOwner={dispatchOwner} employee={employee} 
+                            dispatchEmployee={dispatchEmployee}
                         />                                                                                            
                         
                         <Route path={'*'} component={NotFoundPage}/>

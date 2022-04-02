@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import {STORE_ACTIONS, STORE_FILTER_KEY} from '../reducers/StoreReducer'
-import {api, errorHandler, getResFilters, getQueryString} from '../Utils.js'
+import {api, errorHandler, getResFilters, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
@@ -148,11 +148,13 @@ function StorePage(props){
         <PlainCard
             body={<>
                 <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
-                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
+                    <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: 'Search store', onChange: (e) => {
+                        formAttr={{value: filters.name, placeholder: 'Search store', 
+                            onChange: (e) => {
                                 setFilters(state => ({...state, name: e.target.value}))
-                            }
+                            },
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', getStores)}
                         }} 
                     />   
                     <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
@@ -183,7 +185,14 @@ function StorePage(props){
             heading={modalHeading}
             body={<>
                 <TextInput size={'sm'} label={'Name'}
-                    formAttr={{value: storeName, onChange: (e) => {setStoreName(e.target.value)}}}
+                    formAttr={{
+                        value: storeName, onChange: (e) => {setStoreName(e.target.value)},
+                        onKeyUp: (e) => {
+                            keyHandler(e, 'Enter', storeIndex !== '' && storeId !== '' ? 
+                                updateStore : storeStore                            
+                            )
+                        }
+                    }}
                 />      
             </>}        
             footer={

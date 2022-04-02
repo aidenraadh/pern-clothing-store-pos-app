@@ -1,7 +1,14 @@
-import {NavLink} from 'react-router-dom'
+import {useEffect} from 'react'
+import {NavLink, useLocation} from 'react-router-dom'
 import {SVGIcons} from './Misc.js';
 
 function Navigations(props){
+    const location = useLocation()
+	// Hide the sidebar when the route is changed
+    useEffect(() => {
+		props.toggleSidebar(false)
+    }, [location])   	
+
 	return (
 		<nav>
 			<section className="topbar">
@@ -12,7 +19,7 @@ function Navigations(props){
 				<div className="left-widgets">
 					<button type="button" 
 					className="topbar-item show-sidebar-btn"
-					onClick={props.toggleSidebar}>
+					onClick={() => {props.toggleSidebar(state => !state)}}>
 						<SVGIcons
 							name={'article'} color={'blue'}
 							attr={{style: {width: '3rem'}}}
@@ -33,7 +40,7 @@ function Navigations(props){
 
 			<section className={'sidebar'+(props.sidebarShown ? ' shown' : '')}>
 				<button type="button" className="sidebar-item toggle-sidebar-btn"
-				onClick={props.toggleSidebar}>
+				onClick={() => {props.toggleSidebar(state => !state)}}>
 					<SVGIcons
 						name={'angle_double_right'} color={'blue'}
 						attr={{style: {width: '3rem'}}}

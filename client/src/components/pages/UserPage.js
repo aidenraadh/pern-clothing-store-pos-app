@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import {OWNER_ACTIONS, OWNER_FILTER_KEY} from '../reducers/OwnerReducer'
 import {EMPLOYEE_ACTIONS, EMPLOYEE_FILTER_KEY} from '../reducers/EmployeeReducer'
-import {api, errorHandler, getResFilters, getQueryString} from '../Utils.js'
+import {api, errorHandler, getResFilters, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
 import {Grid} from '../Layouts'
@@ -158,19 +158,21 @@ function UserPage(props){
 
     const GenerateCrtUserForms = () => {
         const body = [
-            <TextInput label={'Name'} size={'sm'} formAttr={{
+            <TextInput label={'Name'} size={'md'} formAttr={{
                 value: name,
-                onChange: (e) => {setName(e.target.value)}
+                onChange: (e) => {setName(e.target.value)},
+                onKeyUp: (e) => {keyHandler(e, 'Enter', storeUser)}
             }}/>,
-            <TextInput label={'Email'} size={'sm'} formAttr={{
+            <TextInput label={'Email'} size={'md'} formAttr={{
                 type: 'email', value: email, 
-                onChange: (e) => {setEmail(e.target.value)}
+                onChange: (e) => {setEmail(e.target.value)},
+                onKeyUp: (e) => {keyHandler(e, 'Enter', storeUser)}
             }}/>                
         ]        
         switch(targetRole){
             case 'employee':
                 body.push(
-                    <Select size={'sm'} label={'Store'}
+                    <Select size={'md'} label={'Store'}
                         options={stores.map(store => ({
                             value: store.id, text: store.name,
                         }))}
@@ -246,7 +248,7 @@ function UserPage(props){
 
     const GenerateUpdUserForms = () => {
         const body = [
-            <Select size={'sm'} label={'Role'}
+            <Select size={'md'} label={'Role'}
                 options={roles.map(role => ({
                     value: role.id, text: role.name,
                 }))}
@@ -255,7 +257,7 @@ function UserPage(props){
                     onChange: (e) => {setRoleId(e.target.value)}
                 }}                       
             />,
-            <Select size={'sm'} label={'Store'}
+            <Select size={'md'} label={'Store'}
                 options={stores.map(store => ({
                     value: store.id, text: store.name,
                 }))}

@@ -9,18 +9,24 @@ const isNotAuth                = require('../middlewares/isNotAuth')
 const authorize                = require('../middlewares/authorize')
 
 const models             = require('../models/index')
+const bcrypt = require('bcrypt')
 const Inventory          = models.Inventory
 const Store          = models.Store
 const InventorySize      = models.InventorySize
 const StoreInventory      = models.StoreInventory
 const StoreInventorySize      = models.StoreInventorySize
 const Role      = models.Role
+const Owner = models.Owner
+const User = models.User
 
-rootRouter.get('/test', isAuth, async (req, res) => {
-    const data = req.user.owner_id
-    console.log(req.user)
-    res.send({
-        data: data,
+rootRouter.get('/test', async (req, res) => {
+    // const owner = await Owner.create({})
+    // const ownerA = await User.create({
+    //     name: 'Owner A', email: 'ownerA@gmail.com',
+    //     password: await bcrypt.hash('12345678', 10),
+    //     role_id: 2, owner_id: owner.id,        
+    // })  
+    return res.send({
         message: 'test'
     })
 })
