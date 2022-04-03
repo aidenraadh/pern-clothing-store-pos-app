@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useReducer} from 'react'
 import {STORE_ACTIONS, STORE_FILTER_KEY} from '../reducers/StoreReducer'
 import {api, errorHandler, getResFilters, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
@@ -17,12 +17,14 @@ function StorePage(props){
     /* Delete store */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter store */
-    const initFilters = getResFilters(STORE_FILTER_KEY)
-    const [filters, setFilters] = useState({
-        name: initFilters.name ? initFilters.name : '',
-        limit: initFilters.limit ? initFilters.limit : 10, 
-        offset: initFilters.offset ? initFilters.offset : 0, 
-    })
+    const [filters, dispatchFilters] = useReducer(filterReducer, (() => {
+        const initState = getResFilters(STORE_FILTER_KEY)
+        return {
+            name: initState.name ? initState.name : '',
+            limit: initState.limit ? initState.limit : 10, 
+            offset: initState.offset ? initState.offset : 0,             
+        }
+    })())    
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -49,7 +51,9 @@ function StorePage(props){
                     setFilterModalShown(false)
                 }                          
                 props.dispatchStore({type: actionType, payload: response.data})
-                setFilters(getResFilters(STORE_FILTER_KEY))
+                dispatchFilters({
+                    type: 'reset', payload: getResFilters(STORE_FILTER_KEY)
+                })                
            })
            .catch(error => {
                 if(props.store.stores !== null){
@@ -151,9 +155,9 @@ function StorePage(props){
                     <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search store', 
-                            onChange: (e) => {
-                                setFilters(state => ({...state, name: e.target.value}))
-                            },
+                            onChange: e => {dispatchFilters({
+                                type: 'update', payload: {key: 'name', value: e.target.value}
+                            })},
                             onKeyUp: (e) => {keyHandler(e, 'Enter', getStores)}
                         }} 
                     />   
@@ -214,9 +218,9 @@ function StorePage(props){
                 <Select label={'Rows shown'} 
                     formAttr={{
                         value: filters.limit,
-                        onChange: e => {
-                            setFilters(state => ({...state, limit: parseInt(e.target.value)}))
-                        }
+                        onChange: e => {dispatchFilters({
+                            type: 'update', payload: {key: 'limit', value: e.target.value}
+                        })}                            
                     }}
                     options={[
                         {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
@@ -252,6 +256,19 @@ function StorePage(props){
             togglePopup={() => {setErrPopupShown(state => !state)}} 
         />          
     </>)
+}
+
+const filterReducer = (state, action) => {
+    const payload = action.payload
+    switch(action.type){
+        case 'update': 
+            if(payload.key === 'limit'){ payload.value = parseInt(payload.value) }
+            return {...state, [payload.key]: payload.value}
+
+        case 'reset': return payload
+
+        default: throw new Error();
+    }
 }
 
 const GenerateStores = ({stores, editStore, confirmDeleteStore}) => {

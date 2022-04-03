@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useReducer} from 'react'
 import {Link} from 'react-router-dom'
 import {STOREINV_ACTIONS, STOREINV_FILTER_KEY} from './../../reducers/StoreInventoryReducer'
 import {api, errorHandler, getResFilters, getQueryString, formatNum, keyHandler} from '../../Utils.js'
@@ -18,13 +18,15 @@ function IndexStoreInventoryPage(props){
     /* Delete store inventory */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter store inventory */
-    const initFilters = getResFilters(STOREINV_FILTER_KEY)
-    const [filters, setFilters] = useState({
-        name: initFilters.name ? initFilters.name : '',
-        store_id: initFilters.store_id ? initFilters.store_id : '',
-        limit: initFilters.limit ? initFilters.limit : 10, 
-        offset: initFilters.offset ? initFilters.offset : 0, 
-    })
+    const [filters, dispatchFilters] = useReducer(filterReducer, (() => {
+        const initState = getResFilters(STOREINV_FILTER_KEY)
+        return {
+            name: initState.name ? initState.name : '',
+            store_id: initState.store_id ? initState.store_id : '',
+            limit: initState.limit ? initState.limit : 10, 
+            offset: initState.offset ? initState.offset : 0,             
+        }
+    })())     
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -51,7 +53,9 @@ function IndexStoreInventoryPage(props){
                     setFilterModalShown(false)
                 }                          
                 props.dispatchStoreInv({type: actionType, payload: response.data})
-                setFilters(getResFilters(STOREINV_FILTER_KEY))
+                dispatchFilters({
+                    type: 'reset', payload: getResFilters(STOREINV_FILTER_KEY)
+                })                  
            })
            .catch(error => {
                 if(props.storeInv.storeInvs !== null){
@@ -138,9 +142,9 @@ function IndexStoreInventoryPage(props){
                     <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search inventory', 
-                            onChange: (e) => {
-                                setFilters(state => ({...state, name: e.target.value}))
-                            },
+                            onChange: e => {dispatchFilters({
+                                type: 'update', payload: {key: 'name', value: e.target.value}
+                            })},
                             onKeyUp: (e) => {keyHandler(e, 'Enter', getStoreInvs)}
                         }} 
                     />   
@@ -220,9 +224,9 @@ function IndexStoreInventoryPage(props){
                         <Select label={'Rows shown'} 
                             formAttr={{
                                 value: filters.limit,
-                                onChange: e => {
-                                    setFilters(state => ({...state, limit: parseInt(e.target.value)}))
-                                }
+                                onChange: e => {dispatchFilters({
+                                    type: 'update', payload: {key: 'limit', value: e.target.value}
+                                })}                                   
                             }}
                             options={[
                                 {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
@@ -234,9 +238,9 @@ function IndexStoreInventoryPage(props){
                             <Select label={'Store'} 
                                 formAttr={{
                                     value: filters.store_id,
-                                    onChange: e => {
-                                        setFilters(state => ({...state, store_id: parseInt(e.target.value)}))
-                                    }
+                                    onChange: e => {dispatchFilters({
+                                        type: 'update', payload: {key: 'store_id', value: e.target.value}
+                                    })}                                       
                                 }}
                                 options={(() => {
                                     const options = [{value: '', text: 'All stores'}]
@@ -271,6 +275,21 @@ function IndexStoreInventoryPage(props){
             togglePopup={() => {setErrPopupShown(state => !state)}} 
         />  
     </>)
+}
+
+const filterReducer = (state, action) => {
+    const payload = action.payload
+    switch(action.type){
+        case 'update': 
+            if(payload.key === 'limit' || payload.key === 'store_id'){ 
+                payload.value = parseInt(payload.value)
+            }
+            return {...state, [payload.key]: payload.value}
+
+        case 'reset': return payload
+
+        default: throw new Error();
+    }
 }
 
 const GenerateStoreInv = ({storeInvs, editStoreInv}) => {
