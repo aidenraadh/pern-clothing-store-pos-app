@@ -10,6 +10,7 @@ import {UserThumbnail} from './components/Misc'
 import {inventoryReducer, INVENTORY_INIT_STATE} from "./components/reducers/InventoryReducer";
 import {storeReducer, STORE_INIT_STATE} from "./components/reducers/StoreReducer";
 import {storeInventoryReducer, STOREINV_INIT_STATE} from "./components/reducers/StoreInventoryReducer";
+import {storeTransactionReducer, STORETRNSC_INIT_STATE} from "./components/reducers/StoreTransactionReducer";
 import {ownerReducer, OWNER_INIT_STATE} from "./components/reducers/OwnerReducer";
 import {employeeReducer, EMPLOYEE_INIT_STATE} from "./components/reducers/EmployeeReducer";
 
@@ -34,6 +35,7 @@ function App(){
     const [inventory, dispatchInventory] = useReducer(inventoryReducer, INVENTORY_INIT_STATE)
     const [store, dispatchStore] = useReducer(storeReducer, STORE_INIT_STATE)
     const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
+    const [storeTrnsc, dispatchStoreTrnsc] = useReducer(storeTransactionReducer, STORETRNSC_INIT_STATE)
     const [owner, dispatchOwner] = useReducer(ownerReducer, OWNER_INIT_STATE)
     const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)     
 
