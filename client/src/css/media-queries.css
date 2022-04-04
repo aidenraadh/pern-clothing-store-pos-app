@@ -84,10 +84,9 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		right: 7vw;
 		bottom: 6rem;
 	}
-	.media-viewer > .media{
-		max-width: 92vw;
-		max-height: 82vh;
-	}
+	.grid.collapsed-on-tablet{
+		grid-template-columns: auto;
+	}	
 }
 
 @media only screen and (max-width: 1000px){		
@@ -140,30 +139,6 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		grid-template-columns: auto;
 	}	
 
-	.media-viewer > .media{
-		width: 100vw;
-		max-height: 82vh;
-	}		
-
-	#user-profile > p{
-		width: 100%;
-		align-items: center;
-		flex-direction: column;
-	}
-
-	#user-profile .profile-picture{
-		margin-right: 0;
-		margin-bottom: 1rem;
-	}
-
-	#user-profile .info{
-		align-items: center;
-	}
-
-	#user-profile .info .user-details{
-		width: 100%;
-	}
-
 	#login-page {
 		background-size: 50% auto;
 	}	
@@ -184,6 +159,9 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 	.confirm-popup .confirm-popup-content{
 		max-width: 92vw;
 	}	
+	.grid.collapsed-on-mobile{
+		grid-template-columns: auto;
+	}	
 }
 
 @media only screen and (max-width: 600px){
@@ -202,12 +180,5 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 }
 
 @media only screen and (max-width: 500px){
-	#user-profile .update-profile .grid-2{
-		grid-template-columns: 100%;
-		grid-column-gap: 0;
-	}
 
-	#user-profile .update-profile .base-input{
-		width: 100%;
-	}	
 }
