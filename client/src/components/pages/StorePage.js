@@ -1,4 +1,4 @@
-import {useState, useEffect, useReducer} from 'react'
+import {useState, useEffect, useReducer, useCallback} from 'react'
 import {STORE_ACTIONS, STORE_FILTER_KEY} from '../reducers/StoreReducer'
 import {api, errorHandler, getResFilters, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
@@ -32,14 +32,15 @@ function StorePage(props){
 
     useEffect(() => {
         if(props.store.stores === null){
-            getStores()
+            getStores(STORE_ACTIONS.RESET)
         }
     }, [])
-    const getStores = (actionType = '') => {
+
+    const getStores = useCallback((actionType) => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === '' ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === STORE_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
         if(props.store.stores !== null){
             setDisableBtn(true)
@@ -62,15 +63,17 @@ function StorePage(props){
                 }   
                 errorHandler(error) 
            })
-    }    
-    const createStore = () => {
+    }, [filters])  
+
+    const createStore = useCallback(() => {
         setStoreIndex('')
         setStoreId('')
         setStoreName('')
         setModalHeading('Create New Store')      
         setModalShown(true)
-    } 
-    const storeStore = () => {
+    }, [])
+
+    const storeStore = useCallback(() => {
         setDisableBtn(true)
         api.post('/stores', {name: storeName})
             .then(response => {
@@ -88,15 +91,17 @@ function StorePage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})           
             })           
-    }    
-    const editStore = (index, id, name) => {
+    }, [storeName])    
+
+    const editStore = useCallback((index, id, name) => {
         setStoreIndex(index)
         setStoreId(id)
         setStoreName(name)
         setModalHeading(`Edit ${name}`)
         setModalShown(true)
-    }    
-    const updateStore = () => {
+    }, [])
+
+    const updateStore = useCallback(() => {
         setDisableBtn(true)   
         api.put(`/stores/${storeId}`, {name: storeName})     
             .then(response => {
@@ -114,13 +119,15 @@ function StorePage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })        
-    }    
-    const confirmDeleteStore = (id, index) => {
+    }, [storeName, storeId])  
+
+    const confirmDeleteStore = useCallback((id, index) => {
         setStoreId(id)
         setStoreIndex(index)
         setPopupShown(true)
-    }   
-    const deleteStore = () => {
+    }, [])
+
+    const deleteStore = useCallback(() => {
         api.delete(`/stores/${storeId}`)     
             .then(response => {        
                 props.dispatchStore({
@@ -135,7 +142,7 @@ function StorePage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })          
-    }
+    }, [storeId])
     // When the store resource is not set yet
     // Return loading UI
     if(props.store.stores === null){
@@ -158,12 +165,12 @@ function StorePage(props){
                             onChange: e => {dispatchFilters({
                                 type: 'update', payload: {key: 'name', value: e.target.value}
                             })},
-                            onKeyUp: (e) => {keyHandler(e, 'Enter', getStores)}
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStores(STORE_ACTIONS.RESET)})}
                         }} 
                     />   
                     <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
                             style: {flexShrink: '0'},
-                            onClick: () => {getStores()}
+                            onClick: () => {getStores(STORE_ACTIONS.RESET)}
                         }}
                     />                                       
                 </div>            
@@ -230,7 +237,7 @@ function StorePage(props){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStores()}
+                        onClick: () => {getStores(STORE_ACTIONS.RESET)}
                     }}
                 />                
             }

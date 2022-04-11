@@ -11,6 +11,7 @@ export const STORE_ACTIONS = {
     PREPEND: 'PREPEND',
     REPLACE: 'REPLACE',
     REMOVE: 'REMOVE',
+    RESET: 'RESET',
 }
 
 export const storeReducer = (state, action) => {
@@ -61,10 +62,13 @@ export const storeReducer = (state, action) => {
                     return stores
                 })()
             }; 
-        // Refresh the store resource
-        default: return {
-            ...state, stores: [...payload.stores],
-            canLoadMore: payload.stores.length < payload.filters.limit ? false : true
-        };
+        // Reset store(s) from 'stores'
+        case STORE_ACTIONS.RESET: 
+            return {
+                ...state, stores: [...payload.stores],
+                canLoadMore: payload.stores.length < payload.filters.limit ? false : true
+            };             
+        // Error
+        default: throw new Error()
     }
 }

@@ -1,4 +1,4 @@
-import {useState, useEffect, useReducer} from 'react'
+import {useState, useEffect, useReducer, useCallback} from 'react'
 import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, SelectAddon} from '../../Forms'
@@ -12,7 +12,7 @@ function CreateStoreInventoryPage(props){
     const [stores, setStores] = useState(null)
     const [storeId, setStoreId] = useState('')
     const [addedInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
-    const [searchedInv, setSearchedInv] = useState([])
+    const [searchedInvs, setSearchedInvs] = useState([])
     const [modalShown, setModalShown] = useState(false)
     const [invName, setInvName] = useState('')
     /* Error Popup */
@@ -26,7 +26,7 @@ function CreateStoreInventoryPage(props){
         if(stores === null){ getStores() }
     }, [])     
 
-    const getStores = () => {
+    const getStores = useCallback(() => {
         api.get(`/stores`)
            .then(response => {
                const stores = response.data.stores
@@ -34,17 +34,19 @@ function CreateStoreInventoryPage(props){
                setStoreId(stores[0] ? stores[0].id : null)
             })
            .catch(error => { errorHandler(error) })        
-    }
-    const getInvs = () => {
+    }, [])
+
+    const getInvs = useCallback(() => {
         api.get(`/inventories?name=${invName}&limit=20`)
            .then(response => {
-                setSearchedInv(response.data.inventories)     
+                setSearchedInvs(response.data.inventories)     
            })
            .catch(error => { 
                 errorHandler(error) 
            })        
-    }
-    const storeInvs = () => {
+    }, [invName])
+
+    const storeInvs = useCallback(() => {
         api.post(`/store-inventories`, {
                 stored_invs: JSON.stringify(addedInvs),
                 store_id: storeId
@@ -68,7 +70,7 @@ function CreateStoreInventoryPage(props){
                     setErrPopupMsg(error.response.data.message)                
                 }})                  
            })          
-    }
+    }, [storeId, addedInvs])
     // When the stores is not set yet return loading UI
     if(stores === null){
         return 'Loading...'
@@ -161,7 +163,7 @@ function CreateStoreInventoryPage(props){
                 </div>
                 <Table
                     headings={['Name', '']}
-                    body={searchedInv.map(inv => ([
+                    body={searchedInvs.map(inv => ([
                         inv.name,
                         <Button size={'sm'} text={'Select'} attr={{onClick: () => {
                             dispatchAddedInvs({type: 'add', payload: {inv: inv}})

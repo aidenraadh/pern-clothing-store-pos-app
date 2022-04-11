@@ -1,4 +1,4 @@
-import {useReducer, useState, useEffect} from 'react'
+import {useReducer, useState, useEffect, useCallback} from 'react'
 import {INVENTORY_ACTIONS, INVENTORY_FILTER_KEY} from '../reducers/InventoryReducer'
 import {api, errorHandler, getResFilters, getQueryString, formatNum, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
@@ -36,14 +36,14 @@ function InventoryPage(props){
 
     useEffect(() => {
         if(props.inventory.inventories === null){
-            getInventories()
+            getInventories(INVENTORY_ACTIONS.RESET)
         }
     }, [])
-    const getInventories = (actionType = '') => {
+    const getInventories = useCallback((actionType = '') => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === '' ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === INVENTORY_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
         if(props.inventory.inventories !== null){
             setDisableBtn(true)
@@ -66,16 +66,18 @@ function InventoryPage(props){
                 }   
                 errorHandler(error) 
            })
-    }    
-    const createInventory = () => {
+    }, [filters]) 
+
+    const createInventory = useCallback(() => {
         setInvIndex('')
         setInvId('')
         setInvName('')
         dispatchInvSizes({payload: []})
         setModalHeading('Create New Inventory')      
         setModalShown(true)
-    } 
-    const storeInventory = () => {
+    }, [])
+
+    const storeInventory = useCallback(() => {
         setDisableBtn(true)
         api.post('/inventories', {
             name: invName, inventory_sizes: JSON.stringify(invSizes)
@@ -95,16 +97,18 @@ function InventoryPage(props){
                 setErrPopupMsg(error.response.data.message)                
             }})           
         })           
-    }    
-    const editInventory = (index, id, name, sizes) => {
+    }, [invName, invSizes])  
+
+    const editInventory = useCallback((index, id, name, sizes) => {
         setInvIndex(index)
         setInvId(id)
         setInvName(name)
         dispatchInvSizes({payload: sizes})
         setModalHeading(`Edit ${name}`)
         setModalShown(true)
-    }    
-    const updateInventory = () => {
+    }, [])
+
+    const updateInventory = useCallback(() => {
         setDisableBtn(true)   
         api.put(`/inventories/${invId}`, {
             name: invName, inventory_sizes: JSON.stringify(invSizes)
@@ -124,13 +128,15 @@ function InventoryPage(props){
                 setErrPopupMsg(error.response.data.message)
             }})               
         })        
-    }    
-    const confirmDeleteInventory = (id, index) => {
+    }, [invId, invIndex, invName, invSizes]) 
+
+    const confirmDeleteInventory = useCallback((id, index) => {
         setInvId(id)
         setInvIndex(index)
         setPopupShown(true)
-    }   
-    const deleteInventory = () => {
+    }, [])
+
+    const deleteInventory = useCallback(() => {
         api.delete(`/inventories/${invId}`)     
            .then(response => {        
                props.dispatchInventory({
@@ -145,7 +151,7 @@ function InventoryPage(props){
                    setErrPopupMsg(error.response.data.message)                   
                }})               
            })          
-    }
+    }, [invId, invIndex])
     // When the inventory resource is not set yet
     // Return loading UI
     if(props.inventory.inventories === null){
@@ -169,12 +175,12 @@ function InventoryPage(props){
                                 onChange: e => {dispatchFilters({
                                     type: 'update', payload: {key: 'name', value: e.target.value}
                                 })},
-                                onKeyUp: e => {keyHandler(e, 'Enter', getInventories)}
+                                onKeyUp: e => {keyHandler(e, 'Enter', () => {getInventories(INVENTORY_ACTIONS.RESET)})}
                             }} 
                         />   
                         <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
                                 style: {flexShrink: '0'},
-                                onClick: () => {getInventories()}
+                                onClick: () => {getInventories(INVENTORY_ACTIONS.RESET)}
                             }}
                         />                                       
                     </div>,
@@ -273,7 +279,7 @@ function InventoryPage(props){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getInventories()}
+                        onClick: () => {getInventories(INVENTORY_ACTIONS.RESET)}
                     }}
                 />                
             }

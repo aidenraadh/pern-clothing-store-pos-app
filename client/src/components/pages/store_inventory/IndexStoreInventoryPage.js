@@ -1,4 +1,4 @@
-import {useState, useEffect, useReducer} from 'react'
+import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
 import {STOREINV_ACTIONS, STOREINV_FILTER_KEY} from './../../reducers/StoreInventoryReducer'
 import {api, errorHandler, getResFilters, getQueryString, formatNum, keyHandler} from '../../Utils.js'
@@ -34,15 +34,15 @@ function IndexStoreInventoryPage(props){
 
     useEffect(() => {
         if(props.storeInv.storeInvs === null){
-            getStoreInvs()
+            getStoreInvs(STOREINV_ACTIONS.RESET)
         }
     }, [])
 
-    const getStoreInvs = (actionType = '') => {
+    const getStoreInvs = useCallback((actionType) => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === '' ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === STOREINV_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
         if(props.storeInv.storeInvs !== null){
             setDisableBtn(true)
         }
@@ -64,9 +64,9 @@ function IndexStoreInventoryPage(props){
                 }   
                 errorHandler(error) 
            })
-    }    
+    }, [filters])    
 
-    const editStoreInv = (index) => {
+    const editStoreInv = useCallback((index) => {
         const storeInv = props.storeInv.storeInvs[index]
         setStoreInvIndex(index)
         setStoreInvSizes(state => {
@@ -95,9 +95,9 @@ function IndexStoreInventoryPage(props){
             return invSizes
         })
         setModalShown(true)
-    } 
+    }, [props.storeInv])
     
-    const updateStoreInv = () => {
+    const updateStoreInv = useCallback(() => {
         setDisableBtn(true)
         const storeInv = props.storeInv.storeInvs[storeInvIndex]
         api.put(`/store-inventories/${storeInv.id}`, {
@@ -118,7 +118,7 @@ function IndexStoreInventoryPage(props){
                     setErrPopupMsg(error.response.data.message)                     
                 }})                  
             })
-    }       
+    }, [storeInvIndex, storeInvSizes])   
     // When the store resource is not set yet
     // Return loading UI
     if(props.storeInv.storeInvs === null){
@@ -145,12 +145,12 @@ function IndexStoreInventoryPage(props){
                             onChange: e => {dispatchFilters({
                                 type: 'update', payload: {key: 'name', value: e.target.value}
                             })},
-                            onKeyUp: (e) => {keyHandler(e, 'Enter', getStoreInvs)}
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStoreInvs(STOREINV_ACTIONS.RESET)})}
                         }} 
                     />   
                     <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
                             style: {flexShrink: '0'},
-                            onClick: () => {getStoreInvs()}
+                            onClick: () => {getStoreInvs(STOREINV_ACTIONS.RESET)}
                         }}
                     />                                       
                 </div>
@@ -258,7 +258,7 @@ function IndexStoreInventoryPage(props){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStoreInvs()}
+                        onClick: () => {getStoreInvs(STOREINV_ACTIONS.RESET)}
                     }}
                 />                
             }

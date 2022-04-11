@@ -11,6 +11,7 @@ export const INVENTORY_ACTIONS = {
     PREPEND: 'PREPEND',
     REPLACE: 'REPLACE',
     REMOVE: 'REMOVE',
+    RESET: 'RESET',
 }
 
 export const inventoryReducer = (state, action) => {
@@ -62,9 +63,11 @@ export const inventoryReducer = (state, action) => {
                 })()
             }; 
         // Refresh the inventory resource
-        default: return {
-            ...state, inventories: [...payload.inventories],
-            canLoadMore: payload.inventories.length < payload.filters.limit ? false : true
-        };
+        case INVENTORY_ACTIONS.RESET: 
+            return {
+                ...state, inventories: [...payload.inventories],
+                canLoadMore: payload.inventories.length < payload.filters.limit ? false : true
+            };             
+        default: throw new Error();
     }
 }
