@@ -63,7 +63,7 @@ function StorePage(props){
                 }   
                 errorHandler(error) 
            })
-    }, [filters])  
+    }, [filters, props.store])  
 
     const createStore = useCallback(() => {
         setStoreIndex('')

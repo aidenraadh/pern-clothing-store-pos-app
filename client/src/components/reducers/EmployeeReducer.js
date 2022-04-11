@@ -11,6 +11,7 @@ export const EMPLOYEE_ACTIONS = {
     PREPEND: 'PREPEND',
     REPLACE: 'REPLACE',
     REMOVE: 'REMOVE',
+    RESET: 'RESET',
 }
 
 export const employeeReducer = (state, action) => {
@@ -60,10 +61,12 @@ export const employeeReducer = (state, action) => {
                     return employees
                 })()
             }; 
-        // Refresh the employee resource
-        default: return {
-            ...state, employees: [...payload.employees],
-            canLoadMore: payload.employees.length < payload.filters.limit ? false : true
-        };
+        // Refresh the employee resource            
+        case EMPLOYEE_ACTIONS.RESET: 
+            return {
+                ...state, employees: [...payload.employees],
+                canLoadMore: payload.employees.length < payload.filters.limit ? false : true
+            };             
+        default: throw new Error();
     }
 }

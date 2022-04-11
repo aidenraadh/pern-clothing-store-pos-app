@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useCallback} from 'react'
 import {OWNER_ACTIONS, OWNER_FILTER_KEY} from '../reducers/OwnerReducer'
 import {EMPLOYEE_ACTIONS, EMPLOYEE_FILTER_KEY} from '../reducers/EmployeeReducer'
 import {api, errorHandler, getResFilters, getQueryString, keyHandler} from '../Utils.js'
@@ -46,10 +46,10 @@ function UserPage(props){
 
     useEffect(() => {
         if(props.owner.owners === null){
-            getOwners()
+            getOwners(OWNER_ACTIONS.RESET)
         }
         if(props.employee.employees === null){
-            getEmployees()
+            getEmployees(EMPLOYEE_ACTIONS.RESET)
         }   
         if(stores === null){
             getEmployeeStores()
@@ -59,11 +59,11 @@ function UserPage(props){
         }          
     }, [])
     
-    const getOwners = (actionType = '') => {
+    const getOwners = useCallback((actionType) => {
         // Get the queries
         const queries = {...ownerFilters, role: 'owner'}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === '' ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === OWNER_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
         if(props.owner.owners !== null){
             setDisableBtn(true)
@@ -87,13 +87,13 @@ function UserPage(props){
                 }   
                 errorHandler(error) 
            })
-    } 
+    }, [ownerFilters, props.owner]) 
 
-    const getEmployees = (actionType = '') => {
+    const getEmployees = useCallback((actionType) => {
         // Get the queries
         const queries = {...employeeFilters, role: 'employee'}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === '' ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === EMPLOYEE_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
         if(props.employee.employees !== null){
             setDisableBtn(true)
@@ -108,7 +108,7 @@ function UserPage(props){
                     employees: response.data.users,
                     filters: response.data.filters,
                 }})
-                setEmployeeFilters(getResFilters(OWNER_FILTER_KEY))
+                setEmployeeFilters(getResFilters(EMPLOYEE_FILTER_KEY))
            })
            .catch(error => {
                 if(props.employee.employees !== null){
@@ -117,20 +117,19 @@ function UserPage(props){
                 }   
                 errorHandler(error) 
            })
-    }     
+    }, [employeeFilters, props.employee])
 
-    const getEmployeeStores = () => {
+    const getEmployeeStores = useCallback(() => {
         api.get(`/users/employee-stores`)
            .then(response => {
                setStores(response.data.stores)
            })
            .catch(error => {
-
                 errorHandler(error) 
            })
-    }    
+    }, [])
     
-    const getUserRoles = () => {
+    const getUserRoles = useCallback(() => {
         api.get(`/users/user-roles`)
            .then(response => {
                setRoles(response.data.roles)
@@ -138,9 +137,9 @@ function UserPage(props){
            .catch(error => {
                 errorHandler(error) 
            })
-    }     
+    }, [])
 
-    const createUser = (role) => {
+    const createUser = useCallback((role) => {
         let heading = ''
 
         switch(role){
@@ -154,9 +153,9 @@ function UserPage(props){
         setTargetRole(role)
         setCrtModalHeading(heading)
         setCrtModalShown(true)
-    }
+    }, [])
 
-    const GenerateCrtUserForms = () => {
+    const GenerateCrtUserForms = useCallback(() => {
         const body = [
             <TextInput label={'Name'} size={'md'} formAttr={{
                 value: name,
@@ -185,9 +184,9 @@ function UserPage(props){
                 break;                
         }
         return <Grid num_of_columns={1} items={body}/>
-    }
+    }, [name, targetRole, stores, storeId])
 
-    const storeUser = () => {
+    const storeUser = useCallback(() => {
         const data = {role: targetRole, name: name, email: email}
         let dispatchFuncName = null
         let reducerAction = ''
@@ -222,9 +221,9 @@ function UserPage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})           
             })  
-    }    
+    }, [targetRole, name, email, storeId, stores])
 
-    const editUser = (role, index) => {
+    const editUser = useCallback((role, index) => {
         let user = null
         let heading = ''
         let storeId = ''
@@ -244,9 +243,9 @@ function UserPage(props){
         setStoreId(storeId)
         setUpdModalHeading(heading)
         setUpdModalShown(true)
-    }    
+    }, [props.employee])
 
-    const GenerateUpdUserForms = () => {
+    const GenerateUpdUserForms = useCallback(() => {
         const body = [
             <Select size={'md'} label={'Role'}
                 options={roles.map(role => ({
@@ -272,9 +271,9 @@ function UserPage(props){
                 break;                
         }
         return <Grid num_of_columns={1} items={body}/>
-    }    
+    }, [roles, roleId, stores, storeId])    
 
-    const updateUser = () => {
+    const updateUser = useCallback(() => {
         let data = {role: targetRole}
         let userId = ''
         switch(targetRole){
@@ -298,14 +297,15 @@ function UserPage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})           
             })         
-    }
-    const confirmDeleteUser = (role, index) => {
+    }, [targetRole, userIndex, roleId, storeId, props.employee])
+
+    const confirmDeleteUser = useCallback((role, index) => {
         setTargetRole(role)
         setUserIndex(index)
         setDltPopupShown(true)
-    }   
+    }, [])
 
-    const deleteUser = () => {
+    const deleteUser = useCallback(() => {
         let dispatchFuncName = null
         let reducerAction = ''
         let userId = ''
@@ -331,7 +331,8 @@ function UserPage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })          
-    }   
+    }, [props.employee, userIndex])
+
     if(
         props.owner.owners === null || props.employee.employees === null ||
         stores === null || roles === null
@@ -344,13 +345,13 @@ function UserPage(props){
         tabs={[ 
             {link: 'Owner', panelID: 'owner', panelContent:
                 <GenerateUsers appProps={props} role={'owner'} 
-                    toggleCrtUser={createUser}
+                    getUsers={getOwners} toggleCrtUser={createUser}
                 />
             },
             {link: 'Employee', panelID: 'employee', panelContent:
                 <GenerateUsers appProps={props} role={'employee'} 
-                    toggleCrtUser={createUser} toggleEdtUser={editUser}
-                    toggleDltUser={confirmDeleteUser}
+                    getUsers={getEmployees} toggleCrtUser={createUser} 
+                    toggleEdtUser={editUser} toggleDltUser={confirmDeleteUser}
                 />
             },										
         ]}
@@ -413,15 +414,19 @@ function UserPage(props){
     </>)
 }
 
-const GenerateUsers = ({appProps, role, toggleCrtUser, toggleEdtUser, toggleDltUser}) => {
+const GenerateUsers = ({appProps, role, getUsers, toggleCrtUser, toggleEdtUser, toggleDltUser}) => {
     let addBtnText = ''
     let tableHeadings = ['Name']
     let tableBody = []
+    let loadMoreBtnVis
+    let loadMoreBtnAction
 
     switch(role){
         case 'owner':
             addBtnText = '+ Add owner'
             tableBody = appProps.owner.owners.map(owner => ([owner.name]));
+            loadMoreBtnVis = appProps.owner.canLoadMore
+            loadMoreBtnAction = () => {getUsers(OWNER_ACTIONS.APPEND)}
             break;
         case 'employee':
             addBtnText = '+ Add employee'
@@ -438,6 +443,8 @@ const GenerateUsers = ({appProps, role, toggleCrtUser, toggleEdtUser, toggleDltU
                     }}/>                                    
                 </div>
             ]));
+            loadMoreBtnVis = appProps.employee.canLoadMore
+            loadMoreBtnAction = () => {getUsers(EMPLOYEE_ACTIONS.APPEND)}            
             break;            
     }
     return (
@@ -450,8 +457,22 @@ const GenerateUsers = ({appProps, role, toggleCrtUser, toggleEdtUser, toggleDltU
             <Table
                 headings={tableHeadings}
                 body={tableBody}
-            />        
+            />,
+            <LoadMoreBtn 
+                canLoadMore={loadMoreBtnVis}
+                action={loadMoreBtnAction}
+            />               
         ]}/>
+    )
+}
+
+const LoadMoreBtn = ({canLoadMore, action}) => {
+    return (
+        canLoadMore ? 
+        <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '0 auto'}} 
+        onClick={action}>
+            Load More
+        </button> : ''        
     )
 }
 

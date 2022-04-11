@@ -11,6 +11,7 @@ export const OWNER_ACTIONS = {
     PREPEND: 'PREPEND',
     REPLACE: 'REPLACE',
     REMOVE: 'REMOVE',
+    RESET: 'RESET',
 }
 
 export const ownerReducer = (state, action) => {
@@ -62,9 +63,11 @@ export const ownerReducer = (state, action) => {
                 })()
             }; 
         // Refresh the owner resource
-        default: return {
-            ...state, owners: [...payload.owners],
-            canLoadMore: payload.owners.length < payload.filters.limit ? false : true
-        };
+        case OWNER_ACTIONS.RESET: 
+            return {
+                ...state, owners: [...payload.owners],
+                canLoadMore: payload.owners.length < payload.filters.limit ? false : true
+            };             
+        default: throw new Error();
     }
 }

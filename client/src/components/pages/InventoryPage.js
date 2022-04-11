@@ -66,7 +66,7 @@ function InventoryPage(props){
                 }   
                 errorHandler(error) 
            })
-    }, [filters]) 
+    }, [filters, props.inventory]) 
 
     const createInventory = useCallback(() => {
         setInvIndex('')

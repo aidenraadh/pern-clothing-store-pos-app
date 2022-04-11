@@ -64,7 +64,7 @@ function IndexStoreInventoryPage(props){
                 }   
                 errorHandler(error) 
            })
-    }, [filters])    
+    }, [filters, props.storeInv])    
 
     const editStoreInv = useCallback((index) => {
         const storeInv = props.storeInv.storeInvs[index]
