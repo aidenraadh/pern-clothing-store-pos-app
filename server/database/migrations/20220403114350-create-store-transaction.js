@@ -20,7 +20,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true          
       },    
-      original_total_cost: {
+      total_original_cost: {
         type: Sequelize.INTEGER,
         allowNull: true          
       },              

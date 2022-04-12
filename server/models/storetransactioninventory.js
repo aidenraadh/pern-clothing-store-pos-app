@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'StoreTransactionInventory',
+    tableName: 'Store_Transaction_Inventories',
     createdAt: 'created_at',
     updatedAt: 'updated_at',     
   });

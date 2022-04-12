@@ -784,7 +784,7 @@ export function UserThumbnail(props){
 
 	return (
 		<Tag className={'user-thumbnail'+classes} {...props.attr}>
-			{props.imgUrl ? <img src={props.imgUrl} /> : ''}
+			{props.imgUrl ? <img src={props.imgUrl} alt={'User avatar'} /> : ''}
 			<span className="user-name">{props.userName}</span>
 		</Tag>
 	);

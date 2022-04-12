@@ -1,5 +1,4 @@
 import React from 'react';
-import {xhttpPost} from './Utils';
 
 export function TextInput(props){
 	const type = ` ${props.type}`

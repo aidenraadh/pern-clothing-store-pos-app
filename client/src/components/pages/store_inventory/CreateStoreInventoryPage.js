@@ -20,11 +20,7 @@ function CreateStoreInventoryPage(props){
     const [popupErrMsg, setErrPopupMsg] = useState('')
     /* Success Popup */
     const [succPopupShown, setSuccPopupShown] = useState(false)
-    const [popupSuccMsg, setSuccPopupMsg] = useState('')    
-
-    useEffect(() => {
-        if(stores === null){ getStores() }
-    }, [])     
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')      
 
     const getStores = useCallback(() => {
         api.get(`/stores`)
@@ -37,14 +33,17 @@ function CreateStoreInventoryPage(props){
     }, [])
 
     const getInvs = useCallback(() => {
+        setDisableBtn(true)
         api.get(`/inventories?name=${invName}&limit=20`)
            .then(response => {
-                setSearchedInvs(response.data.inventories)     
+                setSearchedInvs(response.data.inventories)
+                setDisableBtn(false) 
            })
            .catch(error => { 
+                setDisableBtn(false)
                 errorHandler(error) 
            })        
-    }, [invName])
+    }, [invName, setDisableBtn])
 
     const storeInvs = useCallback(() => {
         api.post(`/store-inventories`, {
@@ -71,6 +70,11 @@ function CreateStoreInventoryPage(props){
                 }})                  
            })          
     }, [storeId, addedInvs])
+
+    useEffect(() => {
+        if(stores === null){ getStores() }
+    }, [stores, getStores])       
+
     // When the stores is not set yet return loading UI
     if(stores === null){
         return 'Loading...'

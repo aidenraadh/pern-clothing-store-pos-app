@@ -14,9 +14,9 @@ export const errorHandler = (error, callbacks = {}) => {
 	callbacks['401'] = () => {logout()}
 	callbacks['500'] = () => {alert(error.response.data.message)}   
 	for(const status in callbacks){
-		if(error.response.status == 401){ callbacks['401']() }
-		if(error.response.status == 500){ callbacks['500']() }
-		if(error.response.status == status){ callbacks[status]() }
+		if(parseInt(error.response.status) === 401){ callbacks['401']() }
+		if(parseInt(error.response.status) === 500){ callbacks['500']() }
+		if(parseInt(error.response.status) === parseInt(status)){ callbacks[status]() }
 	} 
 }
 

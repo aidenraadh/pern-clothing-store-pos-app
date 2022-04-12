@@ -1,15 +1,15 @@
-const models             = require('../models/index')
-const StoreTransaction     = models.StoreTransaction
-const StoreTransactionInventory     = models.StoreTransactionInventory
-const Inventory          = models.Inventory
-const InventorySize      = models.InventorySize
-const StoreInventory     = models.StoreInventory
-const StoreInventorySize = models.StoreInventorySize
-const Store              = models.Store
-const {Op}               = require("sequelize")
-const Joi                = require('joi')
-const filterKeys         = require('../utils/filterKeys')
-const logger             = require('../utils/logger')
+const models                    = require('../models/index')
+const StoreTransaction          = models.StoreTransaction
+const StoreTransactionInventory = models.StoreTransactionInventory
+const Inventory                 = models.Inventory
+const InventorySize             = models.InventorySize
+const StoreInventory            = models.StoreInventory
+const StoreInventorySize        = models.StoreInventorySize
+const Store                     = models.Store
+const {Op}                      = require("sequelize")
+const Joi                       = require('joi')
+const filterKeys                = require('../utils/filterKeys')
+const logger                    = require('../utils/logger')
 
 exports.index = async (req, res) => {    
     try {
@@ -45,7 +45,7 @@ exports.index = async (req, res) => {
                 if(userRole === 'employee'){ where.store_id = req.user.storeEmployee.store_id }
                 return where
             })(),
-            attributes: ['id', 'total_amount','total_cost','total_original_cost'],
+            attributes: ['id', 'total_amount','total_cost','total_original_cost', 'transaction_date'],
             include: [
                 {
                     model: Store, as: 'store', 
@@ -53,7 +53,7 @@ exports.index = async (req, res) => {
                     where: {owner_id: req.user.owner_id}
                 },              
                 {
-                    model: StoreTransactionInventory, as: 'inventories', 
+                    model: StoreTransactionInventory, as: 'storeTrnscInvs', 
                     attributes: ['id', 'amount', 'cost', 'original_cost'],
                     include: [
                         {
@@ -72,7 +72,7 @@ exports.index = async (req, res) => {
                     ],
                 },                        
             ],        
-            order: [['created_at', 'DESC']],
+            order: [['id', 'DESC']],
             ...filters.limitOffset
         })
 

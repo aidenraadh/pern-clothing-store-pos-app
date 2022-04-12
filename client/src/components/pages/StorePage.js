@@ -6,7 +6,7 @@ import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
 import {Modal, ConfirmPopup} from '../Windows'
 
-function StorePage(props){
+function StorePage({store, dispatchStore, user}){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Create/edit store */
     const [storeIndex, setStoreIndex] = useState('')
@@ -30,40 +30,34 @@ function StorePage(props){
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')    
 
-    useEffect(() => {
-        if(props.store.stores === null){
-            getStores(STORE_ACTIONS.RESET)
-        }
-    }, [])
-
     const getStores = useCallback((actionType) => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === STORE_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
-        if(props.store.stores !== null){
+        if(store.stores !== null){
             setDisableBtn(true)
         }
         api.get(`/stores${getQueryString(queries)}`)
            .then(response => {
-                if(props.store.stores !== null){
+                if(store.stores !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }                          
-                props.dispatchStore({type: actionType, payload: response.data})
+                dispatchStore({type: actionType, payload: response.data})
                 dispatchFilters({
                     type: 'reset', payload: getResFilters(STORE_FILTER_KEY)
                 })                
            })
            .catch(error => {
-                if(props.store.stores !== null){
+                if(store.stores !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [filters, props.store])  
+    }, [filters, store, dispatchStore])  
 
     const createStore = useCallback(() => {
         setStoreIndex('')
@@ -79,7 +73,7 @@ function StorePage(props){
             .then(response => {
                 setDisableBtn(false)
                 setModalShown(false)           
-                props.dispatchStore({
+                dispatchStore({
                     type: STORE_ACTIONS.PREPEND, 
                     payload: {stores: response.data.store}
                 })
@@ -91,7 +85,7 @@ function StorePage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})           
             })           
-    }, [storeName])    
+    }, [storeName, dispatchStore])    
 
     const editStore = useCallback((index, id, name) => {
         setStoreIndex(index)
@@ -107,7 +101,7 @@ function StorePage(props){
             .then(response => {
                 setDisableBtn(false)
                 setModalShown(false)            
-                props.dispatchStore({
+                dispatchStore({
                     type: STORE_ACTIONS.REPLACE, 
                     payload: {store: response.data.store, index: storeIndex}
                 })                
@@ -119,7 +113,7 @@ function StorePage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })        
-    }, [storeName, storeId])  
+    }, [storeName, storeId, storeIndex, dispatchStore])  
 
     const confirmDeleteStore = useCallback((id, index) => {
         setStoreId(id)
@@ -130,7 +124,7 @@ function StorePage(props){
     const deleteStore = useCallback(() => {
         api.delete(`/stores/${storeId}`)     
             .then(response => {        
-                props.dispatchStore({
+                dispatchStore({
                     type: STORE_ACTIONS.REMOVE, 
                     payload: {indexes: storeIndex}
                 })                
@@ -142,10 +136,16 @@ function StorePage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })          
-    }, [storeId])
+    }, [storeId, storeIndex, dispatchStore])
+
+    useEffect(() => {
+        if(store.stores === null){
+            getStores(STORE_ACTIONS.RESET)
+        }
+    }, [store, getStores])    
     // When the store resource is not set yet
     // Return loading UI
-    if(props.store.stores === null){
+    if(store.stores === null){
         return 'Loading...'
     }    
     return (<>
@@ -175,16 +175,16 @@ function StorePage(props){
                     />                                       
                 </div>            
                 <GenerateStores 
-                    stores={props.store.stores} 
+                    stores={store.stores} 
                     editStore={editStore}
                     confirmDeleteStore={confirmDeleteStore}
                 />
                 <LoadMoreBtn 
-                    canLoadMore={props.store.canLoadMore}
+                    canLoadMore={store.canLoadMore}
                     action={() => {getStores(STORE_ACTIONS.APPEND)}}
                 />                  
                 {
-                    props.store.canLoadMore ? 
+                    store.canLoadMore ? 
                     <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
                     onClick={() => {getStores(STORE_ACTIONS.APPEND)}}>
                         Load More

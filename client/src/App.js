@@ -1,4 +1,4 @@
-import {useState, useEffect, useReducer} from "react";
+import {useState, useReducer} from "react";
 import ErrorBoundary from './components/ErrorBoundary'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
@@ -87,7 +87,7 @@ function App(){
                                     break;
 
                                 case 'employee':
-                                    sidebarItemNames = ['dashboard','store_inventory'];
+                                    sidebarItemNames = ['dashboard','store_inventory', 'store_transaction'];
                                     break;
 
                                 default: sidebarItemNames = []; break;
@@ -101,22 +101,24 @@ function App(){
                     <Switch>                  
                         <Route path="/login" exact component={LoginPage}/>
                         <ProtectedRoute path={'/'} exact user={user} component={DashboardPage}/>
-                        <ProtectedRoute path={'/inventories'} exact component={InventoryPage}
+                        <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
                             user={user} inventory={inventory} dispatchInventory={dispatchInventory}
                         />
-                        <ProtectedRoute path={'/stores'} exact component={StorePage}
+                        <ProtectedRoute path={`/${sidebarItems.store.link}`} exact component={StorePage}
                             user={user} store={store} dispatchStore={dispatchStore}
                         />     
-                        <ProtectedRoute path={'/store-inventories'} exact component={IndexStoreInventoryPage}
+                        <ProtectedRoute path={`/${sidebarItems.store_inventory.link}`} exact component={IndexStoreInventoryPage}
                             user={user} storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
                         />        
-                        <ProtectedRoute path={'/store-inventories/create'} exact component={CreateStoreInventoryPage}
-                            user={user} storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
+                        <ProtectedRoute path={`/${sidebarItems.store_inventory.link}/create`} exact 
+                            component={CreateStoreInventoryPage} user={user} storeInv={storeInv} 
+                            dispatchStoreInv={dispatchStoreInv}
                         /> 
-                        <ProtectedRoute path={'/store-transactions'} exact component={IndexStoreTransactionPage}
-                            user={user} storeTrnsc={storeTrnsc} dispatchStoreTrnsc={dispatchStoreTrnsc}
+                        <ProtectedRoute path={`/${sidebarItems.store_transaction.link}`} exact 
+                            component={IndexStoreTransactionPage} user={user} storeTrnsc={storeTrnsc} 
+                            dispatchStoreTrnsc={dispatchStoreTrnsc}
                         />                          
-                        <ProtectedRoute path={'/users'} exact component={UserPage}
+                        <ProtectedRoute path={`/${sidebarItems.user.link}`} exact component={UserPage}
                             user={user} owner={owner} dispatchOwner={dispatchOwner} employee={employee} 
                             dispatchEmployee={dispatchEmployee}
                         />                                                                                            
@@ -127,5 +129,6 @@ function App(){
         </ErrorBoundary>
     )
 }
+
 
 export default App

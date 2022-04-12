@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         models.Store, {foreignKey: 'store_id', as: 'store'}
       )
       models.StoreTransaction.hasMany(
-        models.StoreTransactionInventory, {foreignKey: 'store_transaction_id', as: 'inventories', }
+        models.StoreTransactionInventory, {foreignKey: 'store_transaction_id', as: 'storeTrnscInvs', }
       )
     }
   };
@@ -22,11 +22,12 @@ module.exports = (sequelize, DataTypes) => {
     store_id: DataTypes.BIGINT,
     total_amount: DataTypes.INTEGER,
     total_cost: DataTypes.INTEGER,
-    original_total_cost: DataTypes.INTEGER,
+    total_original_cost: DataTypes.INTEGER,
     transaction_date: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'StoreTransaction',
+    tableName: 'Store_Transactions',
     paranoid: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',    

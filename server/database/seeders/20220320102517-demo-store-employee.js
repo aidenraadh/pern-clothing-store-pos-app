@@ -24,6 +24,7 @@ module.exports = {
 
     const store = await Store.findOne({where: {owner_id: ownerId}})
 
+    // Store the store employee
     await StoreEmployee.create({
       user_id: employeeUser.id, store_id: store.id
     })

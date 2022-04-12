@@ -9,7 +9,7 @@ import Table from '../Table'
 import {Grid} from '../Layouts'
 import {SVGIcons} from '../Misc'
 
-function InventoryPage(props){
+function InventoryPage({inventory, dispatchInventory, user}){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Create/edit inventory */
     const [invIndex, setInvIndex] = useState('')
@@ -34,39 +34,34 @@ function InventoryPage(props){
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')
 
-    useEffect(() => {
-        if(props.inventory.inventories === null){
-            getInventories(INVENTORY_ACTIONS.RESET)
-        }
-    }, [])
     const getInventories = useCallback((actionType = '') => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === INVENTORY_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
-        if(props.inventory.inventories !== null){
+        if(inventory.inventories !== null){
             setDisableBtn(true)
         }
         api.get(`/inventories${getQueryString(queries)}`)
            .then(response => {
-                if(props.inventory.inventories !== null){
+                if(inventory.inventories !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }                          
-                props.dispatchInventory({type: actionType, payload: response.data})
+                dispatchInventory({type: actionType, payload: response.data})
                 dispatchFilters({
                     type: 'reset', payload: getResFilters(INVENTORY_FILTER_KEY)
                 })
            })
            .catch(error => {
-                if(props.inventory.inventories !== null){
+                if(inventory.inventories !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [filters, props.inventory]) 
+    }, [filters, inventory, dispatchInventory]) 
 
     const createInventory = useCallback(() => {
         setInvIndex('')
@@ -85,7 +80,7 @@ function InventoryPage(props){
         .then(response => {
             setDisableBtn(false)
             setModalShown(false)           
-            props.dispatchInventory({
+            dispatchInventory({
                 type: INVENTORY_ACTIONS.PREPEND, 
                 payload: {inventories: response.data.inventory}
             })
@@ -97,7 +92,7 @@ function InventoryPage(props){
                 setErrPopupMsg(error.response.data.message)                
             }})           
         })           
-    }, [invName, invSizes])  
+    }, [invName, invSizes, dispatchInventory])  
 
     const editInventory = useCallback((index, id, name, sizes) => {
         setInvIndex(index)
@@ -116,7 +111,7 @@ function InventoryPage(props){
         .then(response => {
             setDisableBtn(false)
             setModalShown(false)            
-            props.dispatchInventory({
+            dispatchInventory({
                 type: INVENTORY_ACTIONS.REPLACE, 
                 payload: {inventory: response.data.inventory, index: invIndex}
             })                
@@ -128,7 +123,7 @@ function InventoryPage(props){
                 setErrPopupMsg(error.response.data.message)
             }})               
         })        
-    }, [invId, invIndex, invName, invSizes]) 
+    }, [invId, invIndex, invName, invSizes, dispatchInventory]) 
 
     const confirmDeleteInventory = useCallback((id, index) => {
         setInvId(id)
@@ -139,7 +134,7 @@ function InventoryPage(props){
     const deleteInventory = useCallback(() => {
         api.delete(`/inventories/${invId}`)     
            .then(response => {        
-               props.dispatchInventory({
+               dispatchInventory({
                    type: INVENTORY_ACTIONS.REMOVE, 
                    payload: {indexes: invIndex}
                })                
@@ -151,10 +146,16 @@ function InventoryPage(props){
                    setErrPopupMsg(error.response.data.message)                   
                }})               
            })          
-    }, [invId, invIndex])
+    }, [invId, invIndex, dispatchInventory])
+
+    useEffect(() => {
+        if(inventory.inventories === null){
+            getInventories(INVENTORY_ACTIONS.RESET)
+        }
+    }, [inventory, getInventories])    
     // When the inventory resource is not set yet
     // Return loading UI
-    if(props.inventory.inventories === null){
+    if(inventory.inventories === null){
         return 'Loading...'
     }    
     return (<>
@@ -185,12 +186,12 @@ function InventoryPage(props){
                         />                                       
                     </div>,
                     <GenerateInventories 
-                        inventories={props.inventory.inventories} 
+                        inventories={inventory.inventories} 
                         editInventory={editInventory}
                         confirmDeleteInventory={confirmDeleteInventory}
                     />,
                     <LoadMoreBtn 
-                        canLoadMore={props.inventory.canLoadMore}
+                        canLoadMore={inventory.canLoadMore}
                         action={() => {getInventories(INVENTORY_ACTIONS.APPEND)}}
                     />                                  
                 ]}/>

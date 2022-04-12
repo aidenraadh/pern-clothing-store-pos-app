@@ -4,17 +4,18 @@ import {SVGIcons} from './Misc.js';
 
 function Navigations(props){
     const location = useLocation()
+	const toggleSidebar = props.toggleSidebar
 	// Hide the sidebar when the route is changed
     useEffect(() => {
-		props.toggleSidebar(false)
-    }, [location])   	
+		toggleSidebar(false)
+    }, [location, toggleSidebar])   	
 
 	return (
 		<nav>
 			<section className="topbar">
 				<a href={props.appUrl}
 				className="topbar-item app-brand flex-row content-center items-center">
-					{props.appLogoUrl ? <img src={props.appLogoUrl} /> : ''}
+					{props.appLogoUrl ? <img src={props.appLogoUrl} alt={'User avatar'} /> : ''}
 				</a>
 				<div className="left-widgets">
 					<button type="button" 

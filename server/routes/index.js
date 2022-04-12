@@ -1,12 +1,13 @@
-const rootRouter               = require('express').Router()
-const authController           = require('../controllers/authController')
-const userController           = require('../controllers/userController')
-const storeController          = require('../controllers/storeController')
-const inventoryController      = require('../controllers/inventoryController')
-const storeInventoryController = require('../controllers/storeInventoryController')
-const isAuth                   = require('../middlewares/isAuth')
-const isNotAuth                = require('../middlewares/isNotAuth')
-const authorize                = require('../middlewares/authorize')
+const rootRouter                 = require('express').Router()
+const authController             = require('../controllers/authController')
+const userController             = require('../controllers/userController')
+const storeController            = require('../controllers/storeController')
+const inventoryController        = require('../controllers/inventoryController')
+const storeInventoryController   = require('../controllers/storeInventoryController')
+const storeTransactionController = require('../controllers/storeTransactionController')
+const isAuth                     = require('../middlewares/isAuth')
+const isNotAuth                  = require('../middlewares/isNotAuth')
+const authorize                  = require('../middlewares/authorize')
 
 const models             = require('../models/index')
 const bcrypt = require('bcrypt')
@@ -20,15 +21,14 @@ const Owner = models.Owner
 const User = models.User
 
 rootRouter.get('/test', async (req, res) => {
-    // const owner = await Owner.create({})
-    // const ownerA = await User.create({
-    //     name: 'Owner A', email: 'ownerA@gmail.com',
-    //     password: await bcrypt.hash('12345678', 10),
-    //     role_id: 2, owner_id: owner.id,        
-    // })  
-    return res.send({
-        message: 'test'
-    })
+    const sum = [1,2,3].reduce(add, 0); // with initial value to avoid when the array is empty
+
+    function add(accumulator, a) {
+      return accumulator + a;
+    }
+    
+    console.log(sum); // 6
+    return res.send({message: 'asd'})
 })
 
 rootRouter.post('/register', [
@@ -108,5 +108,8 @@ rootRouter.delete('/store-inventories/:id', [
     isAuth, authorize(['owner']), storeInventoryController.destroy
 ])
 
+rootRouter.get('/store-transactions', [
+    isAuth, authorize('all'), storeTransactionController.index
+])
 
 module.exports = rootRouter

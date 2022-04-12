@@ -9,7 +9,7 @@ import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 import Table from '../../Table'
 
-function IndexStoreInventoryPage(props){
+function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Edit store inventory */
     const [storeInvIndex, setStoreInvIndex] = useState('')
@@ -32,54 +32,48 @@ function IndexStoreInventoryPage(props){
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')    
 
-    useEffect(() => {
-        if(props.storeInv.storeInvs === null){
-            getStoreInvs(STOREINV_ACTIONS.RESET)
-        }
-    }, [])
-
     const getStoreInvs = useCallback((actionType) => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === STOREINV_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-        if(props.storeInv.storeInvs !== null){
+        if(storeInv.storeInvs !== null){
             setDisableBtn(true)
         }
         api.get(`/store-inventories${getQueryString(queries)}`)
            .then(response => {
-                if(props.storeInv.storeInvs !== null){
+                if(storeInv.storeInvs !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }                          
-                props.dispatchStoreInv({type: actionType, payload: response.data})
+                dispatchStoreInv({type: actionType, payload: response.data})
                 dispatchFilters({
                     type: 'reset', payload: getResFilters(STOREINV_FILTER_KEY)
                 })                  
            })
            .catch(error => {
-                if(props.storeInv.storeInvs !== null){
+                if(storeInv.storeInvs !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [filters, props.storeInv])    
+    }, [filters, storeInv, dispatchStoreInv])    
 
     const editStoreInv = useCallback((index) => {
-        const storeInv = props.storeInv.storeInvs[index]
+        const targetStoreInv = storeInv.storeInvs[index]
         setStoreInvIndex(index)
         setStoreInvSizes(state => {
             const invSizes = []
-            if(!storeInv){ return invSizes }
+            if(!targetStoreInv){ return invSizes }
             // Get all stored inventory's sizes
-            const storedSizeIds = storeInv.sizes.map(storedSize => storedSize.inventory_size_id)
+            const storedSizeIds = targetStoreInv.sizes.map(storedSize => storedSize.inventory_size_id)
 
-            storeInv.inventory.sizes.forEach(size => {
+            targetStoreInv.inventory.sizes.forEach(size => {
                 // When the stored size exists inside inventory sizes
                 if(storedSizeIds.includes(size.id)){
                     invSizes.push({
-                        ...storeInv.sizes[ storedSizeIds.indexOf(size.id) ],
+                        ...targetStoreInv.sizes[ storedSizeIds.indexOf(size.id) ],
                         name: size.name, production_price: size.production_price,
                         selling_price: size.selling_price, isChanged: false              
                     })
@@ -95,20 +89,20 @@ function IndexStoreInventoryPage(props){
             return invSizes
         })
         setModalShown(true)
-    }, [props.storeInv])
+    }, [storeInv])
     
     const updateStoreInv = useCallback(() => {
         setDisableBtn(true)
-        const storeInv = props.storeInv.storeInvs[storeInvIndex]
-        api.put(`/store-inventories/${storeInv.id}`, {
+        const targetStoreInv = storeInv.storeInvs[storeInvIndex]
+        api.put(`/store-inventories/${targetStoreInv.id}`, {
                 updated_sizes: JSON.stringify(storeInvSizes)
             })
             .then(response => {
                 setDisableBtn(false)
                 setModalShown(false)   
-                props.dispatchStoreInv({
+                dispatchStoreInv({
                     type: STOREINV_ACTIONS.REPLACE, 
-                    payload: {storeInv: response.data.storeInv, index: storeInvIndex}
+                    payload: {targetStoreInv: response.data.targetStoreInv, index: storeInvIndex}
                 })  
             })
             .catch(error => {
@@ -118,10 +112,17 @@ function IndexStoreInventoryPage(props){
                     setErrPopupMsg(error.response.data.message)                     
                 }})                  
             })
-    }, [storeInvIndex, storeInvSizes])   
+    }, [storeInvIndex, storeInvSizes, dispatchStoreInv, storeInv])   
+
+    useEffect(() => {
+        if(storeInv.storeInvs === null){
+            getStoreInvs(STOREINV_ACTIONS.RESET)
+        }
+    }, [storeInv, getStoreInvs])
+
     // When the store resource is not set yet
     // Return loading UI
-    if(props.storeInv.storeInvs === null){
+    if(storeInv.storeInvs === null){
         return 'Loading...'
     }    
     return (<>
@@ -130,7 +131,7 @@ function IndexStoreInventoryPage(props){
                 onClick: () => {setFilterModalShown(true)},
                 style: {marginRight: '1rem'}
             }} />
-            {props.user.role.name === 'employee' ? '' :
+            {user.role.name === 'employee' ? '' :
                 <Link to={'/store-inventories/create'}>
                     <Button tag={'span'} text={'+ Store new'} size={'sm'} attr={{onClick: () => {}}}/>
                 </Link>            
@@ -155,11 +156,11 @@ function IndexStoreInventoryPage(props){
                     />                                       
                 </div>
                 <GenerateStoreInv 
-                    storeInvs={props.storeInv.storeInvs} 
+                    storeInvs={storeInv.storeInvs} 
                     editStoreInv={editStoreInv}
                 />
                 <LoadMoreBtn 
-                    canLoadMore={props.storeInv.canLoadMore}
+                    canLoadMore={storeInv.canLoadMore}
                     action={() => {getStoreInvs(STOREINV_ACTIONS.APPEND)}}
                 />              
             </>}
@@ -170,14 +171,14 @@ function IndexStoreInventoryPage(props){
                 <Table
                     headings={(() => {
                         const headings = ['Size', 'Quantity', 'Selling Price']
-                        if(props.user.role.name === 'owner'){
+                        if(user.role.name === 'owner'){
                            headings.splice(2, 0, 'Production Price') 
                         }
                         return headings
                     })()}
                     body={(() => {
                         if(!storeInvSizes){ return [] }
-                        if(props.user.role.name === 'owner'){
+                        if(user.role.name === 'owner'){
                             return storeInvSizes.map((size, index) => ([
                                 size.name,
                                 <TextInput size={'md'}
@@ -197,7 +198,7 @@ function IndexStoreInventoryPage(props){
                                 `Rp. ${formatNum(size.selling_price)}` 
                             ]))
                         }
-                        if(props.user.role.name === 'employee'){
+                        if(user.role.name === 'employee'){
                             return storeInvSizes.map((size, index) => ([
                                 size.name,
                                 formatNum(size.amount),
@@ -207,7 +208,7 @@ function IndexStoreInventoryPage(props){
                     })()}
                 />
             </>}        
-            footer={props.user.role.name === 'employee' ? '' :
+            footer={user.role.name === 'employee' ? '' :
                 <Button size={'sm'} text={'Save Changes'} attr={{
                     disabled: disableBtn,
                     onClick: () => {updateStoreInv()}
@@ -233,7 +234,7 @@ function IndexStoreInventoryPage(props){
                             ]}
                         />                      
                     ]
-                    if(props.user.role.name === 'owner'){
+                    if(user.role.name === 'owner'){
                         items.unshift(
                             <Select label={'Store'} 
                                 formAttr={{
@@ -244,7 +245,7 @@ function IndexStoreInventoryPage(props){
                                 }}
                                 options={(() => {
                                     const options = [{value: '', text: 'All stores'}]
-                                    props.storeInv.stores.forEach(store => {
+                                    storeInv.stores.forEach(store => {
                                         options.push({value: store.id, text: store.name})
                                     })
                                     return options

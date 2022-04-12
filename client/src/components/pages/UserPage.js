@@ -13,6 +13,12 @@ function UserPage(props){
     const [disableBtn , setDisableBtn] = useState(false)
     const [stores, setStores] = useState(null)
     const [roles, setRoles] = useState(null)
+    /* Owner */
+    const owner = props.owner
+    const dispatchOwner = props.dispatchOwner
+    /* Employee */
+    const employee = props.employee
+    const dispatchEmployee = props.dispatchEmployee
     /* Filter owner */
     const initOwnerFilters = getResFilters(OWNER_FILTER_KEY)
     const [ownerFilters, setOwnerFilters] = useState({
@@ -42,22 +48,6 @@ function UserPage(props){
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')        
-
-
-    useEffect(() => {
-        if(props.owner.owners === null){
-            getOwners(OWNER_ACTIONS.RESET)
-        }
-        if(props.employee.employees === null){
-            getEmployees(EMPLOYEE_ACTIONS.RESET)
-        }   
-        if(stores === null){
-            getEmployeeStores()
-        }
-        if(roles === null){
-            getUserRoles()
-        }          
-    }, [])
     
     const getOwners = useCallback((actionType) => {
         // Get the queries
@@ -65,29 +55,29 @@ function UserPage(props){
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === OWNER_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
-        if(props.owner.owners !== null){
+        if(owner.owners !== null){
             setDisableBtn(true)
         }
         api.get(`/users${getQueryString(queries)}`)
            .then(response => {
-                if(props.owner.owners !== null){
+                if(owner.owners !== null){
                     setDisableBtn(false)
                     setOwnerFilterModalShown(false)
                 }
-                props.dispatchOwner({type: actionType, payload: {
+                dispatchOwner({type: actionType, payload: {
                     owners: response.data.users,
                     filters: response.data.filters,
                 }})
                 setOwnerFilters(getResFilters(OWNER_FILTER_KEY))
            })
            .catch(error => {
-                if(props.owner.owners !== null){
+                if(owner.owners !== null){
                     setDisableBtn(false)
                     setOwnerFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [ownerFilters, props.owner]) 
+    }, [ownerFilters, owner, dispatchOwner]) 
 
     const getEmployees = useCallback((actionType) => {
         // Get the queries
@@ -95,29 +85,29 @@ function UserPage(props){
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === EMPLOYEE_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
-        if(props.employee.employees !== null){
+        if(employee.employees !== null){
             setDisableBtn(true)
         }
         api.get(`/users${getQueryString(queries)}`)
            .then(response => {
-                if(props.employee.employees !== null){
+                if(employee.employees !== null){
                     setDisableBtn(false)
                     setEmployeefilterModalShown(false)
                 }
-                props.dispatchEmployee({type: actionType, payload: {
+                dispatchEmployee({type: actionType, payload: {
                     employees: response.data.users,
                     filters: response.data.filters,
                 }})
                 setEmployeeFilters(getResFilters(EMPLOYEE_FILTER_KEY))
            })
            .catch(error => {
-                if(props.employee.employees !== null){
+                if(employee.employees !== null){
                     setDisableBtn(false)
                     setEmployeefilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [employeeFilters, props.employee])
+    }, [employeeFilters, employee, dispatchEmployee])
 
     const getEmployeeStores = useCallback(() => {
         api.get(`/users/employee-stores`)
@@ -148,13 +138,137 @@ function UserPage(props){
                 break;
             case 'employee':
                 heading = 'Create New Employee'
-                break;                
+                break;   
+            default: heading = '';             
         }
         setTargetRole(role)
         setCrtModalHeading(heading)
         setCrtModalShown(true)
     }, [])
 
+    const storeUser = useCallback(() => {
+        const data = {role: targetRole, name: name, email: email}
+        let dispatchFunction = null
+        let reducerAction = ''
+
+        switch(targetRole){
+            case 'owner':
+                reducerAction = OWNER_ACTIONS.PREPEND;
+                dispatchFunction = dispatchOwner
+                break;
+            case 'employee':
+                reducerAction = EMPLOYEE_ACTIONS.PREPEND;
+                dispatchFunction = dispatchEmployee                
+                data.store_id = storeId ? storeId : (
+                    stores.length ? stores[0].id : ''
+                );
+                break;    
+            default: reducerAction = '';    
+        }
+        setDisableBtn(true)
+        api.post('/users', data)
+            .then(response => {
+                setDisableBtn(false)
+                setCrtModalShown(false)           
+                dispatchFunction({
+                    type: reducerAction, 
+                    payload: {[`${targetRole}s`]: response.data.user}
+                })
+            })
+            .catch(error => {
+                setDisableBtn(false)
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                      
+                }})           
+            })  
+    }, [targetRole, name, email, storeId, stores, dispatchOwner, dispatchEmployee])
+
+    const editUser = useCallback((role, index) => {
+        let user = null
+        let heading = ''
+        let storeId = ''
+        let roleId = ''
+
+        switch(role){
+            case 'employee':
+                user = employee.employees[index]
+                storeId = user.storeEmployee.store_id
+                roleId = user.role_id
+                heading = 'Edit Employee'
+                break;   
+            default: heading = '';             
+        }
+        setUserIndex(index)
+        setTargetRole(role)
+        setRoleId(roleId)
+        setStoreId(storeId)
+        setUpdModalHeading(heading)
+        setUpdModalShown(true)
+    }, [employee])
+
+    const updateUser = useCallback(() => {
+        let data = {role: targetRole}
+        let userId = ''
+        switch(targetRole){
+            case 'employee':
+                userId = employee.employees[userIndex].id;
+                data.role_id = roleId;
+                data.store_id = storeId;
+                break;
+            default: userId = '';
+        }
+
+        setDisableBtn(true)
+        api.put(`/users/${userId}`, data)
+            .then(response => {
+                setDisableBtn(false)
+                setUpdModalShown(false)           
+            })
+            .catch(error => {
+                setDisableBtn(false)
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                      
+                }})           
+            })         
+    }, [targetRole, userIndex, roleId, storeId, employee])  
+
+    const confirmDeleteUser = useCallback((role, index) => {
+        setTargetRole(role)
+        setUserIndex(index)
+        setDltPopupShown(true)
+    }, [])
+
+    const deleteUser = useCallback(() => {
+        let dispatchFunction = null
+        let reducerAction = ''
+        let userId = ''
+        
+        switch(targetRole){
+            case 'employee':
+                userId = employee.employees[userIndex].id;
+                dispatchFunction = dispatchEmployee;
+                reducerAction = EMPLOYEE_ACTIONS.REMOVE;
+                break;
+            default: userId = '';
+        }        
+        api.delete(`/users/${userId}`)     
+            .then(response => {        
+                dispatchFunction({
+                    type: reducerAction, 
+                    payload: {indexes: userIndex}
+                })                
+            })
+            .catch(error => {
+                setDisableBtn(false)
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                      
+                }})               
+            })          
+    }, [employee, userIndex, targetRole, dispatchEmployee])    
+    
     const GenerateCrtUserForms = useCallback(() => {
         const body = [
             <TextInput label={'Name'} size={'md'} formAttr={{
@@ -181,69 +295,11 @@ function UserPage(props){
                         }}                       
                     />
                 )
-                break;                
+                break;  
+            default: body.push()              
         }
         return <Grid num_of_columns={1} items={body}/>
-    }, [name, targetRole, stores, storeId])
-
-    const storeUser = useCallback(() => {
-        const data = {role: targetRole, name: name, email: email}
-        let dispatchFuncName = null
-        let reducerAction = ''
-
-        switch(targetRole){
-            case 'owner':
-                reducerAction = OWNER_ACTIONS.PREPEND;
-                dispatchFuncName = 'dispatchOwner'
-                break;
-            case 'employee':
-                reducerAction = EMPLOYEE_ACTIONS.PREPEND;
-                dispatchFuncName = 'dispatchEmployee'                
-                data.store_id = storeId ? storeId : (
-                    stores.length ? stores[0].id : ''
-                );
-                break;        
-        }
-        setDisableBtn(true)
-        api.post('/users', data)
-            .then(response => {
-                setDisableBtn(false)
-                setCrtModalShown(false)           
-                props[dispatchFuncName]({
-                    type: reducerAction, 
-                    payload: {[`${targetRole}s`]: response.data.user}
-                })
-            })
-            .catch(error => {
-                setDisableBtn(false)
-                errorHandler(error, {'400': () => {
-                    setErrPopupShown(true)
-                    setErrPopupMsg(error.response.data.message)                      
-                }})           
-            })  
-    }, [targetRole, name, email, storeId, stores])
-
-    const editUser = useCallback((role, index) => {
-        let user = null
-        let heading = ''
-        let storeId = ''
-        let roleId = ''
-
-        switch(role){
-            case 'employee':
-                user = props.employee.employees[index]
-                storeId = user.storeEmployee.store_id
-                roleId = user.role_id
-                heading = 'Edit Employee'
-                break;                
-        }
-        setUserIndex(index)
-        setTargetRole(role)
-        setRoleId(roleId)
-        setStoreId(storeId)
-        setUpdModalHeading(heading)
-        setUpdModalShown(true)
-    }, [props.employee])
+    }, [name, targetRole, stores, storeId, email, storeUser])    
 
     const GenerateUpdUserForms = useCallback(() => {
         const body = [
@@ -266,75 +322,26 @@ function UserPage(props){
                 }}                       
             />               
         ]        
-        switch(targetRole){
-            case 'employee':
-                break;                
-        }
         return <Grid num_of_columns={1} items={body}/>
-    }, [roles, roleId, stores, storeId])    
+    }, [roles, roleId, stores, storeId, targetRole])    
 
-    const updateUser = useCallback(() => {
-        let data = {role: targetRole}
-        let userId = ''
-        switch(targetRole){
-            case 'employee':
-                userId = props.employee.employees[userIndex].id;
-                data.role_id = roleId;
-                data.store_id = storeId;
-                break;
+    useEffect(() => {
+        if(owner.owners === null){
+            getOwners(OWNER_ACTIONS.RESET)
         }
-
-        setDisableBtn(true)
-        api.put(`/users/${userId}`, data)
-            .then(response => {
-                setDisableBtn(false)
-                setUpdModalShown(false)           
-            })
-            .catch(error => {
-                setDisableBtn(false)
-                errorHandler(error, {'400': () => {
-                    setErrPopupShown(true)
-                    setErrPopupMsg(error.response.data.message)                      
-                }})           
-            })         
-    }, [targetRole, userIndex, roleId, storeId, props.employee])
-
-    const confirmDeleteUser = useCallback((role, index) => {
-        setTargetRole(role)
-        setUserIndex(index)
-        setDltPopupShown(true)
-    }, [])
-
-    const deleteUser = useCallback(() => {
-        let dispatchFuncName = null
-        let reducerAction = ''
-        let userId = ''
-        
-        switch(targetRole){
-            case 'employee':
-                userId = props.employee.employees[userIndex].id;
-                dispatchFuncName = 'dispatchEmployee';
-                reducerAction = EMPLOYEE_ACTIONS.REMOVE;
-                break;
-        }        
-        api.delete(`/users/${userId}`)     
-            .then(response => {        
-                props[dispatchFuncName]({
-                    type: reducerAction, 
-                    payload: {indexes: userIndex}
-                })                
-            })
-            .catch(error => {
-                setDisableBtn(false)
-                errorHandler(error, {'400': () => {
-                    setErrPopupShown(true)
-                    setErrPopupMsg(error.response.data.message)                      
-                }})               
-            })          
-    }, [props.employee, userIndex])
+        if(employee.employees === null){
+            getEmployees(EMPLOYEE_ACTIONS.RESET)
+        }   
+        if(stores === null){
+            getEmployeeStores()
+        }
+        if(roles === null){
+            getUserRoles()
+        }          
+    }, [owner, employee, roles, stores, getOwners, getEmployees, getEmployeeStores, getUserRoles])    
 
     if(
-        props.owner.owners === null || props.employee.employees === null ||
+        owner.owners === null || employee.employees === null ||
         stores === null || roles === null
     ){
         return 'Loading...'
@@ -445,7 +452,8 @@ const GenerateUsers = ({appProps, role, getUsers, toggleCrtUser, toggleEdtUser, 
             ]));
             loadMoreBtnVis = appProps.employee.canLoadMore
             loadMoreBtnAction = () => {getUsers(EMPLOYEE_ACTIONS.APPEND)}            
-            break;            
+            break; 
+        default: addBtnText = '';           
     }
     return (
         <Grid num_of_columns={1} items={[
