@@ -20,6 +20,7 @@ import InventoryPage from './components/pages/InventoryPage'
 import StorePage from './components/pages/StorePage'
 import IndexStoreInventoryPage from './components/pages/store_inventory/IndexStoreInventoryPage'
 import CreateStoreInventoryPage from './components/pages/store_inventory/CreateStoreInventoryPage'
+import IndexStoreTransactionPage from './components/pages/store_transaction/IndexStoreTransactionPage'
 import UserPage from './components/pages/UserPage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
@@ -55,6 +56,9 @@ function App(){
         store_inventory: {
             icon: 'gen017', text: 'Store Inventories', link: 'store-inventories'
         },
+        store_transaction: {
+            icon: 'cart', text: 'Store Transactions', link: 'store-transactions'
+        },        
         user: {
             icon: 'group', text: 'Users', link: 'users'
         },         
@@ -76,7 +80,10 @@ function App(){
                             const userRole = user.role.name.toLowerCase()
                             switch(userRole){
                                 case 'owner': 
-                                    sidebarItemNames = ['dashboard','inventory','store','store_inventory','user'];
+                                    sidebarItemNames = [
+                                        'dashboard','inventory','store','store_inventory','store_transaction',
+                                        'user'
+                                    ];
                                     break;
 
                                 case 'employee':
@@ -106,11 +113,13 @@ function App(){
                         <ProtectedRoute path={'/store-inventories/create'} exact component={CreateStoreInventoryPage}
                             user={user} storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
                         /> 
+                        <ProtectedRoute path={'/store-transactions'} exact component={IndexStoreTransactionPage}
+                            user={user} storeTrnsc={storeTrnsc} dispatchStoreTrnsc={dispatchStoreTrnsc}
+                        />                          
                         <ProtectedRoute path={'/users'} exact component={UserPage}
                             user={user} owner={owner} dispatchOwner={dispatchOwner} employee={employee} 
                             dispatchEmployee={dispatchEmployee}
                         />                                                                                            
-                        
                         <Route path={'*'} component={NotFoundPage}/>
                     </Switch>                    
                 </div>      

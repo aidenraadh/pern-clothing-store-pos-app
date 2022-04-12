@@ -10,14 +10,26 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.StoreTransactionInventory.belongsTo(
+        models.Inventory, {foreignKey: 'inventory_id', as: 'inventory'}
+      ),
+      models.StoreTransactionInventory.belongsTo(
+        models.InventorySize, {foreignKey: 'inventory_size_id', as: 'size'}
+      )      
     }
   };
   StoreTransactionInventory.init({
-    name: DataTypes.STRING
+    store_transaction_id: DataTypes.BIGINT,
+    inventory_id: DataTypes.BIGINT,
+    inventory_size_id: DataTypes.BIGINT,
+    amount: DataTypes.INTEGER,
+    cost: DataTypes.INTEGER,
+    original_cost: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'StoreTransactionInventory',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',     
   });
   return StoreTransactionInventory;
 };
