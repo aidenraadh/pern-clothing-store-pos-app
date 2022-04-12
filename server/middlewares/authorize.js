@@ -1,14 +1,14 @@
 const Store  = require('../models/index').Store
 
-const authorize = (roles) => {
+const authorize = (...roles) => {
     return async (req, res, next) => {
         try {
-            if(roles === 'all'){
-                return next() 
-            }
             const userRole = req.user.role.name.toLowerCase()
             roles = roles.map(role => role.toLowerCase())
 
+            if(roles.length === 1 && roles[0] === 'all'){
+                return next() 
+            }
             // Make sure the user's role exists in the authorized roles
             if(!roles.includes(userRole)){
                 return res.status(401).send('Unauthorized. This user is not authorized to any of the roles.')

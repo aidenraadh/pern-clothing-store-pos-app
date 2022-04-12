@@ -20,14 +20,13 @@ const Role      = models.Role
 const Owner = models.Owner
 const User = models.User
 
-rootRouter.get('/test', async (req, res) => {
-    const sum = [1,2,3].reduce(add, 0); // with initial value to avoid when the array is empty
+const haha = (...items) => {
+    items = items.map(item => item.toLowerCase())
+    console.log(items)
+}
 
-    function add(accumulator, a) {
-      return accumulator + a;
-    }
-    
-    console.log(sum); // 6
+rootRouter.get('/test', async (req, res) => {
+    haha('ASD', 'QWE', 'ZXC')
     return res.send({message: 'asd'})
 })
 
@@ -38,74 +37,74 @@ rootRouter.post('/login', [
     isNotAuth, authController.login
 ])
 rootRouter.get('/users', [
-    isAuth, authorize(['owner']), userController.index
+    isAuth, authorize('owner'), userController.index
 ])
 rootRouter.post('/users', [
-    isAuth, authorize(['owner']), userController.store
+    isAuth, authorize('owner'), userController.store
 ])
 
 rootRouter.put('/users/:id', [
-    isAuth, authorize(['owner']), userController.update
+    isAuth, authorize('owner'), userController.update
 ])
 
 rootRouter.delete('/users/:id', [
-    isAuth, authorize(['owner']), userController.delete
+    isAuth, authorize('owner'), userController.delete
 ])
 
 rootRouter.get('/users/employee-stores', [
-    isAuth, authorize(['owner']), userController.getEmployeeStores
+    isAuth, authorize('owner'), userController.getEmployeeStores
 ])
 
 rootRouter.get('/users/user-roles', [
-    isAuth, authorize(['owner']), userController.getUserRoles
+    isAuth, authorize('owner'), userController.getUserRoles
 ])
 
 rootRouter.get('/stores', [
-    isAuth, authorize(['owner']), storeController.index
+    isAuth, authorize('owner'), storeController.index
 ])
 
 rootRouter.post('/stores', [
-    isAuth, authorize(['owner']), storeController.store
+    isAuth, authorize('owner'), storeController.store
 ])
 
 rootRouter.put('/stores/:id', [
-    isAuth, authorize(['owner']), storeController.update
+    isAuth, authorize('owner'), storeController.update
 ])
 
 rootRouter.delete('/stores/:id', [
-    isAuth, authorize(['owner']), storeController.destroy
+    isAuth, authorize('owner'), storeController.destroy
 ])
 
 rootRouter.get('/inventories', [
-    isAuth, authorize(['owner']), inventoryController.index
+    isAuth, authorize('owner'), inventoryController.index
 ])
 
 rootRouter.post('/inventories', [
-    isAuth, authorize(['owner']), inventoryController.store
+    isAuth, authorize('owner'), inventoryController.store
 ])
 
 rootRouter.put('/inventories/:id', [
-    isAuth, authorize(['owner']), inventoryController.update
+    isAuth, authorize('owner'), inventoryController.update
 ])
 
 rootRouter.delete('/inventories/:id', [
-    isAuth, authorize(['owner']), inventoryController.destroy
+    isAuth, authorize('owner'), inventoryController.destroy
 ])
 
 rootRouter.get('/store-inventories', [
-    isAuth, authorize('all'), storeInventoryController.index
+    isAuth, authorize('owner', 'employee'), storeInventoryController.index
 ])
 
 rootRouter.post('/store-inventories', [
-    isAuth, authorize(['owner']), storeInventoryController.store
+    isAuth, authorize('owner'), storeInventoryController.store
 ])
 
 rootRouter.put('/store-inventories/:id', [
-    isAuth, authorize(['owner']), storeInventoryController.update
+    isAuth, authorize('owner'), storeInventoryController.update
 ])
 
 rootRouter.delete('/store-inventories/:id', [
-    isAuth, authorize(['owner']), storeInventoryController.destroy
+    isAuth, authorize('owner'), storeInventoryController.destroy
 ])
 
 rootRouter.get('/store-transactions', [
