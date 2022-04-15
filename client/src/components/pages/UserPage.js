@@ -269,7 +269,7 @@ function UserPage(props){
             })          
     }, [employee, userIndex, targetRole, dispatchEmployee])    
     
-    const GenerateCrtUserForms = useMemo(() => {
+    const CreateUserForms = useMemo(() => {
         const body = [
             <TextInput label={'Name'} size={'md'} formAttr={{
                 value: name,
@@ -301,7 +301,7 @@ function UserPage(props){
         return <Grid num_of_columns={1} items={body}/>
     }, [name, targetRole, stores, storeId, email, storeUser])    
 
-    const GenerateUpdUserForms = useMemo(() => {
+    const UpdateUserForms = useMemo(() => {
         const body = [
             <Select size={'md'} label={'Role'}
                 options={roles === null ? [] : roles.map(role => ({
@@ -325,20 +325,25 @@ function UserPage(props){
         return <Grid num_of_columns={1} items={body}/>
     }, [roles, roleId, stores, storeId, targetRole])    
 
+    // Get owners if its not set yet
     useEffect(() => {
-        if(owner.owners === null){
-            getOwners(OWNER_ACTIONS.RESET)
-        }
-        if(employee.employees === null){
-            getEmployees(EMPLOYEE_ACTIONS.RESET)
-        }   
-        if(stores === null){
-            getEmployeeStores()
-        }
-        if(roles === null){
-            getUserRoles()
-        }          
-    }, [owner, employee, roles, stores, getOwners, getEmployees, getEmployeeStores, getUserRoles])    
+        if(owner.owners === null){ getOwners(OWNER_ACTIONS.RESET) }      
+    }, [owner, getOwners])    
+
+    // Get employees if its not set yet
+    useEffect(() => {
+        if(employee.employees === null){ getEmployees(EMPLOYEE_ACTIONS.RESET) }           
+    }, [employee, getEmployees])       
+
+    // Get stores if its not set yet
+    useEffect(() => {
+        if(stores === null){ getEmployeeStores() }        
+    }, [stores, getEmployeeStores])       
+
+    // Get roles if its not set yet
+    useEffect(() => {
+        if(roles === null){ getUserRoles() }          
+    }, [roles, getUserRoles])        
 
     if(owner.owners === null || employee.employees === null){
         return 'Loading...'
@@ -348,12 +353,12 @@ function UserPage(props){
     <TabbedCard
         tabs={[ 
             {link: 'Owner', panelID: 'owner', panelContent:
-                <GenerateUsers appProps={props} role={'owner'} 
+                <UsersTable appProps={props} role={'owner'} 
                     getUsers={getOwners} toggleCrtUser={createUser}
                 />
             },
             {link: 'Employee', panelID: 'employee', panelContent:
-                <GenerateUsers appProps={props} role={'employee'} 
+                <UsersTable appProps={props} role={'employee'} 
                     getUsers={getEmployees} toggleCrtUser={createUser} 
                     toggleEdtUser={editUser} toggleDltUser={confirmDeleteUser}
                 />
@@ -363,7 +368,7 @@ function UserPage(props){
     />    
     <Modal
         heading={crtModalHeading}
-        body={GenerateCrtUserForms}
+        body={CreateUserForms}
         shown={crtModalShown}
         footer={
             <Button text={'Save change'} size={'sm'} attr={{
@@ -375,7 +380,7 @@ function UserPage(props){
     />           
     <Modal
         heading={updModalHeading}
-        body={GenerateUpdUserForms}
+        body={UpdateUserForms}
         shown={updModalShown}
         footer={
             <Button text={'Save change'} size={'sm'} attr={{
@@ -406,7 +411,7 @@ function UserPage(props){
     </>)
 }
 
-const GenerateUsers = ({appProps, role, getUsers, toggleCrtUser, toggleEdtUser, toggleDltUser}) => {
+const UsersTable = ({appProps, role, getUsers, toggleCrtUser, toggleEdtUser, toggleDltUser}) => {
     let addBtnText = ''
     let tableHeadings = ['Name']
     let tableBody = []

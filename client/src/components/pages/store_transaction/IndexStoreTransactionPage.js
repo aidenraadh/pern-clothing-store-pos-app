@@ -1,13 +1,13 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
 import {STORETRNSC_FILTER_KEY, STORETRNSC_ACTIONS} from '../../reducers/StoreTransactionReducer.js'
-import {api, errorHandler, formatNum, getResFilters, getQueryString, keyHandler} from '../../Utils.js'
+import {api, errorHandler, formatNum, getResFilters, getQueryString} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
-import {TextInput, Select} from '../../Forms'
+import {Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
-import {Modal, ConfirmPopup} from '../../Windows'
-import { format, compareAsc } from 'date-fns'
+import {Modal} from '../../Windows'
+import {format} from 'date-fns'
 
 
 function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
@@ -78,7 +78,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         </section>
         <PlainCard
             body={<>
-                <GenerateStoreTrnscs
+                <StoreTrnscsTable
                     storeTrnscs={storeTrnsc.storeTrnscs}
                     viewHandler={viewStoreTrnsc}
                 />
@@ -149,7 +149,7 @@ const filterReducer = (state, action) => {
     }
 }
 
-const GenerateStoreTrnscs = ({storeTrnscs, viewHandler}) => {
+const StoreTrnscsTable = ({storeTrnscs, viewHandler}) => {
     return <Table
         headings={['Store', 'Total Amount', 'Total Cost', 'Transaction Date', 'Actions']}
         body={storeTrnscs.map((storeTrnsc, index) => ([

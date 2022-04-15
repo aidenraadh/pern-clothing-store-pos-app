@@ -185,7 +185,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
                             }}
                         />                                       
                     </div>,
-                    <GenerateInventories 
+                    <InventoryList 
                         inventories={inventory.inventories} 
                         editInventory={editInventory}
                         confirmDeleteInventory={confirmDeleteInventory}
@@ -344,7 +344,7 @@ const sizesReducer = (state, action) => {
     }
 }
 
-const GenerateInventories = ({inventories, editInventory, confirmDeleteInventory}) => {
+const InventoryList = ({inventories, editInventory, confirmDeleteInventory}) => {
     return (<>
         <div className="inventories-container">
             {inventories.map((inventory, key) => (

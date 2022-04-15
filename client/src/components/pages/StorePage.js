@@ -169,12 +169,11 @@ function StorePage({store, dispatchStore, user}){
                         }} 
                     />   
                     <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
-                            style: {flexShrink: '0'},
-                            onClick: () => {getStores(STORE_ACTIONS.RESET)}
-                        }}
-                    />                                       
+                        style: {flexShrink: '0'},
+                        onClick: () => {getStores(STORE_ACTIONS.RESET)}
+                    }}/>                                       
                 </div>            
-                <GenerateStores 
+                <StoresList 
                     stores={store.stores} 
                     editStore={editStore}
                     confirmDeleteStore={confirmDeleteStore}
@@ -278,7 +277,7 @@ const filterReducer = (state, action) => {
     }
 }
 
-const GenerateStores = ({stores, editStore, confirmDeleteStore}) => {
+const StoresList = ({stores, editStore, confirmDeleteStore}) => {
     return (<>
         <div className="inventories-container">
             {stores.map((store, key) => (

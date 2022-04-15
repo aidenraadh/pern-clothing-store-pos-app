@@ -155,7 +155,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                         }}
                     />                                       
                 </div>
-                <GenerateStoreInv 
+                <StoreInvs 
                     storeInvs={storeInv.storeInvs} 
                     viewStoreInv={viewStoreInv}
                 />
@@ -293,7 +293,7 @@ const filterReducer = (state, action) => {
     }
 }
 
-const GenerateStoreInv = ({storeInvs, viewStoreInv}) => {
+const StoreInvs = ({storeInvs, viewStoreInv}) => {
     return (<>
         <div className="inventories-container">
             <Table

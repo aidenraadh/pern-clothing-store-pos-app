@@ -1,4 +1,4 @@
-import {useState, useEffect, useReducer, useCallback} from 'react'
+import {useState, useEffect, useReducer, useCallback, useMemo} from 'react'
 import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, SelectAddon} from '../../Forms'
@@ -71,6 +71,53 @@ function CreateStoreInventoryPage(){
            })          
     }, [storeId, addedInvs])
 
+    const AddedInvToolCards = useMemo(() => {
+        return addedInvs.map((inventory, key) => (
+            <ToolCard key={key} heading={inventory.name} expand={inventory.toolCardExpand}
+                body={inventory.sizes.length ? 
+                <Grid num_of_columns={4} 
+                    items={inventory.sizes.map((size, sizeKey) => (
+                        <TextInput key={sizeKey} label={`Amount ${size.name}`} size={'sm'} formAttr={{
+                            value: formatNum(size.amount),
+                            onChange: (e) => {
+                                dispatchAddedInvs({
+                                    type: 'update', payload: {
+                                        index: key, sizeIndex: sizeKey, amount: formatNum(
+                                            e.target.value, true
+                                        )
+                                    }
+                                })
+                            }
+                        }}/>
+                    ))}
+                /> : 'No sizes found'}           
+                toggleButton={
+                    <Button
+                        size={'sm'} type={'light'} color={'blue'}                
+                        iconName={'angle_up'} iconOnly={true}
+                        classes={'toggle-btn'}
+                        attr={{
+                            onClick: () => {dispatchAddedInvs({type: 'update', payload: {
+                                index: key, toolCardExpand: ''
+                            }})}
+                        }}
+                    />
+                }
+                rightSideActions={
+                    <Button
+                        size={'sm'} type={'light'} color={'red'}  
+                        iconName={'close'} iconOnly={true}   
+                        attr={{
+                            onClick: () => {dispatchAddedInvs({type: 'remove', payload: {
+                                index: key
+                            }})}
+                        }}                                     
+                    />
+                }
+            />
+        ))        
+    }, [addedInvs, dispatchAddedInvs])
+
     useEffect(() => {
         if(stores === null){ getStores() }
     }, [stores, getStores])       
@@ -80,73 +127,23 @@ function CreateStoreInventoryPage(){
         return 'Loading...'
     }     
     return (<>
-        <Grid num_of_columns={1} items={(() => {
-            const items = addedInvs.map((inventory, key) => (
-                <ToolCard key={key} heading={inventory.name} expand={inventory.toolCardExpand}
-                    body={inventory.sizes.length ? 
-                    <Grid num_of_columns={4} 
-                        items={inventory.sizes.map((size, sizeKey) => (
-                            <TextInput key={sizeKey} label={`Amount ${size.name}`} size={'sm'} formAttr={{
-                                value: formatNum(size.amount),
-                                onChange: (e) => {
-                                    dispatchAddedInvs({
-                                        type: 'update', payload: {
-                                            index: key, sizeIndex: sizeKey, amount: formatNum(
-                                                e.target.value, true
-                                            )
-                                        }
-                                    })
-                                }
-                            }}/>
-                        ))}
-                    /> : 'No sizes found'}           
-                    toggleButton={<Button
-                        size={'sm'} type={'light'} color={'blue'}                
-                        iconName={'angle_up'} iconOnly={true}
-                        classes={'toggle-btn'}
-                        attr={{
-                            onClick: () => {dispatchAddedInvs({type: 'update', payload: {
-                                index: key, toolCardExpand: ''
-                            }})}
-                        }}
-                    />}
-                    rightSideActions={<Button
-                        size={'sm'} type={'light'} color={'red'}  
-                        iconName={'close'} iconOnly={true}   
-                        attr={{
-                            onClick: () => {dispatchAddedInvs({type: 'remove', payload: {
-                                index: key
-                            }})}
-                        }}                                     
-                    />}
-                />
-            ))
-            // Add select store form at the beginning
-            items.unshift(
-                <SelectAddon key={'x'} addon={'Select store'}
-                    options={stores.map(store => ({
-                        value: store.id, text: store.name
-                    }))}
-                    formAttr={{onChange: (e) => { setStoreId(e.target.value) }}}
-                />                
-            )
-            // Add select inventory btn at the end
-            items.push(
-                <button key={'y'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
-                onClick={() => {setModalShown(true)}}>
-                    + Add Inventory
-                </button>                       
-            )
-            items.push(    
-                <div key={'s'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>,                      
-            )
-            items.push(
-                <Button key={'z'} size={'md'} text={'Store inventories'} attr={{
-                    onClick: storeInvs
-                }} />                         
-            )                        
-            return items
-        })()}/>    
+        <Grid num_of_columns={1} items={[
+            <SelectAddon key={'a'} addon={'Select store'}
+                options={stores.map(store => ({
+                    value: store.id, text: store.name
+                }))}
+                formAttr={{onChange: (e) => { setStoreId(e.target.value) }}}
+            />,
+            ...AddedInvToolCards,
+            <button key={'b'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
+            onClick={() => {setModalShown(true)}}>
+                + Add Inventory
+            </button>,
+            <div key={'c'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>,  
+            <Button key={'d'} size={'md'} text={'Store inventories'} attr={{
+                onClick: storeInvs
+            }}/>              
+        ]}/> 
         <Modal
             heading={'Search Inventories'}
             body={<>
