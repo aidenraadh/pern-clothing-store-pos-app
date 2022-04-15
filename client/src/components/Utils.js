@@ -95,59 +95,6 @@ export function parseIfInt(value){
 	return int;
 }
 
-export function formatTime(time, utc = false, with_time = false){
-	let date = null;
-	if(typeof time === 'object'){
-		date = time;
-	}
-	else{
-		time = time.replace(' ', 'T');
-		if(utc) time += 'Z';
-	
-		date = new Date(time);
-	}
-
-	const formatted_time = (with_time ? ' '+
-		(date.getHours() < 10 ? '0'+date.getHours() : date.getHours())+':'+
-		(date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes())+':'+
-		(date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds()) :
-		''
-	);
-	
-	return (
-		date.getFullYear()+'-'+
-		(date.getMonth() + 1 < 10 ? '0'+(date.getMonth()+1) : (date.getMonth()+1))+'-'+
-		(date.getDate() < 10 ? '0'+date.getDate() : date.getDate())+
-		formatted_time
-	);
-}
-
-export function prettyTime(time, utc = false, with_time = false){
-	time = time.replace(' ', 'T');
-	if(utc) time += 'Z';	
-
-	const date = new Date(time);
-	
-	const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-	const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
-		"Jul", "Agu", "Sep", "Okt", "Nov", "Des"
-	];
-
-	const formatted_time = (with_time ? ' '+
-		(date.getHours() < 10 ? '0'+date.getHours() : date.getHours())+':'+
-		(date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes())
-		: ''
-	);
-	
-	return (
-		days[ date.getDay() ]+', '+
-		(date.getDate() < 10 ? '0'+date.getDate() : date.getDate())+' '+
-		months[ date.getMonth() ]+' '+
-		date.getFullYear().toString().substr(2)+' '+
-		formatted_time
-	);
-}
-
 export function formatNum(num, sanitizeOnly = false){
 	// Return empty string if a number is not numeric
 	if(num !== 0 && !num){
@@ -175,14 +122,6 @@ export function formatNum(num, sanitizeOnly = false){
 	}
 	// Convert array to string.
 	return num.join('');
-}
-
-export function serializeObj(obj){
-	let key_values = [];
-	for(let key in obj){
-		key_values.push(key+'='+obj[key]);
-	}
-	return key_values.join('&');
 }
 
 export function getBaseName(file_url){

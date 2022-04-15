@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react'
+import {useState, useEffect, useCallback, useMemo} from 'react'
 import {OWNER_ACTIONS, OWNER_FILTER_KEY} from '../reducers/OwnerReducer'
 import {EMPLOYEE_ACTIONS, EMPLOYEE_FILTER_KEY} from '../reducers/EmployeeReducer'
 import {api, errorHandler, getResFilters, getQueryString, keyHandler} from '../Utils.js'
@@ -269,7 +269,7 @@ function UserPage(props){
             })          
     }, [employee, userIndex, targetRole, dispatchEmployee])    
     
-    const GenerateCrtUserForms = useCallback(() => {
+    const GenerateCrtUserForms = useMemo(() => {
         const body = [
             <TextInput label={'Name'} size={'md'} formAttr={{
                 value: name,
@@ -286,7 +286,7 @@ function UserPage(props){
             case 'employee':
                 body.push(
                     <Select size={'md'} label={'Store'}
-                        options={stores.map(store => ({
+                        options={stores === null ? [] : stores.map(store => ({
                             value: store.id, text: store.name,
                         }))}
                         formAttr={{
@@ -301,10 +301,10 @@ function UserPage(props){
         return <Grid num_of_columns={1} items={body}/>
     }, [name, targetRole, stores, storeId, email, storeUser])    
 
-    const GenerateUpdUserForms = useCallback(() => {
+    const GenerateUpdUserForms = useMemo(() => {
         const body = [
             <Select size={'md'} label={'Role'}
-                options={roles.map(role => ({
+                options={roles === null ? [] : roles.map(role => ({
                     value: role.id, text: role.name,
                 }))}
                 formAttr={{
@@ -313,7 +313,7 @@ function UserPage(props){
                 }}                       
             />,
             <Select size={'md'} label={'Store'}
-                options={stores.map(store => ({
+                options={stores === null ? [] : stores.map(store => ({
                     value: store.id, text: store.name,
                 }))}
                 formAttr={{
@@ -340,10 +340,7 @@ function UserPage(props){
         }          
     }, [owner, employee, roles, stores, getOwners, getEmployees, getEmployeeStores, getUserRoles])    
 
-    if(
-        owner.owners === null || employee.employees === null ||
-        stores === null || roles === null
-    ){
+    if(owner.owners === null || employee.employees === null){
         return 'Loading...'
     }
 
@@ -366,7 +363,7 @@ function UserPage(props){
     />    
     <Modal
         heading={crtModalHeading}
-        body={GenerateCrtUserForms()}
+        body={GenerateCrtUserForms}
         shown={crtModalShown}
         footer={
             <Button text={'Save change'} size={'sm'} attr={{
@@ -375,22 +372,10 @@ function UserPage(props){
             }}/>
         }
         toggleModal={() => {setCrtModalShown(state => !state)}}
-    />     
-    <Modal
-        heading={crtModalHeading}
-        body={GenerateCrtUserForms()}
-        shown={crtModalShown}
-        footer={
-            <Button text={'Save change'} size={'sm'} attr={{
-                disabled: disableBtn,
-                onClick: () => {storeUser()}
-            }}/>
-        }
-        toggleModal={() => {setCrtModalShown(state => !state)}}
-    />       
+    />           
     <Modal
         heading={updModalHeading}
-        body={GenerateUpdUserForms()}
+        body={GenerateUpdUserForms}
         shown={updModalShown}
         footer={
             <Button text={'Save change'} size={'sm'} attr={{

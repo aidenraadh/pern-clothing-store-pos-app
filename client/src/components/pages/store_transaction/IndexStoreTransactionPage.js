@@ -6,6 +6,8 @@ import Table from '../../Table'
 import {TextInput, Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
 import {Modal, ConfirmPopup} from '../../Windows'
+import { format, compareAsc } from 'date-fns'
+
 
 function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
     const [disableBtn , setDisableBtn] = useState(false)  
@@ -87,11 +89,11 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                     headings={['Inventory', 'Size', 'Amount', 'Cost per Item', 'Total Cost', 'Original Cost']}
                     body={targetStoreTrnsc.storeTrnscInvs.map(storeTrnscInv => ([
                         storeTrnscInv.inventory.name,
-                        storeTrnscInv.size.id,
+                        storeTrnscInv.size.name,
                         formatNum(storeTrnscInv.amount),
-                        formatNum(storeTrnscInv.original_cost/storeTrnscInv.amount),
-                        formatNum(storeTrnscInv.cost),
-                        formatNum(storeTrnscInv.original_cost),
+                        'Rp. '+formatNum(storeTrnscInv.original_cost/storeTrnscInv.amount),
+                        'Rp. '+formatNum(storeTrnscInv.cost),
+                        'Rp. '+formatNum(storeTrnscInv.original_cost),
                     ]))}
                 />
             })()}        
@@ -143,9 +145,10 @@ const GenerateStoreTrnscs = ({storeTrnscs, viewHandler}) => {
     return <Table
         headings={['Store', 'Total Amount', 'Total Cost', 'Transaction Date', 'Actions']}
         body={storeTrnscs.map((storeTrnsc, index) => ([
-            storeTrnsc.store.name, formatNum(storeTrnsc.total_amount), 
-            formatNum(storeTrnsc.total_cost),
-            storeTrnsc.transaction_date, 
+            storeTrnsc.store.name, 
+            formatNum(storeTrnsc.total_amount), 
+            'Rp. '+formatNum(storeTrnsc.total_cost),
+            format(new Date(storeTrnsc.transaction_date), 'eee, dd-MM-yyyy'),
             <Button size={'sm'} text={'View'} attr={{
                 onClick: () => {viewHandler(index)}
             }} />
