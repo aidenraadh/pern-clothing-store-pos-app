@@ -43,6 +43,7 @@ exports.index = async (req, res) => {
                 if(userRole === 'employee'){ where.store_id = req.user.storeEmployee.store_id }
                 return where
             })(),
+            attributes: ['id', 'total_amount', 'created_at'],
             include: [
                 {
                     model: StoreInventorySize, as: 'sizes', 
@@ -93,6 +94,7 @@ exports.index = async (req, res) => {
 
 exports.store = async (req, res) => {    
     try {
+        const userRole = req.user.role.name.toLowerCase()
         // Validate the input
         const {values, errMsg} = await validateInput(req, filterKeys(
             req.body, ['store_id', 'stored_invs']
@@ -124,6 +126,7 @@ exports.store = async (req, res) => {
 
         storeInvs = await StoreInventory.findAll({
             where: {id: storeInvs.map(storeInv => storeInv.id)},
+            attributes: ['id', 'total_amount', 'created_at'],
             include: [
                 {
                     model: StoreInventorySize, as: 'sizes', 
@@ -140,7 +143,12 @@ exports.store = async (req, res) => {
                     where: {owner_id: req.user.owner_id},
                     include: [{
                         model: InventorySize, as: 'sizes', 
-                        attributes: ['id', 'name', 'production_price', 'selling_price']                        
+                        attributes: (() => {
+                            const attr = ['id', 'name', 'selling_price']
+                            // When user is owner, get also the production price
+                            if(userRole === 'owner'){ attr.push('production_price') }
+                            return attr
+                        })()                       
                     }]
                 },                          
             ],        
@@ -159,6 +167,7 @@ exports.store = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
+        const userRole = req.user.role.name.toLowerCase()
         // Get the store inventory
         let storeInv = await isStoreInventoryExist(req.params.id, req.user.owner_id)
         // Make sure the inventory stored is exists
@@ -239,6 +248,7 @@ exports.update = async (req, res) => {
         )          
         storeInv = await StoreInventory.findOne({
             where: {id: req.params.id},
+            attributes: ['id', 'total_amount', 'created_at'],
             include: [
                 {
                     model: StoreInventorySize, as: 'sizes', 
@@ -253,11 +263,15 @@ exports.update = async (req, res) => {
                     attributes: ['id', 'name'],
                     include: [{
                         model: InventorySize, as: 'sizes', 
-                        attributes: ['id', 'name', 'production_price', 'selling_price']                        
+                        attributes: (() => {
+                            const attr = ['id', 'name', 'selling_price']
+                            // When user is owner, get also the production price
+                            if(userRole === 'owner'){ attr.push('production_price') }
+                            return attr
+                        })()                       
                     }]
                 },                          
             ],        
-            order: [['created_at', 'DESC']],
         })       
         res.send({
             storeInv: storeInv,

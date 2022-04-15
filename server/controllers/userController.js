@@ -237,6 +237,54 @@ exports.getUserRoles = async (req, res) => {
     }
 }
 
+exports.updateProfile = async (req, res) => {    
+    try{
+        // Validate the input
+        const {values, errMsg} = await validateInput(req, filterKeys(
+            req.body, ['name', 'old_password', 'new_password']
+        )) 
+        if(errMsg){
+            return res.status(400).send({message: errMsg})
+        }
+        // Update the profile
+        const data = {name: values.name}
+        if(values.new_password !== ''){ data.password = values.new_password }
+        await User.update(data, {where: {id: req.user.id}})
+        // Get the new profile
+        const user = await User.findOne({
+            where: {id: req.user.id},
+            include: (() => {
+                let include = [
+                    // Get the user's role
+                    {
+                        model: Role, as: 'role',  attributes: ['name'],
+                    }, 
+                ]
+                // Get the user's store employee if the queried user is employee
+                if(req.user.role.name.toLowerCase() === 'employee'){
+                    include.push({
+                        model: StoreEmployee, as: 'storeEmployee', 
+                        attributes: ['user_id', 'store_id'],
+                        include: [{
+                            model: Store, as: 'store', 
+                            attributes: ['name'],
+                        }]
+                    })
+                }
+                return include
+            })(),
+        })      
+        res.send({
+            user: user,
+            message: 'Success updating profile'
+        })        
+    }
+    catch(err){
+        logger.error(err.message)
+        res.status(500).send(err)
+    }
+}
+
 /**
  * 
  * @param {object} req - The request body
@@ -263,7 +311,7 @@ exports.getUserRoles = async (req, res) => {
                 'string.max': "The user's name must below 100 characters",
             }),       
             // Make sure the user's email is unique
-            email: Joi.string().required().email().trim().external(async (value, helpers) => {
+            email: Joi.string().required().trim().email().external(async (value, helpers) => {
                 const user = await User.findOne({
                     where: {email: {[Op.iLike]: `%${value}%`}}, 
                     attributes: ['id']
@@ -272,7 +320,31 @@ exports.getUserRoles = async (req, res) => {
                     throw {message: 'The email already taken'}
                 }
                 return value
-            }),          
+            }),       
+            // Make the user's old password match
+            old_password: Joi.string().required().trim().allow('', null).external(async (value, helpers) => {
+                if(value === ''){ return value }
+                if(!await bcrypt.compare(value, req.user.password)){
+                    throw {message: "The old password doesn't match"}
+                }                
+                return value
+            }),     
+            // Make the user's new password is different from old password
+            new_password: Joi.string().required().trim().allow('', null).external(async (value, helpers) => {
+                // If the password is not changed
+                if(value === '' && req.body.old_password === ''){ return value }
+                // If the password is empty but old password is not
+                if(value === '' && req.body.old_password !== ''){
+                    throw {message: "New password must be filled if the old password is filled"}
+                }              
+                if(value === req.body.old_password){
+                    throw {message: "The new password must be different"}
+                }                     
+                const hashedNewPassword = await bcrypt.hash(
+                    value, 10
+                )                           
+                return hashedNewPassword
+            }),                         
             // Make sure the updated role ID exists
             role_id: Joi.number().required().integer().external(async (value, helpers) => {
                 const role = await Role.findOne({where: {

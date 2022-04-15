@@ -1,6 +1,6 @@
 import {useState, useReducer} from "react";
 import ErrorBoundary from './components/ErrorBoundary'
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'
 
 import ProtectedRoute from './components/ProtectedRoute'
 import {isAuth, getUser} from './components/Auth'
@@ -21,7 +21,9 @@ import StorePage from './components/pages/StorePage'
 import IndexStoreInventoryPage from './components/pages/store_inventory/IndexStoreInventoryPage'
 import CreateStoreInventoryPage from './components/pages/store_inventory/CreateStoreInventoryPage'
 import IndexStoreTransactionPage from './components/pages/store_transaction/IndexStoreTransactionPage'
+import CreateStoreTransactionPage from './components/pages/store_transaction/CreateStoreTransactionPage'
 import UserPage from './components/pages/UserPage'
+import ProfilePage from './components/pages/ProfilePage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
 import './css/content.css';
@@ -48,10 +50,10 @@ function App(){
             icon: 'layers', text: 'Dashboard', link: ''
         },     
         inventory: {
-            icon: 'hanger', text: 'Inventory', link: 'inventories'
+            icon: 'hanger', text: 'Inventories', link: 'inventories'
         },
         store: {
-            icon: 'ecm004', text: 'Store', link: 'stores'
+            icon: 'ecm004', text: 'Stores', link: 'stores'
         },
         store_inventory: {
             icon: 'gen017', text: 'Store Inventories', link: 'store-inventories'
@@ -73,7 +75,9 @@ function App(){
                         sidebarShown={sidebarShown}
                         toggleSidebar={setSidebarShown}
                         rightWidgets={[
-                            <UserThumbnail userName={user.name} />
+                            <UserThumbnail userName={
+                                <Link to='/profile'>{user.name}</Link>
+                            }/>
                         ]}
                         sidebarItems={(() => {
                             let sidebarItemNames = []
@@ -118,10 +122,17 @@ function App(){
                             component={IndexStoreTransactionPage} user={user} storeTrnsc={storeTrnsc} 
                             dispatchStoreTrnsc={dispatchStoreTrnsc}
                         />                          
+                        <ProtectedRoute path={`/${sidebarItems.store_transaction.link}/create`} exact 
+                            component={CreateStoreTransactionPage} user={user} storeInv={storeInv} 
+                            dispatchStoreInv={dispatchStoreInv}
+                        />                         
                         <ProtectedRoute path={`/${sidebarItems.user.link}`} exact component={UserPage}
                             user={user} owner={owner} dispatchOwner={dispatchOwner} employee={employee} 
                             dispatchEmployee={dispatchEmployee}
-                        />                                                                                            
+                        />       
+                        <ProtectedRoute path={`/profile`} exact component={ProfilePage}
+                            user={user}
+                        />                                                                                                                
                         <Route path={'*'} component={NotFoundPage}/>
                     </Switch>                    
                 </div>      

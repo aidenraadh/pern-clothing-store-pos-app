@@ -1,42 +1,31 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
-import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
+import {STORETRNSC_FILTER_KEY, STORETRNSC_ACTIONS} from '../../reducers/StoreTransactionReducer.js'
+import {api, errorHandler, formatNum, getResFilters, getQueryString, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
-import {TextInput, SelectAddon} from '../../Forms'
-import {ToolCard} from '../../Cards'
-import {Modal, ConfirmPopup} from '../../Windows'
-import {Grid} from '../../Layouts'
 import Table from '../../Table'
+import {TextInput, Select} from '../../Forms'
+import {PlainCard, ToolCard} from '../../Cards'
+import {Grid} from '../../Layouts'
+import {Modal, ConfirmPopup} from '../../Windows'
 
-function CreateStoreInventoryPage(){
+function CreateStoreTransactionPage(){
     const [disableBtn , setDisableBtn] = useState(false)
-    const [stores, setStores] = useState(null)
-    const [storeId, setStoreId] = useState('')
-    const [addedInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
-    const [searchedInvs, setSearchedInvs] = useState([])
-    const [modalShown, setModalShown] = useState(false)
+    const [addedStoreInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
     const [invName, setInvName] = useState('')
+    const [searchedStoreInvs, setSearchedStoreInvs] = useState([])
+    const [modalShown, setModalShown] = useState(false)    
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
-    const [popupErrMsg, setErrPopupMsg] = useState('')
+    const [popupErrMsg, setErrPopupMsg] = useState('')    
     /* Success Popup */
     const [succPopupShown, setSuccPopupShown] = useState(false)
-    const [popupSuccMsg, setSuccPopupMsg] = useState('')      
-
-    const getStores = useCallback(() => {
-        api.get(`/stores`)
-           .then(response => {
-               const stores = response.data.stores
-               setStores(stores)
-               setStoreId(stores[0] ? stores[0].id : null)
-            })
-           .catch(error => { errorHandler(error) })        
-    }, [])
-
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')     
+    
     const getInvs = useCallback(() => {
         setDisableBtn(true)
-        api.get(`/inventories?name=${invName}&limit=20`)
+        api.get(`/store-inventories?name=${invName}&limit=20`)
            .then(response => {
-                setSearchedInvs(response.data.inventories)
+                setSearchedStoreInvs(response.data.storeInvs)
                 setDisableBtn(false) 
            })
            .catch(error => { 
@@ -45,47 +34,17 @@ function CreateStoreInventoryPage(){
            })        
     }, [invName, setDisableBtn])
 
-    const storeInvs = useCallback(() => {
-        api.post(`/store-inventories`, {
-                stored_invs: JSON.stringify(addedInvs),
-                store_id: storeId
-            })
-           .then(response => {
-                setSuccPopupMsg(<>
-                    <p>
-                        Storing inventories: {response.data.storeInvs.length} success, {response.data.alrStoredInvs.length} failed
-                    </p>
-                    <ul style={{textAlign: 'left', listStylePosition: 'inside', marginTop: '2rem'}}>
-                        {response.data.alrStoredInvs.map(inv => (
-                            <li>{inv.inventory.name} already stored</li>
-                        ))}
-                    </ul>   
-                </>)                  
-                setSuccPopupShown(true)               
-           })
-           .catch(error => { 
-                errorHandler(error, {'400': () => {
-                    setErrPopupShown(true)
-                    setErrPopupMsg(error.response.data.message)                
-                }})                  
-           })          
-    }, [storeId, addedInvs])
+    const storeTransaction = () => {
 
-    useEffect(() => {
-        if(stores === null){ getStores() }
-    }, [stores, getStores])       
+    }
 
-    // When the stores is not set yet return loading UI
-    if(stores === null){
-        return 'Loading...'
-    }     
     return (<>
         <Grid num_of_columns={1} items={(() => {
-            const items = addedInvs.map((inventory, key) => (
-                <ToolCard key={key} heading={inventory.name} expand={inventory.toolCardExpand}
-                    body={inventory.sizes.length ? 
+            const items = addedStoreInvs.map((storeInv, key) => (
+                <ToolCard key={key} heading={storeInv.inventory.name} expand={storeInv.toolCardExpand}
+                    body={storeInv.purchasedSizes.length ? 
                     <Grid num_of_columns={4} 
-                        items={inventory.sizes.map((size, sizeKey) => (
+                        items={storeInv.purchasedSizes.map((size, sizeKey) => (
                             <TextInput key={sizeKey} label={`Amount ${size.name}`} size={'sm'} formAttr={{
                                 value: formatNum(size.amount),
                                 onChange: (e) => {
@@ -121,15 +80,6 @@ function CreateStoreInventoryPage(){
                     />}
                 />
             ))
-            // Add select store form at the beginning
-            items.unshift(
-                <SelectAddon key={'x'} addon={'Select store'}
-                    options={stores.map(store => ({
-                        value: store.id, text: store.name
-                    }))}
-                    formAttr={{onChange: (e) => { setStoreId(e.target.value) }}}
-                />                
-            )
             // Add select inventory btn at the end
             items.push(
                 <button key={'y'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
@@ -142,11 +92,11 @@ function CreateStoreInventoryPage(){
             )
             items.push(
                 <Button key={'z'} size={'md'} text={'Store inventories'} attr={{
-                    onClick: storeInvs
+                    onClick: storeTransaction
                 }} />                         
             )                        
             return items
-        })()}/>    
+        })()}/>     
         <Modal
             heading={'Search Inventories'}
             body={<>
@@ -167,26 +117,17 @@ function CreateStoreInventoryPage(){
                 </div>
                 <Table
                     headings={['Name', '']}
-                    body={searchedInvs.map(inv => ([
-                        inv.name,
+                    body={searchedStoreInvs.map(searchedStoreInv => ([
+                        searchedStoreInv.inventory.name,
                         <Button size={'sm'} text={'Select'} attr={{onClick: () => {
-                            dispatchAddedInvs({type: 'add', payload: {inv: inv}})
+                            dispatchAddedInvs({type: 'add', payload: {storeInv: searchedStoreInv}})
                         }}}/>
                     ]))}
                 />
             </>}        
             shown={modalShown}
             toggleModal={() => {setModalShown(state => !state)}}
-        />     
-        <ConfirmPopup
-            shown={succPopupShown}
-            icon={'done_circle'}
-            iconColor={'blue'}
-            title={"Success"}
-            body={popupSuccMsg}
-            confirmText={'OK'}
-            togglePopup={() => {setSuccPopupShown(state => !state)}} 
-        />            
+        />          
         <ConfirmPopup
             shown={errPopupShown}
             icon={'error_circle'}
@@ -195,7 +136,16 @@ function CreateStoreInventoryPage(){
             body={popupErrMsg}
             confirmText={'OK'}
             togglePopup={() => {setErrPopupShown(state => !state)}} 
-        />              
+        />
+        <ConfirmPopup
+            shown={succPopupShown}
+            icon={'done_circle'}
+            iconColor={'blue'}
+            title={"Success"}
+            body={popupSuccMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+        />                  
     </>)
 }
 
@@ -203,43 +153,51 @@ const addedInvsReducer = (state, action) => {
     const payload = action.payload
     switch(action.type){
         case 'add': return [...state, {
-                id: payload.inv.id, name: payload.inv.name, toolCardExpand: true, 
-                sizes: payload.inv.sizes.map(size => ({
-                    id: size.id, name: size.name, amount: '',
-                }))
+                ...payload.storeInv, toolCardExpand: true, 
+                purchasedSizes: payload.storeInv.inventory.sizes.map((size, key) => {
+                    // Make sure the size that want to be purchased is exists
+                    const existingSize = payload.storeInv.sizes.find((storedSize) => {
+                        return parseInt(storedSize.inventory_size_id) === parseInt(size.id)
+                    })
+                    return {
+                        name: size.name,
+                        inventory_size_id: existingSize.inventory_size_id,
+                        amount: ''
+                    }
+                })
             }]; 
         case 'remove': return (() => {
-                let addedInvs = [...state]
-                addedInvs.splice(payload.index, 1)
-                return addedInvs
+                let addedStoreInvs = [...state]
+                addedStoreInvs.splice(payload.index, 1)
+                return addedStoreInvs
             })()
         case 'update': return (() => {
-                let addedInvs = [...state]
+                let addedStoreInvs = [...state]
                 // Update the tool card's toggle expand 
                 if(payload.toolCardExpand !== undefined){
-                    addedInvs[payload.index] = {
-                        ...addedInvs[payload.index], 
-                        toolCardExpand: !addedInvs[payload.index].toolCardExpand
+                    addedStoreInvs[payload.index] = {
+                        ...addedStoreInvs[payload.index], 
+                        toolCardExpand: !addedStoreInvs[payload.index].toolCardExpand
                     }
                 }
                 // Update the amount of size
                 else if(payload.amount !== undefined){
-                    addedInvs = [...state]
+                    addedStoreInvs = [...state]
 
-                    let updatedSizes = [...addedInvs[payload.index].sizes]
+                    let updatedSizes = [...addedStoreInvs[payload.index].sizes]
                     updatedSizes[payload.sizeIndex] = {
                         ...updatedSizes[payload.sizeIndex], amount: payload.amount
                     }
 
-                    addedInvs[payload.index] = {
-                        ...addedInvs[payload.index], 
+                    addedStoreInvs[payload.index] = {
+                        ...addedStoreInvs[payload.index], 
                         sizes: updatedSizes
                     }                    
                 }
-                return addedInvs
+                return addedStoreInvs
             })()
         default: return [...state];
     }
 }
 
-export default CreateStoreInventoryPage
+export default CreateStoreTransactionPage

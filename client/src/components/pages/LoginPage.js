@@ -6,24 +6,6 @@ import {Button} from '../Buttons'
 import {TextInput} from '../Forms'
 import {isAuth, login} from '../Auth'
 
-const requestLogin = (email, password) => {
-    api
-        .post('/login', {
-            email: email, password: password
-        })
-        .then(response => login(response))
-        .catch(error => {
-            // When the credentials are wrong
-            if(error.response.status === 400){
-                alert(error.response.data.message)
-            }            
-            // When the user already logged in on the server
-            if(error.response.status === 401){
-                login()
-            }
-        })
-}
-
 const LoginPage = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -50,6 +32,22 @@ const LoginPage = (props) => {
             text={'Login'}
         />
     </>)
+}
+
+const requestLogin = (email, password) => {
+    api
+        .post('/login', {
+            email: email, password: password
+        })
+        .then(response => login(response))
+        .catch(error => {
+            if(error.response.status === 400){
+                alert(error.response.data.message)
+            }            
+            if(error.response.status === 401){
+                login()
+            }
+        })
 }
 
 export default LoginPage

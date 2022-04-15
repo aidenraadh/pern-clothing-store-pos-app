@@ -1,4 +1,5 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
+import {Link} from 'react-router-dom'
 import {STORETRNSC_FILTER_KEY, STORETRNSC_ACTIONS} from '../../reducers/StoreTransactionReducer.js'
 import {api, errorHandler, formatNum, getResFilters, getQueryString, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
@@ -68,6 +69,13 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         return 'Loading...'
     }    
     return (<>
+        <section className='flex-row content-end items-center' style={{marginBottom: '2rem'}}>
+            {user.role.name === 'employee' ?
+                <Link to={'/store-transactions/create'}>
+                    <Button tag={'span'} text={'+ New transaction'} size={'sm'}/>
+                </Link> : ''
+            }            
+        </section>
         <PlainCard
             body={<>
                 <GenerateStoreTrnscs

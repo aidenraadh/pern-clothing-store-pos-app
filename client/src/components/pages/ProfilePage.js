@@ -1,88 +1,84 @@
-import {useState, useEffect}  from "react"
+import {useState, useCallback}  from "react"
 import {api, errorHandler} from '../Utils'
-import {storeUser, getUser} from '../Auth'
+import {saveUser} from '../Auth'
+import {Button} from '../Buttons'
+import {Modal, ConfirmPopup} from '../Windows'
+import {TextInput} from '../Forms'
+import {Grid} from '../Layouts'
 
-const getProfile = (setProfile) => {
-    api
-        .get('/profile')
-        .then(response => {
-            storeUser(response.data.user)
-            setProfile(response.data.user)
-        })
-        .catch(error => errorHandler(error))
-}
+function ProfilePage({user}){
+    const [disableBtn , setDisableBtn] = useState(false)
 
-const updateProfile = (name, email, oldPassword, newPassword, setProfile) => {
-    api
-        .put('/profile', {
-            name: name, email: email, password: newPassword,
-            oldPassword: oldPassword
-        })
-        .then(response => {
-            setProfile(response.data.user)
-        })
-        .catch(error => errorHandler(error))    
-}
-
-function ProfilePage(){
-    const [profile, setProfile] = useState(getUser())
-
-    const [newName, setNewName] = useState('')
-    const [newEmail, setNewEmail] = useState('')
+    const [name, setNameName] = useState(user.name)
     const [oldPassword, setOldPassword] = useState('')
-    const [newPassword, setNewPassword] = useState('')
-    // Get the user profile if it is not exist
-    useEffect(() => {
-        if(!getUser()){
-            getProfile(setProfile)
-        }
-    }, [])
+    const [newPassword, setNewPassword] = useState('')  
+    const [updProfileModal, setUpdProfileModal] = useState(false)  
+    /* Error Popup */
+    const [errPopupShown, setErrPopupShown] = useState(false)
+    const [popupErrMsg, setErrPopupMsg] = useState('')    
 
-    // Update the update profile field if the profile is changed
-    useEffect(() => {
-        setNewName(profile.name)
-        setNewEmail(profile.email)
-        setOldPassword('')
-        setNewPassword('')
-    }, [profile])    
+    const updateProfile = useCallback(() => {
+        setDisableBtn(true)
+        api.post(`/users/update-profile`, {
+            name: name,
+            old_password: oldPassword,
+            new_password: newPassword,
+        })
+        .then(response => {
+            saveUser(response.data.user)
+            setDisableBtn(false)
+            setUpdProfileModal(false)
 
-    if(!profile){
+        })
+        .catch(error => {
+            setDisableBtn(false)
+            errorHandler(error, {'400': () => {
+                setErrPopupShown(true)
+                setErrPopupMsg(error.response.data.message)                      
+            }})           
+        })   
+    }, [name, oldPassword, newPassword, setUpdProfileModal, setDisableBtn])
+
+    if(!user){
         return 'Loading ...'
     }
     return (<>
         <h1>Profile</h1>
         <p>
-            Name: {profile.name}<br/>
-            Email: {profile.email}<br/>
+            Name: {user.name}<br/>
         </p>
-        <section>
-            <h3>Update Profile</h3>
-            <input type="text" value={newName} 
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder={'Name'}/> 
-
-            <input type="email" value={newEmail} 
-            onChange={(e) => setNewEmail(e.target.value)}
-            placeholder={'Email'}/> 
-
-            <input type="password" value={oldPassword} 
-            onChange={(e) => setOldPassword(e.target.value)}
-            placeholder={'Old password'}/>            
-
-            <input type="password" value={newPassword} 
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder={'New password'}/>        
-
-            <br/>         
-
-            <button type="button" onClick={() => {updateProfile(
-                newName, newEmail, oldPassword, newPassword,
-                setProfile
-            )}}>
-                Update profile
-            </button>
-
-        </section>
+        <Button text={'Update profile'} size={'sm'} attr={{
+            onClick: () => {setUpdProfileModal(true)}
+        }}/>
+        <Modal
+            heading={'Update Profile'}
+            body={<Grid num_of_columns={1} items={[
+                <TextInput label={'Name'} formAttr={{
+                    value: name, onChange: (e) => {setNameName(e.target.value)}
+                }}/>,
+                <TextInput label={'Old password'} formAttr={{
+                    value: oldPassword, onChange: (e) => {setOldPassword(e.target.value)}
+                }}/>,
+                <TextInput label={'New password'} formAttr={{
+                    value: newPassword, onChange: (e) => {setNewPassword(e.target.value)}
+                }}/>,          
+            ]}/>}
+            shown={updProfileModal}
+            toggleModal={() => {setUpdProfileModal(state => !state)}}
+            footer={<Button size={'md'} text={'Save changes'} attr={{
+                disabled: disableBtn,
+                onClick: () => {updateProfile()}
+            }}/>}
+        />
+        <ConfirmPopup
+            shown={errPopupShown}
+            icon={'error_circle'}
+            iconColor={'red'}
+            title={"Can't Proceed"}
+            body={popupErrMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setErrPopupShown(state => !state)}} 
+        />          
     </>)
 }
 

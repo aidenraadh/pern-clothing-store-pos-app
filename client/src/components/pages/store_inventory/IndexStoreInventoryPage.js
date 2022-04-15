@@ -60,7 +60,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
            })
     }, [filters, storeInv, dispatchStoreInv])    
 
-    const editStoreInv = useCallback((index) => {
+    const viewStoreInv = useCallback((index) => {
         const targetStoreInv = storeInv.storeInvs[index]
         setStoreInvIndex(index)
         setStoreInvSizes(state => {
@@ -102,7 +102,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 setModalShown(false)   
                 dispatchStoreInv({
                     type: STOREINV_ACTIONS.REPLACE, 
-                    payload: {targetStoreInv: response.data.targetStoreInv, index: storeInvIndex}
+                    payload: {storeInv: response.data.storeInv, index: storeInvIndex}
                 })  
             })
             .catch(error => {
@@ -133,7 +133,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
             }} />
             {user.role.name === 'employee' ? '' :
                 <Link to={'/store-inventories/create'}>
-                    <Button tag={'span'} text={'+ Store new'} size={'sm'} attr={{onClick: () => {}}}/>
+                    <Button tag={'span'} text={'+ Store new'} size={'sm'}/>
                 </Link>            
             }
         </section>
@@ -157,7 +157,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 </div>
                 <GenerateStoreInv 
                     storeInvs={storeInv.storeInvs} 
-                    editStoreInv={editStoreInv}
+                    viewStoreInv={viewStoreInv}
                 />
                 <LoadMoreBtn 
                     canLoadMore={storeInv.canLoadMore}
@@ -293,7 +293,7 @@ const filterReducer = (state, action) => {
     }
 }
 
-const GenerateStoreInv = ({storeInvs, editStoreInv}) => {
+const GenerateStoreInv = ({storeInvs, viewStoreInv}) => {
     return (<>
         <div className="inventories-container">
             <Table
@@ -303,7 +303,7 @@ const GenerateStoreInv = ({storeInvs, editStoreInv}) => {
                     storeInv.total_amount ? formatNum(storeInv.total_amount) : 0,
                     <>
                         <Button text={'View'} size={'sm'} 
-                            attr={{onClick: () => {editStoreInv(index)}}}
+                            attr={{onClick: () => {viewStoreInv(index)}}}
                         />
                     </>
                 ])}
