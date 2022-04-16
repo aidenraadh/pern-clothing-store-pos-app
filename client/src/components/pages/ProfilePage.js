@@ -3,7 +3,7 @@ import {api, errorHandler} from '../Utils'
 import {saveUser} from '../Auth'
 import {Button} from '../Buttons'
 import {Modal, ConfirmPopup} from '../Windows'
-import {TextInput} from '../Forms'
+import {TextInput, TextInputWithBtn} from '../Forms'
 import {Grid} from '../Layouts'
 
 function ProfilePage({user}){
@@ -11,7 +11,9 @@ function ProfilePage({user}){
 
     const [name, setNameName] = useState(user.name)
     const [oldPassword, setOldPassword] = useState('')
+    const [oldPasswordShown, setOldPasswordShown] = useState(false)
     const [newPassword, setNewPassword] = useState('')  
+    const [newPasswordShown, setNewPasswordShown] = useState(false)
     const [updProfileModal, setUpdProfileModal] = useState(false)  
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -56,12 +58,20 @@ function ProfilePage({user}){
                 <TextInput label={'Name'} formAttr={{
                     value: name, onChange: (e) => {setNameName(e.target.value)}
                 }}/>,
-                <TextInput label={'Old password'} formAttr={{
-                    value: oldPassword, onChange: (e) => {setOldPassword(e.target.value)}
-                }}/>,
-                <TextInput label={'New password'} formAttr={{
-                    value: newPassword, onChange: (e) => {setNewPassword(e.target.value)}
-                }}/>,          
+                <TextInputWithBtn label={'Old password'} btnIconName={oldPasswordShown ? 'visible' : 'hidden'}
+                    formAttr={{
+                        type: (oldPasswordShown ? 'text' : 'password'),
+                        value: oldPassword, onChange: (e) => {setOldPassword(e.target.value)}
+                    }}
+                    btnAttr={{onClick: () => {setOldPasswordShown(state => !state)}}}
+                />,
+                <TextInputWithBtn label={'New password'} btnIconName={newPasswordShown ? 'visible' : 'hidden'}
+                    formAttr={{
+                        type: (newPasswordShown ? 'text' : 'password'),
+                        value: newPassword, onChange: (e) => {setNewPassword(e.target.value)}
+                    }}
+                    btnAttr={{onClick: () => {setNewPasswordShown(state => !state)}}}
+                />,          
             ]}/>}
             shown={updProfileModal}
             toggleModal={() => {setUpdProfileModal(state => !state)}}

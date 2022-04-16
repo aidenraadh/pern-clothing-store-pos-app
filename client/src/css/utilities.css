@@ -37,6 +37,10 @@
 	flex-direction: column-reverse;
 }
 
+.flex-inline{
+	display: inline-flex
+}
+
 .wrap{
 	flex-wrap: wrap;
 }

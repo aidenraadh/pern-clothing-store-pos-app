@@ -706,6 +706,10 @@ All button in the group must be in the same size
 	display: block;
 }
 
+.base-input.with-btn{
+	position: relative;
+}
+
 .base-input label{
 	display: block;
 	margin-bottom: 0.8rem;
@@ -757,6 +761,39 @@ All button in the group must be in the same size
 .base-input.solid input:focus, .base-input.solid select:focus,
 .base-input.solid textarea:focus{
 	background-color: #EBEDF3;
+}
+
+.base-input.with-btn .btn-light{
+	transition-property: none;
+	background-color: transparent;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.base-input.with-btn .btn-light.blue .path, 
+.base-input.with-btn .btn-light.blue:hover .path{
+	fill: #3699FF !important;
+}
+
+.base-input.with-btn .btn-light.green .path, 
+.base-input.with-btn .btn-light.green:hover .path{
+	fill: #1BC5BD !important;
+}
+
+.base-input.with-btn .btn-light.red .path, 
+.base-input.with-btn .btn-light.red:hover .path{
+	fill: #F64E60 !important;
+}
+
+.base-input.with-btn .btn-light.orange .path, 
+.base-input.with-btn .btn-light.orange:hover .path{
+	fill: #FFA800 !important;
+}
+
+.base-input.with-btn .btn-light.purple .path, 
+.base-input.with-btn .btn-light.purple:hover .path{
+	fill: #8950FC !important;
 }
 
 /*
@@ -931,88 +968,6 @@ All button in the group must be in the same size
 
 .multi-choice input:checked ~ .checkmark > span{
 	opacity: 1;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Search Box
-|--------------------------------------------------------------------------
-*/
-
-/*
-<span class="search-box base-input outline|solid sm-input|md-input|lg-input">
-	<label for="form">Form name</label>
-	<input id="form" type="text" name="form">
-	<ul class="search-results"></ul>
-</span>
-
-<span class="search-box addon-input sm-input|md-input|lg-input">
-	<label for="form">Form name</label>
-	<span class="flex-row">
-		<span class="addon" aria-hidde="true">
-			Addon
-		</span>
-		<input id="form" type="text" name="form">
-	</span>
-	<ul class="search-results"></ul>
-</span>
-*/
-
-.search-box{
-	position: relative;
-	overflow: visible;
-	z-index: 95;
-}
-
-.search-results-container{
-	position: absolute;
-	left: 0;
-	min-width: 100%;
-	max-height: 50vh;
-	border-radius: 0.55rem;
-	background-color: white;
-	box-shadow: 0px 0px 30px 0px rgba(82,63,105,0.2);
-	visibility: hidden;
-	opacity: 0;
-	overflow-y: auto;
-	transform: translateY(8%);
-    transition-property: opacity, transform;
-	transition-duration: 0.3s, 0.3s;
-}
-
-.search-results-container.visible{
-	visibility: visible;
-}
-
-.search-results-container.shown{
-	opacity: 1;
-	transform: translateY(4%);
-}
-
-.search-results-container > ul{
-	list-style-type: none;
-}
-
-.search-results-container > ul > li{
-	border-bottom: 2px solid #EBEDF3;
-}
-
-.search-results-container > ul > li:last-child{
-	border-bottom: none;
-}
-
-.search-result{
-	display: block;
-	width: 100%;
-	padding: 0.8rem 1rem;
-	cursor: pointer;
-	text-align: left;
-	font-size: 1.5rem;
-	transition: background-color 0.2s ease;
-}
-
-.search-result:hover{
-	background-color: #F7F8FA;
 }
 
 /*

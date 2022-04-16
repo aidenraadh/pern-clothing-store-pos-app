@@ -1,9 +1,8 @@
 import {useState, useReducer, useCallback, useMemo} from 'react'
-import {STORETRNSC_ACTIONS} from '../../reducers/StoreTransactionReducer.js'
 import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
-import {TextInput} from '../../Forms'
+import {TextInput, TextInputWithBtn} from '../../Forms'
 import {ToolCard} from '../../Cards'
 import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
@@ -41,23 +40,63 @@ function CreateStoreTransactionPage(){
     const InvToolCards = useMemo(() => {
         return addedStoreInvs.map((storeInv, key) => (
             <ToolCard key={key} heading={storeInv.inventory.name} expand={storeInv.toolCardExpand}
-                body={storeInv.purchasedSizes.length ? 
-                <Grid num_of_columns={4} 
-                    items={storeInv.purchasedSizes.map((size, sizeKey) => (
-                        <TextInput key={sizeKey} label={`Amount ${size.name}`} size={'sm'} formAttr={{
-                            value: formatNum(size.amount),
-                            onChange: (e) => {
-                                dispatchAddedInvs({
-                                    type: 'update', payload: {
-                                        index: key, sizeIndex: sizeKey, amount: formatNum(
-                                            e.target.value, true
-                                        )
+                body={storeInv.purchasedSizes.length === 0 ? 
+                    <p className='text-center'>No sizes found</p> :
+                    <Table
+                        headings={['Size', 'Amount', 'Price']}
+                        body={storeInv.purchasedSizes.map((size, sizeKey) => ([
+                            size.name,
+                            <span className='flex-row flex-inline items-center' style={{width: '100%'}}>
+                                <TextInputWithBtn key={sizeKey} size={'sm'} containerAttr={{style: {width: '100%'}}}
+                                    formAttr={{value: formatNum(size.amount),
+                                        style: {width: '100%'},
+                                        onChange: (e) => {
+                                            dispatchAddedInvs({
+                                                type: 'update', payload: {index: key, sizeIndex: sizeKey, 
+                                                    keyName: 'amount', 
+                                                    value: e.target.value
+                                                }
+                                            })
+                                        }
+                                    }}
+                                    btnAttr={{onClick: () => {
+                                        dispatchAddedInvs({
+                                            type: 'update', payload: {index: key, sizeIndex: sizeKey, 
+                                                keyName: 'amount',
+                                                value: size.originalAmount
+                                            }
+                                        })                                    
+                                    }}}
+                                />
+                                <span className={size.amountLeft - size.amount < 0 ? 'text-red' : 'text-dark-50'} 
+                                style={{fontSize: '1.32rem', paddingLeft: '0.6rem', flexShrink: 0}}>
+                                <span>{
+                                        `/ ${size.amountLeft - size.amount}`
+                                    }</span>
+                                </span>
+                            </span>,
+                            <TextInputWithBtn key={sizeKey} size={'sm'} formAttr={{value: formatNum(size.cost),
+                                    onChange: (e) => {
+                                        dispatchAddedInvs({
+                                            type: 'update', payload: {index: key, sizeIndex: sizeKey, 
+                                                keyName: 'cost',
+                                                value: e.target.value
+                                            }
+                                        })
                                     }
-                                })
-                            }
-                        }}/>
-                    ))}
-                /> : 'No sizes found'}           
+                                }}
+                                btnAttr={{onClick: () => {
+                                    dispatchAddedInvs({
+                                        type: 'update', payload: {index: key, sizeIndex: sizeKey, 
+                                            keyName: 'cost',
+                                            value: size.originalCost
+                                        }
+                                    })                                    
+                                }}}
+                            />                              
+                        ]))}
+                    />
+                }           
                 toggleButton={
                     <Button
                         size={'sm'} type={'light'} color={'blue'}                
@@ -65,7 +104,7 @@ function CreateStoreTransactionPage(){
                         classes={'toggle-btn'}
                         attr={{
                             onClick: () => {dispatchAddedInvs({type: 'update', payload: {
-                                index: key, toolCardExpand: ''
+                                index: key, keyName: 'expand'
                             }})}
                         }}
                     />
@@ -81,7 +120,7 @@ function CreateStoreTransactionPage(){
                         }}                                     
                     />
                 }
-            />
+            />            
         ))        
     }, [addedStoreInvs, dispatchAddedInvs])    
 
@@ -162,9 +201,12 @@ const addedInvsReducer = (state, action) => {
                     })
                     return {
                         name: size.name,
-                        inventory_size_id: existingSize.inventory_size_id,
+                        inventorySizeId: existingSize.inventory_size_id,
                         amount: '',
-                        cost: size.selling_price
+                        originalAmount: '',
+                        cost: size.selling_price,
+                        originalCost: size.selling_price,
+                        amountLeft: existingSize.amount
                     }
                 })
             }]; 
@@ -176,19 +218,20 @@ const addedInvsReducer = (state, action) => {
         case 'update': return (() => {
                 let addedStoreInvs = [...state]
                 // Update the tool card's toggle expand 
-                if(payload.toolCardExpand !== undefined){
+                if(payload.keyName === 'expand'){
                     addedStoreInvs[payload.index] = {
                         ...addedStoreInvs[payload.index], 
                         toolCardExpand: !addedStoreInvs[payload.index].toolCardExpand
                     }
                 }
                 // Update the amount of size
-                else if(payload.amount !== undefined){
+                else if(payload.keyName === 'amount' || payload.keyName === 'cost'){
+                    const value = formatNum(payload.value, true)
                     addedStoreInvs = [...state]
 
                     let updatedSizes = [...addedStoreInvs[payload.index].purchasedSizes]
                     updatedSizes[payload.sizeIndex] = {
-                        ...updatedSizes[payload.sizeIndex], amount: payload.amount
+                        ...updatedSizes[payload.sizeIndex], [payload.keyName]: value
                     }
 
                     addedStoreInvs[payload.index] = {

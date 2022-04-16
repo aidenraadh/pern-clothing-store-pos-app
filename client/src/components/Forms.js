@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button} from './Buttons'
 
 export function TextInput(props){
 	const type = ` ${props.type}`
@@ -18,6 +19,37 @@ TextInput.defaultProps = {
 	type: 'outline', // String - 'outline'|'solid'
 	size: 'md', // String - 'sm'|'md'|'lg'
 	label: '', // String|JSX
+	containerClasses: '', // String
+	containerAttr: {}, // Object
+	formAttr: {}, // Object
+}
+
+export function TextInputWithBtn(props){
+	const type = ` ${props.type}`
+	const size = ` ${props.size}-input`
+	const classes = `base-input ${props.type} ${props.size}-input with-btn` + (props.containerClasses ? 
+		` ${props.containerClasses}` : props.containerClasses
+	)
+
+	return (
+		<span className={classes} {...props.containerAttr}>
+			{props.label ? <label htmlFor={props.formName}>{props.label}</label> : ''}
+			<input id={props.formName} name={props.formName} {...props.formAttr} />
+			<Button type={'light'} color={props.btnIconColor} size={props.size} 
+				iconName={props.btnIconName} iconOnly={'true'} attr={{...props.btnAttr}}
+			/>
+		</span>		
+	)
+}
+
+TextInputWithBtn.defaultProps = {
+	formName: '', // String
+	type: 'outline', // String - 'outline'|'solid'
+	size: 'md', // String - 'sm'|'md'|'lg'
+	label: '', // String|JSX
+	btnIconName: 'update',
+	btnIconColor: 'blue',
+	btnAttr: {},
 	containerClasses: '', // String
 	containerAttr: {}, // Object
 	formAttr: {}, // Object

@@ -3,12 +3,13 @@ import {api} from '../Utils'
 import {Redirect} from "react-router"
 
 import {Button} from '../Buttons'
-import {TextInput} from '../Forms'
+import {TextInput, TextInputWithBtn} from '../Forms'
 import {isAuth, login} from '../Auth'
 
 const LoginPage = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [passwordShown, setPasswordShown] = useState(false)
     // When the user already authenticated
     if(isAuth()){
         return <Redirect to={'/'}/>
@@ -21,9 +22,11 @@ const LoginPage = (props) => {
                 onChange: (e) => {setEmail(e.target.value)}
             }} 
         />
-        <TextInput
+        <TextInputWithBtn btnIconName={passwordShown ? 'visible' : 'hidden'}
+            btnAttr={{onClick: () => {setPasswordShown(state => !state)}}}
             formAttr={{
-                type: 'password', value: password, placeholder: 'Password', 
+                type: passwordShown ? 'text' : 'password', 
+                value: password, placeholder: 'Password', 
                 onChange: (e) => {setPassword(e.target.value)}
             }} 
         />        
