@@ -2,14 +2,14 @@ import {useState, useReducer, useCallback, useMemo} from 'react'
 import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
-import {TextInput, TextInputWithBtn} from '../../Forms'
-import {ToolCard} from '../../Cards'
+import {TextInput, TextInputWithBtn, Select} from '../../Forms'
+import {PlainCard} from '../../Cards'
 import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 
 function CreateStoreTransactionPage(){
     const [disableBtn , setDisableBtn] = useState(false)
-    const [addedStoreInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
+    const [addedInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
     const [invName, setInvName] = useState('')
     const [searchedStoreInvs, setSearchedStoreInvs] = useState([])
     const [modalShown, setModalShown] = useState(false)    
@@ -24,7 +24,11 @@ function CreateStoreTransactionPage(){
         setDisableBtn(true)
         api.get(`/store-inventories?name=${invName}&limit=20`)
            .then(response => {
-                setSearchedStoreInvs(response.data.storeInvs)
+                setSearchedStoreInvs(response.data.storeInvs.map(storeInv => {
+                    return {
+                        ...storeInv, selectedSizeId: storeInv.inventory.sizes[0].id
+                    }
+                }))
                 setDisableBtn(false) 
            })
            .catch(error => { 
@@ -34,52 +38,35 @@ function CreateStoreTransactionPage(){
     }, [invName, setDisableBtn])
 
     const storeTransaction = () => {
-        console.log(addedStoreInvs)
+        console.log(addedInvs)
+        // setDisableBtn(true)
+        // api.post(`/store-transactions`, {
+        //     purchased_invs: JSON.stringify(addedInvs)
+        // })
+        // .then(response => {
+        //      setDisableBtn(false) 
+        // })
+        // .catch(error => { 
+        //      setDisableBtn(false)
+        //      errorHandler(error) 
+        // })         
     }
 
-    const InvToolCards = useMemo(() => {
-        return addedStoreInvs.map((storeInv, key) => (
-            <ToolCard key={key} heading={storeInv.inventory.name} expand={storeInv.toolCardExpand}
-                body={storeInv.purchasedSizes.length === 0 ? 
-                    <p className='text-center'>No sizes found</p> :
-                    <Table
-                        headings={['Size', 'Amount', 'Price']}
-                        body={storeInv.purchasedSizes.map((size, sizeKey) => ([
-                            size.name,
-                            <span className='flex-row flex-inline items-center' style={{width: '100%'}}>
-                                <TextInputWithBtn key={sizeKey} size={'sm'} containerAttr={{style: {width: '100%'}}}
-                                    formAttr={{value: formatNum(size.amount),
-                                        style: {width: '100%'},
-                                        onChange: (e) => {
-                                            dispatchAddedInvs({
-                                                type: 'update', payload: {index: key, sizeIndex: sizeKey, 
-                                                    keyName: 'amount', 
-                                                    value: e.target.value
-                                                }
-                                            })
-                                        }
-                                    }}
-                                    btnAttr={{onClick: () => {
-                                        dispatchAddedInvs({
-                                            type: 'update', payload: {index: key, sizeIndex: sizeKey, 
-                                                keyName: 'amount',
-                                                value: size.originalAmount
-                                            }
-                                        })                                    
-                                    }}}
-                                />
-                                <span className={size.amountLeft - size.amount < 0 ? 'text-red' : 'text-dark-50'} 
-                                style={{fontSize: '1.32rem', paddingLeft: '0.6rem', flexShrink: 0}}>
-                                <span>{
-                                        `/ ${size.amountLeft - size.amount}`
-                                    }</span>
-                                </span>
-                            </span>,
-                            <TextInputWithBtn key={sizeKey} size={'sm'} formAttr={{value: formatNum(size.cost),
+    const AddedInvsTable = useMemo(() => {
+        return <PlainCard
+            body={
+                <Table
+                    headings={['Inventory', 'Size', 'Amount', 'Price']}
+                    body={addedInvs.map((inv, key) => ([
+                        inv.inventoryName, inv.sizeName,
+                        <span className='flex-row items-center flex-inline' style={{width: '100%'}}>
+                            <TextInputWithBtn size={'sm'} containerAttr={{style: {width: '100%'}}}
+                                formAttr={{value: formatNum(inv.amount),
+                                    style: {width: '100%'},
                                     onChange: (e) => {
                                         dispatchAddedInvs({
-                                            type: 'update', payload: {index: key, sizeIndex: sizeKey, 
-                                                keyName: 'cost',
+                                            type: 'update', payload: {
+                                                index: key, key: 'amount', 
                                                 value: e.target.value
                                             }
                                         })
@@ -87,46 +74,46 @@ function CreateStoreTransactionPage(){
                                 }}
                                 btnAttr={{onClick: () => {
                                     dispatchAddedInvs({
-                                        type: 'update', payload: {index: key, sizeIndex: sizeKey, 
-                                            keyName: 'cost',
-                                            value: size.originalCost
+                                        type: 'update', payload: {
+                                            index: key, key: 'amount',
+                                            value: inv.originalAmount
                                         }
                                     })                                    
                                 }}}
-                            />                              
-                        ]))}
-                    />
-                }           
-                toggleButton={
-                    <Button
-                        size={'sm'} type={'light'} color={'blue'}                
-                        iconName={'angle_up'} iconOnly={true}
-                        classes={'toggle-btn'}
-                        attr={{
-                            onClick: () => {dispatchAddedInvs({type: 'update', payload: {
-                                index: key, keyName: 'expand'
-                            }})}
-                        }}
-                    />
-                }
-                rightSideActions={
-                    <Button
-                        size={'sm'} type={'light'} color={'red'}  
-                        iconName={'close'} iconOnly={true}   
-                        attr={{
-                            onClick: () => {dispatchAddedInvs({type: 'remove', payload: {
-                                index: key
-                            }})}
-                        }}                                     
-                    />
-                }
-            />            
-        ))        
-    }, [addedStoreInvs, dispatchAddedInvs])    
+                            />
+                            <span className={inv.amountLeft < 0 ? 'text-red' : 'text-dark-50'} 
+                            style={{fontSize: '1.34rem', marginLeft: '0.6rem', flexShrink: 0}}>
+                                {`/ ${inv.amountLeft}`}
+                            </span>
+                        </span>,
+                        <TextInputWithBtn key={key} size={'sm'} formAttr={{value: formatNum(inv.cost),
+                                onChange: (e) => {
+                                    dispatchAddedInvs({
+                                        type: 'update', payload: {
+                                            index: key, key: 'cost',
+                                            value: e.target.value
+                                        }
+                                    })
+                                }
+                            }}
+                            btnAttr={{onClick: () => {
+                                dispatchAddedInvs({
+                                    type: 'update', payload: {
+                                        index: key, key: 'cost',
+                                        value: inv.originalCost
+                                    }
+                                })                                    
+                            }}}
+                        />                  
+                    ]))}
+                />  
+            }
+        />     
+    }, [addedInvs, dispatchAddedInvs])    
 
     return (<>
         <Grid num_of_columns={1} items={[
-                ...InvToolCards,
+                AddedInvsTable,
                 <button key={'a'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
                 onClick={() => {setModalShown(true)}}>
                     + Add Inventory
@@ -156,9 +143,29 @@ function CreateStoreTransactionPage(){
                     }}/>                                       
                 </div>
                 <Table
-                    headings={['Name', '']}
-                    body={searchedStoreInvs.map(searchedStoreInv => ([
+                    headings={['Name', 'Size', '']}
+                    body={searchedStoreInvs.map((searchedStoreInv, index) => ([
                         searchedStoreInv.inventory.name,
+                        <Select
+                            options={
+                                searchedStoreInv.inventory.sizes.filter(size => (
+                                    // Filter only the size that already stored
+                                    searchedStoreInv.sizes.find(storedSize => (
+                                        parseInt(size.id) === parseInt(storedSize.inventory_size_id)
+                                    ))
+                                )).map(size => ({
+                                    value: size.id, text: size.name
+                                }))
+                            }
+                            formAttr={{
+                                value: searchedStoreInv.selectedSizeId,
+                                onChange: (e) => {setSearchedStoreInvs(state => {
+                                    const storeInvs = [...state]
+                                    storeInvs[index] = {...storeInvs[index], selectedSizeId: e.target.value}
+                                    return storeInvs
+                                })}
+                            }}
+                        />,
                         <Button size={'sm'} text={'Select'} attr={{onClick: () => {
                             dispatchAddedInvs({type: 'add', payload: {storeInv: searchedStoreInv}})
                         }}}/>
@@ -191,57 +198,63 @@ function CreateStoreTransactionPage(){
 
 const addedInvsReducer = (state, action) => {
     const payload = action.payload
+    let addedInvs = [...state]
+
     switch(action.type){
-        case 'add': return [...state, {
-                ...payload.storeInv, toolCardExpand: true, 
-                purchasedSizes: payload.storeInv.inventory.sizes.map((size, key) => {
-                    // Make sure the size that want to be purchased is exists
-                    const existingSize = payload.storeInv.sizes.find((storedSize) => {
-                        return parseInt(storedSize.inventory_size_id) === parseInt(size.id)
-                    })
-                    return {
-                        name: size.name,
-                        inventorySizeId: existingSize.inventory_size_id,
-                        amount: '',
-                        originalAmount: '',
-                        cost: size.selling_price,
-                        originalCost: size.selling_price,
-                        amountLeft: existingSize.amount
-                    }
-                })
-            }]; 
-        case 'remove': return (() => {
-                let addedStoreInvs = [...state]
-                addedStoreInvs.splice(payload.index, 1)
-                return addedStoreInvs
-            })()
-        case 'update': return (() => {
-                let addedStoreInvs = [...state]
-                // Update the tool card's toggle expand 
-                if(payload.keyName === 'expand'){
-                    addedStoreInvs[payload.index] = {
-                        ...addedStoreInvs[payload.index], 
-                        toolCardExpand: !addedStoreInvs[payload.index].toolCardExpand
-                    }
+        case 'add':
+            const isInvExists = addedInvs.find(inv => (
+                parseInt(inv.sizeId) === parseInt(payload.storeInv.selectedSizeId)
+            ))
+            if(isInvExists){ return addedInvs }
+            const invSize = payload.storeInv.inventory.sizes.find((size) => (
+                parseInt(size.id) === parseInt(payload.storeInv.selectedSizeId)
+            ))
+            const storedInvSize = payload.storeInv.sizes.find(size => (
+                parseInt(size.inventory_size_id) === parseInt(payload.storeInv.selectedSizeId)
+            ))
+            return [
+                ...addedInvs, {
+                    storeInvId: payload.storeInv.id, 
+                    inventoryId: payload.storeInv.inventory.id,
+                    inventoryName: payload.storeInv.inventory.name,
+                    store: payload.storeInv.store, 
+                    toolCardExpand: true,         
+                    storeInvSizeId: storedInvSize.id,
+                    sizeName: invSize.name,
+                    sizeId: invSize.id,
+                    amount: '',
+                    originalAmount: '',
+                    cost: invSize.selling_price,
+                    originalCost: invSize.selling_price,
+                    amountLeft: storedInvSize.amount,
+                    amountStored: storedInvSize.amount,                    
                 }
-                // Update the amount of size
-                else if(payload.keyName === 'amount' || payload.keyName === 'cost'){
-                    const value = formatNum(payload.value, true)
-                    addedStoreInvs = [...state]
-
-                    let updatedSizes = [...addedStoreInvs[payload.index].purchasedSizes]
-                    updatedSizes[payload.sizeIndex] = {
-                        ...updatedSizes[payload.sizeIndex], [payload.keyName]: value
-                    }
-
-                    addedStoreInvs[payload.index] = {
-                        ...addedStoreInvs[payload.index], 
-                        purchasedSizes: updatedSizes
-                    }                    
+            ]
+        case 'remove': 
+            addedInvs.splice(payload.index, 1);
+            return addedInvs;   
+        case 'update': 
+            // Update the tool card's toggle expand 
+            if(payload.key === 'expand'){
+                addedInvs[payload.index] = {
+                    ...addedInvs[payload.index], 
+                    toolCardExpand: !addedInvs[payload.index].toolCardExpand
                 }
-                return addedStoreInvs
-            })()
-        default: return [...state];
+            }
+            // Update the amount of size
+            else if(payload.key === 'amount' || payload.key === 'cost'){
+                const value = formatNum(payload.value, true)
+                // Update the size
+                addedInvs[payload.index][payload.key] = value
+                // If the updated props is 'amount', update also the 'amountLeft'
+                if(payload.key === 'amount'){
+                    addedInvs[payload.index].amountLeft = (
+                        addedInvs[payload.index].amountStored - value
+                    )
+                }                  
+            }
+            return addedInvs        
+        default: throw new Error();
     }
 }
 

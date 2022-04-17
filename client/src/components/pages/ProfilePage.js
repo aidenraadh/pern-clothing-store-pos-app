@@ -11,13 +11,15 @@ function ProfilePage({user}){
 
     const [name, setNameName] = useState(user.name)
     const [oldPassword, setOldPassword] = useState('')
-    const [oldPasswordShown, setOldPasswordShown] = useState(false)
+    const [oldPasswordShown, setOldPasswordShown] = useState(true)
     const [newPassword, setNewPassword] = useState('')  
-    const [newPasswordShown, setNewPasswordShown] = useState(false)
+    const [newPasswordShown, setNewPasswordShown] = useState(true)
     const [updProfileModal, setUpdProfileModal] = useState(false)  
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')    
+    /* Success Popup */
+    const [succPopupShown, setSuccPopupShown] = useState(false)    
 
     const updateProfile = useCallback(() => {
         setDisableBtn(true)
@@ -30,6 +32,7 @@ function ProfilePage({user}){
             saveUser(response.data.user)
             setDisableBtn(false)
             setUpdProfileModal(false)
+            setSuccPopupShown(true)
 
         })
         .catch(error => {
@@ -88,7 +91,20 @@ function ProfilePage({user}){
             body={popupErrMsg}
             confirmText={'OK'}
             togglePopup={() => {setErrPopupShown(state => !state)}} 
-        />          
+        />   
+        <ConfirmPopup
+            shown={succPopupShown}
+            icon={'done_circle'}
+            iconColor={'blue'}
+            title={"Success"}
+            body={'Success updating profile'}
+            confirmText={'OK'}
+            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+            confirmCallback={() => {
+                // Refresh the page
+                window.location.reload()
+            }}
+        />                   
     </>)
 }
 

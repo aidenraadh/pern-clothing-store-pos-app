@@ -95,61 +95,15 @@ exports.store = async (req, res) => {
     try {
         // Validate the input
         const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['store_id', 'stored_invs']
+            req.body, ['purchased_invs']
         )) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
-        
-        // Store the inventories to the store
-        let storeInvs = await StoreInventory.bulkCreate(values.stored_invs.storedInvs.map(inv => ({
-            store_id: values.store_id, inventory_id: inv.id, 
-            total_amount: inv.total_amount
-        })))
-        // Store the inventory sizes to the store
-        const storeInvSizes = []
-
-        values.stored_invs.storedInvs.forEach(inv => {
-            inv.sizes.forEach(size => {
-                storeInvSizes.push({
-                    store_inventory_id: storeInvs.find(storeInv => (
-                        parseInt(inv.id) === parseInt(storeInv.inventory_id)
-                    )).id,
-                    inventory_size_id: size.id,
-                    amount: size.amount
-                })
-            })
-        })
-        await StoreInventorySize.bulkCreate(storeInvSizes)
-
-        storeInvs = await StoreInventory.findAll({
-            where: {id: storeInvs.map(storeInv => storeInv.id)},
-            include: [
-                {
-                    model: StoreInventorySize, as: 'sizes', 
-                    attributes: ['id', 'inventory_size_id', 'amount'],
-                },
-                {
-                    model: Store, as: 'store', 
-                    attributes: ['id', 'name'],
-                    where: {owner_id: req.user.owner_id}
-                },
-                {
-                    model: Inventory, as: 'inventory', 
-                    attributes: ['id', 'name'],
-                    where: {owner_id: req.user.owner_id},
-                    include: [{
-                        model: InventorySize, as: 'sizes', 
-                        attributes: ['id', 'name', 'production_price', 'selling_price']                        
-                    }]
-                },                          
-            ],        
-            order: [['created_at', 'DESC']],
-        })        
+          
         res.status(200).send({
-            storeInvs: storeInvs,
-            alrStoredInvs: values.stored_invs.alrStoredInvs,
-            message: 'Success updating the stored inventory'
+            data: values,
+            message: 'Success storing the transaction'
         })      
     } catch(err) {
         logger.error(err.message)   
@@ -306,103 +260,116 @@ exports.destroy = async (req, res) => {
 const validateInput = async (req, input) => {
     try {
         // Parse the updated sizes if it exists in the input
-        if(input.updated_sizes){
-            input.updated_sizes = JSON.parse(input.updated_sizes)
-        }
-        // Parse the stored inventories if it exists in the input
-        if(input.stored_invs){
-            input.stored_invs = JSON.parse(input.stored_invs)
-        }        
+        if(input.purchased_invs){
+            input.purchased_invs = JSON.parse(input.purchased_invs)
+        }      
         const rules = {
-            store_id: Joi.number().required().integer().external(async (value, helpers) => {
-                const store = await Store.findOne({
-                    where: {id: value, owner_id: req.user.owner_id}
-                })
-                if(!store){
-                    throw {message: 'The store is not exist'}
-                }
-                return value
-            }),
-            stored_invs: Joi.array().required().items(Joi.object({
-                id: Joi.number().required().integer(),
 
-                sizes: Joi.array().required().items(Joi.object({
+            purchased_invs: Joi.array().required().items(Joi.object({
+                storeInvId: Joi.number().required().integer(),
+                totalAmount: Joi.number().required().integer(),
+                inventoryId: Joi.number().required().integer(),
+                inventoryName: Joi.string().required(),
+
+                store: Joi.object({
                     id: Joi.number().required().integer(),
-                    amount: Joi.number().required().integer().allow('', null),
-                }).unknown(true)),
+                    name: Joi.string().required(),
+                }).unknown(true),
+
+                purchasedSizes: Joi.array().required().items(Joi.object({
+                    storeInvSizeId: Joi.number().required().integer(),
+                    sizeId: Joi.number().required().integer(),
+                    sizeName: Joi.string().required(),
+                    amount: Joi.number().required().integer().min(0).allow('', null),
+                    amountLeft: Joi.number().required().integer().min(0).allow('', null),
+                    amountStored: Joi.number().required().integer().min(0).allow('', null),
+                    cost: Joi.number().required().integer().min(0).allow('', null),
+                    originalAmount: Joi.number().required().integer().min(0).allow('', null),
+                    originalCost: Joi.number().required().integer().min(0).allow('', null),
+                }).unknown(true))
 
             }).unknown(true)).external(async (value, helpers) => {
-                const invIds = value.map(inv => inv.id)
-                /* ------ Make sure there are no duplicate inventories ------ */
-
-                // Get all the duplicated inventory ID
-                const duplicated = invIds.filter((id, index, idArr) => (
-                    idArr.indexOf(id, (index+1)) !== -1
-                ))
-                if(duplicated.length){
-                    throw {message: 'There are duplicate inventories'}
+                // Get all purchased inventories ID
+                const purchasedInvIds = value.map(inv => inv.inventoryId)
+                // Get all store inventories from the target store
+                const storeInvs = await StoreInventory.findAll({
+                    where: {
+                        id: purchasedInvIds,
+                        store_id: req.user.storeEmployee.store_id
+                    },
+                    attributes: ['id', 'inventory_id', 'total_amount'],
+                    include: [
+                        {
+                            model: StoreInventorySize, as: 'sizes', 
+                            attributes: ['id', 'inventory_size_id', 'amount'],
+                        },
+                        {
+                            model: Store, as: 'store', 
+                            attributes: ['id', 'name'],
+                        },
+                        {
+                            model: Inventory, as: 'inventory', 
+                            attributes: ['id', 'name'],
+                            include: [{
+                                model: InventorySize, as: 'sizes', 
+                                attributes: ['id', 'name', 'selling_price']                   
+                            }]
+                        },                          
+                    ],        
+                })
+                // Make sure all the purchased inventories is exists inside the store
+                if(purchasedInvIds.length !== storeInvs.length){
+                    throw {message: 'One of the inventories is not exist inside the store'}
                 }
-                /* ------------------------------------------------------------ */
-                
-                /* ------ Remove all the inventories that already stored  ------ */
-
-                // Get all the inventory that already stored
-                const alrStoredInvs = await StoreInventory.findAll({
-                    where: {inventory_id: invIds, store_id: input.store_id},
-                    attributes: ['inventory_id'],
-                    include: [{
-                        model: Inventory, as: 'inventory', 
-                        attributes: ['name'],
-                    }]
-                })
-                const alrStoredInvIds = alrStoredInvs.map(inv => parseInt(inv.inventory_id))
-                // Filter the inventories
-                const storedInvs = value.filter(inv => (
-                    !alrStoredInvIds.includes(parseInt(inv.id))
-                ))
-                /* ------------------------------------------------------------ */
-
-
-                /* ------------ Make sure the stored size is exists  ------------ */
-
-                // Get all the inventory and its sizes
-                const invAndSizes = await Inventory.findAll({
-                    where: {id: storedInvs.map(inv => inv.id)},
-                    attributes: ['id'],
-                    include: [{
-                        model: InventorySize, as: 'sizes', 
-                        attributes: ['id']                        
-                    }]
-                })
-                storedInvs.forEach((storedInv, index, self) => {
-                    let totalAmount = 0
-                    const sanitizedSizes = []
-                    const sizeIds = invAndSizes.find(invAndSize => (
-                        parseInt(invAndSize.id) === parseInt(storedInv.id)
+                const purchasedSizes = value.map(inventory => {
+                    // Get the store inventory
+                    const storeInv = storeInvs.find(storeInv => (
+                        parseInt(inventory.inventoryId) === parseInt(storeInv.inventory_id)
                     ))
-                    .sizes.map(size => parseInt(size.id))
-
-                    storedInv.sizes.forEach(size => {
-                        if(sizeIds.includes(parseInt(size.id)) && size.amount){
-                            sanitizedSizes.push(size)
-                            totalAmount += size.amount
-                        }
-                    })
-                    self[index].sizes = sanitizedSizes
-                    self[index].total_amount = totalAmount ? totalAmount : null
+                    return {
+                        storeInvId: storeInv.id,
+                        inventoryId: inventory.inventoryId,
+                        purchasedSizes: inventory.purchasedSizes.map(purchasedSize => {
+                            // Get the inventory size
+                            const invSize = storeInv.inventory.sizes.find(existedSize => (
+                                parseInt(purchasedSize.sizeId) === parseInt(existedSize.id)
+                            ))
+                            // Make sure the size is exist
+                            if(!invSize){
+                                throw {message: 
+                                    `Inventory '${inventory.inventoryName}' size '${purchasedSize.name}' is not exist`
+                                }
+                            }
+                            // Get the inventory size from the target store
+                            const storedInvSize = storeInv.sizes.find(storedSize => (
+                                parseInt(purchasedSize.sizeId) === parseInt(storedSize.inventory_size_id)
+                            ))
+                            // Make sure the size is exist inside the store
+                            if(!storedInvSize){
+                                throw {message: 
+                                    `Inventory '${inventory.inventoryName}' size '${purchasedSize.name}' is not exist `+
+                                    `inside the store`
+                                }
+                            }
+                            const data = {
+                                storeInvSizeId: storedInvSize.id,
+                                sizeId: storedInvSize.inventory_size_id,
+                                amountLeft: (storedInvSize.amount - purchasedInvIds.amount),
+                                originalCost: invSize.selling_price,                           
+                            }
+                            // Make sure the amount purchased is not exceeds the amount stored
+                            if(amountLeft < 0){
+                                throw {message: 
+                                    `The amount of Inventory '${inventory.inventoryName}' size '${purchasedSize.name}' `+
+                                    `is exceeds the amount stored`
+                                }                                
+                            }
+                            return data
+                        })
+                    }
                 })
-                /* ------------------------------------------------------------ */
-                return {
-                    storedInvs: storedInvs, alrStoredInvs: alrStoredInvs
-                }
+                return purchasedSizes
             }),       
-
-            updated_sizes: Joi.array().required().items(Joi.object({
-                id: Joi.number().required().integer().allow('', null),
-                inventory_size_id: Joi.number().required().integer(),
-                amount: Joi.number().required().integer().allow('', null),
-                isChanged: Joi.boolean().required()
-            }).unknown(true))
         }
         // Create the schema based on the input key
         const schema = {}
