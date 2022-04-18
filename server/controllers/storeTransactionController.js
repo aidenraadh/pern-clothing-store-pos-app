@@ -95,12 +95,28 @@ exports.store = async (req, res) => {
     try {
         // Validate the input
         const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['purchased_invs']
+            req.body, ['transaction_date', 'purchased_invs']
         )) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
-          
+        // const totalAmountAndCost = countTotalAmountAndCost(values.purchased_invs)
+        // // Create the store transaction
+        // const storeTrnsc = await StoreTransaction.create({
+        //     total_amount: totalAmountAndCost.totalAmount,
+        //     total_cost: totalAmountAndCost.totalCost,
+        //     total_original_cost: totalAmountAndCost.totalOriginalCost,
+        //     transaction_date: values.transaction_date,
+        // })
+        // // Create the store transaction inventory
+        // await StoreTransactionInventory.bulkCreate(values.purchased_invs.map(inv => ({
+        //     store_transaction_id: storeTrnsc.id,
+        //     inventory_id: inv.inventoryId,
+        //     inventory_size_id: inv.sizeId,
+        //     amount: inv.amount,
+        //     cost: inv.cost,
+        //     original_cost: inv.originalCost
+        // })))
         res.status(200).send({
             data: values,
             message: 'Success storing the transaction'
@@ -264,33 +280,32 @@ const validateInput = async (req, input) => {
             input.purchased_invs = JSON.parse(input.purchased_invs)
         }      
         const rules = {
+            transaction_date: Joi.date().required(),
 
             purchased_invs: Joi.array().required().items(Joi.object({
                 storeInvId: Joi.number().required().integer(),
-                totalAmount: Joi.number().required().integer(),
                 inventoryId: Joi.number().required().integer(),
                 inventoryName: Joi.string().required(),
+                storeInvSizeId: Joi.number().required().integer(),
+                sizeId: Joi.number().required().integer(),
+                sizeName: Joi.string().required(),
+                amount: Joi.number().required().integer().min(0).allow('', null),
+                amountLeft: Joi.number().required().integer().allow('', null),
+                amountStored: Joi.number().required().integer().min(0).allow('', null),
+                cost: Joi.number().required().integer().min(0).allow('', null),
+                originalAmount: Joi.number().required().integer().min(0).allow('', null),
+                originalCost: Joi.number().required().integer().min(0).allow('', null),                
 
                 store: Joi.object({
                     id: Joi.number().required().integer(),
                     name: Joi.string().required(),
                 }).unknown(true),
 
-                purchasedSizes: Joi.array().required().items(Joi.object({
-                    storeInvSizeId: Joi.number().required().integer(),
-                    sizeId: Joi.number().required().integer(),
-                    sizeName: Joi.string().required(),
-                    amount: Joi.number().required().integer().min(0).allow('', null),
-                    amountLeft: Joi.number().required().integer().min(0).allow('', null),
-                    amountStored: Joi.number().required().integer().min(0).allow('', null),
-                    cost: Joi.number().required().integer().min(0).allow('', null),
-                    originalAmount: Joi.number().required().integer().min(0).allow('', null),
-                    originalCost: Joi.number().required().integer().min(0).allow('', null),
-                }).unknown(true))
-
             }).unknown(true)).external(async (value, helpers) => {
                 // Get all purchased inventories ID
-                const purchasedInvIds = value.map(inv => inv.inventoryId)
+                const purchasedInvIds = value.map(inv => inv.inventoryId).filter((value, index, self) => (
+                    self.indexOf(value) === index
+                ))
                 // Get all store inventories from the target store
                 const storeInvs = await StoreInventory.findAll({
                     where: {
@@ -321,54 +336,55 @@ const validateInput = async (req, input) => {
                 if(purchasedInvIds.length !== storeInvs.length){
                     throw {message: 'One of the inventories is not exist inside the store'}
                 }
-                const purchasedSizes = value.map(inventory => {
-                    // Get the store inventory
+                const purchasedInvs = value.map(inv => {
                     const storeInv = storeInvs.find(storeInv => (
-                        parseInt(inventory.inventoryId) === parseInt(storeInv.inventory_id)
+                        parseInt(inv.inventoryId) === parseInt(storeInv.id)
                     ))
-                    return {
-                        storeInvId: storeInv.id,
-                        inventoryId: inventory.inventoryId,
-                        purchasedSizes: inventory.purchasedSizes.map(purchasedSize => {
-                            // Get the inventory size
-                            const invSize = storeInv.inventory.sizes.find(existedSize => (
-                                parseInt(purchasedSize.sizeId) === parseInt(existedSize.id)
-                            ))
-                            // Make sure the size is exist
-                            if(!invSize){
-                                throw {message: 
-                                    `Inventory '${inventory.inventoryName}' size '${purchasedSize.name}' is not exist`
-                                }
-                            }
-                            // Get the inventory size from the target store
-                            const storedInvSize = storeInv.sizes.find(storedSize => (
-                                parseInt(purchasedSize.sizeId) === parseInt(storedSize.inventory_size_id)
-                            ))
-                            // Make sure the size is exist inside the store
-                            if(!storedInvSize){
-                                throw {message: 
-                                    `Inventory '${inventory.inventoryName}' size '${purchasedSize.name}' is not exist `+
-                                    `inside the store`
-                                }
-                            }
-                            const data = {
-                                storeInvSizeId: storedInvSize.id,
-                                sizeId: storedInvSize.inventory_size_id,
-                                amountLeft: (storedInvSize.amount - purchasedInvIds.amount),
-                                originalCost: invSize.selling_price,                           
-                            }
-                            // Make sure the amount purchased is not exceeds the amount stored
-                            if(amountLeft < 0){
-                                throw {message: 
-                                    `The amount of Inventory '${inventory.inventoryName}' size '${purchasedSize.name}' `+
-                                    `is exceeds the amount stored`
-                                }                                
-                            }
-                            return data
-                        })
+                    // Get the inventory size
+                    const invSize = storeInv.inventory.sizes.find(existedSize => (
+                        parseInt(inv.sizeId) === parseInt(existedSize.id)
+                    ))
+                    // Make sure the size is exist
+                    if(!invSize){
+                        throw {message: 
+                            `Inventory '${inv.inventoryName}' size '${inv.sizeName}' is not exist`
+                        }
                     }
+                    // Get the inventory size from the target store
+                    const storedInvSize = storeInv.sizes.find(storedSize => (
+                        parseInt(inv.sizeId) === parseInt(storedSize.inventory_size_id)
+                    ))
+                    // Make sure the size is exist inside the store
+                    if(!storedInvSize){
+                        throw {message: 
+                            `Inventory '${inv.inventoryName}' size '${inv.sizeName}' is not exist `+
+                            `inside the store`
+                        }
+                    }           
+                    if(inv.amount === 0 || inv.amount === ''){
+                        throw {message: 
+                            `The amount of Inventory '${inv.inventoryName}' size '${inv.sizeName}' `+
+                            `cannot be 0`
+                        }
+                    }                                         
+                    const data = {...inv}
+
+                    // Make sure the amount size purchased does not exceed
+                    if(data.amountLeft < 0){
+                        throw {message: 
+                            `The amount of inventory '${inv.inventoryName}' size '${inv.sizeName}' `+
+                            `exceeds`
+                        }
+                    }
+                    data.storeInvId = storeInv.id
+                    data.storeInvSizeId = storedInvSize.id          
+                    data.amountLeft = storedInvSize.amount - data.amount
+                    data.cost = invSize.selling_price * data.amount
+                    data.originalCost = invSize.selling_price          
+
+                    return data
                 })
-                return purchasedSizes
+                return purchasedInvs
             }),       
         }
         // Create the schema based on the input key
@@ -418,4 +434,22 @@ const isStoreInventoryExist = async (id, ownerId) => {
         logger.error(err.message)
         return false
     }
+}
+/**
+ * 
+ * @param {array} invs 
+ * @returns {object}
+ */
+const countTotalAmountAndCost = (invs) => {
+    const totalAmountAndCost = {
+        totalAmount: 0, totalCost: 0,
+        totalOriginalCost: 0
+    }
+    // Count the total amount and cost
+    invs.purchased_invs.forEach(inv => {
+        totalAmountAndCost.totalAmount += inv.amount
+        totalAmountAndCost.totalCost += inv.cost
+        totalAmountAndCost.totalOriginalCost += inv.originalCost
+    })
+    return totalAmountAndCost
 }

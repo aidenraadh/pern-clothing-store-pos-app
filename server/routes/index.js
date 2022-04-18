@@ -104,8 +104,13 @@ rootRouter
     .delete('/store-inventories/:id', [
         isAuth, authorize('owner'), storeInventoryController.destroy
     ])
+
+rootRouter
     .get('/store-transactions', [
         isAuth, authorize('all'), storeTransactionController.index
     ])
+    .post('/store-transactions', [
+        isAuth, authorize('employee'), storeTransactionController.store
+    ])    
 
 module.exports = rootRouter

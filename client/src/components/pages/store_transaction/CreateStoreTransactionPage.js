@@ -1,14 +1,17 @@
 import {useState, useReducer, useCallback, useMemo} from 'react'
+import {format} from 'date-fns'
 import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
-import {TextInput, TextInputWithBtn, Select} from '../../Forms'
+import {TextInput, TextInputAddon, TextInputWithBtn, Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
 import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
+import {SVGIcons} from '../../Misc'
 
 function CreateStoreTransactionPage(){
     const [disableBtn , setDisableBtn] = useState(false)
+    const [transactionDate, setTransactionDate] = useState(format(new Date(), 'yyyy-MM-dd'))
     const [addedInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
     const [invName, setInvName] = useState('')
     const [searchedStoreInvs, setSearchedStoreInvs] = useState([])
@@ -38,18 +41,19 @@ function CreateStoreTransactionPage(){
     }, [invName, setDisableBtn])
 
     const storeTransaction = () => {
-        console.log(addedInvs)
-        // setDisableBtn(true)
-        // api.post(`/store-transactions`, {
-        //     purchased_invs: JSON.stringify(addedInvs)
-        // })
-        // .then(response => {
-        //      setDisableBtn(false) 
-        // })
-        // .catch(error => { 
-        //      setDisableBtn(false)
-        //      errorHandler(error) 
-        // })         
+        setDisableBtn(true)
+        api.post(`/store-transactions`, {
+            transaction_date: transactionDate,
+            purchased_invs: JSON.stringify(addedInvs)
+        })
+        .then(response => {
+            console.log(response)
+            setDisableBtn(false) 
+        })
+        .catch(error => { 
+            setDisableBtn(false)
+            errorHandler(error) 
+        })         
     }
 
     const AddedInvsTable = useMemo(() => {
@@ -58,7 +62,19 @@ function CreateStoreTransactionPage(){
                 <Table
                     headings={['Inventory', 'Size', 'Amount', 'Price']}
                     body={addedInvs.map((inv, key) => ([
-                        inv.inventoryName, inv.sizeName,
+                        <span className='flex-row items-center'>
+                            <button className='flex-row items-center'
+                                style={{fontSize: '2.2rem', marginRight: '1rem'}}
+                                onClick={() => {dispatchAddedInvs({
+                                    type: 'remove', payload: {index: key}
+                                })}}
+                            >
+                                <SVGIcons color={'red'} name={'error_circle'}
+                                />
+                            </button>
+                            {inv.inventoryName}
+                        </span>,
+                        inv.sizeName,
                         <span className='flex-row items-center flex-inline' style={{width: '100%'}}>
                             <TextInputWithBtn size={'sm'} containerAttr={{style: {width: '100%'}}}
                                 formAttr={{value: formatNum(inv.amount),
@@ -113,17 +129,23 @@ function CreateStoreTransactionPage(){
 
     return (<>
         <Grid num_of_columns={1} items={[
-                AddedInvsTable,
-                <button key={'a'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
-                onClick={() => {setModalShown(true)}}>
-                    + Add Inventory
-                </button>,        
-                <div key={'b'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>, 
-                <Button key={'c'} size={'md'} text={'Create transaction'} attr={{
-                    onClick: storeTransaction
-                }}/>                   
-            ]}
-        />
+            <TextInputAddon 
+                addon={'Date'}
+                formAttr={{
+                    type: 'date', value: transactionDate,
+                    onChange: (e) => {setTransactionDate(e.target.value)}
+                }}
+            />,
+            AddedInvsTable,
+            <button key={'a'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
+            onClick={() => {setModalShown(true)}}>
+                + Add Inventory
+            </button>,        
+            <div key={'b'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>, 
+            <Button key={'c'} size={'md'} text={'Create transaction'} attr={{
+                onClick: storeTransaction
+            }}/>                   
+        ]}/>
         <Modal
             heading={'Search Inventories'}
             body={<>
@@ -191,7 +213,7 @@ function CreateStoreTransactionPage(){
             title={"Success"}
             body={popupSuccMsg}
             confirmText={'OK'}
-            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+            togglePopup={() => {setSuccPopupMsg(state => !state)}} 
         />                  
     </>)
 }
