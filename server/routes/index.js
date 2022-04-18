@@ -25,6 +25,21 @@ const haha = (...items) => {
     console.log(items)
 }
 
+rootRouter.get('/new-owner', async (req, res) => {
+    // const owner = await Owner.create({})
+    // const hashedPassword = await bcrypt.hash(
+    //     '12345678', 10
+    // )    
+    // await User.create({
+    //     name: 'ownerA',
+    //     email: 'testownera@gmail.com',
+    //     password: hashedPassword,
+    //     owner_id: owner.id,
+    //     role_id: 2
+    // })
+    return res.send({message: 'asd'})
+})
+
 rootRouter.get('/test', async (req, res) => {
     // User.update(
     //     {password: await bcrypt.hash('12345678', 10)},

@@ -181,8 +181,18 @@ function CreateStoreInventoryPage(){
             iconColor={'blue'}
             title={"Success"}
             body={popupSuccMsg}
-            confirmText={'OK'}
+            cancelBtnColor={'blue'}
+            confirmText={'Store new inventories'}
+            cancelText={'View stored inventories'}
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
+            confirmCallback={() => {
+                // Refresh the page
+                window.location.reload()                
+            }}
+            cancelCallback={() => {
+                const host = window.location.origin
+                window.location.href = `${host}/store-inventories`
+            }}            
         />            
         <ConfirmPopup
             shown={errPopupShown}

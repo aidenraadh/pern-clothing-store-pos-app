@@ -109,8 +109,11 @@ export function ConfirmPopup(props){
                           }}/>
                           {props.cancelText ? 
                             <Button type="light" size={'sm'} color={props.cancelBtnColor} text={props.cancelText} attr={{
-                                    style: {marginLeft: '1rem'},
-                                    onClick: props.togglePopup
+                                style: {marginLeft: '1rem'},
+                                onClick: () => {
+                                    props.cancelCallback()
+                                    props.togglePopup()
+                                }
                             }}/>                              
                           : ''}                      
                       </div>
@@ -132,6 +135,7 @@ ConfirmPopup.defaultProps = {
     shown: false, // Boolean - Must from parent's state
     togglePopup: () => {alert('Please defined the togglePopup function')},
     confirmCallback: () => {},
+    cancelCallback: () => {},
     classes: '', // String
 	attr: {} // Object
 }

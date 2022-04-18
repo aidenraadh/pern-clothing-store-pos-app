@@ -8,6 +8,7 @@ const StoreInventorySize        = models.StoreInventorySize
 const Store                     = models.Store
 const {Op}                      = require("sequelize")
 const Joi                       = require('joi')
+const storeInventoryController  = require('./storeInventoryController')
 const filterKeys                = require('../utils/filterKeys')
 const logger                    = require('../utils/logger')
 
@@ -47,15 +48,18 @@ exports.index = async (req, res) => {
             })(),
             attributes: ['id', 'total_amount','total_cost','total_original_cost', 'transaction_date'],
             include: [
+                // Get the store, even if its soft deleted
                 {
                     model: Store, as: 'store', 
                     attributes: ['id', 'name'],
-                    where: {owner_id: req.user.owner_id}
+                    where: {owner_id: req.user.owner_id},
+                    paranoid: false,
                 },              
                 {
                     model: StoreTransactionInventory, as: 'storeTrnscInvs', 
                     attributes: ['id', 'amount', 'cost', 'original_cost'],
                     include: [
+                        // Get the inventories, including the soft deleted ones
                         {
                             model: Inventory, as: 'inventory', 
                             attributes: ['id', 'name'],
@@ -65,9 +69,11 @@ exports.index = async (req, res) => {
                                 return where
                             })(),                            
                         },
+                        // Get all inventory sizes including the soft deleted ones
                         {
                             model: InventorySize, as: 'size', 
-                            attributes: ['id', 'name'],                             
+                            attributes: ['id', 'name'],
+                            paranoid: false                      
                         }
                     ],
                 },                        
@@ -91,6 +97,18 @@ exports.index = async (req, res) => {
     }
 }
 
+exports.get = async (req, res) => {
+    try { 
+        res.send({
+            storeInv: await getStoreInventory(req.params.id),
+            message: 'Success updating the stored inventory'
+        })
+    } catch(err) {
+        logger.error(err.message)
+        res.status(500).send(err.message)
+    }      
+}
+
 exports.store = async (req, res) => {    
     try {
         // Validate the input
@@ -100,25 +118,39 @@ exports.store = async (req, res) => {
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
-        // const totalAmountAndCost = countTotalAmountAndCost(values.purchased_invs)
-        // // Create the store transaction
-        // const storeTrnsc = await StoreTransaction.create({
-        //     total_amount: totalAmountAndCost.totalAmount,
-        //     total_cost: totalAmountAndCost.totalCost,
-        //     total_original_cost: totalAmountAndCost.totalOriginalCost,
-        //     transaction_date: values.transaction_date,
-        // })
-        // // Create the store transaction inventory
-        // await StoreTransactionInventory.bulkCreate(values.purchased_invs.map(inv => ({
-        //     store_transaction_id: storeTrnsc.id,
-        //     inventory_id: inv.inventoryId,
-        //     inventory_size_id: inv.sizeId,
-        //     amount: inv.amount,
-        //     cost: inv.cost,
-        //     original_cost: inv.originalCost
-        // })))
+        const totalAmountAndCost = countTotalAmountAndCost(values.purchased_invs)
+        // Create the store transaction
+        const storeTrnsc = await StoreTransaction.create({
+            store_id: req.user.storeEmployee.store_id,
+            total_amount: totalAmountAndCost.totalAmount,
+            total_cost: totalAmountAndCost.totalCost,
+            total_original_cost: totalAmountAndCost.totalOriginalCost,
+            transaction_date: values.transaction_date,
+        })
+        // Create the store transaction inventory
+        await StoreTransactionInventory.bulkCreate(values.purchased_invs.map(inv => ({
+            store_transaction_id: storeTrnsc.id,
+            inventory_id: inv.inventoryId,
+            inventory_size_id: inv.sizeId,
+            amount: inv.amount,
+            cost: inv.cost,
+            original_cost: inv.originalCost
+        })))
+        // Update the store inventory size amount
+        for(const inv of values.purchased_invs){
+            await StoreInventorySize.update(
+                {amount: inv.amountLeft},
+                {where: { id: inv.storeInvSizeId }}
+            )
+        }
+        // Get all purchased inventories ID
+        const storeInvIds = values.purchased_invs.map(inv => inv.storeInvId).filter((value, index, self) => (
+            self.indexOf(value) === index
+        ))
+        // Refresh the store inventory
+        await storeInventoryController.refreshStoreInventory(storeInvIds, 'storeinventory')
+
         res.status(200).send({
-            data: values,
             message: 'Success storing the transaction'
         })      
     } catch(err) {
@@ -128,109 +160,8 @@ exports.store = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
-    try {
-        // Get the store inventory
-        let storeInv = await isStoreInventoryExist(req.params.id, req.user.owner_id)
-        // Make sure the inventory stored is exists
-        if(!storeInv)
-        {
-            return res.status(400).send({
-                message: "The store's inventory is not exist"
-            })
-        }              
-        // Validate the input
-        const {values, errMsg} = await validateInput(req, {
-            updated_sizes: req.body.updated_sizes
-        }) 
-        if(errMsg){
-            return res.status(400).send({message: errMsg})
-        }
-        // Get all the inventory sizes ids
-        let currentSizeIds = await InventorySize.findAll({
-            where: {inventory_id: storeInv.inventory_id},
-            attributes: ['id'],
-        })
-        currentSizeIds = currentSizeIds.map(size => parseInt(size.id))
-    
-        const addedSizes = []
-        const updatedSizes = []
-        const removedSizes = []        
-        // Loop through updated inventory sizes
-        values.updated_sizes.forEach(size => {
-            if(currentSizeIds.includes(parseInt( size.inventory_size_id )) && size.isChanged){
-                // When id is empty string and there are amount stored
-                if(size.id === '' && size.amount){
-                    addedSizes.push(size)
-                }
-                // When id is not empty string and there are amount stored
-                else if(size.id !== '' && size.amount){
-                    updatedSizes.push(size)
-                }
-                // When id is not empty string and there are no amount stored
-                else if(size.id !== '' && !size.amount){
-                    removedSizes.push(size)
-                }
-            }
-        })           
-        // Remove the size that doesn't already exists
-        await StoreInventorySize.destroy({
-            where: {
-                store_inventory_id: req.params.id,
-                inventory_size_id: {[Op.notIn]: currentSizeIds}
-            }
-        })
-        // Delete the stored size if there are any
-        await StoreInventorySize.destroy({
-            where: {
-                id: removedSizes.map(size => size.id)
-            }
-        })        
-        // Update the stored size if there are any
-        for(const size of updatedSizes){
-            await StoreInventorySize.update(
-                {amount: size.amount}, 
-                {where: {id: size.id}}
-            )            
-        }        
-        // Store the stored size if there are any
-        await StoreInventorySize.bulkCreate(addedSizes.map(size => ({
-            store_inventory_id: req.params.id, 
-            inventory_size_id: size.inventory_size_id, 
-            amount: size.amount
-        }))) 
-        // Count total amount of the stored inventory
-        const total_amount = await StoreInventorySize.sum('amount', {
-            where: {store_inventory_id: req.params.id}
-        })        
-        // Update the store inventory
-        await StoreInventory.update(
-            {total_amount: total_amount ? total_amount : null}, 
-            {where: { id: req.params.id }}
-        )          
-        storeInv = await StoreInventory.findOne({
-            where: {id: req.params.id},
-            include: [
-                {
-                    model: StoreInventorySize, as: 'sizes', 
-                    attributes: ['id', 'inventory_size_id', 'amount'],
-                },
-                {
-                    model: Store, as: 'store', 
-                    attributes: ['id', 'name'],
-                },
-                {
-                    model: Inventory, as: 'inventory', 
-                    attributes: ['id', 'name'],
-                    include: [{
-                        model: InventorySize, as: 'sizes', 
-                        attributes: ['id', 'name', 'production_price', 'selling_price']                        
-                    }]
-                },                          
-            ],        
-            order: [['created_at', 'DESC']],
-        })       
+    try { 
         res.send({
-            storeInv: storeInv,
             message: 'Success updating the stored inventory'
         })
     } catch(err) {
@@ -376,6 +307,7 @@ const validateInput = async (req, input) => {
                             `exceeds`
                         }
                     }
+                    // Make sure these data below is the most updated ones
                     data.storeInvId = storeInv.id
                     data.storeInvSizeId = storedInvSize.id          
                     data.amountLeft = storedInvSize.amount - data.amount
@@ -405,31 +337,41 @@ const validateInput = async (req, input) => {
  * 
  * @param {integer} storeId 
  * @param {integer} inventoryId 
- * @returns {object|false}
+ * @returns {object}
  */
 
-const isStoreInventoryExist = async (id, ownerId) => {
-    try {
-        const {error} = Joi.number().integer().validate(id)
-
-        if(error){
-            return false
-        }
-        const storeInventory = await StoreInventory.findOne({
+const getStoreInventory = async (id, paranoid = true) => {
+    try {      
+        return await StoreInventory.findOne({
             where: {id: id},
+            paranoid: paranoid,
+            attributes: ['id', 'total_amount','total_cost','total_original_cost', 'transaction_date'],    
             include: [
+                // Get the store, even if its soft deleted
                 {
                     model: Store, as: 'store', 
-                    attributes: ['id'],
-                    where: {owner_id: ownerId}
-                },                       
-            ],             
-        })       
-        // Make sure the store's inventory exists
-        if(!storeInventory){
-            return false
-        }    
-        return storeInventory           
+                    attributes: ['id', 'name'],
+                    paranoid: false,
+                },              
+                {
+                    model: StoreTransactionInventory, as: 'storeTrnscInvs', 
+                    attributes: ['id', 'amount', 'cost', 'original_cost'],
+                    include: [
+                        // Get the inventories, including the soft deleted ones
+                        {
+                            model: Inventory, as: 'inventory', 
+                            attributes: ['id', 'name'],                        
+                        },
+                        // Get all inventory sizes including the soft deleted ones
+                        {
+                            model: InventorySize, as: 'size', 
+                            attributes: ['id', 'name'],
+                            paranoid: false                      
+                        }
+                    ],
+                },                        
+            ],                         
+        })
     } catch (err) {
         logger.error(err.message)
         return false
@@ -446,7 +388,7 @@ const countTotalAmountAndCost = (invs) => {
         totalOriginalCost: 0
     }
     // Count the total amount and cost
-    invs.purchased_invs.forEach(inv => {
+    invs.forEach(inv => {
         totalAmountAndCost.totalAmount += inv.amount
         totalAmountAndCost.totalCost += inv.cost
         totalAmountAndCost.totalOriginalCost += inv.originalCost

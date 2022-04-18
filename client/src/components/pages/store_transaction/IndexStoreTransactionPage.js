@@ -151,8 +151,9 @@ const filterReducer = (state, action) => {
 
 const StoreTrnscsTable = ({storeTrnscs, viewHandler}) => {
     return <Table
-        headings={['Store', 'Total Amount', 'Total Cost', 'Transaction Date', 'Actions']}
+        headings={['No', 'Store', 'Total Amount', 'Total Cost', 'Transaction Date', 'Actions']}
         body={storeTrnscs.map((storeTrnsc, index) => ([
+            (index + 1),
             storeTrnsc.store.name, 
             formatNum(storeTrnsc.total_amount), 
             'Rp. '+formatNum(storeTrnsc.total_cost),

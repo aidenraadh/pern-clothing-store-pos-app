@@ -21,7 +21,6 @@ function CreateStoreTransactionPage(){
     const [popupErrMsg, setErrPopupMsg] = useState('')    
     /* Success Popup */
     const [succPopupShown, setSuccPopupShown] = useState(false)
-    const [popupSuccMsg, setSuccPopupMsg] = useState('')     
     
     const getInvs = useCallback(() => {
         setDisableBtn(true)
@@ -47,12 +46,15 @@ function CreateStoreTransactionPage(){
             purchased_invs: JSON.stringify(addedInvs)
         })
         .then(response => {
-            console.log(response)
             setDisableBtn(false) 
+            setSuccPopupShown(true)
         })
         .catch(error => { 
             setDisableBtn(false)
-            errorHandler(error) 
+            errorHandler(error, {'400': () => {
+                setErrPopupShown(true)
+                setErrPopupMsg(error.response.data.message)                
+            }})              
         })         
     }
 
@@ -211,9 +213,23 @@ function CreateStoreTransactionPage(){
             icon={'done_circle'}
             iconColor={'blue'}
             title={"Success"}
-            body={popupSuccMsg}
-            confirmText={'OK'}
-            togglePopup={() => {setSuccPopupMsg(state => !state)}} 
+            body={
+                <p>
+                    Success creating new transaction
+                </p>
+            }
+            confirmText={'New transaction'}
+            cancelText={'View transactions'}
+            cancelBtnColor={'blue'}
+            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+            confirmCallback={() => {
+                // Refresh the page
+                window.location.reload()                
+            }}
+            cancelCallback={() => {
+                const host = window.location.origin
+                window.location.href = `${host}/store-transactions`
+            }}
         />                  
     </>)
 }
@@ -224,15 +240,19 @@ const addedInvsReducer = (state, action) => {
 
     switch(action.type){
         case 'add':
+            // If the inventory exists, return the previous state
             const isInvExists = addedInvs.find(inv => (
                 parseInt(inv.sizeId) === parseInt(payload.storeInv.selectedSizeId)
             ))
             if(isInvExists){ return addedInvs }
-            const invSize = payload.storeInv.inventory.sizes.find((size) => (
-                parseInt(size.id) === parseInt(payload.storeInv.selectedSizeId)
-            ))
+            // If the stored inventory is not exists, return the previous state
             const storedInvSize = payload.storeInv.sizes.find(size => (
                 parseInt(size.inventory_size_id) === parseInt(payload.storeInv.selectedSizeId)
+            ))
+            if(!storedInvSize){ return addedInvs }
+
+            const invSize = payload.storeInv.inventory.sizes.find((size) => (
+                parseInt(size.id) === parseInt(payload.storeInv.selectedSizeId)
             ))
             return [
                 ...addedInvs, {

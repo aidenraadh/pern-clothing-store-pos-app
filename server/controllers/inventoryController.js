@@ -1,11 +1,12 @@
-const models         = require('../models/index')
-const Inventory      = models.Inventory
-const InventorySize  = models.InventorySize
-const Sequelize      = require("sequelize")
-const {Op}           = require("sequelize")
-const Joi            = require('joi')
-const filterKeys     = require('../utils/filterKeys')
-const logger         = require('../utils/logger')
+const models                   = require('../models/index')
+const Inventory                = models.Inventory
+const InventorySize            = models.InventorySize
+const Sequelize                = require("sequelize")
+const {Op}                     = require("sequelize")
+const Joi                      = require('joi')
+const filterKeys               = require('../utils/filterKeys')
+const logger                   = require('../utils/logger')
+const storeInventoryController = require('./storeInventoryController')
 
 exports.index = async (req, res) => {    
     try {
@@ -141,6 +142,8 @@ exports.update = async (req, res) => {
             }))
             
         await InventorySize.bulkCreate(newSizes)
+        // Refresh the store inventory
+        await storeInventoryController.refreshStoreInventory(inventory.id, 'inventory')
 
         // Get the inventory's sizes
         const sizes = await inventory.getSizes({
