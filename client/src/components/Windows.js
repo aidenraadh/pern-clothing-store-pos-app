@@ -44,7 +44,7 @@ export function Modal(props){
       			  	<div className="modal-body">
       			  		{props.body}
       			  	</div>
-      			  	<div className={'modal-footer'+footerAlign}>
+      			  	<div className={'modal-footer '+footerAlign}>
                         {props.footer}
                     </div>
       			</div>  		

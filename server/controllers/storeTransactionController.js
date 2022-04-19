@@ -100,8 +100,7 @@ exports.index = async (req, res) => {
 exports.get = async (req, res) => {
     try { 
         res.send({
-            storeInv: await getStoreInventory(req.params.id),
-            message: 'Success updating the stored inventory'
+            storeInv: await getStoreTransaction(req.params.id),
         })
     } catch(err) {
         logger.error(err.message)
@@ -172,24 +171,13 @@ exports.update = async (req, res) => {
 
 exports.destroy = async (req, res) => {
     try{
-        // Make sure the inventory stored is exist
-        if(!await isStoreInventoryExist(req.params.storeId, req.params.inventoryId))
-        {
-            return res.status(400).send({
-                message: "The store's inventory is not exist"
-            })
+        const storeTrnsc = await getStoreTransaction(req.params.id)
+        console.log(storeTrnsc)
+        if(!storeTrnsc){
+            return res.status(400).send({message: "This transaction doesn't exist"})
         }
-        // Make sure the store and inventory is exist for the owner
-        const {values, errMsg} = await validateInput(req, {
-            store_id: req.params.storeId, inventory_id: req.params.inventoryId
-        }) 
-        if(errMsg){
-            return res.status(400).send({message: errMsg})
-        }         
-        await StoreInventory.destroy({where: {
-            store_id: values.store_id, inventory_id: values.inventory_id
-        }})
-
+        await storeTrnsc.destroy()
+        
         res.send({message: 'Success deleting inventory'})        
     } catch(err) {
         logger.error(err.message)
@@ -311,7 +299,7 @@ const validateInput = async (req, input) => {
                     data.storeInvId = storeInv.id
                     data.storeInvSizeId = storedInvSize.id          
                     data.amountLeft = storedInvSize.amount - data.amount
-                    data.cost = invSize.selling_price * data.amount
+                    data.cost = data.cost * data.amount
                     data.originalCost = invSize.selling_price          
 
                     return data
@@ -340,9 +328,9 @@ const validateInput = async (req, input) => {
  * @returns {object}
  */
 
-const getStoreInventory = async (id, paranoid = true) => {
+const getStoreTransaction = async (id, paranoid = true) => {
     try {      
-        return await StoreInventory.findOne({
+        return await StoreTransaction.findOne({
             where: {id: id},
             paranoid: paranoid,
             attributes: ['id', 'total_amount','total_cost','total_original_cost', 'transaction_date'],    

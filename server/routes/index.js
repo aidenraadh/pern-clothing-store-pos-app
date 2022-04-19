@@ -127,5 +127,8 @@ rootRouter
     .post('/store-transactions', [
         isAuth, authorize('employee'), storeTransactionController.store
     ])    
+    .delete('/store-transactions/:id', [
+        isAuth, authorize('employee'), storeTransactionController.destroy
+    ])     
 
 module.exports = rootRouter

@@ -184,6 +184,10 @@ input:focus, select:focus {
 	text-decoration: underline;
 }
 
+.text-line-through{
+	text-decoration: line-through;
+}
+
 .bg-white{
 	background-color: #FFFFFF;
 }

@@ -1,12 +1,13 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
 import {STORETRNSC_FILTER_KEY, STORETRNSC_ACTIONS} from '../../reducers/StoreTransactionReducer.js'
+import TransactionReceipt from './TransactionReceipt'
 import {api, errorHandler, formatNum, getResFilters, getQueryString} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
 import {Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
-import {Modal} from '../../Windows'
+import {Modal, ConfirmPopup} from '../../Windows'
 import {format} from 'date-fns'
 
 
@@ -22,9 +23,14 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         }
     })())
     const [filterModalShown, setFilterModalShown] = useState(false)
-    /* */
+    /* Transaction details */
     const [storeTrnscIndex, setStoreTrnscIndex] = useState('')
     const [viewStoreTrnscMdlShown, setViewStoreTrnscMdlShown] = useState(false)
+    /* Error Popup */
+    const [errPopupShown, setErrPopupShown] = useState(false)
+    const [popupErrMsg, setErrPopupMsg] = useState('')        
+    /* Confirm delete popup */
+    const [confirmDeletePopupShown, setConfirmDeletePopupShown] = useState(false)
 
     const getStoreTrnscs = useCallback((actionType) => {
         // Get the queries
@@ -59,6 +65,30 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         setViewStoreTrnscMdlShown(true)
     }, [])
 
+    const confirmDeleteTransaction = useCallback(index => {
+        setStoreTrnscIndex(index)
+        setConfirmDeletePopupShown(true)
+    }, [])    
+
+    const deleteTransaction = useCallback(() => {
+        // Get the store transaction
+        const targetStoreTrnsc = storeTrnsc.storeTrnscs[storeTrnscIndex]
+        api.delete(`/store-transactions/${targetStoreTrnsc.id}`)
+           .then(response => {                        
+                dispatchStoreTrnsc({
+                    type: STORETRNSC_ACTIONS.REMOVE, 
+                    payload: {indexes: storeTrnscIndex}
+                })              
+           })
+           .catch(error => {
+                setDisableBtn(false)
+                errorHandler(error, {'400': () => {
+                    setErrPopupShown(true)
+                    setErrPopupMsg(error.response.data.message)                      
+                }})  
+           })        
+    }, [storeTrnsc.storeTrnscs, storeTrnscIndex])
+
     useEffect(() => {
         if(storeTrnsc.storeTrnscs === null){
             getStoreTrnscs(STORETRNSC_ACTIONS.RESET)
@@ -81,6 +111,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 <StoreTrnscsTable
                     storeTrnscs={storeTrnsc.storeTrnscs}
                     viewHandler={viewStoreTrnsc}
+                    deleteHandler={confirmDeleteTransaction}
                 />
                 <LoadMoreBtn
                     canLoadMore={storeTrnsc.canLoadMore}
@@ -90,21 +121,12 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         />
         <Modal
             heading={'Transaction Detail'}
-            body={(() => {
-                if(storeTrnscIndex === ''){ return '' }
-                const targetStoreTrnsc = storeTrnsc.storeTrnscs[storeTrnscIndex]
-                return <Table 
-                    headings={['Inventory', 'Size', 'Amount', 'Cost per Item', 'Total Cost', 'Original Cost']}
-                    body={targetStoreTrnsc.storeTrnscInvs.map(storeTrnscInv => ([
-                        storeTrnscInv.inventory.name,
-                        storeTrnscInv.size.name,
-                        formatNum(storeTrnscInv.amount),
-                        'Rp. '+formatNum(storeTrnscInv.original_cost/storeTrnscInv.amount),
-                        'Rp. '+formatNum(storeTrnscInv.cost),
-                        'Rp. '+formatNum(storeTrnscInv.original_cost),
-                    ]))}
+            body={storeTrnscIndex === '' ? '' :
+                <TransactionReceipt 
+                    inventories={storeTrnsc.storeTrnscs[storeTrnscIndex].storeTrnscInvs}
+                    objType={'sequelize'}
                 />
-            })()}        
+            }       
             shown={viewStoreTrnscMdlShown}
             toggleModal={() => {setViewStoreTrnscMdlShown(state => !state)}}
         />          
@@ -133,6 +155,25 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             shown={filterModalShown}
             toggleModal={() => {setFilterModalShown(state => !state)}}
         />       
+        <ConfirmPopup
+            icon={'warning_1'}
+            title={'Warning'}
+            body={'Are you sure want to remove this transaction?'}
+            confirmText={'Remove'}
+            cancelText={'Cancel'}
+            shown={confirmDeletePopupShown} 
+            togglePopup={() => {setConfirmDeletePopupShown(state => !state)}} 
+            confirmCallback={deleteTransaction}
+        />        
+        <ConfirmPopup
+            shown={errPopupShown}
+            icon={'error_circle'}
+            iconColor={'red'}
+            title={"Can't Proceed"}
+            body={popupErrMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setErrPopupShown(state => !state)}} 
+        />        
     </>)
 }
 
@@ -149,7 +190,7 @@ const filterReducer = (state, action) => {
     }
 }
 
-const StoreTrnscsTable = ({storeTrnscs, viewHandler}) => {
+const StoreTrnscsTable = ({storeTrnscs, viewHandler, deleteHandler}) => {
     return <Table
         headings={['No', 'Store', 'Total Amount', 'Total Cost', 'Transaction Date', 'Actions']}
         body={storeTrnscs.map((storeTrnsc, index) => ([
@@ -158,9 +199,15 @@ const StoreTrnscsTable = ({storeTrnscs, viewHandler}) => {
             formatNum(storeTrnsc.total_amount), 
             'Rp. '+formatNum(storeTrnsc.total_cost),
             format(new Date(storeTrnsc.transaction_date), 'eee, dd-MM-yyyy'),
-            <Button size={'sm'} text={'View'} attr={{
-                onClick: () => {viewHandler(index)}
-            }} />
+            <span>
+                <Button size={'sm'} text={'View'} type={'light'} attr={{
+                    style: {marginRight: '1.2rem'},
+                    onClick: () => {viewHandler(index)}
+                }} />
+                <Button size={'sm'} text={'Delete'} color={'red'} type={'light'} attr={{
+                    onClick: () => {deleteHandler(index)}
+                }} />  
+            </span>          
         ]))}
     />
 }

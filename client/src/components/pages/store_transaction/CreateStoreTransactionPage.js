@@ -1,5 +1,6 @@
 import {useState, useReducer, useCallback, useMemo} from 'react'
 import {format} from 'date-fns'
+import TransactionReceipt from './TransactionReceipt'
 import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
@@ -15,7 +16,9 @@ function CreateStoreTransactionPage(){
     const [addedInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
     const [invName, setInvName] = useState('')
     const [searchedStoreInvs, setSearchedStoreInvs] = useState([])
-    const [modalShown, setModalShown] = useState(false)    
+    const [modalShown, setModalShown] = useState(false)   
+    /* Receipt Modal */ 
+    const [receiptModalShown, setReceiptModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')    
@@ -47,12 +50,14 @@ function CreateStoreTransactionPage(){
         })
         .then(response => {
             setDisableBtn(false) 
+            setReceiptModalShown(false)
             setSuccPopupShown(true)
         })
         .catch(error => { 
             setDisableBtn(false)
             errorHandler(error, {'400': () => {
                 setErrPopupShown(true)
+                setReceiptModalShown(false)
                 setErrPopupMsg(error.response.data.message)                
             }})              
         })         
@@ -144,8 +149,8 @@ function CreateStoreTransactionPage(){
                 + Add Inventory
             </button>,        
             <div key={'b'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>, 
-            <Button key={'c'} size={'md'} text={'Create transaction'} attr={{
-                onClick: storeTransaction
+            <Button key={'c'} size={'md'} text={'Checkout'} attr={{
+                onClick: () => {setReceiptModalShown(true)}
             }}/>                   
         ]}/>
         <Modal
@@ -198,7 +203,18 @@ function CreateStoreTransactionPage(){
             </>}        
             shown={modalShown}
             toggleModal={() => {setModalShown(state => !state)}}
-        />          
+        />      
+        <Modal
+            heading={'Checkout Transaction'}
+            body={<TransactionReceipt inventories={addedInvs} objType={'plain'} />}        
+            shown={receiptModalShown}
+            toggleModal={() => {setReceiptModalShown(state => !state)}}
+            footer={
+                <Button size={'md'} text={'Create transaction'} attr={{
+                    onClick: storeTransaction
+                }}/>                 
+            }
+        />              
         <ConfirmPopup
             shown={errPopupShown}
             icon={'error_circle'}
