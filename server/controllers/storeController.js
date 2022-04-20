@@ -64,8 +64,9 @@ exports.store = async (req, res) => {
 exports.update = async (req, res) => {
     try{
         // Make sure the store exists
-        if(!await isStoreExist(req.params.id, req.user.owner_id)){
-            return res.status(400).send({message: 'Store is not exist'})
+        const {store, errMessage} = await getStore(req.params.id, req.user.owner_id)
+        if(!store){
+            return res.status(400).send({message: errMessage})
         }
         // Validate the input
         const {values, errMsg} = await validateInput(req, filterKeys(
@@ -75,7 +76,6 @@ exports.update = async (req, res) => {
             return res.status(400).send({message: errMsg})
         }
         // Update the store
-        const store = await Store.findOne({where: {id: req.params.id}})
         store.name = values.name
         await store.save()
 
@@ -92,10 +92,11 @@ exports.update = async (req, res) => {
 exports.destroy = async (req, res) => {
     try{
         // Make sure the store exists
-        if(!await isStoreExist(req.params.id, req.user.owner_id)){
-            return res.status(400).send({message: 'Store is not exist'})
+        const {store, errMessage} = await getStore(req.params.id, req.user.owner_id)
+        if(!store){
+            return res.status(400).send({message: errMessage})
         }
-        await Store.destroy({where: {id: req.params.id}})
+        await store.destroy()
 
         res.send({message: 'Success deleting store'})        
     } catch(err) {
@@ -152,20 +153,24 @@ const validateInput = async (req, input) => {
  * 
  * @param {integer} storeId 
  * @param {integer} ownerId 
- * @returns {boolean}
+ * @returns {object}
  */
 
-const isStoreExist = async (storeId, ownerId) => {
+const getStore = async (storeId, ownerId) => {
     try {
+        const response = {store: null, errMessage: null}
         const {error} = Joi.number().integer().validate(storeId)
         if(error){
-            return false
+            response.errMessage = error
+            return response
         }
-        return await Store.findOne({
-            where: {id: storeId, owner_id: ownerId}, attributes: ['id']
-        }) ? true : false            
+        response.store =  await Store.findOne({
+            where: {id: storeId, owner_id: ownerId,}
+        }) 
+        return response
     } catch (err) {
         logger.error(err.message)
-        return false
+        response.errMessage = err.message
+        return response
     }
 }

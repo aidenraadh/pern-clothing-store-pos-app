@@ -33,6 +33,9 @@ function InventoryPage({inventory, dispatchInventory, user}){
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')
+    /* Success Popup */
+    const [succPopupShown, setSuccPopupShown] = useState(false)
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')      
 
     const getInventories = useCallback((actionType = '') => {
         // Get the queries
@@ -109,12 +112,14 @@ function InventoryPage({inventory, dispatchInventory, user}){
             name: invName, inventory_sizes: JSON.stringify(invSizes)
         })     
         .then(response => {
-            setDisableBtn(false)
-            setModalShown(false)            
             dispatchInventory({
                 type: INVENTORY_ACTIONS.REPLACE, 
                 payload: {inventory: response.data.inventory, index: invIndex}
-            })                
+            }) 
+            setSuccPopupMsg(response.data.message)            
+            setDisableBtn(false)
+            setModalShown(false)                  
+            setSuccPopupShown(true)         
         })
         .catch(error => {
             setDisableBtn(false)
@@ -138,6 +143,8 @@ function InventoryPage({inventory, dispatchInventory, user}){
                    type: INVENTORY_ACTIONS.REMOVE, 
                    payload: {indexes: invIndex}
                })                
+               setSuccPopupMsg(response.data.message)  
+               setSuccPopupShown(true)  
            })
            .catch(error => {
                setDisableBtn(false)
@@ -305,6 +312,15 @@ function InventoryPage({inventory, dispatchInventory, user}){
             confirmText={'OK'}
             togglePopup={() => {setErrPopupShown(state => !state)}} 
         />        
+        <ConfirmPopup
+            shown={succPopupShown}
+            icon={'done_circle'}
+            iconColor={'blue'}
+            title={"Success"}
+            body={popupSuccMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+        />         
     </>)
 }
 

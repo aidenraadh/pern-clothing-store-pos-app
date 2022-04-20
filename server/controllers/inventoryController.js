@@ -72,7 +72,7 @@ exports.store = async (req, res) => {
         })
         res.send({
             inventory: {...inventory.toJSON(), sizes: sizes}, 
-            message: 'Success storing inventory'
+            message: 'Success creating inventory'
         })  
     } catch(err) {
         logger.error(err.message)   
@@ -82,10 +82,11 @@ exports.store = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        // Make sure the inventory is exists
-        if(!await isInventoryExist(req.params.id, req.user.owner_id)){
-            return res.status(400).send({message: 'Inventory is not exist'})
-        }        
+        // Make sure the inventory exists
+        const {inventory, errMessage} = await getInventory(req.params.id, req.user.owner_id)
+        if(!inventory){
+            return res.status(400).send({message: errMessage})
+        }       
         // Validate the input
         const {values, errMsg} = await validateInput(req, filterKeys(
             req.body, ['name', 'inventory_sizes']
@@ -94,7 +95,6 @@ exports.update = async (req, res) => {
             return res.status(400).send({message: errMsg})
         }        
         // Update the inventory
-        const inventory = await Inventory.findOne({where: {id: req.params.id}})
         inventory.name = values.name
         await inventory.save()
         
@@ -161,12 +161,11 @@ exports.update = async (req, res) => {
 
 exports.destroy = async (req, res) => {
     try{
-        // Make sure the inventory is exist
-        if(!await isInventoryExist(req.params.id, req.user.owner_id)){
-            return res.status(400).send({message: 'Inventory is not exist'})
-        }
-        await Inventory.destroy({where: {id: req.params.id}})
-
+        // Make sure the inventory exists
+        const {inventory, errMessage} = await getInventory(req.params.id, req.user.owner_id)
+        if(!inventory){
+            return res.status(400).send({message: errMessage})
+        } 
         res.send({message: 'Success deleting inventory'})        
 
     } catch(err) {
@@ -257,21 +256,30 @@ const validateInput = async (req, input) => {
  * 
  * @param {integer} inventoryId 
  * @param {integer} ownerId 
- * @returns {boolean}
+ * @returns {object}
  */
 
-const isInventoryExist = async (inventoryId, ownerId) => {
+const getInventory = async (inventoryId, ownerId) => {
     try {
+        const response = {inventory: null, errMessage: null}
         const {error} = Joi.number().integer().validate(inventoryId)
         if(error){
-            return false
+            response.errMessage = error
+            return response
         }
-        return await Inventory.findOne({
-            attributes: ['id'],
-            where: {id: inventoryId, owner_id: ownerId}, 
-        }) ? true : false            
+        response.inventory = await Inventory.findOne({
+            where: {
+                id: inventoryId, owner_id: ownerId
+            },
+            include: [{
+                model: InventorySize, as: 'sizes', 
+                attributes: ['id', 'name', 'production_price', 'selling_price']
+            }],
+        })
+        return response  
     } catch (err) {
         logger.error(err.message)
-        return false
+        response.errMessage = err.message
+        return response
     }
 }

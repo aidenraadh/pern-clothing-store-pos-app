@@ -28,7 +28,10 @@ function StorePage({store, dispatchStore, user}){
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
-    const [popupErrMsg, setErrPopupMsg] = useState('')    
+    const [popupErrMsg, setErrPopupMsg] = useState('')   
+    /* Success Popup */
+    const [succPopupShown, setSuccPopupShown] = useState(false)
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')       
 
     const getStores = useCallback((actionType) => {
         // Get the queries
@@ -99,12 +102,14 @@ function StorePage({store, dispatchStore, user}){
         setDisableBtn(true)   
         api.put(`/stores/${storeId}`, {name: storeName})     
             .then(response => {
-                setDisableBtn(false)
-                setModalShown(false)            
                 dispatchStore({
                     type: STORE_ACTIONS.REPLACE, 
                     payload: {store: response.data.store, index: storeIndex}
-                })                
+                })                 
+                setDisableBtn(false)   
+                setSuccPopupMsg(response.data.message)   
+                setModalShown(false)
+                setSuccPopupShown(true)     
             })
             .catch(error => {
                 setDisableBtn(false)
@@ -128,6 +133,8 @@ function StorePage({store, dispatchStore, user}){
                     type: STORE_ACTIONS.REMOVE, 
                     payload: {indexes: storeIndex}
                 })                
+                setSuccPopupMsg(response.data.message)
+                setSuccPopupShown(true)
             })
             .catch(error => {
                 setDisableBtn(false)
@@ -260,7 +267,16 @@ function StorePage({store, dispatchStore, user}){
             body={popupErrMsg}
             confirmText={'OK'}
             togglePopup={() => {setErrPopupShown(state => !state)}} 
-        />          
+        />         
+        <ConfirmPopup
+            shown={succPopupShown}
+            icon={'done_circle'}
+            iconColor={'blue'}
+            title={"Success"}
+            body={popupSuccMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+        />           
     </>)
 }
 

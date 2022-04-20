@@ -29,6 +29,9 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')        
+    /* Success Popup */
+    const [succPopupShown, setSuccPopupShown] = useState(false)
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')      
     /* Confirm delete popup */
     const [confirmDeletePopupShown, setConfirmDeletePopupShown] = useState(false)
 
@@ -78,7 +81,10 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 dispatchStoreTrnsc({
                     type: STORETRNSC_ACTIONS.REMOVE, 
                     payload: {indexes: storeTrnscIndex}
-                })              
+                })
+                setSuccPopupMsg(response.data.message)
+                setSuccPopupShown(true)
+
            })
            .catch(error => {
                 setDisableBtn(false)
@@ -110,6 +116,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             body={<>
                 <StoreTrnscsTable
                     storeTrnscs={storeTrnsc.storeTrnscs}
+                    user={user}
                     viewHandler={viewStoreTrnsc}
                     deleteHandler={confirmDeleteTransaction}
                 />
@@ -173,7 +180,16 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             body={popupErrMsg}
             confirmText={'OK'}
             togglePopup={() => {setErrPopupShown(state => !state)}} 
-        />        
+        />     
+        <ConfirmPopup
+            shown={succPopupShown}
+            icon={'done_circle'}
+            iconColor={'blue'}
+            title={"Success"}
+            body={popupSuccMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+        />            
     </>)
 }
 
@@ -190,7 +206,7 @@ const filterReducer = (state, action) => {
     }
 }
 
-const StoreTrnscsTable = ({storeTrnscs, viewHandler, deleteHandler}) => {
+const StoreTrnscsTable = ({storeTrnscs, user, viewHandler, deleteHandler}) => {
     return <Table
         headings={['No', 'Store', 'Total Amount', 'Total Cost', 'Transaction Date', 'Actions']}
         body={storeTrnscs.map((storeTrnsc, index) => ([
@@ -204,9 +220,11 @@ const StoreTrnscsTable = ({storeTrnscs, viewHandler, deleteHandler}) => {
                     style: {marginRight: '1.2rem'},
                     onClick: () => {viewHandler(index)}
                 }} />
+                {user.role.name === 'employee' ? 
                 <Button size={'sm'} text={'Delete'} color={'red'} type={'light'} attr={{
                     onClick: () => {deleteHandler(index)}
-                }} />  
+                }} /> : ''                
+                } 
             </span>          
         ]))}
     />
@@ -221,6 +239,5 @@ const LoadMoreBtn = ({canLoadMore, action}) => {
         </button> : ''        
     )
 }
-
 
 export default IndexStoreTransactionPage

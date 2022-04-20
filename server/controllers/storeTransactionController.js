@@ -158,17 +158,6 @@ exports.store = async (req, res) => {
     }
 }
 
-exports.update = async (req, res) => {
-    try { 
-        res.send({
-            message: 'Success updating the stored inventory'
-        })
-    } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
-    }  
-}
-
 exports.destroy = async (req, res) => {
     try{
         const storeTrnsc = await getStoreTransaction(req.params.id)
@@ -178,7 +167,7 @@ exports.destroy = async (req, res) => {
         }
         await storeTrnsc.destroy()
         
-        res.send({message: 'Success deleting inventory'})        
+        res.send({message: 'Success removing transaction'})        
     } catch(err) {
         logger.error(err.message)
         res.status(500).send(err.message)
