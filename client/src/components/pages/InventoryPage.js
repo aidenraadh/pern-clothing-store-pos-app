@@ -271,6 +271,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
         />
         <Modal
             heading={'Filter'}
+            size={'sm'}
             body={<>
                 <Select label={'Rows shown'}
                     formAttr={{

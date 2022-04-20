@@ -3,8 +3,9 @@ import {Button} from './Buttons';
 import {SVGIcons} from './Misc';
 
 export function Modal(props){
+    console.log(props.size)
     const modalRef = useRef()
-    const classes = props.classes ? ` ${props.classes}` : ''
+    const classes = `modal ${props.size}` + (props.classes ? ` ${props.classes}` : '')
     const footerAlign = props.footerAlign ? ` ${props.footerAlign}` : props.footerAlign    
 
     useEffect(() => {
@@ -29,7 +30,7 @@ export function Modal(props){
     }, [props.shown])
 
     return (
-      	<section className={'modal'+classes} ref={modalRef} {...props.attr}>
+      	<section className={classes} ref={modalRef} {...props.attr}>
       		<div className="overlay">
       			<div className="modal-content">
       			  	<div className="modal-header">
@@ -56,6 +57,7 @@ export function Modal(props){
 Modal.defaultProps = {
     heading: 'Heading', // String|JSX
     body: 'Lorem ipsum', // String|JSX
+    size: '',
     footer: '', // String|JSX
     footerAlign: '', // String|JSX - 'left'|'center'|'right'
     shown: false, // Boolean - Must from parent's state

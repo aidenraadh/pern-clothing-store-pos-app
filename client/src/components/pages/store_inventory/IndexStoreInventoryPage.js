@@ -219,6 +219,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         />
         <Modal
             heading={'Filter'}
+            size={'sm'}
             body={<Grid num_of_columns={1} 
                 items={(() => {
                     const items = [

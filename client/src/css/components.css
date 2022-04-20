@@ -1548,6 +1548,10 @@ All button in the group must be in the same size
 	  
 }
 
+.modal.sm .modal-content{
+	width: 32vw;
+}
+
 .modal .modal-content.shown{
 	transform: translateY(0);
   	opacity: 1;

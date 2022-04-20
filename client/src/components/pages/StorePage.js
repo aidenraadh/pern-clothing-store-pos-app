@@ -200,6 +200,7 @@ function StorePage({store, dispatchStore, user}){
         />
         <Modal
             heading={modalHeading}
+            size={'sm'}
             body={<>
                 <TextInput size={'sm'} label={'Name'}
                     formAttr={{
@@ -227,6 +228,7 @@ function StorePage({store, dispatchStore, user}){
         />
         <Modal
             heading={'Filter'}
+            size={'sm'}
             body={<>
                 <Select label={'Rows shown'} 
                     formAttr={{

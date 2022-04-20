@@ -368,6 +368,7 @@ function UserPage(props){
     />    
     <Modal
         heading={crtModalHeading}
+        size={'sm'}
         body={CreateUserForms}
         shown={crtModalShown}
         footer={
@@ -380,6 +381,7 @@ function UserPage(props){
     />           
     <Modal
         heading={updModalHeading}
+        size={'sm'}
         body={UpdateUserForms}
         shown={updModalShown}
         footer={

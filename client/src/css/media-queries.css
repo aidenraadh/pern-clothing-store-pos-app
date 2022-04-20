@@ -73,6 +73,10 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		width: 80vw;
 	}
 
+	.modal.sm .modal-content{
+		width: 50vw;
+	}	
+
 	#login-page .login-forms{
 		width: 50vw;
 	}
@@ -124,7 +128,7 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 	.main-navs .sidebar-item{
 		font-size: 1.4rem;
 	}		
-	.modal .modal-content{
+	.modal .modal-content, .modal.sm .modal-content{
 		width: 92vw;
 	}
 	.content-sized-modal.modal .modal-content{
