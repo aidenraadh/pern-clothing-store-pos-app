@@ -19,7 +19,7 @@ Node JS v14.15.4 or higher.
 ### Docker Initialization
 
 1. Create `.env` files for both client and server.
-2. Run node `server/utils/generateKeyPair.js` to generate private and public key for JWT authentication.
+2. Run `node server/utils/generateKeyPair.js` to generate private and public key for JWT authentication.
 3. Run `docker-compose up -d` from root folder.
 5. Run the migration files from server command line with `npx sequelize-cli db:migrate`.
 6. Run the seeder files from server command line with `npx sequelize-cli db:seed:all` (optional).
