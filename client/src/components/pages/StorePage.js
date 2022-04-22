@@ -163,7 +163,7 @@ function StorePage({store, dispatchStore, user}){
             }} />
             <Button text={'+ Create'} size={'sm'} attr={{onClick: createStore}}/>
         </section>
-        <PlainCard
+        <PlainCard 
             body={<>
                 <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
                     <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 

@@ -77,12 +77,13 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         // Get the store transaction
         const targetStoreTrnsc = storeTrnsc.storeTrnscs[storeTrnscIndex]
         api.delete(`/store-transactions/${targetStoreTrnsc.id}`)
-           .then(response => {                        
+           .then(response => {           
+                setStoreTrnscIndex('')
+                setSuccPopupMsg(response.data.message)             
                 dispatchStoreTrnsc({
                     type: STORETRNSC_ACTIONS.REMOVE, 
                     payload: {indexes: storeTrnscIndex}
                 })
-                setSuccPopupMsg(response.data.message)
                 setSuccPopupShown(true)
 
            })
@@ -112,7 +113,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 </Link> : ''
             }            
         </section>
-        <PlainCard
+        <PlainCard 
             body={<>
                 <StoreTrnscsTable
                     storeTrnscs={storeTrnsc.storeTrnscs}

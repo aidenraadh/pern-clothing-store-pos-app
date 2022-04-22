@@ -6,7 +6,7 @@ const {Op}                     = require("sequelize")
 const Joi                      = require('joi')
 const filterKeys               = require('../utils/filterKeys')
 const logger                   = require('../utils/logger')
-const storeInventoryController = require('./storeInventoryController')
+const StoreInventoryController = require('./StoreInventoryController')
 
 exports.index = async (req, res) => {    
     try {
@@ -40,17 +40,15 @@ exports.index = async (req, res) => {
             filters: {...filters.where, ...filters.limitOffset}
         })
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.store = async (req, res) => {    
     try {
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['name', 'inventory_sizes']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['name', 'inventory_sizes']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -75,22 +73,20 @@ exports.store = async (req, res) => {
             message: 'Success creating inventory'
         })  
     } catch(err) {
-        logger.error(err.message)   
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.update = async (req, res) => {
     try {
         // Make sure the inventory exists
-        const {inventory, errMessage} = await getInventory(req.params.id, req.user.owner_id)
+        const inventory = await getInventory(req.params.id, req.user.owner_id)
         if(!inventory){
-            return res.status(400).send({message: errMessage})
+            return res.status(400).send({message: 'Inventory not found'})
         }       
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['name', 'inventory_sizes']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['name', 'inventory_sizes']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }        
@@ -143,7 +139,7 @@ exports.update = async (req, res) => {
             
         await InventorySize.bulkCreate(newSizes)
         // Refresh the store inventory
-        await storeInventoryController.refreshStoreInventory(inventory.id, 'inventory')
+        await StoreInventoryController.refreshStoreInventory(inventory.id, 'inventory')
 
         // Get the inventory's sizes
         const sizes = await inventory.getSizes({
@@ -154,23 +150,23 @@ exports.update = async (req, res) => {
             message: 'Success updating inventory'
         })
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
 exports.destroy = async (req, res) => {
     try{
         // Make sure the inventory exists
-        const {inventory, errMessage} = await getInventory(req.params.id, req.user.owner_id)
+        const inventory = await getInventory(req.params.id, req.user.owner_id)
         if(!inventory){
-            return res.status(400).send({message: errMessage})
+            return res.status(400).send({message: 'Inventory not found'})
         } 
         res.send({message: 'Success deleting inventory'})        
 
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
@@ -181,8 +177,9 @@ exports.destroy = async (req, res) => {
  * @returns {object} - Validated and sanitized input with error message
  */
 
-const validateInput = async (req, input) => {
+const validateInput = async (req, inputKeys) => {
     try {
+        const input = filterKeys(req.body, inputKeys)
         // Parse the inventory sizes if it exists in the input
         if(input.inventory_sizes){
             input.inventory_sizes = JSON.parse(input.inventory_sizes)
@@ -261,25 +258,20 @@ const validateInput = async (req, input) => {
 
 const getInventory = async (inventoryId, ownerId) => {
     try {
-        const response = {inventory: null, errMessage: null}
-        const {error} = Joi.number().integer().validate(inventoryId)
-        if(error){
-            response.errMessage = error
-            return response
+        const invIdInput = Joi.number().integer().validate(inventoryId)
+        if(invIdInput.error){
+            invIdInput.value = ''
         }
-        response.inventory = await Inventory.findOne({
+        return await Inventory.findOne({
             where: {
-                id: inventoryId, owner_id: ownerId
+                id: invIdInput.value, owner_id: ownerId
             },
             include: [{
                 model: InventorySize, as: 'sizes', 
                 attributes: ['id', 'name', 'production_price', 'selling_price']
             }],
         })
-        return response  
     } catch (err) {
-        logger.error(err.message)
-        response.errMessage = err.message
-        return response
+        throw err
     }
 }

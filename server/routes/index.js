@@ -1,13 +1,14 @@
 const rootRouter                 = require('express').Router()
-const authController             = require('../controllers/authController')
-const userController             = require('../controllers/userController')
-const storeController            = require('../controllers/storeController')
-const inventoryController        = require('../controllers/inventoryController')
-const storeInventoryController   = require('../controllers/storeInventoryController')
-const storeTransactionController = require('../controllers/storeTransactionController')
+const AuthController             = require('../controllers/AuthController')
+const UserController             = require('../controllers/UserController')
+const StoreController            = require('../controllers/StoreController')
+const InventoryController        = require('../controllers/InventoryController')
+const StoreInventoryController   = require('../controllers/StoreInventoryController')
+const StoreTransactionController = require('../controllers/StoreTransactionController')
 const isAuth                     = require('../middlewares/isAuth')
 const isNotAuth                  = require('../middlewares/isNotAuth')
 const authorize                  = require('../middlewares/authorize')
+
 
 const models             = require('../models/index')
 const bcrypt = require('bcrypt')
@@ -19,13 +20,29 @@ const StoreInventorySize      = models.StoreInventorySize
 const Role      = models.Role
 const Owner = models.Owner
 const User = models.User
+const logger                  = require('../utils/logger')
 
-const haha = (...items) => {
-    items = items.map(item => item.toLowerCase())
-    console.log(items)
+
+const haha = () => {
+    try {
+        if(1 === 1){
+            throw new Error('Yoo error')
+        }
+        return 'qqqqq'
+    } catch (error) {
+        throw error
+    }
 }
 
 rootRouter.get('/new-owner', async (req, res) => {
+    try {
+        logger.info('asd')
+        const x = haha()
+        res.status(200).send({message: 'complete'})
+    } catch (error) {
+        logger.error(error, {errorObj: error})
+        res.status(500).send({message: error.message})
+    }
     // const owner = await Owner.create({})
     // const hashedPassword = await bcrypt.hash(
     //     '12345678', 10
@@ -37,7 +54,7 @@ rootRouter.get('/new-owner', async (req, res) => {
     //     owner_id: owner.id,
     //     role_id: 2
     // })
-    return res.send({message: 'asd'})
+    // return res.send({message: 'asd'})
 })
 
 rootRouter.get('/test', async (req, res) => {
@@ -49,86 +66,86 @@ rootRouter.get('/test', async (req, res) => {
 })
 
 rootRouter.post('/register', [
-    isNotAuth, authController.register
+    isNotAuth, AuthController.register
 ])
 rootRouter.post('/login', [
-    isNotAuth, authController.login
+    isNotAuth, AuthController.login
 ])
 
 rootRouter
     .get('/users', [
-        isAuth, authorize('owner'), userController.index
+        isAuth, authorize('owner'), UserController.index
     ])
     .post('/users', [
-        isAuth, authorize('owner'), userController.store
+        isAuth, authorize('owner'), UserController.store
     ])
     .put('/users/:id', [
-        isAuth, authorize('owner'), userController.update
+        isAuth, authorize('owner'), UserController.update
     ])
     .post('/users/update-profile', [
-        isAuth, userController.updateProfile
+        isAuth, UserController.updateProfile
     ])
     .delete('/users/:id', [
-        isAuth, authorize('owner'), userController.delete
+        isAuth, authorize('owner'), UserController.delete
     ])
     .get('/users/employee-stores', [
-        isAuth, authorize('owner'), userController.getEmployeeStores
+        isAuth, authorize('owner'), UserController.getEmployeeStores
     ])
     .get('/users/user-roles', [
-        isAuth, authorize('owner'), userController.getUserRoles
+        isAuth, authorize('owner'), UserController.getUserRoles
     ])
 
 rootRouter
     .get('/stores', [
-        isAuth, authorize('owner'), storeController.index
+        isAuth, authorize('owner'), StoreController.index
     ])
     .post('/stores', [
-        isAuth, authorize('owner'), storeController.store
+        isAuth, authorize('owner'), StoreController.store
     ])
     .put('/stores/:id', [
-        isAuth, authorize('owner'), storeController.update
+        isAuth, authorize('owner'), StoreController.update
     ])
     .delete('/stores/:id', [
-        isAuth, authorize('owner'), storeController.destroy
+        isAuth, authorize('owner'), StoreController.destroy
     ])
 
 rootRouter
     .get('/inventories', [
-        isAuth, authorize('owner'), inventoryController.index
+        isAuth, authorize('owner'), InventoryController.index
     ])
     .post('/inventories', [
-        isAuth, authorize('owner'), inventoryController.store
+        isAuth, authorize('owner'), InventoryController.store
     ])
     .put('/inventories/:id', [
-        isAuth, authorize('owner'), inventoryController.update
+        isAuth, authorize('owner'), InventoryController.update
     ])
     .delete('/inventories/:id', [
-        isAuth, authorize('owner'), inventoryController.destroy
+        isAuth, authorize('owner'), InventoryController.destroy
     ])
 
 rootRouter
     .get('/store-inventories', [
-        isAuth, authorize('owner', 'employee'), storeInventoryController.index
+        isAuth, authorize('owner', 'employee'), StoreInventoryController.index
     ])
     .post('/store-inventories', [
-        isAuth, authorize('owner'), storeInventoryController.store
+        isAuth, authorize('owner'), StoreInventoryController.store
     ])
     .put('/store-inventories/:id', [
-        isAuth, authorize('owner'), storeInventoryController.update
+        isAuth, authorize('owner'), StoreInventoryController.update
     ])
     .delete('/store-inventories/:id', [
-        isAuth, authorize('owner'), storeInventoryController.destroy
+        isAuth, authorize('owner'), StoreInventoryController.destroy
     ])
 
 rootRouter
     .get('/store-transactions', [
-        isAuth, authorize('all'), storeTransactionController.index
+        isAuth, authorize('all'), StoreTransactionController.index
     ])
     .post('/store-transactions', [
-        isAuth, authorize('employee'), storeTransactionController.store
+        isAuth, authorize('employee'), StoreTransactionController.store
     ])    
     .delete('/store-transactions/:id', [
-        isAuth, authorize('employee'), storeTransactionController.destroy
+        isAuth, authorize('employee'), StoreTransactionController.destroy
     ])     
 
 module.exports = rootRouter

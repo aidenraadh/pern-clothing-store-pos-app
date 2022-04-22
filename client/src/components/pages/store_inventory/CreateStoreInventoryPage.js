@@ -75,7 +75,7 @@ function CreateStoreInventoryPage(){
         return addedInvs.map((inventory, key) => (
             <ToolCard key={key} heading={inventory.name} expand={inventory.toolCardExpand}
                 body={inventory.sizes.length ? 
-                <Grid num_of_columns={4} 
+                <Grid numOfColumns={4} 
                     items={inventory.sizes.map((size, sizeKey) => (
                         <TextInput key={sizeKey} label={`Amount ${size.name}`} size={'sm'} formAttr={{
                             value: formatNum(size.amount),
@@ -127,7 +127,7 @@ function CreateStoreInventoryPage(){
         return 'Loading...'
     }     
     return (<>
-        <Grid num_of_columns={1} items={[
+        <Grid numOfColumns={1} items={[
             <SelectAddon key={'a'} addon={'Select store'}
                 options={stores.map(store => ({
                     value: store.id, text: store.name

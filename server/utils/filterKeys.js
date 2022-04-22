@@ -20,7 +20,7 @@ const filterKeys = (object, keys) => {
         })
         return data        
     } catch (err) {
-        logger.error(err.message)
+        throw err
     }
 }
 

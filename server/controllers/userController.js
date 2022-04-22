@@ -62,17 +62,15 @@ exports.index = async (req, res) => {
         })
     }
     catch(err){
-        logger.error(err.message)
-        res.status(500).send(err)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.store = async (req, res) => {    
     try{
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['role', 'name', 'email', 'store_id']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['role', 'name', 'email', 'store_id']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -114,36 +112,24 @@ exports.store = async (req, res) => {
                 })(),                
 
             }),
-            message: 'Success store new user'
+            message: 'Success storing new user'
         })        
     }
     catch(err){
-        logger.error(err.message)
-        res.status(500).send(err)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.update = async (req, res) => {
     try{
-        // Get user and make sure it exists and the user's role is not super admin or owner,
-        // also make sure the owner_id is the same as the auth user
-        const user = await User.findOne({
-            where: {
-                id: req.params.id, role_id: {[Op.notIn]: [1,2]},
-                owner_id: req.user.owner_id
-            },
-            include: [
-                // Get the user's store employee
-                {
-                    model: StoreEmployee, as: 'storeEmployee',  
-                    attributes: ['id', 'store_id'],
-                },  
-            ]
-        })        
+        // Get the user
+        const user = await getUser(req.params.id, req.user.owner_id)      
+        if(!user){
+            return res.status(400).send({message: 'The user is not exists, or cannot be updated'})
+        }          
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['role', 'role_id', 'store_id']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['role', 'role_id', 'store_id']) 
         if(!user){
             return res.status(400).send({message: 'The user is not exists, or cannot be updated'})
         }        
@@ -171,34 +157,30 @@ exports.update = async (req, res) => {
         }
 
         res.send({
-            message: 'Success update user'
+            message: 'Success updating user'
         })     
     }catch(err){
-        logger.error(err.message)
-        res.status(500).send(err)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
 exports.delete = async (req, res) => {    
     try{
-        // Get user and make sure it exists and the user's role is not super admin or owner,
-        // also make sure the owner_id is the same as the auth user
-        const user = await User.findOne({
-            id: req.params.id, role_id: {[Op.notIn]: [1,2]},
-            owner_id: req.user.owner_id
-        })   
+        // Get the user 
+        const user = await getUser(req.params.id, req.user.owner_id)     
         if(!user){
             return res.status(400).send({message: 'The user is not exists, or cannot be updated'})
         }          
         await user.destroy()
 
         res.send({
-            message: 'Success delete user'
+            message: 'Success deleting user'
         })          
     }
     catch(err){
-        logger.error(err.message)
-        res.status(500).send(err)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -215,8 +197,8 @@ exports.getEmployeeStores = async (req, res) => {
         })
     }
     catch(err){
-        logger.error(err.message)
-        res.status(500).send(err)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -232,17 +214,15 @@ exports.getUserRoles = async (req, res) => {
         })
     }
     catch(err){
-        logger.error(err.message)
-        res.status(500).send(err)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.updateProfile = async (req, res) => {    
     try{
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['name', 'old_password', 'new_password']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['name', 'old_password', 'new_password']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -280,8 +260,8 @@ exports.updateProfile = async (req, res) => {
         })        
     }
     catch(err){
-        logger.error(err.message)
-        res.status(500).send(err)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -292,8 +272,9 @@ exports.updateProfile = async (req, res) => {
  * @returns {object} - Validated and sanitized input with error message
  */
 
- const validateInput = async (req, input) => {
+ const validateInput = async (req, inputKeys) => {
     try {
+        const input = filterKeys(req.body, inputKeys)
         const rules = {
             // Make sure the original user's role exists
             role: Joi.string().required().trim().max(100).external(async (value, helpers) => {
@@ -381,5 +362,39 @@ exports.updateProfile = async (req, res) => {
         return {values: values}
     } catch (err) {
         return {errMsg: err.message}
+    }    
+}
+
+/**
+ * 
+ * @param {integer} id - The user ID
+ * @param {integer} ownerId 
+ * @returns 
+ */
+
+const getUser = async (id, ownerId) => {
+    try {
+        const idInput = Joi.number().required().integer().validate(id)
+        if(idInput.error){
+            idInput.value = ''
+        }
+        // Get user and make sure it exists and the user's role is not super admin or owner,
+        // also make sure the owner_id is the same as the auth user
+        return await User.findOne({
+            where: {
+                id: idInput.value, role_id: {[Op.notIn]: [1,2]},
+                owner_id: ownerId
+            },
+            include: [
+                // Get the user's store employee
+                {
+                    model: StoreEmployee, as: 'storeEmployee',  
+                    attributes: ['id', 'store_id'],
+                },  
+            ]
+        })          
+    } catch (err) {
+        logger.error(err, {errObj: err})
+        throw err
     }    
 }

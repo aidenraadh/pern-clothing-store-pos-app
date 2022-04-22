@@ -31,6 +31,9 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')    
+    /* Success Popup */
+    const [succPopupShown, setSuccPopupShown] = useState(false)
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')        
 
     const getStoreInvs = useCallback((actionType) => {
         // Get the queries
@@ -98,12 +101,14 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 updated_sizes: JSON.stringify(storeInvSizes)
             })
             .then(response => {
-                setDisableBtn(false)
-                setModalShown(false)   
                 dispatchStoreInv({
                     type: STOREINV_ACTIONS.REPLACE, 
                     payload: {storeInv: response.data.storeInv, index: storeInvIndex}
-                })  
+                })                 
+                setSuccPopupMsg(response.data.message)
+                setDisableBtn(false)
+                setModalShown(false)    
+                setSuccPopupShown(true)
             })
             .catch(error => {
                 setDisableBtn(false)
@@ -137,7 +142,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 </Link>            
             }
         </section>
-        <PlainCard
+        <PlainCard 
             body={<>
                 <div className='flex-row items-center'>
                     <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
@@ -220,7 +225,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         <Modal
             heading={'Filter'}
             size={'sm'}
-            body={<Grid num_of_columns={1} 
+            body={<Grid numOfColumns={1} 
                 items={(() => {
                     const items = [
                         <Select label={'Rows shown'} 
@@ -276,6 +281,15 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
             confirmText={'OK'}
             togglePopup={() => {setErrPopupShown(state => !state)}} 
         />  
+        <ConfirmPopup
+            shown={succPopupShown}
+            icon={'done_circle'}
+            iconColor={'blue'}
+            title={"Success"}
+            body={popupSuccMsg}
+            confirmText={'OK'}
+            togglePopup={() => {setSuccPopupShown(state => !state)}} 
+        />        
     </>)
 }
 

@@ -1,5 +1,6 @@
 const jwt           = require('jsonwebtoken')
-const bcrypt        = require('bcrypt') 
+const bcrypt        = require('bcrypt')
+const Joi           = require('joi') 
 const path          = require('path')
 const logger        = require('../utils/logger')
 const fs            = require('fs')
@@ -28,20 +29,31 @@ exports.register = async (req, res) => {
         })        
     }
     catch(err){
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.login = async (req, res) => {
     try{
+        // Validate email input
+        const emailInput = Joi.string().required().trim().email().validate(req.body.email)
+        if(emailInput.error){
+            return res.status(400).send({message: 'Email is invalid'})
+        }
+        // Validate password input
+        const passwordInput = Joi.string().required().trim().validate(req.body.password)
+        if(passwordInput.error){
+            return res.status(400).send({message: 'Password is invalid'})
+        }        
         const user = await User.scope('withPassword').findOne({
-            where: {email: req.body.email},
+            where: {email: emailInput.value},
+            attributes: ['id', 'email', 'password']
         })
         if(!user){
             return res.status(400).send({message: 'Invalid credentials'})
         }
-        if(!await bcrypt.compare(req.body.password, user.password)){
+        if(!await bcrypt.compare(passwordInput.value, user.password)){
             return res.status(400).send({message: 'Invalid credentials'})
         }
         // Issue JWT
@@ -67,29 +79,33 @@ exports.login = async (req, res) => {
             expiresIn: jwt.expiresIn
         })          
     } catch (err){
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
 const issueJWT = (user) => {
-    const pathToKey = path.join(__dirname, '..', 'id_rsa_priv.pem')
-    const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8')
-
-    const currentTime = Date.now()
-    const expiresIn = currentTime / 1000 + (3600 * 24) // 1 day
-
-    const payload = {
-        sub: user.id,
-        iat: currentTime,
-        exp: expiresIn
-    }
-
-    const signedToken = jwt.sign(payload, PRIV_KEY, {
-        algorithm: 'RS256'
-    })
-    return {
-        token: 'Bearer '+signedToken,
-        expiresIn: expiresIn
+    try {
+        const pathToKey = path.join(__dirname, '..', 'id_rsa_priv.pem')
+        const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8')
+    
+        const currentTime = Date.now()
+        const expiresIn = currentTime / 1000 + (3600 * 24) // 1 day
+    
+        const payload = {
+            sub: user.id,
+            iat: currentTime,
+            exp: expiresIn
+        }
+    
+        const signedToken = jwt.sign(payload, PRIV_KEY, {
+            algorithm: 'RS256'
+        })
+        return {
+            token: 'Bearer '+signedToken,
+            expiresIn: expiresIn
+        }        
+    } catch (error) {
+        throw error
     }
 }

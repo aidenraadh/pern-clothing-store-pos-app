@@ -1,22 +1,20 @@
 import React from 'react'
-import {SVGIcons} from './Misc.js'
+import SVGIcons from './SVGIcons.js'
 
 
 export function Button(props){
 	const BtnTag = props.tag
 	const icon = props.iconName ? <SVGIcons name={props.iconName}/> : ''
-	const iconStatus = props.iconName && props.iconOnly ? ' icon-only' : (icon ? ' with-icon' : '')
-	const classes = props.classes ? ' '+props.classes : props.classes
 	const attr = {...props.attr}
+	const classes = `btn btn-${props.size} btn-${props.type} ${props.color}` +
+		(props.iconName && props.iconOnly ? ' icon-only' : (icon ? ' with-icon' : '')) +
+		(props.classes ? ' '+props.classes : props.classes)
 
 	if(BtnTag === 'button' && !attr.type){
 		attr.type = 'button'
 	}
 	return (
-		<BtnTag className={
-			'btn btn-'+props.size+' btn-'+props.type+' '+
-			props.color+iconStatus+classes
-		} {...attr}>
+		<BtnTag className={classes} {...attr}>
 			{icon}
 			<span className="btn-text">{props.text}</span>
 		</BtnTag>
@@ -52,10 +50,10 @@ FloatingButton.defaultProps = {
 
 export function ButtonGroup(props){
 	const Tag = props.tag
-	const classes = props.classes ? ' '+props.classes : props.classes
+	const classes = 'btn-group' + (props.classes ? ' '+props.classes : props.classes)
 
 	return (
-		<Tag className={'btn-group'+classes} {...props.attr}>
+		<Tag className={classes} {...props.attr}>
 			{props.buttons}
 		</Tag>
 	);

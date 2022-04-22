@@ -1,15 +1,17 @@
 import {useState, useRef, useEffect} from 'react';
 import React from 'react';
-import {SVGIcons} from './Misc.js';
+import SVGIcons from './SVGIcons.js';
 import {Button} from './Buttons.js';
 
 export function SimpleCard(props){
 	const CardTag = props.cardTag
 	const HeadingTag = props.headingTag 
-	const containerClasses = props.containerClasses ? ' '+props.containerClasses : props.containerClasses
+	const classes = 'card simple-card'+(
+		props.classes ? ' '+props.classes : props.classes
+	)
 
 	return (
-		<CardTag className={'card simple-card'+containerClasses} {...props.containerAttr}>
+		<CardTag className={classes} {...props.attr}>
 			<header className="card-header flex-row items-center content-space-between">
 				<HeadingTag className="heading text-dark-75 text-medium">{props.heading}</HeadingTag>
 				{(props.action ?
@@ -36,16 +38,16 @@ SimpleCard.defaultProps = {
 	body: 'Lorem ipsum', // String or JSX
 	action: '', // String or JSX
 	footer: '', // String or JSX
-	containerAttr: {},
-	containerClasses: ''
+	attr: {},
+	classes: ''
 }
 
 export function PlainCard(props){
 	const CardTag = props.cardTag
-	const classes = props.classes ? ' '+props.classes : props.classes
-
+	const classes = 'card plain-card'+(props.classes ? ' '+props.classes : props.classes)
+	console.log(props.classes)
 	return (
-		<CardTag className={'card plain-card'+classes} {...props.attr}>
+		<CardTag className={classes} {...props.attr}>
 			{props.body}
 		</CardTag>
 	);	
@@ -67,8 +69,9 @@ export function TabbedCard(props){
 
 	const [currentPanelID, setCurrentPanelID] = useState(props.currentPanelID)
 
-	const containerClasses = props.containerClasses ? 
-	' '+props.containerClasses : props.containerClasses
+	const classes = 'card tabbed-card' + (props.classes ? 
+		' '+props.classes : props.classes
+	)
 
 	// Hide the current panel and change the current panel ID
 	const changePanel = (e, panelID) => {
@@ -90,7 +93,7 @@ export function TabbedCard(props){
 	}
 
 	return (
-		<div className={'card tabbed-card'+containerClasses} {...props.containerAttr}>
+		<div className={classes} {...props.attr}>
 			<ul className="tabs"role="tablist">
 			{props.tabs.map((tab, key) => (
 			  <li key={key} className="tab-item">
@@ -137,18 +140,18 @@ TabbedCard.defaultProps = {
 		},										
 	],
 	currentPanelID: 'home', // String
-	containerClasses: '', 
-	containerAttr: {}
+	classes: '', 
+	attr: {}
 }
 
 export function StatsCard(props){
 	const CardTag = props.cardTag
-	const type = ' '+props.type
-	const color = ' '+props.color 
-	const classes = props.classes ? ' '+props.classes : props.classes
+	const classes = `stats-card ${props.type} ${props.color }` + (
+		props.classes ? ' '+props.classes : props.classes
+	)
 
 	return (
-		<CardTag className={'stats-card'+type+color+classes} {...props.attr}>
+		<CardTag className={classes} {...props.attr}>
 			<span className="main-label">{props.title}</span>
 			<span className="secondary-label">{props.subTitle}</span>
 			<span className="number-label">
@@ -176,8 +179,9 @@ export function ToolCard(props){
 	const bodyWrapperRef = useRef()
 	const Tag = props.tag 
 	const HeadingTag = props.headingTag
-	const expand = props.expand ? ' expanded' : ''
-	const classes = props.classes ? ` ${props.classes}` : ''	
+	const classes = 'card simple-card tool-card' + 
+		(props.expand ? ' expanded' : '') +
+		(props.classes ? ` ${props.classes}` : '')	
 
 	useEffect(() => {
 		setMaxHeight(
@@ -186,7 +190,7 @@ export function ToolCard(props){
 	}, [props.expand, maxHeight])
 
 	return (
-		<Tag className={'card simple-card tool-card'+expand+classes} {...props.attr}>
+		<Tag className={classes} {...props.attr}>
 			<header className="card-header flex-row items-center content-space-between">
 				<HeadingTag className="heading text-dark-75 text-medium">
 					{props.heading}

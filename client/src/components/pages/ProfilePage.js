@@ -57,7 +57,7 @@ function ProfilePage({user}){
         }}/>
         <Modal
             heading={'Update Profile'}
-            body={<Grid num_of_columns={1} items={[
+            body={<Grid numOfColumns={1} items={[
                 <TextInput label={'Name'} formAttr={{
                     value: name, onChange: (e) => {setNameName(e.target.value)}
                 }}/>,

@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 import {NavLink, useLocation} from 'react-router-dom'
-import {SVGIcons} from './Misc.js';
+import SVGIcons from './SVGIcons.js';
 
 function Navigations(props){
     const location = useLocation()

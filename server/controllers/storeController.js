@@ -33,17 +33,15 @@ exports.index = async (req, res) => {
             filters: {...filters.where, ...filters.limitOffset}
         })
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.store = async (req, res) => {
     try {
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['name']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['name']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }     
@@ -57,21 +55,20 @@ exports.store = async (req, res) => {
             message: 'Success storing store'
         })    
     } catch(err) {
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.update = async (req, res) => {
     try{
         // Make sure the store exists
-        const {store, errMessage} = await getStore(req.params.id, req.user.owner_id)
+        const store = await getStore(req.params.id, req.user.owner_id)
         if(!store){
-            return res.status(400).send({message: errMessage})
+            return res.status(400).send({message: 'Store not found'})
         }
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['name']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['name']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -84,24 +81,24 @@ exports.update = async (req, res) => {
             message: 'Success updating store'
         })
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
 exports.destroy = async (req, res) => {
     try{
         // Make sure the store exists
-        const {store, errMessage} = await getStore(req.params.id, req.user.owner_id)
+        const store = await getStore(req.params.id, req.user.owner_id)
         if(!store){
-            return res.status(400).send({message: errMessage})
+            return res.status(400).send({message: 'Store not found'})
         }
         await store.destroy()
 
         res.send({message: 'Success deleting store'})        
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
@@ -112,8 +109,9 @@ exports.destroy = async (req, res) => {
  * @returns {object} - Validated and sanitized input with error message
  */
 
-const validateInput = async (req, input) => {
+const validateInput = async (req, inputKeys) => {
     try {
+        const input = filterKeys(req.body, inputKeys)
         const rules = {
             // Make sure the store name is unique by owner
             name: Joi.string().required().trim().max(100).external(async (value, helpers) => {
@@ -158,19 +156,14 @@ const validateInput = async (req, input) => {
 
 const getStore = async (storeId, ownerId) => {
     try {
-        const response = {store: null, errMessage: null}
-        const {error} = Joi.number().integer().validate(storeId)
-        if(error){
-            response.errMessage = error
-            return response
+        const storeIdInput = Joi.number().integer().validate(storeId)
+        if(storeIdInput.error){
+            storeIdInput.value = ''
         }
-        response.store =  await Store.findOne({
+        return  await Store.findOne({
             where: {id: storeId, owner_id: ownerId,}
         }) 
-        return response
     } catch (err) {
-        logger.error(err.message)
-        response.errMessage = err.message
-        return response
+        throw err
     }
 }

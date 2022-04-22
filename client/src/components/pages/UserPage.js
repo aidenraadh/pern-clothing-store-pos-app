@@ -48,6 +48,9 @@ function UserPage(props){
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')        
+    /* Success Popup */
+    const [succPopupShown, setSuccPopupShown] = useState(false)
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')       
     
     const getOwners = useCallback((actionType) => {
         // Get the queries
@@ -223,7 +226,9 @@ function UserPage(props){
         api.put(`/users/${userId}`, data)
             .then(response => {
                 setDisableBtn(false)
-                setUpdModalShown(false)           
+                setSuccPopupMsg(response.data.message) 
+                setUpdModalShown(false)      
+                setSuccPopupShown(true)      
             })
             .catch(error => {
                 setDisableBtn(false)
@@ -259,6 +264,8 @@ function UserPage(props){
                     type: reducerAction, 
                     payload: {indexes: userIndex}
                 })                
+                setSuccPopupMsg(response.data.message) 
+                setSuccPopupShown(true) 
             })
             .catch(error => {
                 setDisableBtn(false)
@@ -298,7 +305,7 @@ function UserPage(props){
                 break;  
             default: body.push()              
         }
-        return <Grid num_of_columns={1} items={body}/>
+        return <Grid numOfColumns={1} items={body}/>
     }, [name, targetRole, stores, storeId, email, storeUser])    
 
     const UpdateUserForms = useMemo(() => {
@@ -322,7 +329,7 @@ function UserPage(props){
                 }}                       
             />               
         ]        
-        return <Grid num_of_columns={1} items={body}/>
+        return <Grid numOfColumns={1} items={body}/>
     }, [roles, roleId, stores, storeId, targetRole])    
 
     // Get owners if its not set yet
@@ -350,7 +357,7 @@ function UserPage(props){
     }
 
     return (<>
-    <TabbedCard
+    <TabbedCard 
         tabs={[ 
             {link: 'Owner', panelID: 'owner', panelContent:
                 <UsersTable appProps={props} role={'owner'} 
@@ -410,6 +417,15 @@ function UserPage(props){
         confirmText={'OK'}
         togglePopup={() => {setErrPopupShown(state => !state)}} 
     />      
+    <ConfirmPopup
+        shown={succPopupShown}
+        icon={'done_circle'}
+        iconColor={'blue'}
+        title={"Success"}
+        body={popupSuccMsg}
+        confirmText={'OK'}
+        togglePopup={() => {setSuccPopupShown(state => !state)}} 
+    />     
     </>)
 }
 
@@ -448,7 +464,7 @@ const UsersTable = ({appProps, role, getUsers, toggleCrtUser, toggleEdtUser, tog
         default: addBtnText = '';           
     }
     return (
-        <Grid num_of_columns={1} items={[
+        <Grid numOfColumns={1} items={[
             <section className='flex-row content-end'>
                 <Button size={'sm'} text={addBtnText} attr={{
                     onClick: () => {toggleCrtUser(role)}

@@ -1,9 +1,8 @@
 import {useRef, useEffect} from 'react';
 import {Button} from './Buttons';
-import {SVGIcons} from './Misc';
+import SVGIcons from './SVGIcons';
 
 export function Modal(props){
-    console.log(props.size)
     const modalRef = useRef()
     const classes = `modal ${props.size}` + (props.classes ? ` ${props.classes}` : '')
     const footerAlign = props.footerAlign ? ` ${props.footerAlign}` : props.footerAlign    

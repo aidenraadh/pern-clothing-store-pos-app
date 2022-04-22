@@ -8,7 +8,7 @@ const StoreInventorySize        = models.StoreInventorySize
 const Store                     = models.Store
 const {Op}                      = require("sequelize")
 const Joi                       = require('joi')
-const storeInventoryController  = require('./storeInventoryController')
+const StoreInventoryController  = require('./StoreInventoryController')
 const filterKeys                = require('../utils/filterKeys')
 const logger                    = require('../utils/logger')
 
@@ -92,8 +92,8 @@ exports.index = async (req, res) => {
             }
         })          
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -103,17 +103,15 @@ exports.get = async (req, res) => {
             storeInv: await getStoreTransaction(req.params.id),
         })
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }      
 }
 
 exports.store = async (req, res) => {    
     try {
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['transaction_date', 'purchased_invs']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['transaction_date', 'purchased_invs']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -147,30 +145,63 @@ exports.store = async (req, res) => {
             self.indexOf(value) === index
         ))
         // Refresh the store inventory
-        await storeInventoryController.refreshStoreInventory(storeInvIds, 'storeinventory')
+        await StoreInventoryController.refreshStoreInventory(storeInvIds, 'storeinventory')
 
         res.status(200).send({
             message: 'Success storing the transaction'
         })      
     } catch(err) {
-        logger.error(err.message)   
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
 exports.destroy = async (req, res) => {
     try{
         const storeTrnsc = await getStoreTransaction(req.params.id)
-        console.log(storeTrnsc)
         if(!storeTrnsc){
-            return res.status(400).send({message: "This transaction doesn't exist"})
+            return res.status(400).send({message: "The transaction doesn't exist"})
         }
+        // Get all purchased inventories ID
+        const purchasedInvIds = storeTrnsc.storeTrnscInvs
+            .map(inv => parseInt(inv.inventory.id))
+            .filter((value, index, self) => (self.indexOf(value) === index))
+
+        for (const invId of purchasedInvIds) {
+            // Get the store inventory
+            const storeInv = await StoreInventory.findOne({
+                where: {inventory_id: invId, store_id: req.user.storeEmployee.store_id},
+                attributes: ['id']
+            })            
+            // Get all the purchased inventories for this inventory
+            const purchasedInvs = storeTrnsc.storeTrnscInvs.filter(inv => (
+                parseInt(inv.inventory.id) === invId
+            ))
+            for (const purchasedInv of purchasedInvs) {
+                // Update the store inventory size
+                const storeInvSize = await StoreInventorySize.findOne({
+                    where: {
+                        store_inventory_id: storeInv.id,
+                        inventory_size_id: purchasedInv.size.id
+                    }
+                })
+                // Return the purchased amount if the store inventory size exists
+                if(storeInvSize){
+                    const amountStored = storeInvSize.amount ? storeInvSize.amount : 0
+                    storeInvSize.amount = amountStored + purchasedInv.amount
+                    await storeInvSize.save()
+                }     
+            }
+        }
+        // Refresh the store inventory for all purchased inventories
+        await StoreInventoryController.refreshStoreInventory(purchasedInvIds, 'inventory')
+        // Destroy the store transaction
         await storeTrnsc.destroy()
         
         res.send({message: 'Success removing transaction'})        
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
@@ -181,8 +212,9 @@ exports.destroy = async (req, res) => {
  * @returns {object} - Validated and sanitized input with error message
  */
 
-const validateInput = async (req, input) => {
+const validateInput = async (req, inputKeys) => {
     try {
+        const input = filterKeys(req.body, inputKeys)
         // Parse the updated sizes if it exists in the input
         if(input.purchased_invs){
             input.purchased_invs = JSON.parse(input.purchased_invs)
@@ -312,15 +344,19 @@ const validateInput = async (req, input) => {
 
 /**
  * 
- * @param {integer} storeId 
+ * @param {integer} id 
  * @param {integer} inventoryId 
  * @returns {object}
  */
 
 const getStoreTransaction = async (id, paranoid = true) => {
-    try {      
+    try {
+        const storeTrnscIdInput = Joi.number().integer().validate(id)
+        if(storeTrnscIdInput.error){
+            storeTrnscIdInput.value = ''
+        }
         return await StoreTransaction.findOne({
-            where: {id: id},
+            where: {id: storeTrnscIdInput.value},
             paranoid: paranoid,
             attributes: ['id', 'total_amount','total_cost','total_original_cost', 'transaction_date'],    
             include: [
@@ -350,8 +386,7 @@ const getStoreTransaction = async (id, paranoid = true) => {
             ],                         
         })
     } catch (err) {
-        logger.error(err.message)
-        return false
+        throw err
     }
 }
 /**
@@ -360,15 +395,19 @@ const getStoreTransaction = async (id, paranoid = true) => {
  * @returns {object}
  */
 const countTotalAmountAndCost = (invs) => {
-    const totalAmountAndCost = {
-        totalAmount: 0, totalCost: 0,
-        totalOriginalCost: 0
+    try {
+        const totalAmountAndCost = {
+            totalAmount: 0, totalCost: 0,
+            totalOriginalCost: 0
+        }
+        // Count the total amount and cost
+        invs.forEach(inv => {
+            totalAmountAndCost.totalAmount += inv.amount
+            totalAmountAndCost.totalCost += inv.cost
+            totalAmountAndCost.totalOriginalCost += inv.originalCost
+        })
+        return totalAmountAndCost        
+    } catch (err) {
+        throw err
     }
-    // Count the total amount and cost
-    invs.forEach(inv => {
-        totalAmountAndCost.totalAmount += inv.amount
-        totalAmountAndCost.totalCost += inv.cost
-        totalAmountAndCost.totalOriginalCost += inv.originalCost
-    })
-    return totalAmountAndCost
 }

@@ -87,8 +87,8 @@ exports.index = async (req, res) => {
             }
         })          
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -96,9 +96,7 @@ exports.store = async (req, res) => {
     try {
         const userRole = req.user.role.name.toLowerCase()
         // Validate the input
-        const {values, errMsg} = await validateInput(req, filterKeys(
-            req.body, ['store_id', 'stored_invs']
-        )) 
+        const {values, errMsg} = await validateInput(req, ['store_id', 'stored_invs']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -161,8 +159,8 @@ exports.store = async (req, res) => {
             message: 'Success updating the stored inventory'
         })      
     } catch(err) {
-        logger.error(err.message)   
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -170,18 +168,13 @@ exports.update = async (req, res) => {
     try {
         const userRole = req.user.role.name.toLowerCase()
         // Get the store inventory
-        let storeInv = await isStoreInventoryExist(req.params.id, req.user.owner_id)
+        let storeInv = await getStoreInventory(req.params.id, req.user.owner_id)
         // Make sure the inventory stored is exists
-        if(!storeInv)
-        {
-            return res.status(400).send({
-                message: "The store's inventory is not exist"
-            })
+        if(!storeInv){
+            return res.status(400).send({message: "The store's inventory is not exist"})
         }              
         // Validate the input
-        const {values, errMsg} = await validateInput(req, {
-            updated_sizes: req.body.updated_sizes
-        }) 
+        const {values, errMsg} = await validateInput(req, ['updated_sizes']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
@@ -194,7 +187,6 @@ exports.update = async (req, res) => {
     
         const addedSizes = []
         const updatedSizes = []
-        const removedSizes = []        
         // Loop through updated inventory sizes
         values.updated_sizes.forEach(size => {
             if(currentSizeIds.includes(parseInt( size.inventory_size_id )) && size.isChanged){
@@ -256,40 +248,33 @@ exports.update = async (req, res) => {
             message: 'Success updating the stored inventory'
         })
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
 exports.destroy = async (req, res) => {
     try{
+        const storeInv = await getStoreInventory(req.params.id, req.user.ownerId)
         // Make sure the inventory stored is exist
-        if(!await isStoreInventoryExist(req.params.storeId, req.params.inventoryId))
-        {
-            return res.status(400).send({
-                message: "The store's inventory is not exist"
-            })
+        if(!storeInv){
+            return res.status(400).send({message: "The store's inventory is not exist"})
         }
-        // Make sure the store and inventory is exist for the owner
-        const {values, errMsg} = await validateInput(req, {
-            store_id: req.params.storeId, inventory_id: req.params.inventoryId
-        }) 
-        if(errMsg){
-            return res.status(400).send({message: errMsg})
-        }         
-        await StoreInventory.destroy({where: {
-            store_id: values.store_id, inventory_id: values.inventory_id
-        }})
+        await storeInv.destroy()
 
         res.send({message: 'Success deleting inventory'})        
     } catch(err) {
-        logger.error(err.message)
-        res.status(500).send(err.message)
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
     }  
 }
 
 exports.refreshStoreInventory = async (ids, model, removeDeletedSize = true) => {
-    await refreshStoreInventory(ids, model, removeDeletedSize)
+    try {
+        await refreshStoreInventory(ids, model, removeDeletedSize)   
+    } catch (err) {
+        throw err
+    }
 }
 
 /**
@@ -299,8 +284,9 @@ exports.refreshStoreInventory = async (ids, model, removeDeletedSize = true) => 
  * @returns {object} - Validated and sanitized input with error message
  */
 
-const validateInput = async (req, input) => {
+const validateInput = async (req, inputKeys) => {
     try {
+        const input = filterKeys(req.body, inputKeys)
         // Parse the updated sizes if it exists in the input
         if(input.updated_sizes){
             input.updated_sizes = JSON.parse(input.updated_sizes)
@@ -421,15 +407,15 @@ const validateInput = async (req, input) => {
  * @returns {object|false}
  */
 
-const isStoreInventoryExist = async (id, ownerId) => {
+const getStoreInventory = async (id, ownerId) => {
     try {
-        const {error} = Joi.number().integer().validate(id)
+        const storeInvIdInput = Joi.number().integer().validate(id)
 
-        if(error){
-            return false
+        if(storeInvIdInput.error){
+            storeInvIdInput.value = ''
         }
-        const storeInventory = await StoreInventory.findOne({
-            where: {id: id},
+        return await StoreInventory.findOne({
+            where: {id: storeInvIdInput.value},
             include: [
                 {
                     model: Store, as: 'store', 
@@ -438,14 +424,9 @@ const isStoreInventoryExist = async (id, ownerId) => {
                 },                       
             ],             
         })       
-        // Make sure the store's inventory exists
-        if(!storeInventory){
-            return false
-        }    
-        return storeInventory           
+          
     } catch (err) {
-        logger.error(err.message)
-        return false
+        throw err
     }
 }
 
@@ -514,7 +495,6 @@ const refreshStoreInventory = async (ids, model, removeDeletedSize = true) => {
             await storeInv.save()
         }          
     } catch (err) {
-        logger.error(err.message)
-        return false        
+        throw err     
     }  
 }

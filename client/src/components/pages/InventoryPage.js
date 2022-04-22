@@ -7,7 +7,7 @@ import {PlainCard} from '../Cards'
 import {Modal, ConfirmPopup} from '../Windows'
 import Table from '../Table'
 import {Grid} from '../Layouts'
-import {SVGIcons} from '../Misc'
+import SVGIcons from '../SVGIcons'
 
 function InventoryPage({inventory, dispatchInventory, user}){
     const [disableBtn , setDisableBtn] = useState(false)
@@ -175,7 +175,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
         </section>
         <PlainCard
             body={
-                <Grid num_of_columns={1} items={[
+                <Grid numOfColumns={1} items={[
                     <div className='flex-row items-center'>
                         <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                             iconName={'search'}

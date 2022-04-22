@@ -8,7 +8,7 @@ import {TextInput, TextInputAddon, TextInputWithBtn, Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
 import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
-import {SVGIcons} from '../../Misc'
+import SVGIcons from '../../SVGIcons'
 
 function CreateStoreTransactionPage(){
     const [disableBtn , setDisableBtn] = useState(false)
@@ -135,7 +135,7 @@ function CreateStoreTransactionPage(){
     }, [addedInvs, dispatchAddedInvs])    
 
     return (<>
-        <Grid num_of_columns={1} items={[
+        <Grid numOfColumns={1} items={[
             <TextInputAddon 
                 addon={'Date'}
                 formAttr={{

@@ -50,11 +50,6 @@
 	margin-right: 1rem;
 }
 
-#login-page .login-forms{
-	width: 30vw;
-	z-index: 1;
-}
-
 .floating-btn{
 	position: fixed; right: 2.4vw; bottom: 6rem;
 	width: 6.6rem;
