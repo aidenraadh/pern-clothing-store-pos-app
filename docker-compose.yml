@@ -8,7 +8,7 @@ services:
       - ./server:/app
       - /app/node_modules
     env_file:
-      - ./server/.env
+      - ./server/development.env
     depends_on:
       - db
     command: npm run dev
@@ -28,7 +28,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=clothing_store_pos
+      - POSTGRES_DB=pern_clothing_store_pos
       - POSTGRES_USER=testuser
       - POSTGRES_PASSWORD=root    
 volumes:

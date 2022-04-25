@@ -1,7 +1,10 @@
-require('dotenv').config()
+const path = require('path');
 
-const env          = process.env.NODE_ENV || 'development'
-const config       = require('./config/app')[env]
+require('dotenv').config({
+    path: path.resolve(__dirname, `${process.env.NODE_ENV}.env`)
+});
+
+const config       = require('./config/app')[process.env.NODE_ENV]
 const express      = require('express')
 const cors         = require('cors')
 const passport     = require('passport')
@@ -25,6 +28,6 @@ app.get('/', (req, res) => {
     res.redirect(config['clientUrl'])
 })
 
-app.listen(config.serverPort, () => {
-    console.log('Server started at port '+config.serverPort)
+app.listen(config.port, () => {
+    console.log('Server started at port '+config.port)
 })

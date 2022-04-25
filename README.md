@@ -18,9 +18,10 @@ Node JS v14.15.4 or higher.
 
 ### Docker Initialization
 
-1. Create `.env` files for both client and server.
-2. Run `node server/utils/generateKeyPair.js` to generate private and public key for JWT authentication.
-3. Run `docker-compose up -d` from root folder.
+1. Create `.env` file inside client folder based on the `.env.example` file.
+2. Create ENV files inside server folder based on the `.env.example` file. For development the name should be `development.env`, for production the name should be `production.env` and so on.
+3. Run `node server/utils/generateKeyPair.js` to generate private and public key for JWT authentication.
+4. Run `docker-compose up -d` from root folder.
 5. Run the migration files from server command line with `npx sequelize-cli db:migrate`.
 6. Run the seeder files from server command line with `npx sequelize-cli db:seed:all` (optional).
 
@@ -28,7 +29,7 @@ Node JS v14.15.4 or higher.
 
 1. Create your PostgreSQL database.
 2. Go to the `server` folder.
-3. Create the your `.env` file based on `.env.example`.
+3. Create the your `.env` file based on `.env.example`. For development the name should be `development.env`, for production the name should be `production.env` and so on.
 4. Run `npm install`.
 5. Run the migration files with `npx sequelize-cli db:migrate`.
 6. Run the seeder files with `npx sequelize-cli db:seed:all` (optional).

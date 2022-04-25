@@ -9,62 +9,6 @@ const isAuth                     = require('../middlewares/isAuth')
 const isNotAuth                  = require('../middlewares/isNotAuth')
 const authorize                  = require('../middlewares/authorize')
 
-
-const models             = require('../models/index')
-const bcrypt = require('bcrypt')
-const Inventory          = models.Inventory
-const Store          = models.Store
-const InventorySize      = models.InventorySize
-const StoreInventory      = models.StoreInventory
-const StoreInventorySize      = models.StoreInventorySize
-const Role      = models.Role
-const Owner = models.Owner
-const User = models.User
-const logger                  = require('../utils/logger')
-
-
-const haha = () => {
-    try {
-        if(1 === 1){
-            throw new Error('Yoo error')
-        }
-        return 'qqqqq'
-    } catch (error) {
-        throw error
-    }
-}
-
-rootRouter.get('/new-owner', async (req, res) => {
-    try {
-        logger.info('asd')
-        const x = haha()
-        res.status(200).send({message: 'complete'})
-    } catch (error) {
-        logger.error(error, {errorObj: error})
-        res.status(500).send({message: error.message})
-    }
-    // const owner = await Owner.create({})
-    // const hashedPassword = await bcrypt.hash(
-    //     '12345678', 10
-    // )    
-    // await User.create({
-    //     name: 'ownerA',
-    //     email: 'testownera@gmail.com',
-    //     password: hashedPassword,
-    //     owner_id: owner.id,
-    //     role_id: 2
-    // })
-    // return res.send({message: 'asd'})
-})
-
-rootRouter.get('/test', async (req, res) => {
-    // User.update(
-    //     {password: await bcrypt.hash('12345678', 10)},
-    //     {where: {id: 1}}
-    // )
-    return res.send({message: 'asd'})
-})
-
 rootRouter.post('/register', [
     isNotAuth, AuthController.register
 ])
