@@ -207,7 +207,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
         <Modal
             heading={modalHeading}
             body={<>
-                <Grid num_of_columns={1} items={[
+                <Grid numOfColumns={1} items={[
                     <TextInput size={'md'} label={'Name'}
                         formAttr={{value: invName, onChange: (e) => {setInvName(e.target.value)}}}
                     />,
