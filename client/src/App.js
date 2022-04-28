@@ -26,12 +26,7 @@ import UserPage from './components/pages/UserPage'
 import ProfilePage from './components/pages/ProfilePage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
-import './css/content.css';
-import './css/components.css';
-import './css/layouts.css';
-import './css/utilities.css';
-import './css/media-queries.css';
-import './css/custom.css';
+import './index.css';
 
 function App(){
     const [sidebarShown, setSidebarShown] = useState(false)

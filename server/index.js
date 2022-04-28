@@ -22,7 +22,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(passport.initialize())
 initPassport(passport)
 
-app.use('/', rootRouter)
+app.use('/api', rootRouter)
 
 app.get('/', (req, res) => {
     res.redirect(config['clientUrl'])

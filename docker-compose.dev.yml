@@ -30,7 +30,9 @@ services:
     environment:
       - POSTGRES_DB=pern_clothing_store_pos
       - POSTGRES_USER=testuser
-      - POSTGRES_PASSWORD=root    
+      - POSTGRES_PASSWORD=root  
+    depends_on:
+      - client        
 volumes:
   pg_data:
   
