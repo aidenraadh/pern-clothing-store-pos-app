@@ -20,7 +20,7 @@ Node JS v14.15.4 or higher.
 
 1. Create `.env` file inside client folder based on the `.env.example` file.
 2. Create ENV files inside server folder based on the `.env.example` file. For development the name should be `development.env`, for production the name should be `production.env` and so on.
-3. Create `production.env` file inside client folder based on the `.env.example` file.
+3. Create `.env` file inside client folder based on the `.env.example` file.
 4. Run `node server/utils/generateKeyPair.js` to generate private and public key for JWT authentication.
 5. For development mode, `docker-compose -f docker-compose.dev.yml up -d` from root folder.
 6. Run the migration files from server command line with `npx sequelize-cli db:migrate`.
