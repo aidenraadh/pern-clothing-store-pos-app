@@ -2,7 +2,7 @@ import axios from 'axios'
 import {logout} from './Auth'
 
 export const api = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL,
+    baseURL: process.env.REACT_APP_SERVER_URL || '/api',
     withCredentials: true,
     headers: {
         Authorization: localStorage.getItem('jwt_token')
