@@ -26,8 +26,6 @@ import UserPage from './components/pages/UserPage'
 import ProfilePage from './components/pages/ProfilePage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
-import './index.css';
-
 function App(){
     const [sidebarShown, setSidebarShown] = useState(false)
     const [inventory, dispatchInventory] = useReducer(inventoryReducer, INVENTORY_INIT_STATE)
