@@ -1,9 +1,10 @@
 import {useState, useCallback}  from "react"
 import {api, errorHandler} from '../Utils'
-import {saveUser} from '../Auth'
+import {saveUser, logout} from '../Auth'
 import {Button} from '../Buttons'
 import {Modal, ConfirmPopup} from '../Windows'
 import {TextInput, TextInputWithBtn} from '../Forms'
+import {SimpleCard} from '../Cards'
 import {Grid} from '../Layouts'
 
 function ProfilePage({user}){
@@ -48,13 +49,23 @@ function ProfilePage({user}){
         return 'Loading ...'
     }
     return (<>
-        <h1>Profile</h1>
-        <p>
-            Name: {user.name}<br/>
-        </p>
-        <Button text={'Update profile'} size={'sm'} attr={{
-            onClick: () => {setUpdProfileModal(true)}
-        }}/>
+        <SimpleCard
+            heading={'Your Profile'}
+            body={<>
+                <p>
+                    Name: {user.name}<br/>
+                </p>
+                <Button text={'Update profile'} size={'sm'} attr={{
+                    onClick: () => {setUpdProfileModal(true)}
+                }}/>                
+            </>}
+            action={<>
+                <Button 
+                    text={'Logout'} size={'sm'} color={'red'}
+                    attr={{onClick: logout}} 
+                />              
+            </>}
+        />
         <Modal
             heading={'Update Profile'}
             body={<Grid numOfColumns={1} items={[

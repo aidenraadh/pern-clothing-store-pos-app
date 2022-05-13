@@ -34,7 +34,7 @@ function Navigations(props){
 				</div>
 				<ul className="right-widgets">
 					{props.rightWidgets.map((item, key) => (
-						<li key={key}>{item}</li>
+						<li key={key} className='topbar-item'>{item}</li>
 					))}
 				</ul>
 			</section>

@@ -3,4 +3,138 @@
 @import 'css/layouts.css';
 @import 'css/utilities.css';
 @import 'css/media-queries.css';
-@import 'css/custom.css';
+
+.dropzone{
+	border-radius: 0.55rem;
+	border: 0.2rem solid #E4E6EF;
+}
+
+.dropzone .dz-message{
+	margin: 2.6em 0 0;
+	font-size: 1.8rem;
+	font-weight: 500;
+	color: #868DB3;
+}
+
+.dropzone.single-file{
+	display: block;
+	width: 100%;
+	padding: 1.4rem;
+}
+
+.dropzone.single-file .dz-image-preview{
+	display: block;
+	margin: 0 auto;
+}
+
+.dropzone.single-file .dz-image{
+	margin: 0 auto;
+}
+
+.page-header .heading{
+	font-size: 1.8rem;
+	color: #5E6278;
+}
+
+.page-header .heading .svg-icon{
+	width: 4rem;
+	height: 4rem;
+	border-radius: 0.55rem;
+}
+
+.page-header .heading .svg-icon svg{
+	width: 70%;
+	height: 70%;
+}
+
+.load-more-btn{
+	margin: 2rem auto 0;
+}
+
+.load-more-btn svg{
+	width: 1.4em;
+	margin-right: 1rem;
+}
+
+.floating-btn{
+	position: fixed; right: 2.4vw; bottom: 6rem;
+	width: 6.6rem;
+	height: 6.6rem;
+	border-radius: 100%;
+	z-index: 97;
+	background-color: #4A7DFF;
+}
+
+.table-stats{
+	width: 49%;
+	margin-bottom: 2rem;
+}
+
+.collapsible-arrow > .svg-icon{
+	margin-right: 0.1em;
+	font-size: 2rem;
+	transition: transform 0.3s;
+}
+
+.collapsible-arrow.expanded > .svg-icon{
+	transform: rotate(-180deg);
+}
+
+.error-page h1{
+	margin-bottom: 2rem;
+}
+
+.error-page h1 > span:first-child{
+	padding-right: 0.6rem;
+	margin-right: 0.6rem;
+	border-right: 2px solid #99A1CC;
+	font-size: 4.2rem;
+}
+
+.error-page h1 > span:last-child{
+	font-size: 1.8rem;
+}
+
+.error-page a{
+	width: 16rem;
+}
+
+.sliding-stats-container{
+	overflow-x: auto;
+}
+
+.sliding-stats-container > .stats-card{
+	flex-shrink: 0;
+	margin-right: 2rem;
+	width: 49%;
+}
+
+.sliding-stats-container > .stats-card:last-child{
+	margin-right: 0;
+}
+
+.inventories-container .inventory{
+	padding: 1rem 0;
+	border-bottom: 0.1rem solid #D9D9D9;
+}
+
+.inventories-container .inventory:first-child{
+	padding: 0 0 1rem;
+	border-bottom: 0.1rem solid #D9D9D9;
+}
+
+.inventories-container .inventory:last-child{
+	padding: 1rem 0 0;
+	border-bottom: none;
+}
+
+.inventories-container .name{
+	text-transform: capitalize;
+}
+
+.inventories-container .actions > *{
+	margin-right: 1rem;
+}
+.inventories-container .actions > *:last-child{
+	margin-right: 0;
+}

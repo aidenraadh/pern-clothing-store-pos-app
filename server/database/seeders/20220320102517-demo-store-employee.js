@@ -13,7 +13,7 @@ module.exports = {
 
     // Get the employee role
     const employeeRole = await Role.findOne({
-      where: {name: {[Op.iLike]: `%employee%`}},
+      where: {name: {[Op.iLike]: `employee`}},
       attributes: ['id']
     })
 

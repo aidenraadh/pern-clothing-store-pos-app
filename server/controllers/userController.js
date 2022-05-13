@@ -256,7 +256,7 @@ exports.updateProfile = async (req, res) => {
         })      
         res.send({
             user: user,
-            message: 'Success updating profile'
+            message: 'Profile successfully updated'
         })        
     }
     catch(err){

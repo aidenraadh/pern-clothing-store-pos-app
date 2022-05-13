@@ -18,7 +18,7 @@ body{
   	background-color: #EEF0F8;
 }
 
-#app{
+#app.authenticated{
 	padding: 9.6rem 3rem 14rem 10rem;
 }
 

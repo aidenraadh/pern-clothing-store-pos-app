@@ -28,6 +28,9 @@ export const errorHandler = (error, handler = {}) => {
 	if(handler[statusCode]){
 		handler[statusCode]()
 	}
+	else{
+		alert(error.response.data.message)
+	}
 }
 
 /**

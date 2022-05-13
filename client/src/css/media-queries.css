@@ -35,7 +35,7 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 */
 
 @media only screen and (max-width: 1100px){	
-	#app{
+	#app.authenticated{
 		padding: 9.6rem 4vw 18rem;
 	}
 
@@ -116,7 +116,7 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 */
 
 @media only screen and (max-width: 700px){
-	#app{
+	#app.authenticated{
 		padding: 9.6rem 3vw 10rem;
 	}
 	.sidebar{

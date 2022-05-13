@@ -15,7 +15,6 @@ import {ownerReducer, OWNER_INIT_STATE} from "./components/reducers/OwnerReducer
 import {employeeReducer, EMPLOYEE_INIT_STATE} from "./components/reducers/EmployeeReducer";
 
 import LoginPage from './components/pages/LoginPage'
-import DashboardPage from './components/pages/DashboardPage'
 import InventoryPage from './components/pages/InventoryPage'
 import StorePage from './components/pages/StorePage'
 import IndexStoreInventoryPage from './components/pages/store_inventory/IndexStoreInventoryPage'
@@ -38,10 +37,7 @@ function App(){
     const user = getUser()
     if(user){ user.role.name = user.role.name.toLowerCase() }
 
-    const sidebarItems = {
-        dashboard: {
-            icon: 'layers', text: 'Dashboard', link: ''
-        },     
+    const sidebarItems = {    
         inventory: {
             icon: 'hanger', text: 'Inventories', link: 'inventories'
         },
@@ -58,19 +54,23 @@ function App(){
             icon: 'group', text: 'Users', link: 'users'
         },         
     }
+    const userAuth = isAuth()
 
     return (
         <ErrorBoundary>
             <Router>
                 {(
-                    isAuth() ?
+                    userAuth ?
                     <Navigations
                         sidebarShown={sidebarShown}
                         toggleSidebar={setSidebarShown}
                         rightWidgets={[
-                            <UserThumbnail userName={
-                                <Link to='/profile'>{user.name}</Link>
-                            }/>
+                            <Link to='/profile'>
+                                <UserThumbnail 
+                                    userName={user.name}
+                                    imgUrl={'/images/user_default_thumbnail.jpg'}
+                                />                            
+                            </Link>
                         ]}
                         sidebarItems={(() => {
                             let sidebarItemNames = []
@@ -78,13 +78,13 @@ function App(){
                             switch(userRole){
                                 case 'owner': 
                                     sidebarItemNames = [
-                                        'dashboard','inventory','store','store_inventory','store_transaction',
+                                        'inventory','store','store_inventory','store_transaction',
                                         'user'
                                     ];
                                     break;
 
                                 case 'employee':
-                                    sidebarItemNames = ['dashboard','store_inventory', 'store_transaction'];
+                                    sidebarItemNames = ['store_inventory', 'store_transaction'];
                                     break;
 
                                 default: sidebarItemNames = []; break;
@@ -94,38 +94,48 @@ function App(){
                         })()}	
                     /> : ''       
                 )}
-                <div id="app">
+                <div id="app" className={userAuth ? 'authenticated': ''}>
                     <Switch>                  
                         <Route path="/login" exact component={LoginPage}/>
-                        <ProtectedRoute path={'/'} exact user={user} component={DashboardPage}/>
                         <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
-                            user={user} inventory={inventory} dispatchInventory={dispatchInventory}
+                            props={{
+                                user: user, inventory: inventory, dispatchInventory: dispatchInventory
+                            }}
                         />
                         <ProtectedRoute path={`/${sidebarItems.store.link}`} exact component={StorePage}
-                            user={user} store={store} dispatchStore={dispatchStore}
+                            props={{
+                                user: user, store: store, dispatchStore: dispatchStore
+                            }}
                         />     
                         <ProtectedRoute path={`/${sidebarItems.store_inventory.link}`} exact component={IndexStoreInventoryPage}
-                            user={user} storeInv={storeInv} dispatchStoreInv={dispatchStoreInv}
+                            props={{
+                                user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv
+                            }}
                         />        
                         <ProtectedRoute path={`/${sidebarItems.store_inventory.link}/create`} exact 
-                            component={CreateStoreInventoryPage} user={user} storeInv={storeInv} 
-                            dispatchStoreInv={dispatchStoreInv}
+                            component={CreateStoreInventoryPage} prop={{
+                                user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv
+                            }}
                         /> 
                         <ProtectedRoute path={`/${sidebarItems.store_transaction.link}`} exact 
-                            component={IndexStoreTransactionPage} user={user} storeTrnsc={storeTrnsc} 
-                            dispatchStoreTrnsc={dispatchStoreTrnsc}
+                            component={IndexStoreTransactionPage} props={{
+                                user: user, storeTrnsc: storeTrnsc, dispatchStoreTrnsc: dispatchStoreTrnsc
+                            }}
                         />                          
                         <ProtectedRoute path={`/${sidebarItems.store_transaction.link}/create`} exact 
-                            component={CreateStoreTransactionPage} user={user} storeInv={storeInv} 
-                            dispatchStoreInv={dispatchStoreInv}
+                            component={CreateStoreTransactionPage} props={{
+                                user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv
+                            }}
                         />                         
                         <ProtectedRoute path={`/${sidebarItems.user.link}`} exact component={UserPage}
-                            user={user} owner={owner} dispatchOwner={dispatchOwner} employee={employee} 
-                            dispatchEmployee={dispatchEmployee}
+                            props={{
+                                user: user, owner: owner, dispatchOwner: dispatchOwner, employee: employee,
+                                dispatchEmployee: dispatchEmployee
+                            }}
                         />       
-                        <ProtectedRoute path={`/profile`} exact component={ProfilePage}
-                            user={user}
-                        />                                                                                                                
+                        <ProtectedRoute path={`/profile`} exact component={ProfilePage} props={{
+                            user: user
+                        }}/>                                                                                                                
                         <Route path={'*'} component={NotFoundPage}/>
                     </Switch>                    
                 </div>      

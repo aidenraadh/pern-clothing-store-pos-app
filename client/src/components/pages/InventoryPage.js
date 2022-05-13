@@ -186,7 +186,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
                                 onKeyUp: e => {keyHandler(e, 'Enter', () => {getInventories(INVENTORY_ACTIONS.RESET)})}
                             }} 
                         />   
-                        <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                        <Button size={'md'} text={'Search'} attr={{disabled: disableBtn,
                                 style: {flexShrink: '0'},
                                 onClick: () => {getInventories(INVENTORY_ACTIONS.RESET)}
                             }}

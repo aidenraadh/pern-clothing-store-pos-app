@@ -145,7 +145,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         <PlainCard 
             body={<>
                 <div className='flex-row items-center'>
-                    <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
+                    <TextInput containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search inventory', 
                             onChange: e => {dispatchFilters({
@@ -154,7 +154,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                             onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStoreInvs(STOREINV_ACTIONS.RESET)})}
                         }} 
                     />   
-                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                    <Button text={'Search'} attr={{disabled: disableBtn,
                             style: {flexShrink: '0'},
                             onClick: () => {getStoreInvs(STOREINV_ACTIONS.RESET)}
                         }}

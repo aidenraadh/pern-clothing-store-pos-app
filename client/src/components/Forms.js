@@ -5,10 +5,17 @@ export function TextInput(props){
 	const classes = `base-input ${props.type} ${props.size}-input` +
 		(props.containerClasses ? ` ${props.containerClasses}` : props.containerClasses)
 
+	let formAttr = {...props.formAttr}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}
+
 	return (
 		<span className={classes} {...props.containerAttr}>
 			{props.label ? <label htmlFor={props.formName}>{props.label}</label> : ''}
-			<input id={props.formName} name={props.formName} {...props.formAttr} />
+			<input {...formAttr} />
 		</span>		
 	)
 }
@@ -27,11 +34,16 @@ export function TextInputWithBtn(props){
 	const classes = `base-input ${props.type} ${props.size}-input with-btn` + (props.containerClasses ? 
 		` ${props.containerClasses}` : props.containerClasses
 	)
-
+	let formAttr = {...props.formAttr}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}	
 	return (
 		<span className={classes} {...props.containerAttr}>
 			{props.label ? <label htmlFor={props.formName}>{props.label}</label> : ''}
-			<input id={props.formName} name={props.formName} {...props.formAttr} />
+			<input {...formAttr} />
 			<Button type={'light'} color={props.btnIconColor} size={props.size} 
 				iconName={props.btnIconName} iconOnly={'true'} attr={{...props.btnAttr}}
 			/>
@@ -57,10 +69,16 @@ export function Select(props){
 	const classes = `base-input ${props.type} ${props.size}-input` +
 		(props.containerClasses ? ` ${props.containerClasses}` : props.containerClasses)
 
+	let formAttr = {...props.formAttr}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}	
 	return (
 		<span className={classes} {...props.containerAttr}>
 			{props.label ? <label htmlFor={props.formName}>{props.label}</label> : ''}
-			<select id={props.formName} name={props.formName} {...props.formAttr}>
+			<select {...formAttr}>
 
 			{props.options.map((option, key) => (
 				<option key={key} value={option.value} {...option.attr}>
@@ -92,10 +110,17 @@ export function Textarea(props){
 	const classes = `base-input ${props.type} ${props.size}-input` +
 		(props.containerClasses ? ` ${props.containerClasses}` : props.containerClasses)
 
+	let formAttr = {...props.formAttr}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}		
+
 	return (
 		<span className={classes} {...props.containerAttr}>
 			{props.label ? <label htmlFor={props.formName}>{props.label}</label> : ''}
-			<textarea id={props.formName} name={props.formName} {...props.formAttr}></textarea>
+			<textarea {...formAttr}></textarea>
 		</span>	
 	);
 }
@@ -114,12 +139,18 @@ export function TextInputAddon(props){
 	const classes = `addon-input ${props.size}-input` +
 		(props.containerClasses ? ` ${props.containerClasses}` : props.containerClasses)
 
+	let formAttr = {...props.formAttr}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}		
 	return (
 		<span className={classes} {...props.containerAttr}>
 			{props.label ? <label htmlFor={props.formName}>{props.label}</label> : ''}
 			<span className="flex-row">
 				<span className="addon" aria-hidden="true">{props.addon}</span>
-				<input id={props.formName} name={props.formName} {...props.formAttr} />
+				<input {...formAttr} />
 			</span>
 		</span>			
 	);
@@ -139,12 +170,18 @@ export function SelectAddon(props){
 	const classes = `addon-input ${props.size}-input` +
 		(props.containerClasses ? ` ${props.containerClasses}` : props.containerClasses)
 
+	let formAttr = {...props.formAttr}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}		
 	return (
 		<span className={classes} {...props.containerAttr}>
 			{props.label ? <label htmlFor={props.formName}>{props.label}</label> : ''}
 			<span className="flex-row">
 				<span className="addon" aria-hidden="true">{props.addon}</span>
-				<select id={props.formName} name={props.formName} {...props.formAttr}>
+				<select {...formAttr}>
 				{props.options.map((option, key) => (
 					<option key={key} value={option.value} {...option.attr}>
 						{(option.text ? option.text : option.value)}
@@ -173,12 +210,18 @@ SelectAddon.defaultProps = {
 
 export function Checkbox(props){
 	const classes = `multi-choice checkbox ${props.type}` +
-		(props.containerClasses ? ` ${props.containerClasses}` : props.containerClasses)
+		(props.classes ? ` ${props.classes}` : props.classes)
 
+	let formAttr = {...props.formAttr, value: props.value}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}		
 	return (
 		<label className={classes} {...props.containerAttr}>
 			<span className="choice-name">{props.label ? props.label : props.value}</span>
-			<input type="checkbox" name={props.formName} value={props.value} {...props.formAttr}/>
+			<input type="checkbox" {...formAttr}/>
 			<span className="checkmark">
 				<span></span>
 			</span>
@@ -191,19 +234,26 @@ Checkbox.defaultProps = {
 	type: 'outline', // String - 'outline'|'basic'
 	label: '', // String|JSX
 	value: '', // String
-	containerClasses: '', // String
+	classes: '', // String
 	containerAttr: {}, // Object
 	formAttr: {}, // Object
 }
 
 export function Radio(props){
 	const classes = `multi-choice radio ${props.type}` + 
-		(props.containerClasses ? ` ${props.containerClasses}` : props.containerClasses)
+		(props.classes ? ` ${props.classes}` : props.classes)
+
+	let formAttr = {...props.formAttr}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}		
 
 	return (
 		<label className={classes} {...props.containerAttr}>
 			<span className="choice-name">{props.label ? props.label : props.value}</span>
-			<input type="radio" name={props.formName} value={props.value} {...props.formAttr}/>
+			<input type="radio" {...formAttr}/>
 			<span className="checkmark">
 				<span></span>
 			</span>
@@ -216,7 +266,7 @@ Radio.defaultProps = {
 	type: 'outline', // String - 'outline'|'basic'
 	label: '', // String|JSX
 	value: '', // String
-	containerClasses: '', // String
+	classes: '', // String
 	containerAttr: {}, // Object
 	formAttr: {}, // Object
 }

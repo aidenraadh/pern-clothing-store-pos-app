@@ -45,7 +45,6 @@ SimpleCard.defaultProps = {
 export function PlainCard(props){
 	const CardTag = props.cardTag
 	const classes = 'card plain-card'+(props.classes ? ' '+props.classes : props.classes)
-	console.log(props.classes)
 	return (
 		<CardTag className={classes} {...props.attr}>
 			{props.body}

@@ -166,7 +166,7 @@ function StorePage({store, dispatchStore, user}){
         <PlainCard 
             body={<>
                 <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
-                    <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
+                    <TextInput containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search store', 
                             onChange: e => {dispatchFilters({
@@ -175,7 +175,7 @@ function StorePage({store, dispatchStore, user}){
                             onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStores(STORE_ACTIONS.RESET)})}
                         }} 
                     />   
-                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                    <Button text={'Search'} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
                         onClick: () => {getStores(STORE_ACTIONS.RESET)}
                     }}/>                                       

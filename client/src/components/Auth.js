@@ -13,12 +13,12 @@ export const logout = () => {
     window.location.replace(`${window.location.origin}/login`);
 }
 // Store the user's token and data to local storage then redirect to home page
-export const login = (response = null) => {
+export const login = (response = null, redirecUrl = '') => {
     if(response){
         localStorage.setItem(`${hostname}_jwt_token`, response.data.token)
         saveUser(response.data.user)
     }
-    window.location.replace(window.location.origin);
+    window.location.replace(`${window.location.origin}${redirecUrl}`);
 }
 // Save the user to local storage
 export const saveUser = (user) => {

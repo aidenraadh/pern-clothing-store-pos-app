@@ -42,7 +42,7 @@ const requestLogin = (email, password) => {
         .post('/login', {
             email: email, password: password
         })
-        .then(response => login(response))
+        .then(response => login(response, '/inventories'))
         .catch(error => {
             if(error.response.status === 400){
                 alert(error.response.data.message)
