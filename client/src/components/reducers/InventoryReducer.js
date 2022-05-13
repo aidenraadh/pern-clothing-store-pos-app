@@ -1,12 +1,12 @@
-import { saveResFilters } from "../Utils";
+import { saveResFilters, getResFilters } from "../Utils";
 
-export const INVENTORY_FILTER_KEY = 'inventory'
+export const FILTER_KEY = 'inventory'
 
-export const INVENTORY_INIT_STATE = {
+export const INIT_STATE = {
     inventories: null, // Array of inventories
     canLoadMore: true, // Wheter or not the inventories can be loaded more 
 }
-export const INVENTORY_ACTIONS = {
+export const ACTIONS = {
     APPEND: 'APPEND', 
     PREPEND: 'PREPEND',
     REPLACE: 'REPLACE',
@@ -14,13 +14,18 @@ export const INVENTORY_ACTIONS = {
     RESET: 'RESET',
 }
 
+export const FILTER_ACTIONS = {
+    UPDATE: 'UPDATE',
+    RESET: 'RESET'
+}
+
+
 export const inventoryReducer = (state, action) => {
     const {type, payload} = action
-    saveResFilters(INVENTORY_FILTER_KEY, payload.filters);
 
     switch(type){
         // Append inventory(s) to 'inventories'
-        case INVENTORY_ACTIONS.APPEND: 
+        case ACTIONS.APPEND: 
             return {
                 ...state, inventories: (
                     Array.isArray(payload.inventories) ? 
@@ -30,7 +35,7 @@ export const inventoryReducer = (state, action) => {
                 canLoadMore: payload.inventories.length < payload.filters.limit ? false : true
             }; 
         // Prepend array of inventory(s) to 'inventories'
-        case INVENTORY_ACTIONS.PREPEND: 
+        case ACTIONS.PREPEND: 
             return {
                 ...state, inventories: (
                     Array.isArray(payload.inventories) ? 
@@ -40,7 +45,7 @@ export const inventoryReducer = (state, action) => {
 
             };
         // Replace inventory inside 'inventories'
-        case INVENTORY_ACTIONS.REPLACE: 
+        case ACTIONS.REPLACE: 
             return {
                 ...state, inventories: (() => {
                     const inventories = [...state.inventories]
@@ -49,7 +54,7 @@ export const inventoryReducer = (state, action) => {
                 })()
             };            
         // Remove inventory(s) from 'inventories'
-        case INVENTORY_ACTIONS.REMOVE: 
+        case ACTIONS.REMOVE: 
             return {
                 ...state, inventories: (() => {
                     let inventories = [...state.inventories]
@@ -63,11 +68,44 @@ export const inventoryReducer = (state, action) => {
                 })()
             }; 
         // Refresh the inventory resource
-        case INVENTORY_ACTIONS.RESET: 
+        case ACTIONS.RESET: 
             return {
                 ...state, inventories: [...payload.inventories],
                 canLoadMore: payload.inventories.length < payload.filters.limit ? false : true
             };             
         default: throw new Error();
     }
+}
+
+export const filterReducer = (state, action) => {
+    const {type, payload} = action
+    // If the filter is resetted, save to the local storage
+    if(type === FILTER_ACTIONS.RESET){
+        saveResFilters(FILTER_KEY, payload.filters);
+    }
+    switch(type){
+        case FILTER_ACTIONS.UPDATE: 
+            if(payload.key === 'limit'){
+                payload.value = parseInt(payload.value)
+            }
+            return {
+                ...state, [payload.key]: payload.value
+            }; 
+        case FILTER_ACTIONS.RESET: 
+            return {
+                ...state, ...payload.filters
+            };          
+        // Error
+        default: throw new Error()
+    }
+}
+
+export const getFilters = () => {
+    const defaultFilters = {
+        name: '',
+        limit: 10, 
+        offset: 0,           
+    }
+    const filters = getResFilters(FILTER_KEY)
+    return {...defaultFilters, ...filters}
 }

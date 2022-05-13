@@ -1,6 +1,6 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import {STOREINV_ACTIONS, STOREINV_FILTER_KEY} from './../../reducers/StoreInventoryReducer'
+import {ACTIONS, STOREINV_FILTER_KEY, FILTER_ACTIONS, filterReducer, getFilters} from './../../reducers/StoreInventoryReducer'
 import {api, errorHandler, getResFilters, getQueryString, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, Select} from '../../Forms'
@@ -18,15 +18,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     /* Delete store inventory */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter store inventory */
-    const [filters, dispatchFilters] = useReducer(filterReducer, (() => {
-        const initState = getResFilters(STOREINV_FILTER_KEY)
-        return {
-            name: initState.name ? initState.name : '',
-            store_id: initState.store_id ? initState.store_id : '',
-            limit: initState.limit ? initState.limit : 10, 
-            offset: initState.offset ? initState.offset : 0,             
-        }
-    })())     
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters())     
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -39,7 +31,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === STOREINV_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
         if(storeInv.storeInvs !== null){
             setDisableBtn(true)
         }
@@ -51,7 +43,9 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 }                          
                 dispatchStoreInv({type: actionType, payload: response.data})
                 dispatchFilters({
-                    type: 'reset', payload: getResFilters(STOREINV_FILTER_KEY)
+                    type: FILTER_ACTIONS.RESET, payload: {
+                        filters: response.data.filters
+                    }
                 })                  
            })
            .catch(error => {
@@ -102,7 +96,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
             })
             .then(response => {
                 dispatchStoreInv({
-                    type: STOREINV_ACTIONS.REPLACE, 
+                    type: ACTIONS.REPLACE, 
                     payload: {storeInv: response.data.storeInv, index: storeInvIndex}
                 })                 
                 setSuccPopupMsg(response.data.message)
@@ -121,7 +115,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
 
     useEffect(() => {
         if(storeInv.storeInvs === null){
-            getStoreInvs(STOREINV_ACTIONS.RESET)
+            getStoreInvs(ACTIONS.RESET)
         }
     }, [storeInv, getStoreInvs])
 
@@ -149,14 +143,14 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search inventory', 
                             onChange: e => {dispatchFilters({
-                                type: 'update', payload: {key: 'name', value: e.target.value}
+                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'name', value: e.target.value}
                             })},
-                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStoreInvs(STOREINV_ACTIONS.RESET)})}
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStoreInvs(ACTIONS.RESET)})}
                         }} 
                     />   
                     <Button text={'Search'} attr={{disabled: disableBtn,
                             style: {flexShrink: '0'},
-                            onClick: () => {getStoreInvs(STOREINV_ACTIONS.RESET)}
+                            onClick: () => {getStoreInvs(ACTIONS.RESET)}
                         }}
                     />                                       
                 </div>
@@ -166,7 +160,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 />
                 <LoadMoreBtn 
                     canLoadMore={storeInv.canLoadMore}
-                    action={() => {getStoreInvs(STOREINV_ACTIONS.APPEND)}}
+                    action={() => {getStoreInvs(ACTIONS.APPEND)}}
                 />              
             </>}
         />
@@ -232,7 +226,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                             formAttr={{
                                 value: filters.limit,
                                 onChange: e => {dispatchFilters({
-                                    type: 'update', payload: {key: 'limit', value: e.target.value}
+                                    type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
                                 })}                                   
                             }}
                             options={[
@@ -246,7 +240,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                                 formAttr={{
                                     value: filters.store_id,
                                     onChange: e => {dispatchFilters({
-                                        type: 'update', payload: {key: 'store_id', value: e.target.value}
+                                        type: FILTER_ACTIONS.UPDATE, payload: {key: 'store_id', value: e.target.value}
                                     })}                                       
                                 }}
                                 options={(() => {
@@ -265,7 +259,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStoreInvs(STOREINV_ACTIONS.RESET)}
+                        onClick: () => {getStoreInvs(ACTIONS.RESET)}
                     }}
                 />                
             }
@@ -291,21 +285,6 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
         />        
     </>)
-}
-
-const filterReducer = (state, action) => {
-    const payload = action.payload
-    switch(action.type){
-        case 'update': 
-            if(payload.key === 'limit' || payload.key === 'store_id'){ 
-                payload.value = parseInt(payload.value)
-            }
-            return {...state, [payload.key]: payload.value}
-
-        case 'reset': return payload
-
-        default: throw new Error();
-    }
 }
 
 const StoreInvs = ({storeInvs, viewStoreInv}) => {

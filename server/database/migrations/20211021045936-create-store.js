@@ -12,6 +12,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(100)
       },
+      type_id: {
+        allowNull: false,
+        type: Sequelize.SMALLINT
+      },      
       owner_id: {
         type: Sequelize.DataTypes.BIGINT,
         allowNull: false,

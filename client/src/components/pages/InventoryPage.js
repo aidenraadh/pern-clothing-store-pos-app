@@ -1,6 +1,6 @@
 import {useReducer, useState, useEffect, useCallback} from 'react'
-import {INVENTORY_ACTIONS, INVENTORY_FILTER_KEY} from '../reducers/InventoryReducer'
-import {api, errorHandler, getResFilters, getQueryString, formatNum, keyHandler} from '../Utils.js'
+import {ACTIONS, filterReducer, FILTER_ACTIONS, getFilters} from '../reducers/InventoryReducer'
+import {api, errorHandler, getQueryString, formatNum, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
@@ -21,14 +21,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
     /* Delete inventory */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter inventory */
-    const [filters, dispatchFilters] = useReducer(filterReducer, (() => {
-        const initState = getResFilters(INVENTORY_FILTER_KEY)
-        return {
-            name: initState.name ? initState.name : '',
-            limit: initState.limit ? initState.limit : 10, 
-            offset: initState.offset ? initState.offset : 0,             
-        }
-    })())
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters())
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -41,7 +34,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === INVENTORY_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
         if(inventory.inventories !== null){
             setDisableBtn(true)
@@ -51,11 +44,11 @@ function InventoryPage({inventory, dispatchInventory, user}){
                 if(inventory.inventories !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
-                }                          
+                }                         
                 dispatchInventory({type: actionType, payload: response.data})
-                dispatchFilters({
-                    type: 'reset', payload: getResFilters(INVENTORY_FILTER_KEY)
-                })
+                dispatchFilters({type: FILTER_ACTIONS.RESET, payload: {
+                    filters: response.data.filters,
+                }})
            })
            .catch(error => {
                 if(inventory.inventories !== null){
@@ -84,7 +77,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
             setDisableBtn(false)
             setModalShown(false)           
             dispatchInventory({
-                type: INVENTORY_ACTIONS.PREPEND, 
+                type: ACTIONS.PREPEND, 
                 payload: {inventories: response.data.inventory}
             })
         })
@@ -113,7 +106,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
         })     
         .then(response => {
             dispatchInventory({
-                type: INVENTORY_ACTIONS.REPLACE, 
+                type: ACTIONS.REPLACE, 
                 payload: {inventory: response.data.inventory, index: invIndex}
             }) 
             setSuccPopupMsg(response.data.message)            
@@ -140,7 +133,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
         api.delete(`/inventories/${invId}`)     
            .then(response => {        
                dispatchInventory({
-                   type: INVENTORY_ACTIONS.REMOVE, 
+                   type: ACTIONS.REMOVE, 
                    payload: {indexes: invIndex}
                })                
                setSuccPopupMsg(response.data.message)  
@@ -157,7 +150,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
 
     useEffect(() => {
         if(inventory.inventories === null){
-            getInventories(INVENTORY_ACTIONS.RESET)
+            getInventories(ACTIONS.RESET)
         }
     }, [inventory, getInventories])    
     // When the inventory resource is not set yet
@@ -180,15 +173,15 @@ function InventoryPage({inventory, dispatchInventory, user}){
                         <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                             iconName={'search'}
                             formAttr={{value: filters.name, placeholder: 'Search inventory', 
-                                onChange: e => {dispatchFilters({
-                                    type: 'update', payload: {key: 'name', value: e.target.value}
-                                })},
-                                onKeyUp: e => {keyHandler(e, 'Enter', () => {getInventories(INVENTORY_ACTIONS.RESET)})}
+                                onChange: (e) => {dispatchFilters({type: FILTER_ACTIONS.UPDATE, payload: {
+                                    key: 'name', value: e.target.value
+                                }})},
+                                onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInventories(ACTIONS.RESET)})}   
                             }} 
                         />   
                         <Button size={'md'} text={'Search'} attr={{disabled: disableBtn,
                                 style: {flexShrink: '0'},
-                                onClick: () => {getInventories(INVENTORY_ACTIONS.RESET)}
+                                onClick: () => {getInventories(ACTIONS.RESET)}
                             }}
                         />                                       
                     </div>,
@@ -199,7 +192,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
                     />,
                     <LoadMoreBtn 
                         canLoadMore={inventory.canLoadMore}
-                        action={() => {getInventories(INVENTORY_ACTIONS.APPEND)}}
+                        action={() => {getInventories(ACTIONS.APPEND)}}
                     />                                  
                 ]}/>
             }
@@ -277,7 +270,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
                     formAttr={{
                         value: filters.limit,
                         onChange: e => {dispatchFilters({
-                            type: 'update', payload: {key: 'limit', value: e.target.value}
+                            type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
                         })}                        
                     }}
                     options={[
@@ -288,7 +281,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getInventories(INVENTORY_ACTIONS.RESET)}
+                        onClick: () => {getInventories(ACTIONS.RESET)}
                     }}
                 />                
             }
@@ -323,19 +316,6 @@ function InventoryPage({inventory, dispatchInventory, user}){
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
         />         
     </>)
-}
-
-const filterReducer = (state, action) => {
-    const payload = action.payload
-    switch(action.type){
-        case 'update': 
-            if(payload.key === 'limit'){ payload.value = parseInt(payload.value) }
-            return {...state, [payload.key]: payload.value}
-
-        case 'reset': return payload
-
-        default: throw new Error();
-    }
 }
 
 const sizesReducer = (state, action) => {

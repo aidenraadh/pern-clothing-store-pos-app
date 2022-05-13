@@ -1,13 +1,13 @@
-import { saveResFilters } from "../Utils";
+import { saveResFilters, getResFilters } from "../Utils";
 
-export const STORETRNSC_FILTER_KEY = 'store_transaction'
+export const FILTER_KEY = 'store_transaction'
 
-export const STORETRNSC_INIT_STATE = {
+export const INIT_STATE = {
     storeTrnscs: null, // Array of inventories
     stores: [], // Array of stores
     canLoadMore: true, // Wheter or not the inventories can be loaded more 
 }
-export const STORETRNSC_ACTIONS = {
+export const ACTIONS = {
     APPEND: 'APPEND', 
     PREPEND: 'PREPEND',
     REPLACE: 'REPLACE',
@@ -15,12 +15,17 @@ export const STORETRNSC_ACTIONS = {
     RESET: 'RESET',
 }
 
+export const FILTER_ACTIONS = {
+    UPDATE: 'UPDATE',
+    RESET: 'RESET'
+}
+
 export const storeTransactionReducer = (state, action) => {
     const {type, payload} = action
-    saveResFilters(STORETRNSC_FILTER_KEY, payload.filters);
+
     switch(type){
         // Append store transaction(s) to 'store transactions'
-        case STORETRNSC_ACTIONS.APPEND: 
+        case ACTIONS.APPEND: 
             return {
                 ...state, storeTrnscs: (
                     Array.isArray(payload.storeTrnscs) ? 
@@ -30,7 +35,7 @@ export const storeTransactionReducer = (state, action) => {
                 canLoadMore: payload.storeTrnscs.length < payload.filters.limit ? false : true
             }; 
         // Prepend array of store transaction(s) to 'store transactions'
-        case STORETRNSC_ACTIONS.PREPEND: 
+        case ACTIONS.PREPEND: 
             return {
                 ...state, storeTrnscs: (
                     Array.isArray(payload.storeTrnscs) ? 
@@ -40,7 +45,7 @@ export const storeTransactionReducer = (state, action) => {
 
             };
         // Replace store transaction inside 'store transactions'
-        case STORETRNSC_ACTIONS.REPLACE: 
+        case ACTIONS.REPLACE: 
             return {
                 ...state, storeTrnscs: (() => {
                     const storeTrnscs = [...state.storeTrnscs]
@@ -49,7 +54,7 @@ export const storeTransactionReducer = (state, action) => {
                 })()
             };
         // Remove store transaction(s) from 'store transactions'
-        case STORETRNSC_ACTIONS.REMOVE: 
+        case ACTIONS.REMOVE: 
             return {
                 ...state, storeTrnscs: (() => {
                     let storeTrnscs = [...state.storeTrnscs]
@@ -63,7 +68,7 @@ export const storeTransactionReducer = (state, action) => {
                 })()
             }; 
         // Refresh the store transaction resource
-        case STORETRNSC_ACTIONS.RESET: 
+        case ACTIONS.RESET: 
             return {
                 ...state, storeTrnscs: [...payload.storeTrnscs],
                 stores: payload.stores,
@@ -72,4 +77,37 @@ export const storeTransactionReducer = (state, action) => {
         // Refresh the inventory resource
         default: throw new Error();
     }
+}
+
+export const filterReducer = (state, action) => {
+    const {type, payload} = action
+    // If the filter is resetted, save to the local storage
+    if(type === FILTER_ACTIONS.RESET){
+        saveResFilters(FILTER_KEY, payload.filters);
+    }
+    switch(type){
+        case FILTER_ACTIONS.UPDATE: 
+            if(payload.key === 'limit'){
+                payload.value = parseInt(payload.value)
+            }
+            return {
+                ...state, [payload.key]: payload.value
+            }; 
+        case FILTER_ACTIONS.RESET: 
+            return {
+                ...state, ...payload.filters
+            };          
+        // Error
+        default: throw new Error()
+    }
+}
+
+export const getFilters = () => {
+    const defaultFilters = {
+        store_id: '',
+        limit: 10, 
+        offset: 0,           
+    }
+    const filters = getResFilters(FILTER_KEY)
+    return {...defaultFilters, ...filters}
 }

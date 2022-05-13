@@ -19,6 +19,12 @@ exports.index = async (req, res) => {
             const {value, error} = Joi.string().required().trim().validate(req.query.name)
             if(error === undefined){ filters.where.name = value }
         }
+        if(req.query.type_id){
+            const storeTypeIds = Object.keys(Store.getTypes()).map(id => parseInt(id))
+            if(storeTypeIds.includes(parseInt(req.query.type_id))){
+                filters.where.type_id = req.query.type_id
+            }
+        }        
         const stores = await Store.findAll({
             where: (() => {
                 const where = {...filters.where, owner_id: req.user.owner_id}
@@ -30,6 +36,7 @@ exports.index = async (req, res) => {
         })
         res.send({
             stores: stores,
+            storeTypes: Store.getTypes(),
             filters: {...filters.where, ...filters.limitOffset}
         })
     } catch(err) {
@@ -45,10 +52,12 @@ exports.store = async (req, res) => {
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }     
-        // Save owner ID
-        values.owner_id = req.user.owner_id
         // Store the store
-        const store = await Store.create(values)
+        const store = await Store.create({
+            name: values.name,
+            owner_id: req.user.owner_id,
+            type_id: values.type_id,
+        })
 
         res.send({
             store: store, 
@@ -74,6 +83,7 @@ exports.update = async (req, res) => {
         }
         // Update the store
         store.name = values.name
+        store.type_id = values.type_id
         await store.save()
 
         res.send({
@@ -131,7 +141,30 @@ const validateInput = async (req, inputKeys) => {
                 return value
             }).messages({
                 'string.max': 'The store name must below 100 characters',
-            })
+            }),
+            type_id: Joi.number().required().inteeger().external(async (value, helpers) => {
+                const storeTypeIds = Object.keys(Store.getTypes()).map(id => parseInt(id))
+                // Make sure the store's type exists
+                if(!storeTypeIds.includes(value)){
+                    throw {message: 'The store type is not exist'}
+                }
+                const filters = [
+                    Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), Sequelize.fn('lower', value)),
+                    {owner_id: req.user.id}                    
+                ]
+                // When the store is updated
+                if(req.params.id){
+                    filters.push({[Op.not]: [{id: req.params.id}]})                    
+                }
+                const store = await Store.findOne({where: filters, attributes: ['id']})
+
+                if(store){
+                    throw {message: 'The store name already taken'}
+                }
+                return value
+            }).messages({
+                'string.max': 'The store name must below 100 characters',
+            })            
         }
         // Create the schema based on the input key
         const schema = {}

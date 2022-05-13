@@ -50,6 +50,7 @@ function ProfilePage({user}){
     }
     return (<>
         <SimpleCard
+            attr={{id: 'profile-card'}}
             heading={'Your Profile'}
             body={<>
                 <p>

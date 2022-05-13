@@ -1,6 +1,6 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
-import {STORE_ACTIONS, STORE_FILTER_KEY} from '../reducers/StoreReducer'
-import {api, errorHandler, getResFilters, getQueryString, keyHandler} from '../Utils.js'
+import {ACTIONS, filterReducer, FILTER_ACTIONS, getFilters} from '../reducers/StoreReducer'
+import {api, errorHandler, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
@@ -17,14 +17,7 @@ function StorePage({store, dispatchStore, user}){
     /* Delete store */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter store */
-    const [filters, dispatchFilters] = useReducer(filterReducer, (() => {
-        const initState = getResFilters(STORE_FILTER_KEY)
-        return {
-            name: initState.name ? initState.name : '',
-            limit: initState.limit ? initState.limit : 10, 
-            offset: initState.offset ? initState.offset : 0,             
-        }
-    })())    
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters())    
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -37,7 +30,7 @@ function StorePage({store, dispatchStore, user}){
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === STORE_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
         if(store.stores !== null){
             setDisableBtn(true)
@@ -50,7 +43,9 @@ function StorePage({store, dispatchStore, user}){
                 }                          
                 dispatchStore({type: actionType, payload: response.data})
                 dispatchFilters({
-                    type: 'reset', payload: getResFilters(STORE_FILTER_KEY)
+                    type: FILTER_ACTIONS.RESET, payload: {
+                        filters: response.data.filters
+                    }
                 })                
            })
            .catch(error => {
@@ -77,7 +72,7 @@ function StorePage({store, dispatchStore, user}){
                 setDisableBtn(false)
                 setModalShown(false)           
                 dispatchStore({
-                    type: STORE_ACTIONS.PREPEND, 
+                    type: ACTIONS.PREPEND, 
                     payload: {stores: response.data.store}
                 })
             })
@@ -103,7 +98,7 @@ function StorePage({store, dispatchStore, user}){
         api.put(`/stores/${storeId}`, {name: storeName})     
             .then(response => {
                 dispatchStore({
-                    type: STORE_ACTIONS.REPLACE, 
+                    type: ACTIONS.REPLACE, 
                     payload: {store: response.data.store, index: storeIndex}
                 })                 
                 setDisableBtn(false)   
@@ -130,7 +125,7 @@ function StorePage({store, dispatchStore, user}){
         api.delete(`/stores/${storeId}`)     
             .then(response => {        
                 dispatchStore({
-                    type: STORE_ACTIONS.REMOVE, 
+                    type: ACTIONS.REMOVE, 
                     payload: {indexes: storeIndex}
                 })                
                 setSuccPopupMsg(response.data.message)
@@ -147,7 +142,7 @@ function StorePage({store, dispatchStore, user}){
 
     useEffect(() => {
         if(store.stores === null){
-            getStores(STORE_ACTIONS.RESET)
+            getStores(ACTIONS.RESET)
         }
     }, [store, getStores])    
     // When the store resource is not set yet
@@ -170,14 +165,14 @@ function StorePage({store, dispatchStore, user}){
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search store', 
                             onChange: e => {dispatchFilters({
-                                type: 'update', payload: {key: 'name', value: e.target.value}
+                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'name', value: e.target.value}
                             })},
-                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStores(STORE_ACTIONS.RESET)})}
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStores(ACTIONS.RESET)})}
                         }} 
                     />   
                     <Button text={'Search'} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
-                        onClick: () => {getStores(STORE_ACTIONS.RESET)}
+                        onClick: () => {getStores(ACTIONS.RESET)}
                     }}/>                                       
                 </div>            
                 <StoresList 
@@ -187,12 +182,12 @@ function StorePage({store, dispatchStore, user}){
                 />
                 <LoadMoreBtn 
                     canLoadMore={store.canLoadMore}
-                    action={() => {getStores(STORE_ACTIONS.APPEND)}}
+                    action={() => {getStores(ACTIONS.APPEND)}}
                 />                  
                 {
                     store.canLoadMore ? 
                     <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
-                    onClick={() => {getStores(STORE_ACTIONS.APPEND)}}>
+                    onClick={() => {getStores(ACTIONS.APPEND)}}>
                         Load More
                     </button> : ''
                 }                
@@ -234,7 +229,7 @@ function StorePage({store, dispatchStore, user}){
                     formAttr={{
                         value: filters.limit,
                         onChange: e => {dispatchFilters({
-                            type: 'update', payload: {key: 'limit', value: e.target.value}
+                            type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
                         })}                            
                     }}
                     options={[
@@ -245,7 +240,7 @@ function StorePage({store, dispatchStore, user}){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStores(STORE_ACTIONS.RESET)}
+                        onClick: () => {getStores(ACTIONS.RESET)}
                     }}
                 />                
             }
@@ -280,19 +275,6 @@ function StorePage({store, dispatchStore, user}){
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
         />           
     </>)
-}
-
-const filterReducer = (state, action) => {
-    const payload = action.payload
-    switch(action.type){
-        case 'update': 
-            if(payload.key === 'limit'){ payload.value = parseInt(payload.value) }
-            return {...state, [payload.key]: payload.value}
-
-        case 'reset': return payload
-
-        default: throw new Error();
-    }
 }
 
 const StoresList = ({stores, editStore, confirmDeleteStore}) => {

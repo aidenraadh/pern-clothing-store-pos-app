@@ -12,6 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    static getTypes(){
+      return {
+        '1': 'regular',
+        '2': 'storage'
+      }
+    }
   };
   Store.init({
     name: DataTypes.STRING(100),

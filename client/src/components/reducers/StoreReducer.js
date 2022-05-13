@@ -1,12 +1,12 @@
-import { saveResFilters } from "../Utils";
+import { saveResFilters, getResFilters } from "../Utils";
 
-export const STORE_FILTER_KEY = 'store'
+export const FILTER_KEY = 'store'
 
-export const STORE_INIT_STATE = {
+export const INIT_STATE = {
     stores: null, // Array of stores
     canLoadMore: true, // Wheter or not the stores can be loaded more 
 }
-export const STORE_ACTIONS = {
+export const ACTIONS = {
     APPEND: 'APPEND', 
     PREPEND: 'PREPEND',
     REPLACE: 'REPLACE',
@@ -14,13 +14,17 @@ export const STORE_ACTIONS = {
     RESET: 'RESET',
 }
 
+export const FILTER_ACTIONS = {
+    UPDATE: 'UPDATE',
+    RESET: 'RESET'
+}
+
 export const storeReducer = (state, action) => {
     const {type, payload} = action
-    saveResFilters(STORE_FILTER_KEY, payload.filters);
 
     switch(type){
         // Append store(s) to 'stores'
-        case STORE_ACTIONS.APPEND: 
+        case ACTIONS.APPEND: 
             return {
                 ...state, stores: (
                     Array.isArray(payload.stores) ? 
@@ -30,7 +34,7 @@ export const storeReducer = (state, action) => {
                 canLoadMore: payload.stores.length < payload.filters.limit ? false : true
             }; 
         // Prepend array of store(s) to 'stores'
-        case STORE_ACTIONS.PREPEND: 
+        case ACTIONS.PREPEND: 
             return {
                 ...state, stores: (
                     Array.isArray(payload.stores) ? 
@@ -40,7 +44,7 @@ export const storeReducer = (state, action) => {
 
             };
         // Replace store inside 'stores'
-        case STORE_ACTIONS.REPLACE: 
+        case ACTIONS.REPLACE: 
             return {
                 ...state, stores: (() => {
                     const stores = [...state.stores]
@@ -49,7 +53,7 @@ export const storeReducer = (state, action) => {
                 })()
             };            
         // Remove store(s) from 'stores'
-        case STORE_ACTIONS.REMOVE: 
+        case ACTIONS.REMOVE: 
             return {
                 ...state, stores: (() => {
                     let stores = [...state.stores]
@@ -63,7 +67,7 @@ export const storeReducer = (state, action) => {
                 })()
             }; 
         // Reset store(s) from 'stores'
-        case STORE_ACTIONS.RESET: 
+        case ACTIONS.RESET: 
             return {
                 ...state, stores: [...payload.stores],
                 canLoadMore: payload.stores.length < payload.filters.limit ? false : true
@@ -71,4 +75,38 @@ export const storeReducer = (state, action) => {
         // Error
         default: throw new Error()
     }
+}
+
+export const filterReducer = (state, action) => {
+    const {type, payload} = action
+    // If the filter is resetted, save to the local storage
+    if(type === FILTER_ACTIONS.RESET){
+        saveResFilters(FILTER_KEY, payload.filters);
+    }
+    switch(type){
+        case FILTER_ACTIONS.UPDATE: 
+            if(payload.key === 'limit'){
+                payload.value = parseInt(payload.value)
+            }
+            return {
+                ...state, [payload.key]: payload.value
+            }; 
+        case FILTER_ACTIONS.RESET: 
+            return {
+                ...state, ...payload.filters
+            };          
+        // Error
+        default: throw new Error()
+    }
+}
+
+export const getFilters = () => {
+    const defaultFilters = {
+        name: '',
+        type_id: '',
+        limit: 10, 
+        offset: 0,           
+    }
+    const filters = getResFilters(FILTER_KEY)
+    return {...defaultFilters, ...filters}
 }

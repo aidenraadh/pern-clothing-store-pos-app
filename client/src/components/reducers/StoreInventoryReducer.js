@@ -1,13 +1,13 @@
-import { saveResFilters } from "../Utils";
+import { saveResFilters, getResFilters } from "../Utils";
 
-export const STOREINV_FILTER_KEY = 'store_inventory'
+export const FILTER_KEY = 'store_inventory'
 
-export const STOREINV_INIT_STATE = {
+export const INIT_STATE = {
     storeInvs: null, // Array of inventories
     stores: [], // Array of stores
     canLoadMore: true, // Wheter or not the inventories can be loaded more 
 }
-export const STOREINV_ACTIONS = {
+export const ACTIONS = {
     APPEND: 'APPEND', 
     PREPEND: 'PREPEND',
     REPLACE: 'REPLACE',
@@ -15,12 +15,17 @@ export const STOREINV_ACTIONS = {
     RESET: 'RESET',
 }
 
+export const FILTER_ACTIONS = {
+    UPDATE: 'UPDATE',
+    RESET: 'RESET'
+}
+
 export const storeInventoryReducer = (state, action) => {
     const {type, payload} = action
-    saveResFilters(STOREINV_FILTER_KEY, payload.filters);
+
     switch(type){
         // Append inventory(s) to 'inventories'
-        case STOREINV_ACTIONS.APPEND: 
+        case ACTIONS.APPEND: 
             return {
                 ...state, storeInvs: (
                     Array.isArray(payload.storeInvs) ? 
@@ -30,7 +35,7 @@ export const storeInventoryReducer = (state, action) => {
                 canLoadMore: payload.storeInvs.length < payload.filters.limit ? false : true
             }; 
         // Prepend array of inventory(s) to 'inventories'
-        case STOREINV_ACTIONS.PREPEND: 
+        case ACTIONS.PREPEND: 
             return {
                 ...state, storeInvs: (
                     Array.isArray(payload.storeInvs) ? 
@@ -40,7 +45,7 @@ export const storeInventoryReducer = (state, action) => {
 
             };
         // Replace inventory inside 'inventories'
-        case STOREINV_ACTIONS.REPLACE: 
+        case ACTIONS.REPLACE: 
             return {
                 ...state, storeInvs: (() => {
                     const storeInvs = [...state.storeInvs]
@@ -49,7 +54,7 @@ export const storeInventoryReducer = (state, action) => {
                 })()
             };
         // Remove inventory(s) from 'inventories'
-        case STOREINV_ACTIONS.REMOVE: 
+        case ACTIONS.REMOVE: 
             return {
                 ...state, storeInvs: (() => {
                     let storeInvs = [...state.storeInvs]
@@ -63,7 +68,7 @@ export const storeInventoryReducer = (state, action) => {
                 })()
             }; 
         // Refresh the inventory resource
-        case STOREINV_ACTIONS.RESET: 
+        case ACTIONS.RESET: 
             return {
                 ...state, storeInvs: [...payload.storeInvs],
                 stores: payload.stores,
@@ -71,4 +76,40 @@ export const storeInventoryReducer = (state, action) => {
             };            
         default: throw new Error()
     }
+}
+
+export const filterReducer = (state, action) => {
+    const {type, payload} = action
+    // If the filter is resetted, save to the local storage
+    if(type === FILTER_ACTIONS.RESET){
+        saveResFilters(FILTER_KEY, payload.filters);
+    }
+    switch(type){
+        // Append room type(s) to 'roomTypes'
+        case FILTER_ACTIONS.UPDATE: 
+            if(payload.key === 'limit' || payload.key === 'store_id'){
+                payload.value = parseInt(payload.value)
+            }
+            return {
+                ...state, [payload.key]: payload.value
+            }; 
+        // Prepend array of room types(s) to 'roomTypes'
+        case FILTER_ACTIONS.RESET: 
+            return {
+                ...state, ...payload.filters
+            };          
+        // Error
+        default: throw new Error()
+    }
+}
+
+export const getFilters = () => {
+    const defaultFilters = {
+        name: '',
+        store_id: '',
+        limit: 10, 
+        offset: 0,           
+    }
+    const filters = getResFilters(FILTER_KEY)
+    return {...defaultFilters, ...filters}
 }

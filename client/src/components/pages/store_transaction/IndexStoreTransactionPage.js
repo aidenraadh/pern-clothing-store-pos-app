@@ -1,6 +1,6 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import {STORETRNSC_FILTER_KEY, STORETRNSC_ACTIONS} from '../../reducers/StoreTransactionReducer.js'
+import {FILTER_KEY, ACTIONS, getFilters} from '../../reducers/StoreTransactionReducer.js'
 import TransactionReceipt from './TransactionReceipt'
 import {api, errorHandler, formatNum, getResFilters, getQueryString} from '../../Utils.js'
 import {Button} from '../../Buttons'
@@ -14,14 +14,7 @@ import {format} from 'date-fns'
 function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
     const [disableBtn , setDisableBtn] = useState(false)  
     /* Filter store transactions */
-    const [filters, dispatchFilters] = useReducer(filterReducer, (() => {
-        const initState = getResFilters(STORETRNSC_FILTER_KEY)
-        return {
-            name: initState.name ? initState.name : '',
-            limit: initState.limit ? initState.limit : 10, 
-            offset: initState.offset ? initState.offset : 0,             
-        }
-    })())
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters)
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Transaction details */
     const [storeTrnscIndex, setStoreTrnscIndex] = useState('')
@@ -39,7 +32,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === STORETRNSC_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
         if(storeTrnsc.storeTrnscs !== null){
             setDisableBtn(true)
         }
@@ -51,7 +44,9 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 }                          
                 dispatchStoreTrnsc({type: actionType, payload: response.data})
                 dispatchFilters({
-                    type: 'reset', payload: getResFilters(STORETRNSC_FILTER_KEY)
+                    type: 'reset', payload: {
+                        filters: response.data.filters
+                    }
                 })                
            })
            .catch(error => {
@@ -81,7 +76,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 setStoreTrnscIndex('')
                 setSuccPopupMsg(response.data.message)             
                 dispatchStoreTrnsc({
-                    type: STORETRNSC_ACTIONS.REMOVE, 
+                    type: ACTIONS.REMOVE, 
                     payload: {indexes: storeTrnscIndex}
                 })
                 setSuccPopupShown(true)
@@ -98,7 +93,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
 
     useEffect(() => {
         if(storeTrnsc.storeTrnscs === null){
-            getStoreTrnscs(STORETRNSC_ACTIONS.RESET)
+            getStoreTrnscs(ACTIONS.RESET)
         }
     }, [getStoreTrnscs, storeTrnsc.storeTrnscs])
 
@@ -123,7 +118,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 />
                 <LoadMoreBtn
                     canLoadMore={storeTrnsc.canLoadMore}
-                    action={() => {getStoreTrnscs(STORETRNSC_ACTIONS.APPEND)}}
+                    action={() => {getStoreTrnscs(ACTIONS.APPEND)}}
                 />
             </>}
         />
@@ -156,7 +151,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStoreTrnscs(STORETRNSC_ACTIONS.RESET)}
+                        onClick: () => {getStoreTrnscs(ACTIONS.RESET)}
                     }}
                 />                
             }

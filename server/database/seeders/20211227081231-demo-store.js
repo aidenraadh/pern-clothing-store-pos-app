@@ -4,7 +4,9 @@ const Store = require('../../models/index').Store
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await Store.create({name: 'Store 1', owner_id: 1})
+    await Store.create({
+      name: 'Store 1', owner_id: 1, type_id: 1
+    })
   },
 
   down: async (queryInterface, Sequelize) => {
