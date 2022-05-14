@@ -1,7 +1,7 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import {ACTIONS, STOREINV_FILTER_KEY, FILTER_ACTIONS, filterReducer, getFilters} from './../../reducers/StoreInventoryReducer'
-import {api, errorHandler, getResFilters, getQueryString, formatNum, keyHandler} from '../../Utils.js'
+import {ACTIONS, FILTER_ACTIONS, filterReducer, getFilters} from './../../reducers/StoreInventoryReducer'
+import {api, errorHandler, getQueryString, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
@@ -11,12 +11,13 @@ import Table from '../../Table'
 
 function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     const [disableBtn , setDisableBtn] = useState(false)
+    const [stores, setStores] = useState(null)
     /* Edit store inventory */
     const [storeInvIndex, setStoreInvIndex] = useState('')
     const [storeInvSizes, setStoreInvSizes] = useState('')
     const [modalShown, setModalShown] = useState(false)
     /* Delete store inventory */
-    const [popupShown, setPopupShown] = useState(false)
+    // const [popupShown, setPopupShown] = useState(false)
     /* Filter store inventory */
     const [filters, dispatchFilters] = useReducer(filterReducer, getFilters())     
     const [filterModalShown, setFilterModalShown] = useState(false)
@@ -56,6 +57,12 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 errorHandler(error) 
            })
     }, [filters, storeInv, dispatchStoreInv])    
+
+    const getStores = useCallback(() => {
+        api.get(`/stores?getonly=id,name,type_id`)
+           .then(response => { setStores(response.data.stores) })
+           .catch(error => { errorHandler(error) })        
+    }, [])
 
     const viewStoreInv = useCallback((index) => {
         const targetStoreInv = storeInv.storeInvs[index]
@@ -119,6 +126,10 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         }
     }, [storeInv, getStoreInvs])
 
+    useEffect(() => {
+        if(stores === null && user.role.name === 'owner'){ getStores() }
+    }, [stores, getStores, user])
+
     // When the store resource is not set yet
     // Return loading UI
     if(storeInv.storeInvs === null){
@@ -139,7 +150,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         <PlainCard 
             body={<>
                 <div className='flex-row items-center'>
-                    <TextInput containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
+                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search inventory', 
                             onChange: e => {dispatchFilters({
@@ -148,7 +159,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                             onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStoreInvs(ACTIONS.RESET)})}
                         }} 
                     />   
-                    <Button text={'Search'} attr={{disabled: disableBtn,
+                    <Button text={'Search'} size={'sm'} attr={{disabled: disableBtn,
                             style: {flexShrink: '0'},
                             onClick: () => {getStoreInvs(ACTIONS.RESET)}
                         }}
@@ -245,9 +256,12 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                                 }}
                                 options={(() => {
                                     const options = [{value: '', text: 'All stores'}]
-                                    storeInv.stores.forEach(store => {
-                                        options.push({value: store.id, text: store.name})
-                                    })
+                                    if(stores !== null){
+                                        stores.forEach(store => {
+                                            const capitalizeStoreName = store.name.charAt(0) + store.name.slice(1)
+                                            options.push({value: store.id, text: capitalizeStoreName})
+                                        })
+                                    }
                                     return options
                                 })()}
                             />                 

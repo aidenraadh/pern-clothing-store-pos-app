@@ -23,7 +23,7 @@ function CreateStoreInventoryPage(){
     const [popupSuccMsg, setSuccPopupMsg] = useState('')      
 
     const getStores = useCallback(() => {
-        api.get(`/stores`)
+        api.get(`/store-inventories/create`)
            .then(response => {
                const stores = response.data.stores
                setStores(stores)

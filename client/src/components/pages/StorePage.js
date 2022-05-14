@@ -5,13 +5,15 @@ import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
 import {Modal, ConfirmPopup} from '../Windows'
+import {Grid} from '../Layouts'
+import Table from '../Table'
 
 function StorePage({store, dispatchStore, user}){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Create/edit store */
     const [storeIndex, setStoreIndex] = useState('')
-    const [storeId, setStoreId] = useState('')
     const [storeName, setStoreName] = useState('')
+    const [storeTypeId, setStoreTypeId] = useState('')
     const [modalHeading, setModalHeading] = useState('')
     const [modalShown, setModalShown] = useState(false)
     /* Delete store */
@@ -59,43 +61,51 @@ function StorePage({store, dispatchStore, user}){
 
     const createStore = useCallback(() => {
         setStoreIndex('')
-        setStoreId('')
+        setStoreTypeId(Object.keys(store.storeTypes)[0])
         setStoreName('')
         setModalHeading('Create New Store')      
         setModalShown(true)
-    }, [])
+    }, [store.storeTypes])
 
     const storeStore = useCallback(() => {
         setDisableBtn(true)
-        api.post('/stores', {name: storeName})
-            .then(response => {
-                setDisableBtn(false)
-                setModalShown(false)           
-                dispatchStore({
-                    type: ACTIONS.PREPEND, 
-                    payload: {stores: response.data.store}
-                })
+        api.post('/stores', {
+            name: storeName, typeId: storeTypeId,
+        })
+        .then(response => {
+            setDisableBtn(false)
+            setModalShown(false)           
+            dispatchStore({
+                type: ACTIONS.PREPEND, 
+                payload: {stores: response.data.store}
             })
-            .catch(error => {
-                setDisableBtn(false)
-                errorHandler(error, {'400': () => {
-                    setErrPopupShown(true)
-                    setErrPopupMsg(error.response.data.message)                      
-                }})           
-            })           
-    }, [storeName, dispatchStore])    
+        })
+        .catch(error => {
+            setDisableBtn(false)
+            errorHandler(error, {'400': () => {
+                setErrPopupShown(true)
+                setErrPopupMsg(error.response.data.message)                      
+            }})           
+        })           
+    }, [storeName, dispatchStore, storeTypeId])    
 
-    const editStore = useCallback((index, id, name) => {
+    const editStore = useCallback(index => {
+        // Get the store 
+        const targetStore = store.stores[index]        
         setStoreIndex(index)
-        setStoreId(id)
-        setStoreName(name)
-        setModalHeading(`Edit ${name}`)
+        setStoreName(targetStore ? targetStore.name : '')
+        setStoreTypeId(targetStore ? targetStore.type_id : '')
+        setModalHeading(`Edit ${targetStore ? targetStore.name : ''}`)
         setModalShown(true)
-    }, [])
+    }, [store.stores])
 
     const updateStore = useCallback(() => {
+        // Get the store 
+        const targetStore = store.stores[storeIndex]
         setDisableBtn(true)   
-        api.put(`/stores/${storeId}`, {name: storeName})     
+        api.put(`/stores/${targetStore.id}`, {
+            name: storeName, typeId: storeTypeId,
+        })     
             .then(response => {
                 dispatchStore({
                     type: ACTIONS.REPLACE, 
@@ -113,16 +123,18 @@ function StorePage({store, dispatchStore, user}){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })        
-    }, [storeName, storeId, storeIndex, dispatchStore])  
+    }, [storeName, storeIndex, storeTypeId, store.stores, dispatchStore])  
 
-    const confirmDeleteStore = useCallback((id, index) => {
-        setStoreId(id)
+    const confirmDeleteStore = useCallback(index => {
         setStoreIndex(index)
         setPopupShown(true)
     }, [])
 
     const deleteStore = useCallback(() => {
-        api.delete(`/stores/${storeId}`)     
+        // Get the store 
+        const targetStore = store.stores[storeIndex]        
+
+        api.delete(`/stores/${targetStore.id}`)     
             .then(response => {        
                 dispatchStore({
                     type: ACTIONS.REMOVE, 
@@ -138,13 +150,14 @@ function StorePage({store, dispatchStore, user}){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })          
-    }, [storeId, storeIndex, dispatchStore])
+    }, [storeIndex, dispatchStore, store.stores])
 
     useEffect(() => {
         if(store.stores === null){
             getStores(ACTIONS.RESET)
         }
     }, [store, getStores])    
+
     // When the store resource is not set yet
     // Return loading UI
     if(store.stores === null){
@@ -161,7 +174,7 @@ function StorePage({store, dispatchStore, user}){
         <PlainCard 
             body={<>
                 <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
-                    <TextInput containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
+                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search store', 
                             onChange: e => {dispatchFilters({
@@ -170,13 +183,14 @@ function StorePage({store, dispatchStore, user}){
                             onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStores(ACTIONS.RESET)})}
                         }} 
                     />   
-                    <Button text={'Search'} attr={{disabled: disableBtn,
+                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
                         onClick: () => {getStores(ACTIONS.RESET)}
                     }}/>                                       
                 </div>            
-                <StoresList 
+                <StoresTable 
                     stores={store.stores} 
+                    storeTypes={store.storeTypes}
                     editStore={editStore}
                     confirmDeleteStore={confirmDeleteStore}
                 />
@@ -196,24 +210,33 @@ function StorePage({store, dispatchStore, user}){
         <Modal
             heading={modalHeading}
             size={'sm'}
-            body={<>
-                <TextInput size={'sm'} label={'Name'}
-                    formAttr={{
-                        value: storeName, onChange: (e) => {setStoreName(e.target.value)},
-                        onKeyUp: (e) => {
-                            keyHandler(e, 'Enter', storeIndex !== '' && storeId !== '' ? 
-                                updateStore : storeStore                            
-                            )
-                        }
-                    }}
-                />      
-            </>}        
+            body={
+                <Grid numOfColumns={1} items={[
+                    <TextInput label={'Name'}
+                        formAttr={{
+                            value: storeName, onChange: (e) => {setStoreName(e.target.value)},
+                            onKeyUp: (e) => {
+                                keyHandler(e, 'Enter', storeIndex !== '' ? updateStore : storeStore                            
+                                )
+                            }
+                        }}
+                    />,
+                    <Select label={'Type'}
+                        options={Object.keys(store.storeTypes).map(id => ({
+                            text: store.storeTypes[id].charAt(0).toUpperCase() + store.storeTypes[id].slice(1),
+                            value: id,
+                        }))}
+                        formAttr={{
+                            value: storeTypeId, onChange: (e) => {setStoreTypeId(e.target.value)},
+                        }}
+                    />   
+                ]}/>
+            }        
             footer={
                 <Button size={'sm'} text={'Save Changes'} attr={{
                         disabled: disableBtn,
                         onClick: () => {
-                            storeIndex !== '' && storeId !== '' ? 
-                            updateStore() : storeStore()
+                            storeIndex !== '' ? updateStore() : storeStore()
                         }
                     }}
                 />                
@@ -277,32 +300,27 @@ function StorePage({store, dispatchStore, user}){
     </>)
 }
 
-const StoresList = ({stores, editStore, confirmDeleteStore}) => {
-    return (<>
-        <div className="inventories-container">
-            {stores.map((store, key) => (
-                <div className="inventory flex-row items-center content-space-between" key={key}>
-                    <span className="name">{store.name}</span>          
-                    <span className="actions">
-                        <Button 
-                            size={'sm'} type={'light'} text={'View'}
-                            attr={{onClick: () => {
-                                    editStore(key, store.id, store.name, store.sizes)
-                                }
-                            }}
-                        />
-                        <Button 
-                            size={'sm'} type={'light'} text={'Delete'} color={'red'}
-                            attr={{onClick: () => {
-                                    confirmDeleteStore(store.id, key)
-                                }
-                            }}                            
-                        />                        
-                    </span>             
-                </div>
-            ))}
-        </div>    
-    </>)
+const StoresTable = ({stores, storeTypes, editStore, confirmDeleteStore}) => {
+    return <Table
+        headings={['Name', 'Type', 'Actions']}
+        body={stores.map((store, key) => ([
+            <span className='text-capitalize'>{store.name}</span>,
+            <span className='text-capitalize'>{storeTypes[store.type_id]}</span>,
+            <>
+                <Button 
+                    size={'sm'} type={'light'} text={'View'}
+                    attr={{
+                        style: {marginRight: '1rem'},
+                        onClick: () => {editStore(key)}
+                    }}
+                />
+                <Button 
+                    size={'sm'} type={'light'} text={'Delete'} color={'red'}
+                    attr={{onClick: () => {confirmDeleteStore(key)}}}                            
+                />             
+            </>
+        ]))}
+    />
 }
 
 const LoadMoreBtn = ({canLoadMore, action}) => {

@@ -1,4 +1,4 @@
-import {useState, useReducer} from "react";
+import {useState, useReducer, useMemo} from "react";
 import ErrorBoundary from './components/ErrorBoundary'
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'
 
@@ -14,6 +14,7 @@ import {storeTransactionReducer, INIT_STATE as STORETRNSC_INIT_STATE} from "./co
 import {ownerReducer, OWNER_INIT_STATE} from "./components/reducers/OwnerReducer";
 import {employeeReducer, EMPLOYEE_INIT_STATE} from "./components/reducers/EmployeeReducer";
 
+import DashboardPage from './components/pages/DashboardPage'
 import LoginPage from './components/pages/LoginPage'
 import InventoryPage from './components/pages/InventoryPage'
 import StorePage from './components/pages/StorePage'
@@ -34,10 +35,16 @@ function App(){
     const [owner, dispatchOwner] = useReducer(ownerReducer, OWNER_INIT_STATE)
     const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)     
 
-    const user = getUser()
-    if(user){ user.role.name = user.role.name.toLowerCase() }
+    const user = useMemo(() => {
+        const user = getUser()
+        if(user){ user.role.name = user.role.name.toLowerCase() }
+        return user
+    }, [])
 
-    const sidebarItems = {    
+    const sidebarItems = {  
+        dashboard: {
+            icon: 'layers', text: 'Dashboard', link: ''
+        },                
         inventory: {
             icon: 'hanger', text: 'Inventories', link: 'inventories'
         },
@@ -78,7 +85,7 @@ function App(){
                             switch(userRole){
                                 case 'owner': 
                                     sidebarItemNames = [
-                                        'inventory','store','store_inventory','store_transaction',
+                                        'dashboard','inventory','store','store_inventory','store_transaction',
                                         'user'
                                     ];
                                     break;
@@ -95,8 +102,11 @@ function App(){
                     /> : ''       
                 )}
                 <div id="app" className={userAuth ? 'authenticated': ''}>
-                    <Switch>                  
+                    <Switch>
                         <Route path="/login" exact component={LoginPage}/>
+                        <ProtectedRoute path={`/${sidebarItems.dashboard.link}`} exact component={DashboardPage} props={{
+                            user: user
+                        }}/>                        
                         <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
                             props={{
                                 user: user, inventory: inventory, dispatchInventory: dispatchInventory

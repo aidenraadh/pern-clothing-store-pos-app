@@ -4,6 +4,7 @@ export const FILTER_KEY = 'store'
 
 export const INIT_STATE = {
     stores: null, // Array of stores
+    storeTypes: {},
     canLoadMore: true, // Wheter or not the stores can be loaded more 
 }
 export const ACTIONS = {
@@ -70,6 +71,7 @@ export const storeReducer = (state, action) => {
         case ACTIONS.RESET: 
             return {
                 ...state, stores: [...payload.stores],
+                storeTypes: payload.storeTypes,
                 canLoadMore: payload.stores.length < payload.filters.limit ? false : true
             };             
         // Error
@@ -103,7 +105,6 @@ export const filterReducer = (state, action) => {
 export const getFilters = () => {
     const defaultFilters = {
         name: '',
-        type_id: '',
         limit: 10, 
         offset: 0,           
     }

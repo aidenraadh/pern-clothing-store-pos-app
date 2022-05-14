@@ -32,10 +32,10 @@ exports.index = async (req, res) => {
             const {value, error} = Joi.string().required().trim().validate(req.query.name)
             if(error === undefined){ filters.whereInv.name = value }
         }     
-        // Get all the stores   
+        // Get all regular stores   
         const stores = userRole === 'employee' ? [] : 
         await Store.findAll({
-            where: {owner_id: req.user.owner_id},
+            where: {owner_id: req.user.owner_id, type_id: 1},
             attributes: ['id', 'name'],
             order: [['id', 'DESC']],
         })

@@ -87,7 +87,7 @@ export const filterReducer = (state, action) => {
     }
     switch(type){
         case FILTER_ACTIONS.UPDATE: 
-            if(payload.key === 'limit'){
+            if(payload.key === 'limit' || payload.key === 'store_id'){
                 payload.value = parseInt(payload.value)
             }
             return {

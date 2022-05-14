@@ -10,12 +10,13 @@ const LoginPage = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordShown, setPasswordShown] = useState(false)
+
     const requestLogin = useCallback(() => {
         api
             .post('/login', {
                 email: email, password: password
             })
-            .then(response => login(response, '/inventories'))
+            .then(response => login(response, '/'))
             .catch(error => {
                 if(error.response.status === 400){
                     alert(error.response.data.message)
@@ -29,7 +30,6 @@ const LoginPage = (props) => {
     if(isAuth()){
         return <Redirect to={'/'}/>
     }
-
     return (<>
         <TextInput
             formAttr={{

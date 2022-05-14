@@ -1,13 +1,14 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import {FILTER_KEY, ACTIONS, getFilters} from '../../reducers/StoreTransactionReducer.js'
+import {ACTIONS, FILTER_ACTIONS, getFilters, filterReducer} from '../../reducers/StoreTransactionReducer.js'
 import TransactionReceipt from './TransactionReceipt'
-import {api, errorHandler, formatNum, getResFilters, getQueryString} from '../../Utils.js'
+import {api, errorHandler, formatNum, getQueryString} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
 import {Select} from '../../Forms'
 import {PlainCard} from '../../Cards'
 import {Modal, ConfirmPopup} from '../../Windows'
+import {Grid} from '../../Layouts'
 import {format} from 'date-fns'
 
 
@@ -44,7 +45,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 }                          
                 dispatchStoreTrnsc({type: actionType, payload: response.data})
                 dispatchFilters({
-                    type: 'reset', payload: {
+                    type: FILTER_ACTIONS.RESET, payload: {
                         filters: response.data.filters
                     }
                 })                
@@ -89,7 +90,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                     setErrPopupMsg(error.response.data.message)                      
                 }})  
            })        
-    }, [storeTrnsc.storeTrnscs, storeTrnscIndex])
+    }, [storeTrnsc.storeTrnscs, storeTrnscIndex, dispatchStoreTrnsc])
 
     useEffect(() => {
         if(storeTrnsc.storeTrnscs === null){
@@ -106,7 +107,12 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 <Link to={'/store-transactions/create'}>
                     <Button tag={'span'} text={'+ New transaction'} size={'sm'}/>
                 </Link> : ''
-            }            
+            }
+            {user.role.name === 'owner' ?
+                <Button size={'sm'} text={'Filter'} iconName={'sort_1'} attr={{
+                    onClick: () => {setFilterModalShown(true)}
+                }}/> : ''
+            }
         </section>
         <PlainCard 
             body={<>
@@ -134,20 +140,33 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             toggleModal={() => {setViewStoreTrnscMdlShown(state => !state)}}
         />          
         <Modal
-            heading={'Filter'}
-            body={<>
-                <Select label={'Rows shown'} 
-                    formAttr={{
-                        value: filters.limit,
-                        onChange: e => {dispatchFilters({
-                            type: 'update', payload: {key: 'limit', value: e.target.value}
-                        })}                            
-                    }}
-                    options={[
-                        {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
-                    ]}
-                />
-            </>}        
+            heading={'Filter'} size={'sm'}
+            body={
+                <Grid numOfColumns={1} items={[
+                    <Select label={'Store'} 
+                        options={storeTrnsc.stores.map(store => ({
+                            value: store.id, text: store.name.charAt(0) + store.name.slice(1)
+                        }))}
+                        formAttr={{
+                            value: filters.store_id,
+                            onChange: e => {dispatchFilters({
+                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'store_id', value: e.target.value}
+                            })}                            
+                        }}
+                    />,                    
+                    <Select label={'Rows shown'} 
+                        formAttr={{
+                            value: filters.limit,
+                            onChange: e => {dispatchFilters({
+                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
+                            })}                            
+                        }}
+                        options={[
+                            {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
+                        ]}
+                    />,
+                ]}/>
+            }        
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,
@@ -187,19 +206,6 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
         />            
     </>)
-}
-
-const filterReducer = (state, action) => {
-    const payload = action.payload
-    switch(action.type){
-        case 'update': 
-            if(payload.key === 'limit'){ payload.value = parseInt(payload.value) }
-            return {...state, [payload.key]: payload.value}
-
-        case 'reset': return payload
-
-        default: throw new Error();
-    }
 }
 
 const StoreTrnscsTable = ({storeTrnscs, user, viewHandler, deleteHandler}) => {

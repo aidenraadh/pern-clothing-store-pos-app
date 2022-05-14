@@ -71,7 +71,6 @@ export const storeInventoryReducer = (state, action) => {
         case ACTIONS.RESET: 
             return {
                 ...state, storeInvs: [...payload.storeInvs],
-                stores: payload.stores,
                 canLoadMore: payload.storeInvs.length < payload.filters.limit ? false : true
             };            
         default: throw new Error()

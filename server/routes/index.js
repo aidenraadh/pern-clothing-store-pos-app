@@ -71,6 +71,9 @@ rootRouter
     .get('/store-inventories', [
         isAuth, authorize('owner', 'employee'), StoreInventoryController.index
     ])
+    .get('/store-inventories/create', [
+        isAuth, authorize('owner'), StoreInventoryController.create
+    ])    
     .post('/store-inventories', [
         isAuth, authorize('owner'), StoreInventoryController.store
     ])

@@ -7,6 +7,15 @@ const logger     = require('../utils/logger')
 
 exports.index = async (req, res) => {    
     try {
+        // If required data only several columns
+        if(req.query.onlyget){
+            return res.send({
+                stores: await Store.findAll({
+                    attributes: req.query.onlyget.split(','),
+                    where: {owner_id: req.user.owner_id}
+                })
+            })
+        }
         // Set filters
         const filters = {
             where: {},
@@ -18,14 +27,9 @@ exports.index = async (req, res) => {
         if(req.query.name){
             const {value, error} = Joi.string().required().trim().validate(req.query.name)
             if(error === undefined){ filters.where.name = value }
-        }
-        if(req.query.type_id){
-            const storeTypeIds = Object.keys(Store.getTypes()).map(id => parseInt(id))
-            if(storeTypeIds.includes(parseInt(req.query.type_id))){
-                filters.where.type_id = req.query.type_id
-            }
-        }        
+        }    
         const stores = await Store.findAll({
+            attributes: ['id','name','type_id'],
             where: (() => {
                 const where = {...filters.where, owner_id: req.user.owner_id}
                 if(where.name){ where.name =  {[Op.iLike]: `%${where.name}%`}}
@@ -48,7 +52,7 @@ exports.index = async (req, res) => {
 exports.store = async (req, res) => {
     try {
         // Validate the input
-        const {values, errMsg} = await validateInput(req, ['name']) 
+        const {values, errMsg} = await validateInput(req, ['name', 'typeId']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }     
@@ -56,7 +60,7 @@ exports.store = async (req, res) => {
         const store = await Store.create({
             name: values.name,
             owner_id: req.user.owner_id,
-            type_id: values.type_id,
+            type_id: values.typeId,
         })
 
         res.send({
@@ -77,13 +81,13 @@ exports.update = async (req, res) => {
             return res.status(400).send({message: 'Store not found'})
         }
         // Validate the input
-        const {values, errMsg} = await validateInput(req, ['name']) 
+        const {values, errMsg} = await validateInput(req, ['name', 'typeId']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
         // Update the store
         store.name = values.name
-        store.type_id = values.type_id
+        store.type_id = values.typeId
         await store.save()
 
         res.send({
@@ -142,24 +146,11 @@ const validateInput = async (req, inputKeys) => {
             }).messages({
                 'string.max': 'The store name must below 100 characters',
             }),
-            type_id: Joi.number().required().inteeger().external(async (value, helpers) => {
+            typeId: Joi.number().required().integer().external(async (value, helpers) => {
                 const storeTypeIds = Object.keys(Store.getTypes()).map(id => parseInt(id))
                 // Make sure the store's type exists
                 if(!storeTypeIds.includes(value)){
                     throw {message: 'The store type is not exist'}
-                }
-                const filters = [
-                    Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), Sequelize.fn('lower', value)),
-                    {owner_id: req.user.id}                    
-                ]
-                // When the store is updated
-                if(req.params.id){
-                    filters.push({[Op.not]: [{id: req.params.id}]})                    
-                }
-                const store = await Store.findOne({where: filters, attributes: ['id']})
-
-                if(store){
-                    throw {message: 'The store name already taken'}
                 }
                 return value
             }).messages({
@@ -194,6 +185,7 @@ const getStore = async (storeId, ownerId) => {
             storeIdInput.value = ''
         }
         return  await Store.findOne({
+            attributes: ['id','name','type_id'],
             where: {id: storeId, owner_id: ownerId,}
         }) 
     } catch (err) {

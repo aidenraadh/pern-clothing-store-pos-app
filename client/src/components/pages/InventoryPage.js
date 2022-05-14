@@ -170,7 +170,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
             body={
                 <Grid numOfColumns={1} items={[
                     <div className='flex-row items-center'>
-                        <TextInput size={'md'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
+                        <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                             iconName={'search'}
                             formAttr={{value: filters.name, placeholder: 'Search inventory', 
                                 onChange: (e) => {dispatchFilters({type: FILTER_ACTIONS.UPDATE, payload: {
@@ -179,7 +179,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
                                 onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInventories(ACTIONS.RESET)})}   
                             }} 
                         />   
-                        <Button size={'md'} text={'Search'} attr={{disabled: disableBtn,
+                        <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
                                 style: {flexShrink: '0'},
                                 onClick: () => {getInventories(ACTIONS.RESET)}
                             }}

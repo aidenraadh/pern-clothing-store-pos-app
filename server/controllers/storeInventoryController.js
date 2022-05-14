@@ -29,13 +29,6 @@ exports.index = async (req, res) => {
             const {value, error} = Joi.string().required().trim().validate(req.query.name)
             if(error === undefined){ filters.whereInv.name = value }
         }     
-        // Get all the stores   
-        const stores = userRole === 'employee' ? [] : 
-        await Store.findAll({
-            where: {owner_id: req.user.owner_id},
-            attributes: ['id', 'name'],
-            order: [['id', 'DESC']],
-        })
         const storeInvs = await StoreInventory.findAll({
             where: (() => {
                 const where = {...filters.whereStoreInv}
@@ -51,7 +44,7 @@ exports.index = async (req, res) => {
                 },
                 {
                     model: Store, as: 'store', 
-                    attributes: ['id', 'name'],
+                    attributes: ['id', 'name', 'type_id'],
                     where: {owner_id: req.user.owner_id}
                 },
                 {
@@ -79,7 +72,6 @@ exports.index = async (req, res) => {
 
         res.send({
             storeInvs: storeInvs, 
-            stores: stores,
             filters: {
                 ...filters.whereStoreInv,
                 ...filters.whereInv,
@@ -89,6 +81,21 @@ exports.index = async (req, res) => {
     } catch(err) {
         logger.error(err, {errorObj: err})
         res.status(500).send({message: err.message})
+    }
+}
+
+exports.create = async (req, res) => {
+    try {
+        // Get all the required data to store new store inventories
+        res.send({
+            stores: await Store.findAll({
+                attributes: ['id', 'name'],
+                where: {owner_id: req.user.owner_id}
+            })
+        })
+    } catch (error) {
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})        
     }
 }
 
