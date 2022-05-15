@@ -9,6 +9,65 @@ const isAuth                     = require('../middlewares/isAuth')
 const isNotAuth                  = require('../middlewares/isNotAuth')
 const authorize                  = require('../middlewares/authorize')
 
+const sequelize = require('sequelize')
+const models = require('../models/index')
+const StoreInventory = models.StoreInventory
+
+rootRouter.get('/hehe', async (req, res) => {
+    try {
+        const x = await StoreInventory.findAll({
+            attributes: [
+                [sequelize.fn('SUM', sequelize.col('total_amount')), 'total']
+            ],
+            where: {store_id: 1}
+        })
+        res.send({
+            data: x
+        })        
+    } catch (err) {
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
+    }        
+})
+
+rootRouter.get('/test', async (req, res) => {
+    var myAsyncFuncs = [
+        async () => {
+            const store = await Store.findOne()
+            return Promise.resolve(store.name)  
+        },
+        async (val) => {
+            console.log('the val is ', val)
+            return Promise.resolve(val)
+        },
+        async(val) => {
+            console.log(x + 1)
+            console.log('the val is ', val)
+            return Promise.resolve(val)
+        },
+        async (val) => {
+            console.log('the val is ', val)
+            return Promise.resolve(val)
+        }
+    ];
+
+    const calc = (prev, curr) => {
+        return prev.then(curr)
+    }
+    let total = 0
+    await myAsyncFuncs.reduce(calc, Promise.resolve())
+    .then(result => {
+        console.log('RESULT is ' + total)  // prints "RESULT is 7"
+    })
+    .catch(error => {
+        total = 'Error bruuuh'
+    })
+    console.log('sending result')
+    res.send({
+        data: total
+    })
+})
+
 rootRouter.post('/register', [
     isNotAuth, AuthController.register
 ])

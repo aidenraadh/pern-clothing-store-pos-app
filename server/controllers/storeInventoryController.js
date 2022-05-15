@@ -207,6 +207,7 @@ exports.update = async (req, res) => {
                 }
             }
         })              
+        console.log(values.updated_sizes)
         // Update the stored size if there are any
         for(const size of updatedSizes){
             await StoreInventorySize.update(
