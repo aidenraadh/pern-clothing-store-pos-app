@@ -330,7 +330,7 @@ function UserPage(props){
             />               
         ]        
         return <Grid numOfColumns={1} items={body}/>
-    }, [roles, roleId, stores, storeId, targetRole])    
+    }, [roles, roleId, stores, storeId])    
 
     // Get owners if its not set yet
     useEffect(() => {

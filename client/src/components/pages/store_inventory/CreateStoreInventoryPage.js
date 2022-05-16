@@ -47,7 +47,7 @@ function CreateStoreInventoryPage(){
 
     const storeInvs = useCallback(() => {
         api.post(`/store-inventories`, {
-                stored_invs: JSON.stringify(addedInvs),
+                stored_invs: addedInvs,
                 store_id: storeId
             })
            .then(response => {

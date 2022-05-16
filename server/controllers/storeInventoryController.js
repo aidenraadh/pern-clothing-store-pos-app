@@ -175,84 +175,45 @@ exports.update = async (req, res) => {
     try {
         const userRole = req.user.role.name.toLowerCase()
         // Get the store inventory
-        let storeInv = await getStoreInventory(req.params.id, req.user.owner_id)
+        const storeInv = await getStoreInventory(req.params.id, req.user.owner_id)
         // Make sure the inventory stored is exists
         if(!storeInv){
             return res.status(400).send({message: "The store's inventory is not exist"})
         }              
         // Validate the input
-        const {values, errMsg} = await validateInput(req, ['updated_sizes']) 
+        const {values, errMsg} = await validateInput(req, ['updatedSizes']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
-        // Get all the inventory sizes ids
-        let currentSizeIds = await InventorySize.findAll({
-            where: {inventory_id: storeInv.inventory_id},
-            attributes: ['id'],
-        })
-        currentSizeIds = currentSizeIds.map(size => parseInt(size.id))
-    
-        const addedSizes = []
-        const updatedSizes = []
-        // Loop through updated inventory sizes
-        values.updated_sizes.forEach(size => {
-            if(currentSizeIds.includes(parseInt( size.inventory_size_id )) && size.isChanged){
-                // When id is empty string and there are amount stored
-                if(size.id === '' && size.amount){
-                    addedSizes.push(size)
-                }
-                // When id is not empty string and there are amount stored
-                else if(size.id !== '' && size.amount){
-                    updatedSizes.push(size)
-                }
-            }
-        })              
-        console.log(values.updated_sizes)
-        // Update the stored size if there are any
-        for(const size of updatedSizes){
+        // Delete the deleted store inventory size
+        if(values.updatedSizes.deleted.length){
+            await StoreInventorySize.destroy({
+                where: {id: values.updatedSizes.deleted.map(size => size.id)}
+            })            
+        }
+        // Update the updated store inventory size
+        for (const size of values.updatedSizes.updated) {
             await StoreInventorySize.update(
-                {amount: size.amount}, 
+                {amount: size.amount},
                 {where: {id: size.id}}
-            )            
+            )
+        }
+        // Add the added store inventory size
+        if(values.updatedSizes.added.length){
+            await StoreInventorySize.bulkCreate(
+                values.updatedSizes.added.map(size => ({
+                    store_inventory_id: storeInv.id,
+                    inventory_id: storeInv.inventory_id,
+                    inventory_size_id: size.inventory_size_id,
+                    amount: size.amount
+                }))
+            )
         }        
-        // Store the stored size if there are any
-        await StoreInventorySize.bulkCreate(addedSizes.map(size => ({
-            store_inventory_id: req.params.id, 
-            inventory_size_id: size.inventory_size_id, 
-            amount: size.amount
-        })))          
         // Refresh the store inventory
         await refreshStoreInventory(req.params.id, 'storeinventory')
-
-        storeInv = await StoreInventory.findOne({
-            where: {id: req.params.id},
-            attributes: ['id', 'total_amount', 'created_at'],
-            include: [
-                {
-                    model: StoreInventorySize, as: 'sizes', 
-                    attributes: ['id', 'inventory_size_id', 'amount'],
-                },
-                {
-                    model: Store, as: 'store', 
-                    attributes: ['id', 'name'],
-                },
-                {
-                    model: Inventory, as: 'inventory', 
-                    attributes: ['id', 'name'],
-                    include: [{
-                        model: InventorySize, as: 'sizes', 
-                        attributes: (() => {
-                            const attr = ['id', 'name', 'selling_price']
-                            // When user is owner, get also the production price
-                            if(userRole === 'owner'){ attr.push('production_price') }
-                            return attr
-                        })()                       
-                    }]
-                },                          
-            ],        
-        })       
+     
         res.send({
-            storeInv: storeInv,
+            storeInv: await getStoreInventory(req.params.id, req.user.owner_id),
             message: 'Success updating the stored inventory'
         })
     } catch(err) {
@@ -294,15 +255,7 @@ exports.refreshStoreInventory = async (ids, model, removeDeletedSize = true) => 
 
 const validateInput = async (req, inputKeys) => {
     try {
-        const input = filterKeys(req.body, inputKeys)
-        // Parse the updated sizes if it exists in the input
-        if(input.updated_sizes){
-            input.updated_sizes = JSON.parse(input.updated_sizes)
-        }
-        // Parse the stored inventories if it exists in the input
-        if(input.stored_invs){
-            input.stored_invs = JSON.parse(input.stored_invs)
-        }        
+        const input = filterKeys(req.body, inputKeys)      
         const rules = {
             store_id: Joi.number().required().integer().external(async (value, helpers) => {
                 const store = await Store.findOne({
@@ -387,12 +340,53 @@ const validateInput = async (req, inputKeys) => {
                 }
             }),       
 
-            updated_sizes: Joi.array().required().items(Joi.object({
+            updatedSizes: Joi.array().required().items(Joi.object({
                 id: Joi.number().required().integer().allow('', null),
                 inventory_size_id: Joi.number().required().integer(),
                 amount: Joi.number().required().integer().allow('', null),
                 isChanged: Joi.boolean().required()
-            }).unknown(true))
+            }).unknown(true)).external(async (value, helpers) => {
+                // Get the store inventory
+                const storeInv = await StoreInventory.findOne({
+                    attributes: ['inventory_id'],
+                    where: {id: req.params.id}
+                })
+                // Get all the inventory sizes
+                const invSizes = await InventorySize.findAll({
+                    attributes: ['id'],
+                    where: {inventory_id: storeInv.inventory_id}
+                })
+                const filteredSizes = {
+                    added: [], updated: [], deleted: []
+                }
+                // Loop through the updated sizes
+                value.forEach(size => {
+                    // Check if the updated size is exist inside inventory sizes,
+                    // and the size's amount is changed
+                    const isSizeExsit = invSizes.find(invSize => (
+                        parseInt(invSize.id) === parseInt(size.inventory_size_id)
+                    ))
+                    if(isSizeExsit && size.isChanged){
+                        // When the store inventory size ID is not set, and the amount is not 0 or ''
+                        // means the size is newly added
+                        if(size.id === '' && (size.amount !== 0 || size.amount !== '')){
+                            filteredSizes.added.push({...size})
+                        } 
+                        // When the store inventory size ID is set, and the amount is not 0 and '',
+                        // means the size is updated
+                        else if(size.id !== '' && (size.amount !== 0 && size.amount !== '')){
+                            filteredSizes.updated.push({...size})
+                        }
+                        // When the store inventory size ID is set, and the amount is 0 or '',
+                        // means the size is deleted
+                        else if(size.id !== '' && (size.amount === 0 || size.amount === '')){
+                            filteredSizes.deleted.push({...size})
+                        }
+                    }
+                })
+                console.log(filteredSizes)
+                return filteredSizes
+            })
         }
         // Create the schema based on the input key
         const schema = {}
@@ -423,15 +417,29 @@ const getStoreInventory = async (id, ownerId) => {
             storeInvIdInput.value = ''
         }
         return await StoreInventory.findOne({
-            where: {id: storeInvIdInput.value},
+            where: {id: id},
+            attributes: ['id', 'total_amount', 'created_at'],
             include: [
                 {
+                    model: StoreInventorySize, as: 'sizes', 
+                    attributes: ['id', 'inventory_size_id', 'amount'],
+                },
+                {
                     model: Store, as: 'store', 
-                    attributes: ['id'],
+                    attributes: ['id', 'name', 'type_id'],
                     where: {owner_id: ownerId}
-                },                       
-            ],             
-        })       
+                },
+                {
+                    model: Inventory, as: 'inventory', 
+                    attributes: ['id', 'name'],
+                    where: {owner_id: ownerId},
+                    include: [{
+                        model: InventorySize, as: 'sizes', 
+                        attributes: ['id', 'name', 'production_price', 'selling_price']                      
+                    }]
+                },                          
+            ],        
+        })             
           
     } catch (err) {
         throw err
@@ -439,7 +447,8 @@ const getStoreInventory = async (id, ownerId) => {
 }
 
 /**
- * 
+ * Remove all the StoreInventorySize that the size is not exist, and recalculate
+ * the total_amount of the StoreInventory
  * @param {array} ids - array of store inventory IDs or inventory IDs 
  * @param {string} model - the model refrensing the 'ids'
  * @param {boolean} removeDeletedSize - whether or not the size that doesnt exist is also removed from store inventory size

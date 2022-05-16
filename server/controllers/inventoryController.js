@@ -162,6 +162,7 @@ exports.destroy = async (req, res) => {
         if(!inventory){
             return res.status(400).send({message: 'Inventory not found'})
         } 
+        inventory.destroy()
         res.send({message: 'Success deleting inventory'})        
 
     } catch(err) {
@@ -209,7 +210,10 @@ const validateInput = async (req, inputKeys) => {
             // Make sure the size name of the inventory is unique
             inventory_sizes: Joi.array().required().items(Joi.object({
                 id: Joi.number().integer(),
-                name: Joi.string().required().trim().max(100),
+                name: Joi.string().required().trim().max(100).messages({
+                    'string.empty': 'Please fill the inventory size name',
+                    'string.max': 'The inventory size name cannot be more than 100 characters',
+                }),
                 production_price: Joi.number().required().integer().allow('', null),
                 selling_price: Joi.number().required().integer().allow('', null)
             })).external(async (value, helpers) => {

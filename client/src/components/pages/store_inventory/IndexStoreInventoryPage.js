@@ -99,7 +99,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         setDisableBtn(true)
         const targetStoreInv = storeInv.storeInvs[storeInvIndex]
         api.put(`/store-inventories/${targetStoreInv.id}`, {
-                updated_sizes: JSON.stringify(storeInvSizes)
+                updatedSizes: storeInvSizes
             })
             .then(response => {
                 dispatchStoreInv({
