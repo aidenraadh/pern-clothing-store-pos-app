@@ -1,13 +1,14 @@
-const rootRouter                 = require('express').Router()
-const AuthController             = require('../controllers/AuthController')
-const UserController             = require('../controllers/UserController')
-const StoreController            = require('../controllers/StoreController')
-const InventoryController        = require('../controllers/InventoryController')
-const StoreInventoryController   = require('../controllers/StoreInventoryController')
-const StoreTransactionController = require('../controllers/StoreTransactionController')
-const isAuth                     = require('../middlewares/isAuth')
-const isNotAuth                  = require('../middlewares/isNotAuth')
-const authorize                  = require('../middlewares/authorize')
+const rootRouter                  = require('express').Router()
+const AuthController              = require('../controllers/AuthController')
+const UserController              = require('../controllers/UserController')
+const StoreController             = require('../controllers/StoreController')
+const InventoryController         = require('../controllers/InventoryController')
+const StoreInventoryController    = require('../controllers/StoreInventoryController')
+const StoreTransactionController  = require('../controllers/StoreTransactionController')
+const inventoryTransferController = require('../controllers/inventoryTransferController')
+const isAuth                      = require('../middlewares/isAuth')
+const isNotAuth                   = require('../middlewares/isNotAuth')
+const authorize                   = require('../middlewares/authorize')
 
 const sequelize = require('sequelize')
 const models = require('../models/index')
@@ -153,5 +154,13 @@ rootRouter
     .delete('/store-transactions/:id', [
         isAuth, authorize('employee'), StoreTransactionController.destroy
     ])     
+
+rootRouter
+    .get('/inventory-transfers', [
+        isAuth, authorize('owner'), inventoryTransferController.index
+    ])       
+    .get('/inventory-transfers/create', [
+        isAuth, authorize('employee', 'owner'), inventoryTransferController.create
+    ])       
 
 module.exports = rootRouter

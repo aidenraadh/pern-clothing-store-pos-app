@@ -11,6 +11,7 @@ import {inventoryReducer, INIT_STATE as INV_INIT_STATE} from "./components/reduc
 import {storeReducer, INIT_STATE as STORE_INIT_STATE} from "./components/reducers/StoreReducer";
 import {storeInventoryReducer, INIT_STATE as STOREINV_INIT_STATE} from "./components/reducers/StoreInventoryReducer";
 import {storeTransactionReducer, INIT_STATE as STORETRNSC_INIT_STATE} from "./components/reducers/StoreTransactionReducer";
+import {inventoryTransferReducer, INIT_STATE as INVTRANSFER_INIT_STATE} from "./components/reducers/InventoryTransferReducer";
 import {ownerReducer, OWNER_INIT_STATE} from "./components/reducers/OwnerReducer";
 import {employeeReducer, EMPLOYEE_INIT_STATE} from "./components/reducers/EmployeeReducer";
 
@@ -22,6 +23,8 @@ import IndexStoreInventoryPage from './components/pages/store_inventory/IndexSto
 import CreateStoreInventoryPage from './components/pages/store_inventory/CreateStoreInventoryPage'
 import IndexStoreTransactionPage from './components/pages/store_transaction/IndexStoreTransactionPage'
 import CreateStoreTransactionPage from './components/pages/store_transaction/CreateStoreTransactionPage'
+import IndexInventoryTransferPage from './components/pages/inventory_transfer/IndexInventoryTransferPage'
+import CreateInventoryTransferPage from './components/pages/inventory_transfer/CreateInventoryTransferPage'
 import UserPage from './components/pages/UserPage'
 import ProfilePage from './components/pages/ProfilePage'
 import NotFoundPage from './components/pages/NotFoundPage'
@@ -32,6 +35,7 @@ function App(){
     const [store, dispatchStore] = useReducer(storeReducer, STORE_INIT_STATE)
     const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
     const [storeTrnsc, dispatchStoreTrnsc] = useReducer(storeTransactionReducer, STORETRNSC_INIT_STATE)
+    const [invTransfer, dispatchInvTransfer] = useReducer(inventoryTransferReducer, INVTRANSFER_INIT_STATE)
     const [owner, dispatchOwner] = useReducer(ownerReducer, OWNER_INIT_STATE)
     const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)     
 
@@ -57,6 +61,9 @@ function App(){
         store_transaction: {
             icon: 'cart', text: 'Store Transactions', link: 'store-transactions'
         },        
+        inventory_transfer: {
+            icon: 'share', text: 'Inventory Transfers', link: 'inventory-transfers'
+        },          
         user: {
             icon: 'group', text: 'Users', link: 'users'
         },         
@@ -86,7 +93,7 @@ function App(){
                                 case 'owner': 
                                     sidebarItemNames = [
                                         'dashboard','inventory','store','store_inventory','store_transaction',
-                                        'user'
+                                        'inventory_transfer', 'user'
                                     ];
                                     break;
 
@@ -131,12 +138,19 @@ function App(){
                             component={IndexStoreTransactionPage} props={{
                                 user: user, storeTrnsc: storeTrnsc, dispatchStoreTrnsc: dispatchStoreTrnsc
                             }}
-                        />                          
+                        />                                                  
                         <ProtectedRoute path={`/${sidebarItems.store_transaction.link}/create`} exact 
                             component={CreateStoreTransactionPage} props={{
                                 user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv
                             }}
-                        />                         
+                        />                      
+                        <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}`} exact 
+                        component={IndexInventoryTransferPage} props={{
+                            user: user, invTransfer: invTransfer, dispatchInvTransfer: dispatchInvTransfer
+                        }}/>              
+                        <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}/create`} exact 
+                            component={CreateInventoryTransferPage} props={{user: user}}
+                        />                                   
                         <ProtectedRoute path={`/${sidebarItems.user.link}`} exact component={UserPage}
                             props={{
                                 user: user, owner: owner, dispatchOwner: dispatchOwner, employee: employee,

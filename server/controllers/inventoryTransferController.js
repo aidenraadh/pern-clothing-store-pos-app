@@ -1,4 +1,4 @@
-const models      = require('../models/index').Store
+const models      = require('../models/index')
 const InventoryTransfer      = models.InventoryTransfer
 const InventorySize      = models.InventorySize
 const Inventory      = models.Inventory
@@ -68,6 +68,21 @@ exports.index = async (req, res) => {
     }
 }
 
+exports.create = async (req, res) => {
+    const stores = await Store.findAll({
+        attributes: ['id', 'name'],
+        where: {owner_id: req.user.owner_id}
+    })
+    try {
+        res.send({
+            stores: stores
+        })          
+    } catch(err) {
+        logger.error(err, {errorObj: err})
+        res.status(500).send({message: err.message})
+    }
+}
+
 exports.store = async (req, res) => {
     try {
    
@@ -107,7 +122,7 @@ const validateInput = async (req, inputKeys) => {
     try {
         const input = filterKeys(req.body, inputKeys)
         const rules = {  
-            originStore: Joi.number().required().integer().external(async (value, helpers) => {
+            originStoreId: Joi.number().required().integer().external(async (value, helpers) => {
                 // Make sure the inventory size exists for this inventory
                 const originStore = await Store.findOne({
                     attributes: ['id'],
@@ -118,7 +133,7 @@ const validateInput = async (req, inputKeys) => {
                 }
                 return value
             }),             
-            destinationStore: Joi.number().required().integer().external(async (value, helpers) => {
+            destinationStoreId: Joi.number().required().integer().external(async (value, helpers) => {
                 // Make sure the inventory size exists for this inventory
                 const destinationStore = await Store.findOne({
                     attributes: ['id'],
