@@ -13,17 +13,23 @@ const authorize                   = require('../middlewares/authorize')
 const sequelize = require('sequelize')
 const models = require('../models/index')
 const StoreInventory = models.StoreInventory
+const Inventory = models.Inventory
+const Store = models.Store
+
 
 rootRouter.get('/hehe', async (req, res) => {
     try {
-        const x = await StoreInventory.findAll({
-            attributes: [
-                [sequelize.fn('SUM', sequelize.col('total_amount')), 'total']
-            ],
-            where: {store_id: 1}
-        })
+        await Store.update(
+            {
+                deleted_at: null
+            },
+            {
+                where: {id: 2},
+                paranoid: false
+            }
+        )
         res.send({
-            data: x
+            data: 'asd'
         })        
     } catch (err) {
         logger.error(err, {errorObj: err})
@@ -157,10 +163,13 @@ rootRouter
 
 rootRouter
     .get('/inventory-transfers', [
-        isAuth, authorize('owner'), inventoryTransferController.index
+        isAuth, authorize('owner', 'employee'), inventoryTransferController.index
     ])       
     .get('/inventory-transfers/create', [
         isAuth, authorize('employee', 'owner'), inventoryTransferController.create
     ])       
+    .post('/inventory-transfers', [
+        isAuth, authorize('employee', 'owner'), inventoryTransferController.store
+    ])      
 
 module.exports = rootRouter

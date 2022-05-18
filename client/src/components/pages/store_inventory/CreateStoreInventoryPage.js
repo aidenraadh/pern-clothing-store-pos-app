@@ -77,7 +77,7 @@ function CreateStoreInventoryPage(){
                 body={inventory.sizes.length ? 
                 <Grid numOfColumns={4} 
                     items={inventory.sizes.map((size, sizeKey) => (
-                        <TextInput key={sizeKey} label={`Amount ${size.name}`} size={'sm'} formAttr={{
+                        <TextInput key={sizeKey} label={`Amount ${size.name.toUpperCase()}`} size={'sm'} formAttr={{
                             value: formatNum(size.amount),
                             onChange: (e) => {
                                 dispatchAddedInvs({
@@ -162,15 +162,18 @@ function CreateStoreInventoryPage(){
                         onClick: () => {getInvs()}
                     }}/>                                       
                 </div>
-                <Table
-                    headings={['Name', '']}
-                    body={searchedInvs.map(inv => ([
-                        inv.name,
-                        <Button size={'sm'} text={'Select'} attr={{onClick: () => {
-                            dispatchAddedInvs({type: 'add', payload: {inv: inv}})
-                        }}}/>
-                    ]))}
-                />
+                {
+                    searchedInvs.length === 0 ? '' :
+                    <Table
+                        headings={['Name', '']}
+                        body={searchedInvs.map(inv => ([
+                            <span className='text-capitalize'>{inv.name}</span>,
+                            <Button size={'sm'} text={'Select'} attr={{onClick: () => {
+                                dispatchAddedInvs({type: 'add', payload: {inv: inv}})
+                            }}}/>
+                        ]))}
+                    />
+                }
             </>}        
             shown={modalShown}
             toggleModal={() => {setModalShown(state => !state)}}
@@ -209,12 +212,20 @@ function CreateStoreInventoryPage(){
 const addedInvsReducer = (state, action) => {
     const payload = action.payload
     switch(action.type){
-        case 'add': return [...state, {
+        case 'add': return (() => {
+            const isInvExist = state.find(inv => (
+                parseInt(inv.id) === parseInt(payload.inv.id)
+            ))
+            if(isInvExist){
+                return state
+            }
+            return [...state, {
                 id: payload.inv.id, name: payload.inv.name, toolCardExpand: true, 
                 sizes: payload.inv.sizes.map(size => ({
                     id: size.id, name: size.name, amount: '',
                 }))
             }]; 
+        })()
         case 'remove': return (() => {
                 let addedInvs = [...state]
                 addedInvs.splice(payload.index, 1)

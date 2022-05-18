@@ -12,7 +12,6 @@ import { Link } from 'react-router-dom'
 
 function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
     const [disableBtn , setDisableBtn] = useState(false)
-    const [stores, setStores] = useState(null)
     /* Create/edit invTransfer */
     const [invTransferIndex, setInvTransferIndex] = useState('')
     /* Delete invTransfer */
@@ -38,31 +37,31 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
         }
         api.get(`/inventory-transfers${getQueryString(queries)}`)
            .then(response => {
-                if(invTransfer.invTransfers !== null){
-                    setDisableBtn(false)
-                    setFilterModalShown(false)
+               const responseFilters = {...response.data.filters}
+               // When the user is employee, they cant search the inventory transfer from another store
+               // they're not employed
+               if(user.role.name === 'employee'){
+                   responseFilters.origin_store_id = user.storeEmployee.store_id
+               }
+               if(invTransfer.invTransfers !== null){
+                   setDisableBtn(false)
+                   setFilterModalShown(false)
                 }                          
-                dispatchInvTransfer({type: actionType, payload: response.data})
-                dispatchFilters({
-                    type: FILTER_ACTIONS.RESET, payload: {
-                        filters: response.data.filters
+               dispatchInvTransfer({type: actionType, payload: response.data})
+               dispatchFilters({
+                   type: FILTER_ACTIONS.RESET, payload: {
+                       filters: responseFilters
                     }
                 })                
            })
            .catch(error => {
-                if(invTransfer.stores !== null){
+                if(invTransfer.invTransfers !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
     }, [filters, invTransfer, dispatchInvTransfer])  
-
-    const getStores = useCallback(() => {
-        api.get(`/stores?onlyget=id,name`)
-           .then(response => { setStores(response.data.stores) })
-           .catch(error => { errorHandler(error)  })
-    }, [])  
 
     const confirmDeleteInvTransfer = useCallback(index => {
         setInvTransferIndex(index)
@@ -95,15 +94,11 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
         if(invTransfer.invTransfers === null){
             getInvTransfers(ACTIONS.RESET)
         }
-    }, [invTransfer, getInvTransfers])    
-
-    useEffect(() => {
-        if(stores === null){ getStores() }
-    }, [stores, getStores])      
+    }, [invTransfer, getInvTransfers])        
 
     // When the invTransfer resource is not set yet
     // Return loading UI
-    if(invTransfer.invTransfers === null || stores === null){
+    if(invTransfer.invTransfers === null){
         return 'Loading...'
     }    
     return (<>
@@ -157,6 +152,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                 <Grid numOfColumns={1} items={[
                     <Select label={'Origin store'} 
                         formAttr={{
+                            disabled: (user.role.name === 'employee' ? true : false),
                             value: filters.origin_store_id,
                             onChange: e => {dispatchFilters({
                                 type: FILTER_ACTIONS.UPDATE, 
@@ -165,7 +161,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                         }}
                         options={(() => {
                             const options = [{value: '', text: 'All'}]
-                            stores.forEach(store => {
+                            invTransfer.stores.forEach(store => {
                                 options.push({
                                     value: store.id, 
                                     text: store.name.charAt(0).toUpperCase() + store.name.slice(1)
@@ -184,7 +180,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                         }}
                         options={(() => {
                             const options = [{value: '', text: 'All'}]
-                            stores.forEach(store => {
+                            invTransfer.stores.forEach(store => {
                                 options.push({
                                     value: store.id, 
                                     text: store.name.charAt(0).toUpperCase() + store.name.slice(1)

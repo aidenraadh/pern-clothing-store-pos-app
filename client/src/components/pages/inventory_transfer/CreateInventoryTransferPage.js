@@ -2,7 +2,7 @@ import {useState, useEffect, useReducer, useCallback, useMemo} from 'react'
 import {api, errorHandler, keyHandler, formatNum} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, Select, TextInputWithBtn} from '../../Forms'
-import {PlainCard} from '../../Cards'
+import {SimpleCard} from '../../Cards'
 import {Modal, ConfirmPopup} from '../../Windows'
 import {Grid} from '../../Layouts'
 import Table from '../../Table'
@@ -64,7 +64,8 @@ function CreateInventoryTransferPage({user}){
     }, [originStoreId, setDisableBtn, invName])    
 
     const AddedInvsTable = useMemo(() => {
-        return <Table
+        return addedInvs.length === 0 ? '' : 
+        <Table
             headings={['Inventory', 'Size', 'Amount Transfered']}
             body={addedInvs.map((inv, key) => ([
                 <span className='flex-row items-center'>
@@ -77,11 +78,15 @@ function CreateInventoryTransferPage({user}){
                         <SVGIcons color={'red'} name={'error_circle'}
                         />
                     </button>
-                    {inv.inventoryName}
+                    <span className='text-capitalize'>
+                        {inv.inventoryName}
+                    </span>
                 </span>,
-                inv.sizeName,
-                <span className='flex-row items-center flex-inline' style={{width: '100%'}}>
-                    <TextInputWithBtn size={'sm'} containerAttr={{style: {width: '100%'}}}
+                <span className='text-uppercase'>
+                    {inv.sizeName}
+                </span>,
+                <span className='flex-row items-center'>
+                    <TextInputWithBtn size={'sm'} containerAttr={{style: {minWidth: '10rem'}}}
                         formAttr={{value: formatNum(inv.amount),
                             style: {width: '100%'},
                             onChange: (e) => {
@@ -109,7 +114,29 @@ function CreateInventoryTransferPage({user}){
                 </span>,                
             ]))}
         />            
-    }, [addedInvs, dispatchAddedInvs])       
+    }, [addedInvs, dispatchAddedInvs])    
+    
+    const storeInvTransfers = useCallback(() => {
+        setDisableBtn(true)
+        api.post(`/inventory-transfers`, {
+            originStoreId: originStoreId,
+            destinationStoreId: destinationStoreId,
+            transferDate: transferDate,
+            transferedInvs: addedInvs,
+        })
+        .then(response => {
+            setDisableBtn(false)
+            setSuccPopupMsg(response.data.message)
+            setSuccPopupShown(true)
+        })
+        .catch(error => {
+            setDisableBtn(false)
+            errorHandler(error, {'400': () => {
+                setErrPopupShown(true)
+                setErrPopupMsg(error.response.data.message)                      
+            }})             
+        })
+    }, [addedInvs, originStoreId, destinationStoreId, transferDate])
 
     useEffect(() => {
         if(stores === null){ getCreateData() }
@@ -119,7 +146,7 @@ function CreateInventoryTransferPage({user}){
     useEffect(() => {
         dispatchAddedInvs({type: 'reset'})
         setSearchedStoreInvs([])
-    }, [originStoreId])       
+    }, [originStoreId])           
 
     // When the invTransfer resource is not set yet
     // Return loading UI
@@ -127,7 +154,8 @@ function CreateInventoryTransferPage({user}){
         return 'Loading...'
     }    
     return (<>
-        <PlainCard 
+        <SimpleCard
+            heading={'Transfer Inventory'}
             body={<>
                 <Grid numOfColumns={3} items={[
                     <Select label={'Origin Store'}
@@ -161,9 +189,15 @@ function CreateInventoryTransferPage({user}){
                 <button key={'a'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
                 onClick={() => {setModalShown(true)}}>
                     + Add Inventory
-                </button>                          
+                </button>               
             </>}
-        />   
+            footer={
+                <Button text={'Save changes'} attr={{
+                    disabled: disableBtn,
+                    onClick: storeInvTransfers}}
+                />
+            }
+        />
         <Modal
             heading={'Search Inventories'}
             body={<>
@@ -182,35 +216,38 @@ function CreateInventoryTransferPage({user}){
                         onClick: () => {getInvs()}
                     }}/>                                       
                 </div>
-                <Table
-                    headings={['Name', 'Size', '']}
-                    body={searchedStoreInvs.map((searchedStoreInv, index) => ([
-                        searchedStoreInv.inventory.name,
-                        <Select
-                            options={
-                                searchedStoreInv.inventory.sizes.filter(size => (
-                                    // Filter only the size that already stored
-                                    searchedStoreInv.sizes.find(storedSize => (
-                                        parseInt(size.id) === parseInt(storedSize.inventory_size_id)
-                                    ))
-                                )).map(size => ({
-                                    value: size.id, text: size.name
-                                }))
-                            }
-                            formAttr={{
-                                value: searchedStoreInv.selectedSizeId,
-                                onChange: (e) => {setSearchedStoreInvs(state => {
-                                    const storeInvs = [...state]
-                                    storeInvs[index] = {...storeInvs[index], selectedSizeId: e.target.value}
-                                    return storeInvs
-                                })}
-                            }}
-                        />,
-                        <Button size={'sm'} text={'Select'} attr={{onClick: () => {
-                            dispatchAddedInvs({type: 'add', payload: {storeInv: searchedStoreInv}})
-                        }}}/>
-                    ]))}
-                />
+                {
+                    searchedStoreInvs.length === 0 ? '' :
+                    <Table
+                        headings={['Name', 'Size', '']}
+                        body={searchedStoreInvs.map((searchedStoreInv, index) => ([
+                            <span className='text-capitalize'>{searchedStoreInv.inventory.name}</span>,
+                            <Select
+                                options={
+                                    searchedStoreInv.inventory.sizes.filter(size => (
+                                        // Filter only the size that already stored
+                                        searchedStoreInv.sizes.find(storedSize => (
+                                            parseInt(size.id) === parseInt(storedSize.inventory_size_id)
+                                        ))
+                                    )).map(size => ({
+                                        value: size.id, text: size.name.toUpperCase()
+                                    }))
+                                }
+                                formAttr={{
+                                    value: searchedStoreInv.selectedSizeId,
+                                    onChange: (e) => {setSearchedStoreInvs(state => {
+                                        const storeInvs = [...state]
+                                        storeInvs[index] = {...storeInvs[index], selectedSizeId: e.target.value}
+                                        return storeInvs
+                                    })}
+                                }}
+                            />,
+                            <Button size={'sm'} text={'Select'} attr={{onClick: () => {
+                                dispatchAddedInvs({type: 'add', payload: {storeInv: searchedStoreInv}})
+                            }}}/>
+                        ]))}
+                    />                    
+                }
             </>}        
             shown={modalShown}
             toggleModal={() => {setModalShown(state => !state)}}
@@ -231,8 +268,18 @@ function CreateInventoryTransferPage({user}){
             iconColor={'blue'}
             title={"Success"}
             body={popupSuccMsg}
-            confirmText={'OK'}
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
+            confirmText={'Transfer again'}
+            cancelText={'View transfer'}
+            cancelBtnColor={'blue'}            
+            confirmCallback={() => {
+                // Refresh the page
+                window.location.reload()                
+            }}
+            cancelCallback={() => {
+                const host = window.location.origin
+                window.location.href = `${host}/inventory-transfers`
+            }}            
         />           
     </>)
 }
@@ -245,7 +292,7 @@ const addedInvsReducer = (state, action) => {
         case 'add':
             // If the inventory exists, return the previous state
             const isInvExists = addedInvs.find(inv => (
-                parseInt(inv.sizeId) === parseInt(payload.storeInv.selectedSizeId)
+                parseInt(inv.inventorySizeId) === parseInt(payload.storeInv.selectedSizeId)
             ))
             if(isInvExists){ return addedInvs }
             // If the stored inventory is not exists, return the previous state
@@ -260,13 +307,11 @@ const addedInvsReducer = (state, action) => {
             return [
                 ...addedInvs, {
                     storeInvId: payload.storeInv.id, 
-                    inventoryId: payload.storeInv.inventory.id,
-                    inventoryName: payload.storeInv.inventory.name,
-                    store: payload.storeInv.store, 
-                    toolCardExpand: true,         
                     storeInvSizeId: storedInvSize.id,
+                    inventoryId: payload.storeInv.inventory.id,
+                    inventorySizeId: invSize.id,
+                    inventoryName: payload.storeInv.inventory.name,
                     sizeName: invSize.name,
-                    sizeId: invSize.id,
                     amount: '',
                     amountLeft: storedInvSize.amount,
                     amountStored: storedInvSize.amount,                    
@@ -284,7 +329,7 @@ const addedInvsReducer = (state, action) => {
                 }
             }
             // Update the amount of size
-            else if(payload.key === 'amount' || payload.key === 'cost'){
+            else if(payload.key === 'amount'){
                 const value = formatNum(payload.value, true)
                 // Update the size
                 addedInvs[payload.index][payload.key] = value

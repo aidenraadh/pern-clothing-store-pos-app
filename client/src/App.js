@@ -98,7 +98,7 @@ function App(){
                                     break;
 
                                 case 'employee':
-                                    sidebarItemNames = ['store_inventory', 'store_transaction'];
+                                    sidebarItemNames = ['store_inventory', 'store_transaction', 'inventory_transfer'];
                                     break;
 
                                 default: sidebarItemNames = []; break;

@@ -79,7 +79,7 @@ function CreateStoreTransactionPage(){
                                 <SVGIcons color={'red'} name={'error_circle'}
                                 />
                             </button>
-                            {inv.inventoryName}
+                            <span className='text-capitalize'>{inv.inventoryName}</span>
                         </span>,
                         inv.sizeName,
                         <span className='flex-row items-center flex-inline' style={{width: '100%'}}>
@@ -171,35 +171,38 @@ function CreateStoreTransactionPage(){
                         onClick: () => {getInvs()}
                     }}/>                                       
                 </div>
-                <Table
-                    headings={['Name', 'Size', '']}
-                    body={searchedStoreInvs.map((searchedStoreInv, index) => ([
-                        searchedStoreInv.inventory.name,
-                        <Select
-                            options={
-                                searchedStoreInv.inventory.sizes.filter(size => (
-                                    // Filter only the size that already stored
-                                    searchedStoreInv.sizes.find(storedSize => (
-                                        parseInt(size.id) === parseInt(storedSize.inventory_size_id)
-                                    ))
-                                )).map(size => ({
-                                    value: size.id, text: size.name
-                                }))
-                            }
-                            formAttr={{
-                                value: searchedStoreInv.selectedSizeId,
-                                onChange: (e) => {setSearchedStoreInvs(state => {
-                                    const storeInvs = [...state]
-                                    storeInvs[index] = {...storeInvs[index], selectedSizeId: e.target.value}
-                                    return storeInvs
-                                })}
-                            }}
-                        />,
-                        <Button size={'sm'} text={'Select'} attr={{onClick: () => {
-                            dispatchAddedInvs({type: 'add', payload: {storeInv: searchedStoreInv}})
-                        }}}/>
-                    ]))}
-                />
+                {
+                    searchedStoreInvs.length === 0 ? '' :
+                    <Table
+                        headings={['Name', 'Size', '']}
+                        body={searchedStoreInvs.map((searchedStoreInv, index) => ([
+                            <span className='text-capitalize'>{searchedStoreInv.inventory.name}</span>,
+                            <Select
+                                options={
+                                    searchedStoreInv.inventory.sizes.filter(size => (
+                                        // Filter only the size that already stored
+                                        searchedStoreInv.sizes.find(storedSize => (
+                                            parseInt(size.id) === parseInt(storedSize.inventory_size_id)
+                                        ))
+                                    )).map(size => ({
+                                        value: size.id, text: size.name.toUpperCase()
+                                    }))
+                                }
+                                formAttr={{
+                                    value: searchedStoreInv.selectedSizeId,
+                                    onChange: (e) => {setSearchedStoreInvs(state => {
+                                        const storeInvs = [...state]
+                                        storeInvs[index] = {...storeInvs[index], selectedSizeId: e.target.value}
+                                        return storeInvs
+                                    })}
+                                }}
+                            />,
+                            <Button size={'sm'} text={'Select'} attr={{onClick: () => {
+                                dispatchAddedInvs({type: 'add', payload: {storeInv: searchedStoreInv}})
+                            }}}/>
+                        ]))}
+                    />                    
+                }
             </>}        
             shown={modalShown}
             toggleModal={() => {setModalShown(state => !state)}}
@@ -231,11 +234,11 @@ function CreateStoreTransactionPage(){
             title={"Success"}
             body={
                 <p>
-                    Success creating new transaction
+                    Success transfering inventories
                 </p>
             }
-            confirmText={'New transaction'}
-            cancelText={'View transactions'}
+            confirmText={'Transfer again'}
+            cancelText={'View transfer'}
             cancelBtnColor={'blue'}
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
             confirmCallback={() => {
@@ -244,7 +247,7 @@ function CreateStoreTransactionPage(){
             }}
             cancelCallback={() => {
                 const host = window.location.origin
-                window.location.href = `${host}/store-transactions`
+                window.location.href = `${host}/inventory-transfers`
             }}
         />                  
     </>)

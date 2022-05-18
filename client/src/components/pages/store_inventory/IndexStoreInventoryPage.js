@@ -190,7 +190,9 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                         if(!storeInvSizes){ return [] }
                         if(user.role.name === 'owner'){
                             return storeInvSizes.map((size, index) => ([
-                                size.name,
+                                <span className='text-uppercase'>
+                                    {size.name}
+                                </span>,
                                 <TextInput size={'md'}
                                     formAttr={{
                                         pattern: '[0-9]*', 
@@ -307,7 +309,8 @@ const StoreInvs = ({storeInvs, viewStoreInv}) => {
             <Table
                 headings={['Inventory', 'Store', 'Total Stored', 'Actions']}
                 body={storeInvs.map((storeInv, index) => [
-                    storeInv.inventory.name, storeInv.store.name, 
+                    <span className='text-capitalize'>{storeInv.inventory.name}</span>, 
+                    <span className='text-capitalize'>{storeInv.store.name}</span>, 
                     storeInv.total_amount ? formatNum(storeInv.total_amount) : 0,
                     <>
                         <Button text={'View'} size={'sm'} 

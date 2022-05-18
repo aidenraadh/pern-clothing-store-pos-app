@@ -71,6 +71,7 @@ export const inventoryTransferReducer = (state, action) => {
         case ACTIONS.RESET: 
             return {
                 ...state, invTransfers: [...payload.invTransfers],
+                stores: payload.stores,
                 canLoadMore: payload.invTransfers.length < payload.filters.limit ? false : true
             };             
         default: throw new Error();

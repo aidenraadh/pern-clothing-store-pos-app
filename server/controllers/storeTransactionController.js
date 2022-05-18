@@ -224,35 +224,27 @@ const validateInput = async (req, inputKeys) => {
 
             purchased_invs: Joi.array().required().items(Joi.object({
                 storeInvId: Joi.number().required().integer(),
-                inventoryId: Joi.number().required().integer(),
-                inventoryName: Joi.string().required(),
                 storeInvSizeId: Joi.number().required().integer(),
-                sizeId: Joi.number().required().integer(),
+                inventoryName: Joi.string().required(),
                 sizeName: Joi.string().required(),
                 amount: Joi.number().required().integer().min(0).allow('', null),
                 amountLeft: Joi.number().required().integer().allow('', null),
-                amountStored: Joi.number().required().integer().min(0).allow('', null),
                 cost: Joi.number().required().integer().min(0).allow('', null),
                 originalAmount: Joi.number().required().integer().min(0).allow('', null),
                 originalCost: Joi.number().required().integer().min(0).allow('', null),                
 
-                store: Joi.object({
-                    id: Joi.number().required().integer(),
-                    name: Joi.string().required(),
-                }).unknown(true),
-
             }).unknown(true)).external(async (value, helpers) => {
-                // Get all purchased inventories ID
-                const purchasedInvIds = value.map(inv => inv.inventoryId).filter((value, index, self) => (
+                // Get all purchased store inventory IDs
+                const storeInvIds = value.map(inv => inv.storeInvId).filter((value, index, self) => (
                     self.indexOf(value) === index
                 ))
                 // Get all store inventories from the target store
                 const storeInvs = await StoreInventory.findAll({
                     where: {
-                        id: purchasedInvIds,
+                        id: storeInvIds,
                         store_id: req.user.storeEmployee.store_id
                     },
-                    attributes: ['id', 'inventory_id', 'total_amount'],
+                    attributes: ['id', 'total_amount'],
                     include: [
                         {
                             model: StoreInventorySize, as: 'sizes', 
@@ -261,41 +253,38 @@ const validateInput = async (req, inputKeys) => {
                         {
                             model: Store, as: 'store', 
                             attributes: ['id', 'name'],
+                            required: true,
                         },
                         {
                             model: Inventory, as: 'inventory', 
                             attributes: ['id', 'name'],
+                            required: true,
                             include: [{
-                                model: InventorySize, as: 'sizes', 
-                                attributes: ['id', 'name', 'selling_price']                   
+                                model: InventorySize, as: 'sizes',
+                                attributes: ['id', 'selling_price']
                             }]
                         },                          
                     ],        
                 })
                 // Make sure all the purchased inventories is exists inside the store
-                if(purchasedInvIds.length !== storeInvs.length){
+                if(storeInvIds.length !== storeInvs.length){
                     throw {message: 'One of the inventories is not exist inside the store'}
                 }
                 const purchasedInvs = value.map(inv => {
+                    // Get the StoreInventory
                     const storeInv = storeInvs.find(storeInv => (
-                        parseInt(inv.inventoryId) === parseInt(storeInv.id)
+                        inv.storeInvId === parseInt(storeInv.id)
                     ))
-                    // Get the inventory size
-                    const invSize = storeInv.inventory.sizes.find(existedSize => (
-                        parseInt(inv.sizeId) === parseInt(existedSize.id)
+                    // Get the StoreInventorySize from the target store
+                    const storeInvSize = storeInv.sizes.find(storeInvSize => (
+                        inv.storeInvSizeId === parseInt(storeInvSize.id)
                     ))
-                    // Make sure the size is exist
-                    if(!invSize){
-                        throw {message: 
-                            `Inventory '${inv.inventoryName}' size '${inv.sizeName}' is not exist`
-                        }
-                    }
-                    // Get the inventory size from the target store
-                    const storedInvSize = storeInv.sizes.find(storedSize => (
-                        parseInt(inv.sizeId) === parseInt(storedSize.inventory_size_id)
+                    // Get the InventorySize
+                    const inventorySize = storeInv.inventory.sizes.find(size => (
+                        parseInt(size.id) === parseInt(storeInvSize.inventory_size_id)
                     ))
                     // Make sure the size is exist inside the store
-                    if(!storedInvSize){
+                    if(!storeInvSize){
                         throw {message: 
                             `Inventory '${inv.inventoryName}' size '${inv.sizeName}' is not exist `+
                             `inside the store`
@@ -309,19 +298,18 @@ const validateInput = async (req, inputKeys) => {
                     }                                         
                     const data = {...inv}
 
+                    // Make sure these data below is the most updated ones
+                    data.amountLeft = storeInvSize.amount - data.amount
+                    data.cost = data.cost * data.amount
+                    data.originalCost = inventorySize.selling_price    
+                    
                     // Make sure the amount size purchased does not exceed
                     if(data.amountLeft < 0){
                         throw {message: 
                             `The amount of inventory '${inv.inventoryName}' size '${inv.sizeName}' `+
                             `exceeds`
                         }
-                    }
-                    // Make sure these data below is the most updated ones
-                    data.storeInvId = storeInv.id
-                    data.storeInvSizeId = storedInvSize.id          
-                    data.amountLeft = storedInvSize.amount - data.amount
-                    data.cost = data.cost * data.amount
-                    data.originalCost = invSize.selling_price          
+                    }                    
 
                     return data
                 })

@@ -45,7 +45,8 @@ exports.index = async (req, res) => {
                 {
                     model: Store, as: 'store', 
                     attributes: ['id', 'name', 'type_id'],
-                    where: {owner_id: req.user.owner_id}
+                    where: {owner_id: req.user.owner_id},
+                    required: true,
                 },
                 {
                     model: Inventory, as: 'inventory', 
@@ -55,6 +56,7 @@ exports.index = async (req, res) => {
                         if(where.name){ where.name = {[Op.iLike]: `%${where.name}%`} }
                         return where
                     })(),
+                    required: true,
                     include: [{
                         model: InventorySize, as: 'sizes', 
                         attributes: (() => {
@@ -184,12 +186,6 @@ exports.update = async (req, res) => {
         const {values, errMsg} = await validateInput(req, ['updatedSizes']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
-        }
-        // Delete the deleted store inventory size
-        if(values.updatedSizes.deleted.length){
-            await StoreInventorySize.destroy({
-                where: {id: values.updatedSizes.deleted.map(size => size.id)}
-            })            
         }
         // Update the updated store inventory size
         for (const size of values.updatedSizes.updated) {
@@ -357,7 +353,7 @@ const validateInput = async (req, inputKeys) => {
                     where: {inventory_id: storeInv.inventory_id}
                 })
                 const filteredSizes = {
-                    added: [], updated: [], deleted: []
+                    added: [], updated: [],
                 }
                 // Loop through the updated sizes
                 value.forEach(size => {
@@ -367,24 +363,18 @@ const validateInput = async (req, inputKeys) => {
                         parseInt(invSize.id) === parseInt(size.inventory_size_id)
                     ))
                     if(isSizeExsit && size.isChanged){
-                        // When the store inventory size ID is not set, and the amount is not 0 or ''
-                        // means the size is newly added
-                        if(size.id === '' && (size.amount !== 0 || size.amount !== '')){
-                            filteredSizes.added.push({...size})
+                        // If the amount is 0 or '' set it to NULL
+                        const amount = size.amount ? size.amount : null
+                        // When the store inventory size ID is not set, means the size is newly added
+                        if(size.id === ''){
+                            filteredSizes.added.push({...size, amount: amount})
                         } 
-                        // When the store inventory size ID is set, and the amount is not 0 and '',
-                        // means the size is updated
-                        else if(size.id !== '' && (size.amount !== 0 && size.amount !== '')){
-                            filteredSizes.updated.push({...size})
-                        }
-                        // When the store inventory size ID is set, and the amount is 0 or '',
-                        // means the size is deleted
-                        else if(size.id !== '' && (size.amount === 0 || size.amount === '')){
-                            filteredSizes.deleted.push({...size})
+                        // When the store inventory size ID is set, means the size is updated
+                        else if(size.id !== ''){
+                            filteredSizes.updated.push({...size, amount: amount})
                         }
                     }
                 })
-                console.log(filteredSizes)
                 return filteredSizes
             })
         }
@@ -447,8 +437,10 @@ const getStoreInventory = async (id, ownerId) => {
 }
 
 /**
- * Remove all the StoreInventorySize that the size is not exist, and recalculate
- * the total_amount of the StoreInventory
+ * This method will:
+ * - Delete all StoreInventorySize where the 'amount' is 0 or NULL
+ * - Delete all StoreInventorySize where inventory size is not exist
+ * - Recalculate the StoreInventory 'total_amount'
  * @param {array} ids - array of store inventory IDs or inventory IDs 
  * @param {string} model - the model refrensing the 'ids'
  * @param {boolean} removeDeletedSize - whether or not the size that doesnt exist is also removed from store inventory size
@@ -486,11 +478,12 @@ const refreshStoreInventory = async (ids, model, removeDeletedSize = true) => {
                 },                          
             ],        
         })       
+        // This is all StoreInventorySize ID that will be deleted
+        let deletedStoreInvSizeIds = []
         for(const storeInv of storeInvs){
             let totalAmount = 0
-            let deletedStoreInvSizeIds = []
-            // Make sure the size is exist
             for(const storeInvSize of storeInv.sizes){
+                // Make sure the size is exist
                 const isExists = storeInv.inventory.sizes.find(existedSize => (
                     parseInt(existedSize.id) === parseInt(storeInvSize.inventory_size_id)
                 ))
@@ -505,12 +498,12 @@ const refreshStoreInventory = async (ids, model, removeDeletedSize = true) => {
                     deletedStoreInvSizeIds.push(storeInvSize.id)
                 }
             }
-            // Remove the size that doesnt exist
-            await StoreInventorySize.destroy({where: {id: deletedStoreInvSizeIds}})
             // Update the total amount of store inventory
             storeInv.total_amount = totalAmount
             await storeInv.save()
-        }          
+        }    
+        // Remove the size that doesnt exist
+        await StoreInventorySize.destroy({where: {id: deletedStoreInvSizeIds}})              
     } catch (err) {
         throw err     
     }  
