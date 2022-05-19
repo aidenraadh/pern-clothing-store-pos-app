@@ -78,7 +78,8 @@ export const inventoryReducer = (state, action) => {
 }
 
 export const filterReducer = (state, action) => {
-    const {type, payload} = action
+    const type= action.type
+    const payload = {...action.payload}
     // If the filter is resetted, save to the local storage
     if(type === FILTER_ACTIONS.RESET){
         saveResFilters(FILTER_KEY, payload.filters);
@@ -87,6 +88,9 @@ export const filterReducer = (state, action) => {
         case FILTER_ACTIONS.UPDATE: 
             if(payload.key === 'limit'){
                 payload.value = parseInt(payload.value)
+            }
+            if(payload.key === 'empty_production_selling'){
+                payload.value = !payload.value
             }
             return {
                 ...state, [payload.key]: payload.value
@@ -103,6 +107,7 @@ export const filterReducer = (state, action) => {
 export const getFilters = () => {
     const defaultFilters = {
         name: '',
+        empty_production_selling: false,
         limit: 10, 
         offset: 0,           
     }

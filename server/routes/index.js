@@ -14,25 +14,32 @@ const sequelize = require('sequelize')
 const models = require('../models/index')
 const StoreInventory = models.StoreInventory
 const Inventory = models.Inventory
+const InventorySize = models.InventorySize
 const Store = models.Store
 
 
 rootRouter.get('/hehe', async (req, res) => {
     try {
-        await Store.update(
-            {
-                deleted_at: null
-            },
-            {
-                where: {id: 2},
-                paranoid: false
-            }
-        )
+        const data = await StoreInventory.findOne({
+            where: {id: 1},
+            include: [
+                {
+                    model: Inventory, as: 'inventory', 
+                    attributes: ['id', 'name'],
+                    where: {owner_id: 100},
+                    required: true,
+                    include: [{
+                        model: InventorySize, as: 'sizes', 
+                        attributes: ['id', 'name', 'production_price', 'selling_price'],
+                        required: false,
+                    }]
+                },                 
+            ]            
+        })
         res.send({
-            data: 'asd'
+            data: data
         })        
     } catch (err) {
-        logger.error(err, {errorObj: err})
         res.status(500).send({message: err.message})
     }        
 })

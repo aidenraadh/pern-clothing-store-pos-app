@@ -6,13 +6,15 @@ const {Op}                     = require("sequelize")
 const Joi                      = require('joi')
 const filterKeys               = require('../utils/filterKeys')
 const logger                   = require('../utils/logger')
-const StoreInventoryController = require('./StoreInventoryController')
+const storeInventoryController = require('../controllers/storeInventoryController')
+const { sequelize } = require('../models/index')
 
 exports.index = async (req, res) => {    
     try {
         // Set filters
         const filters = {
-            where: {},
+            whereInv: {},
+            whereSizes: {},
             limitOffset: {
                 limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
                 offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
@@ -20,17 +22,31 @@ exports.index = async (req, res) => {
         }
         if(req.query.name){
             const {value, error} = Joi.string().required().trim().validate(req.query.name)
-            if(error === undefined){ filters.where.name = value }  
+            if(error === undefined){ filters.whereInv.name = value }  
+        }
+        if(req.query.empty_production_selling === 'true'){
+            filters.whereSizes.empty_production_selling = true
         }
         const inventories = await Inventory.findAll({
             where: (() => {
-                const where = {...filters.where, owner_id: req.user.owner_id}
+                const where = {...filters.whereInv, owner_id: req.user.owner_id}
                 if(where.name){ where.name =  {[Op.iLike]: `%${where.name}%`}}
                 return where
             })(),
             include: [{
                 model: InventorySize, as: 'sizes', 
-                attributes: ['id', 'name', 'production_price', 'selling_price']
+                attributes: ['id', 'name', 'production_price', 'selling_price'],
+                required: true,
+                where: (() => {
+                    const where = {
+                    }
+                    if(filters.whereSizes.empty_production_selling){
+                        where[Op.or] = [
+                            {production_price: null}, {selling_price: null}
+                        ]
+                    }
+                    return where
+                })()
             }],
             order: [['id', 'DESC']],
             ...filters.limitOffset
@@ -139,7 +155,7 @@ exports.update = async (req, res) => {
             
         await InventorySize.bulkCreate(newSizes)
         // Refresh the store inventory
-        await StoreInventoryController.refreshStoreInventory(inventory.id, 'inventory')
+        await storeInventoryController.refreshStoreInventory(inventory.id, 'inventory')
 
         // Get the inventory's sizes
         const sizes = await inventory.getSizes({

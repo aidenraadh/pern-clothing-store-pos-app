@@ -2,7 +2,7 @@ import {useReducer, useState, useEffect, useCallback} from 'react'
 import {ACTIONS, filterReducer, FILTER_ACTIONS, getFilters} from '../reducers/InventoryReducer'
 import {api, errorHandler, getQueryString, formatNum, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
-import {TextInput, Select} from '../Forms'
+import {TextInput, Select, Checkbox} from '../Forms'
 import {PlainCard} from '../Cards'
 import {Modal, ConfirmPopup} from '../Windows'
 import Table from '../Table'
@@ -153,6 +153,10 @@ function InventoryPage({inventory, dispatchInventory, user}){
             getInventories(ACTIONS.RESET)
         }
     }, [inventory, getInventories])    
+
+    useEffect(() => {
+        console.log(filters)
+    }, [filters])
     // When the inventory resource is not set yet
     // Return loading UI
     if(inventory.inventories === null){
@@ -264,20 +268,31 @@ function InventoryPage({inventory, dispatchInventory, user}){
         />
         <Modal
             heading={'Filter'}
-            size={'sm'}
-            body={<>
-                <Select label={'Rows shown'}
-                    formAttr={{
-                        value: filters.limit,
-                        onChange: e => {dispatchFilters({
-                            type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
-                        })}                        
-                    }}
-                    options={[
-                        {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
-                    ]}
-                />
-            </>}        
+            size={'md'}
+            body={
+                <Grid numOfColumns={1} items={[
+                    <Select label={'Rows shown'}
+                        formAttr={{
+                            value: filters.limit,
+                            onChange: e => {dispatchFilters({
+                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
+                            })}                        
+                        }}
+                        options={[
+                            {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
+                        ]}
+                    />,
+                    <Checkbox label={'Show only empty production price or selling price'}
+                        formAttr={{
+                            defaultChecked: filters.empty_production_selling,
+                            onChange: (e) => {dispatchFilters({
+                                type: FILTER_ACTIONS.UPDATE, payload: {
+                                key: 'empty_production_selling', value: filters.empty_production_selling
+                            }}
+                        )}
+                    }}/>
+                ]}/>
+            }        
             footer={
                 <Button size={'sm'} text={'Search'} attr={{
                         disabled: disableBtn,

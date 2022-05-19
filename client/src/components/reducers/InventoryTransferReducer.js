@@ -79,7 +79,8 @@ export const inventoryTransferReducer = (state, action) => {
 }
 
 export const filterReducer = (state, action) => {
-    const {type, payload} = action
+    const type= action.type
+    const payload = {...action.payload}
     // If the filter is resetted, save to the local storage
     if(type === FILTER_ACTIONS.RESET){
         saveResFilters(FILTER_KEY, payload.filters);

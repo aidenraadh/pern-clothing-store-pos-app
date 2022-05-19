@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {ACTIONS, FILTER_ACTIONS, filterReducer, getFilters} from './../../reducers/StoreInventoryReducer'
 import {api, errorHandler, getQueryString, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
-import {TextInput, Select} from '../../Forms'
+import {TextInput, Select, Checkbox} from '../../Forms'
 import {PlainCard} from '../../Cards'
 import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
@@ -41,7 +41,8 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 if(storeInv.storeInvs !== null){
                     setDisableBtn(false)
                     setFilterModalShown(false)
-                }                          
+                }                     
+                setStoreInvSizes('')     
                 dispatchStoreInv({type: actionType, payload: response.data})
                 dispatchFilters({
                     type: FILTER_ACTIONS.RESET, payload: {
@@ -70,24 +71,17 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         setStoreInvSizes(state => {
             const invSizes = []
             if(!targetStoreInv){ return invSizes }
-            // Get all stored inventory's sizes
-            const storedSizeIds = targetStoreInv.sizes.map(storedSize => storedSize.inventory_size_id)
-
-            targetStoreInv.inventory.sizes.forEach(size => {
-                // When the stored size exists inside inventory sizes
-                if(storedSizeIds.includes(size.id)){
+            targetStoreInv.inventory.sizes.forEach(invSize => {
+                // Get the store inventory size
+                const storeInvSize = targetStoreInv.sizes.find(storeInvSize => (
+                    parseInt(storeInvSize.inventory_size_id) === parseInt(invSize.id)
+                ))
+                if(storeInvSize){
                     invSizes.push({
-                        ...targetStoreInv.sizes[ storedSizeIds.indexOf(size.id) ],
-                        name: size.name, production_price: size.production_price,
-                        selling_price: size.selling_price, isChanged: false              
-                    })
-                }
-                else{
-                    invSizes.push({
-                        id: '', inventory_size_id: size.id, amount: '', 
-                        name: size.name, production_price: size.production_price,
-                        selling_price: size.selling_price, isChanged: false
-                    })
+                        ...storeInvSize,
+                        sizeName: invSize.name, production_price: invSize.production_price,
+                        selling_price: invSize.selling_price, isChanged: false              
+                    })  
                 }
             })
             return invSizes
@@ -129,6 +123,10 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     useEffect(() => {
         if(stores === null && user.role.name === 'owner'){ getStores() }
     }, [stores, getStores, user])
+
+    useEffect(() => {
+        console.log(filters)
+    }, [filters])    
 
     // When the store resource is not set yet
     // Return loading UI
@@ -191,7 +189,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                         if(user.role.name === 'owner'){
                             return storeInvSizes.map((size, index) => ([
                                 <span className='text-uppercase'>
-                                    {size.name}
+                                    {size.sizeName}
                                 </span>,
                                 <TextInput size={'md'}
                                     formAttr={{
@@ -206,8 +204,8 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                                     }}
                                     containerAttr={{style: {width: '10rem'}}}
                                 />,
-                                `Rp. ${formatNum(size.production_price)}`,
-                                `Rp. ${formatNum(size.selling_price)}` 
+                                `Rp. ${size.production_price ? formatNum(size.production_price) : '--'}`,
+                                `Rp. ${size.selling_price ? formatNum(size.selling_price) : '--'}` 
                             ]))
                         }
                         if(user.role.name === 'employee'){
@@ -245,7 +243,16 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                             options={[
                                 {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
                             ]}
-                        />                      
+                        />,
+                        <Checkbox label={'Show only empty sizes'}
+                            formAttr={{
+                                defaultChecked: filters.empty_size_only,
+                                onChange: (e) => {dispatchFilters({
+                                    type: FILTER_ACTIONS.UPDATE, payload: {
+                                    key: 'empty_size_only', value: filters.empty_size_only
+                                }}
+                            )}
+                        }}/>                        
                     ]
                     if(user.role.name === 'owner'){
                         items.unshift(
