@@ -7,53 +7,59 @@ const Joi                      = require('joi')
 const filterKeys               = require('../utils/filterKeys')
 const logger                   = require('../utils/logger')
 const storeInventoryController = require('../controllers/storeInventoryController')
-const { sequelize } = require('../models/index')
 
 exports.index = async (req, res) => {    
     try {
-        // Set filters
+        // Sanitized the queries
+        const queries = {...req.query}
+        queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
+        queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
+        queries.shows_only = Joi.string().required().trim().validate(queries.shows_only)
+        queries.shows_only = queries.shows_only.error ? '' : queries.shows_only.value        
+        queries.name = Joi.string().required().trim().validate(queries.name)
+        queries.name = queries.name.error ? '' : queries.name.value
+        // Set filters default values
         const filters = {
-            whereInv: {},
-            whereSizes: {},
-            limitOffset: {
-                limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
-                offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
+            whereInv: {owner_id: req.user.owner_id},
+            whereInvSizes: {},
+            requiredInvSizes: false,
+            limitOffset: {limit: queries.limit, offset: queries.offset}
+        }
+        if(queries.name){
+            filters.whereInv.name = {[Op.iLike]: `%${queries.name}%`}
+        }  
+        if(queries.shows_only){
+            if(queries.shows_only === 'empty_production_selling'){
+                filters.whereInvSizes[Op.or] = [
+                    {production_price: null}, {selling_price: null}
+                ]
+                filters.requiredInvSizes = true
             }
-        }
-        if(req.query.name){
-            const {value, error} = Joi.string().required().trim().validate(req.query.name)
-            if(error === undefined){ filters.whereInv.name = value }  
-        }
-        if(req.query.empty_production_selling === 'true'){
-            filters.whereSizes.empty_production_selling = true
-        }
+            else if(queries.shows_only === 'empty_sizes'){
+                filters.whereInv = `"owner_id"=${req.user.owner_id} AND 
+                NOT EXISTS (SELECT id FROM "Inventory_Sizes" WHERE "inventory_id"="Inventory"."id")`
+                
+                if(queries.name){
+                    filters.whereInv = `"name" ILIKE "${queries.name}" AND `+filters.whereInv
+                }
+                filters.whereInv = Sequelize.literal(filters.whereInv)
+            }
+        }        
         const inventories = await Inventory.findAll({
-            where: (() => {
-                const where = {...filters.whereInv, owner_id: req.user.owner_id}
-                if(where.name){ where.name =  {[Op.iLike]: `%${where.name}%`}}
-                return where
-            })(),
+            attributes: ['id', 'name'],
+            where: filters.whereInv,
             include: [{
                 model: InventorySize, as: 'sizes', 
                 attributes: ['id', 'name', 'production_price', 'selling_price'],
-                required: true,
-                where: (() => {
-                    const where = {
-                    }
-                    if(filters.whereSizes.empty_production_selling){
-                        where[Op.or] = [
-                            {production_price: null}, {selling_price: null}
-                        ]
-                    }
-                    return where
-                })()
+                required: filters.requiredInvSizes,
+                where: filters.whereInvSizes
             }],
             order: [['id', 'DESC']],
             ...filters.limitOffset
         })
         res.send({
             inventories: inventories,
-            filters: {...filters.where, ...filters.limitOffset}
+            filters: queries
         })
     } catch(err) {
         logger.error(err, {errorObj: err})

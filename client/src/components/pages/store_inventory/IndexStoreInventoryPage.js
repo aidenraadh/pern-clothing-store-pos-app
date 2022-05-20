@@ -19,7 +19,9 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     /* Delete store inventory */
     // const [popupShown, setPopupShown] = useState(false)
     /* Filter store inventory */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters())     
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
+        storeInv.storeInvs ? false : true
+    ))     
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -123,10 +125,6 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     useEffect(() => {
         if(stores === null && user.role.name === 'owner'){ getStores() }
     }, [stores, getStores, user])
-
-    useEffect(() => {
-        console.log(filters)
-    }, [filters])    
 
     // When the store resource is not set yet
     // Return loading UI

@@ -75,6 +75,7 @@ exports.login = async (req, res) => {
                     }
                 ]                
             }),
+            languages: User.getLanguages(),
             token: jwt.token,
             expiresIn: jwt.expiresIn
         })          

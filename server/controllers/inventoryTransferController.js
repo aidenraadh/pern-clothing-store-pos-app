@@ -15,45 +15,60 @@ const StoreInventorySize       = models.StoreInventorySize
 exports.index = async (req, res) => {    
     try {
         const userRole = req.user.role.name.toLowerCase()
+
+        /*--------------- Sanitize queries ---------------*/
+
+        const queries = {...req.query}
+        queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
+        queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
+        queries.name = Joi.string().required().trim().validate(queries.name)
+        queries.name = queries.name.error ? '' : queries.name.value
+        // When the user is employee, they can only see InventoryTransfer 
+        // from the store they're employed to
+        if(userRole === 'employee'){
+            queries.origin_store_id = req.user.storeEmployee.origin_store_id
+        }
+        else{
+            queries.origin_store_id = Joi.number().required().integer().validate(queries.origin_store_id)
+            queries.origin_store_id = queries.origin_store_id.error ? '' : queries.origin_store_id.value  
+        }
+        queries.destination_store_id = Joi.number().required().integer().validate(
+            queries.destination_store_id
+        )
+        queries.destination_store_id = (
+            queries.destination_store_id.error ? 
+            '' : queries.destination_store_id.value   
+        )       
+        /*-------------------------------------------------*/    
+        
+        /*--------------- Set the filters ---------------*/
+        
         const filters = {
             whereInvTransfer: {},
-            whereInv: {},
-            limitOffset: {
-                limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
-                offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
-            }
+            whereInv: {owner_id: req.user.owner_id},
+            limitOffset: {limit: queries.limit, offset: queries.offset}
         }       
-        if(req.query.origin_store_id || userRole === 'employee'){
-            if(userRole === 'employee'){
-                filters.whereInvTransfer.origin_store_id = req.user.storeEmployee.store_id
-            }
-            else{
-                const {value, error} = Joi.number().required().integer().validate(req.query.origin_store_id)
-                if(error === undefined){ filters.whereInvTransfer.origin_store_id = value }                   
-            }         
+        if(queries.origin_store_id){
+            filters.whereInvTransfer.origin_store_id = queries.origin_store_id      
         }       
-        if(req.query.destination_store_id){
-            const {value, error} = Joi.number().required().integer().validate(req.query.destination_store_id)
-            if(error === undefined){ filters.whereInvTransfer.destination_store_id = value }            
+        if(queries.destination_store_id){
+            filters.whereInvTransfer.destination_store_id = queries.destination_store_id      
         }           
-        if(req.query.name){
-            const {value, error} = Joi.string().required().trim().validate(req.query.name)
-            if(error === undefined){ filters.whereInv.name = value }
+        if(queries.name){
+            filters.whereInv.name = {[Op.iLike]: `%${queries.name}%`}
         }
+        /*-------------------------------------------------*/   
+
         // Get the inventory transfers
         const invTransfers = await InventoryTransfer.findAll({
             attributes: ['amount', 'transfer_date'],
-            where: {...filters.whereInvTransfer},
+            where: filters.whereInvTransfer,
             include: [
                 {
                     model: Inventory, as: 'inventory', attributes: ['id', 'name'],
                     paranoid: false,
                     required: true,
-                    where: (() => {
-                        let where = {...filters.whereInv, owner_id: req.user.owner_id}
-                        if(where.name){ where.name = {[Op.iLike]: `%${where.name}%`} }
-                        return where
-                    })(),
+                    where: filters.whereInv,
                 },
                 {
                     model: InventorySize, as: 'inventorySize', attributes: ['id', 'name'],
@@ -78,11 +93,7 @@ exports.index = async (req, res) => {
         res.send({
             invTransfers: invTransfers, 
             stores: stores,
-            filters: {
-                ...filters.whereInvTransfer,
-                ...filters.whereInv,
-                ...filters.limitOffset
-            }
+            filters: queries
         })          
     } catch(err) {
         logger.error(err, {errorObj: err})

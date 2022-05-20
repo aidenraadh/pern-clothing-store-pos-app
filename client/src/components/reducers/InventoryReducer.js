@@ -89,8 +89,11 @@ export const filterReducer = (state, action) => {
             if(payload.key === 'limit'){
                 payload.value = parseInt(payload.value)
             }
-            if(payload.key === 'empty_production_selling'){
-                payload.value = !payload.value
+            if(payload.key === 'shows_only'){
+                payload.value = (
+                    payload.value === 'empty_production_selling' || payload.value === 'empty_sizes' ?
+                    payload.value : ''
+                )
             }
             return {
                 ...state, [payload.key]: payload.value
@@ -104,13 +107,16 @@ export const filterReducer = (state, action) => {
     }
 }
 
-export const getFilters = () => {
+export const getFilters = (fresh = false) => {
     const defaultFilters = {
         name: '',
-        empty_production_selling: false,
+        shows_only: '',
         limit: 10, 
         offset: 0,           
     }
-    const filters = getResFilters(FILTER_KEY)
-    return {...defaultFilters, ...filters}
+    if(fresh){
+        return defaultFilters
+    }
+    const recetFilters = getResFilters(FILTER_KEY)
+    return {...defaultFilters, ...recetFilters}
 }

@@ -21,6 +21,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      language_id: {
+        type: Sequelize.DataTypes.SMALLINT,
+        allowNull: false,
+      },        
       role_id: {
         type: Sequelize.DataTypes.SMALLINT,
         allowNull: false,

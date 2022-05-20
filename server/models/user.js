@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    static getLanguages(){
+      return {
+        "1": {name: 'english'},
+        "2": {name: 'indonesian'},
+      }
+    }
     static associate(models) {
       models.User.hasOne(
         models.StoreEmployee, {foreignKey: 'user_id', as: 'storeEmployee'}
@@ -27,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     role_id: DataTypes.SMALLINT,
+    language_id: DataTypes.SMALLINT,
     owner_id: DataTypes.BIGINT,
   }, {
     sequelize,

@@ -16,7 +16,10 @@ const LoginPage = (props) => {
             .post('/login', {
                 email: email, password: password
             })
-            .then(response => login(response, '/'))
+            .then(response => {
+                localStorage.setItem('languages', JSON.stringify(response.data.languages))
+                login(response, '/')
+            })
             .catch(error => {
                 if(error.response.status === 400){
                     alert(error.response.data.message)
@@ -26,6 +29,7 @@ const LoginPage = (props) => {
                 }
             })        
     }, [email, password])
+    
     // When the user already authenticated
     if(isAuth()){
         return <Redirect to={'/'}/>

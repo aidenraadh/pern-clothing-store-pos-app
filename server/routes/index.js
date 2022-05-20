@@ -10,34 +10,26 @@ const isAuth                      = require('../middlewares/isAuth')
 const isNotAuth                   = require('../middlewares/isNotAuth')
 const authorize                   = require('../middlewares/authorize')
 
+
+const Joi                      = require('joi')
+
 const sequelize = require('sequelize')
 const models = require('../models/index')
 const StoreInventory = models.StoreInventory
 const Inventory = models.Inventory
 const InventorySize = models.InventorySize
 const Store = models.Store
+const User = models.User
 
 
 rootRouter.get('/hehe', async (req, res) => {
     try {
-        const data = await StoreInventory.findOne({
-            where: {id: 1},
-            include: [
-                {
-                    model: Inventory, as: 'inventory', 
-                    attributes: ['id', 'name'],
-                    where: {owner_id: 100},
-                    required: true,
-                    include: [{
-                        model: InventorySize, as: 'sizes', 
-                        attributes: ['id', 'name', 'production_price', 'selling_price'],
-                        required: false,
-                    }]
-                },                 
-            ]            
-        })
+        const inv = await User.update(
+            {language_id: 2},
+            {where: {id: 1}}
+        )
         res.send({
-            data: data
+            data: x
         })        
     } catch (err) {
         res.status(500).send({message: err.message})

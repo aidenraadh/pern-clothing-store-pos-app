@@ -2,14 +2,14 @@ import {useReducer, useState, useEffect, useCallback} from 'react'
 import {ACTIONS, filterReducer, FILTER_ACTIONS, getFilters} from '../reducers/InventoryReducer'
 import {api, errorHandler, getQueryString, formatNum, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
-import {TextInput, Select, Checkbox} from '../Forms'
+import {TextInput, Select} from '../Forms'
 import {PlainCard} from '../Cards'
 import {Modal, ConfirmPopup} from '../Windows'
 import Table from '../Table'
 import {Grid} from '../Layouts'
 import SVGIcons from '../SVGIcons'
 
-function InventoryPage({inventory, dispatchInventory, user}){
+function InventoryPage({inventory, dispatchInventory, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Create/edit inventory */
     const [invIndex, setInvIndex] = useState('')
@@ -21,7 +21,9 @@ function InventoryPage({inventory, dispatchInventory, user}){
     /* Delete inventory */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter inventory */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters())
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
+        inventory.inventories ? false : true
+    ))
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -29,6 +31,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
     /* Success Popup */
     const [succPopupShown, setSuccPopupShown] = useState(false)
     const [popupSuccMsg, setSuccPopupMsg] = useState('')      
+
 
     const getInventories = useCallback((actionType = '') => {
         // Get the queries
@@ -149,14 +152,11 @@ function InventoryPage({inventory, dispatchInventory, user}){
     }, [invId, invIndex, dispatchInventory])
 
     useEffect(() => {
-        if(inventory.inventories === null){
+        if(inventory.inventories === null){ 
             getInventories(ACTIONS.RESET)
         }
     }, [inventory, getInventories])    
 
-    useEffect(() => {
-        console.log(filters)
-    }, [filters])
     // When the inventory resource is not set yet
     // Return loading UI
     if(inventory.inventories === null){
@@ -168,7 +168,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
                 onClick: () => {setFilterModalShown(true)},
                 style: {marginRight: '1rem'}
             }} />
-            <Button text={'+ New'} size={'sm'} attr={{onClick: createInventory}}/>
+            <Button text={`+ ${loc['new']}`} size={'sm'} attr={{onClick: createInventory}}/>
         </section>
         <PlainCard
             body={
@@ -176,20 +176,21 @@ function InventoryPage({inventory, dispatchInventory, user}){
                     <div className='flex-row items-center'>
                         <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                             iconName={'search'}
-                            formAttr={{value: filters.name, placeholder: 'Search inventory', 
+                            formAttr={{value: filters.name, placeholder: loc.searchInventory, 
                                 onChange: (e) => {dispatchFilters({type: FILTER_ACTIONS.UPDATE, payload: {
                                     key: 'name', value: e.target.value
                                 }})},
                                 onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInventories(ACTIONS.RESET)})}   
                             }} 
                         />   
-                        <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                        <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
                                 style: {flexShrink: '0'},
                                 onClick: () => {getInventories(ACTIONS.RESET)}
                             }}
                         />                                       
                     </div>,
                     <InventoryList 
+                        loc={loc}
                         inventories={inventory.inventories} 
                         editInventory={editInventory}
                         confirmDeleteInventory={confirmDeleteInventory}
@@ -205,11 +206,11 @@ function InventoryPage({inventory, dispatchInventory, user}){
             heading={modalHeading}
             body={<>
                 <Grid numOfColumns={1} items={[
-                    <TextInput size={'md'} label={'Name'}
+                    <TextInput size={'md'} label={loc.name}
                         formAttr={{value: invName, onChange: (e) => {setInvName(e.target.value)}}}
                     />,
                     <Table
-                        headings={['', 'Size', 'Production Price', 'Selling Price']}
+                        headings={['', loc.size, loc.productionPrice, loc.sellingPrice]}
                         body={invSizes.map((size, index) => (
                             [
                                 <button type="button" onClick={() => {dispatchInvSizes({type: 'remove', payload: {index: index}})}}>
@@ -249,12 +250,12 @@ function InventoryPage({inventory, dispatchInventory, user}){
                     />,
                     <button type="button" className="text-blue block" style={{margin: '0 auto'}} 
                     onClick={() => {dispatchInvSizes({type: 'add'})}}>
-                        + New Size
+                        + {loc.newSize}
                     </button>                                      
                 ]}/>        
             </>}        
             footer={
-                <Button size={'sm'} text={'Save Changes'} attr={{
+                <Button size={'sm'} text={loc.saveChanges} attr={{
                         disabled: disableBtn,
                         onClick: () => {
                             invIndex !== '' && invId !== '' ? 
@@ -271,7 +272,7 @@ function InventoryPage({inventory, dispatchInventory, user}){
             size={'md'}
             body={
                 <Grid numOfColumns={1} items={[
-                    <Select label={'Rows shown'}
+                    <Select label={loc.rowsShown}
                         formAttr={{
                             value: filters.limit,
                             onChange: e => {dispatchFilters({
@@ -282,19 +283,29 @@ function InventoryPage({inventory, dispatchInventory, user}){
                             {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
                         ]}
                     />,
-                    <Checkbox label={'Show only empty production price or selling price'}
+                    <Select label={loc.showsOnly}
                         formAttr={{
-                            defaultChecked: filters.empty_production_selling,
-                            onChange: (e) => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, payload: {
-                                key: 'empty_production_selling', value: filters.empty_production_selling
-                            }}
-                        )}
-                    }}/>
+                            value: filters.shows_only,
+                            onChange: e => {dispatchFilters({
+                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'shows_only', value: e.target.value}
+                            })}                        
+                        }}
+                        options={[
+                            {value: '', text: loc.showAll},
+                            {
+                                value: 'empty_production_selling', 
+                                text: loc.emptyProductionSelling
+                            },
+                            {
+                                value: 'empty_sizes', 
+                                text: loc.emptySizes
+                            },                            
+                        ]}
+                    />,
                 ]}/>
             }        
             footer={
-                <Button size={'sm'} text={'Search'} attr={{
+                <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
                         onClick: () => {getInventories(ACTIONS.RESET)}
                     }}
@@ -306,9 +317,9 @@ function InventoryPage({inventory, dispatchInventory, user}){
         <ConfirmPopup
             icon={'warning_1'}
             title={'Warning'}
-            body={'Are you sure want to remove this inventory?'}
-            confirmText={'Remove'}
-            cancelText={'Cancel'}
+            body={loc.removeInvWarning}
+            confirmText={loc.remove}
+            cancelText={loc.cancel}
             shown={popupShown} togglePopup={() => {setPopupShown(state => !state)}} 
             confirmCallback={deleteInventory}
         />
@@ -356,7 +367,7 @@ const sizesReducer = (state, action) => {
     }
 }
 
-const InventoryList = ({inventories, editInventory, confirmDeleteInventory}) => {
+const InventoryList = ({loc, inventories, editInventory, confirmDeleteInventory}) => {
     return (<>
         <div className="inventories-container">
             {inventories.map((inventory, key) => (
@@ -364,14 +375,14 @@ const InventoryList = ({inventories, editInventory, confirmDeleteInventory}) => 
                     <span className="name">{inventory.name}</span>          
                     <span className="actions">
                         <Button 
-                            size={'sm'} type={'light'} text={'View'}
+                            size={'sm'} type={'light'} text={loc['view']}
                             attr={{onClick: () => {
                                     editInventory(key, inventory.id, inventory.name, inventory.sizes)
                                 }
                             }}
                         />
                         <Button 
-                            size={'sm'} type={'light'} text={'Delete'} color={'red'}
+                            size={'sm'} type={'light'} text={loc['delete']} color={'red'}
                             attr={{onClick: () => {
                                     confirmDeleteInventory(inventory.id, key)
                                 }

@@ -29,6 +29,7 @@ module.exports = {
         name: 'Test owner', email: 'testowner@gmail.com',
         password: await bcrypt.hash('12345678', 10),
         role_id: ownerRole.id, owner_id: owner.id,
+        language_id: 1,
         created_at: currentTime,
         updated_at: currentTime          
       },    
@@ -36,6 +37,7 @@ module.exports = {
         name: 'Test employee', email: 'testemployee@gmail.com',
         password: await bcrypt.hash('12345678', 10),
         role_id: employeeRole.id, owner_id: owner.id,
+        language_id: 1,
         created_at: currentTime,
         updated_at: currentTime          
       },       

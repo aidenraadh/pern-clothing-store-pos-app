@@ -19,7 +19,9 @@ function StorePage({store, dispatchStore, user}){
     /* Delete store */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter store */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters())    
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
+        store.stores ? false : true
+    ))    
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)

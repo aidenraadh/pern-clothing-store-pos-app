@@ -80,7 +80,8 @@ exports.store = async (req, res) => {
         )        
         const user = await User.create({
             name: values.name, email: values.email, password: hashedPassword, 
-            role_id: values.role.id, owner_id: req.user.owner_id
+            role_id: values.role.id, owner_id: req.user.owner_id,
+            language_id: 1,
         })  
         // For employee role only, create the StoreEmployee for the stored user
         const roleName = values.role.name.toLowerCase()

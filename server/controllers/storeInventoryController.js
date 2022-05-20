@@ -12,48 +12,54 @@ const logger             = require('../utils/logger')
 exports.index = async (req, res) => {    
     try {
         const userRole = req.user.role.name.toLowerCase()
+        /*--------------- Sanitize queries ---------------*/
+
+        const queries = {...req.query}
+        queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
+        queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
+        queries.name = Joi.string().required().trim().validate(queries.name)
+        queries.name = queries.name.error ? '' : queries.name.value
+        queries.empty_size_only = queries.empty_size_only === 'true' ? true : false
+        // When the user is employee, they can only see StoreInventory from the store they're employed to
+        if(userRole === 'employee'){
+            queries.store_id = req.user.storeEmployee.store_id
+        }
+        else{
+            queries.store_id = Joi.number().required().integer().validate(queries.store_id)
+            queries.store_id = queries.store_id.error ? '' : queries.store_id.value  
+        }
+        /*-------------------------------------------------*/
+
         // Set filters
         const filters = {
             whereStoreInv: {},
             whereStoreInvSize: {},
-            whereInv: {},
-            limitOffset: {
-                limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
-                offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
-            }
+            whereInv: {owner_id: req.user.owner_id},
+            invAttributes: ['id', 'name', 'selling_price'],
+            limitOffset: {limit: queries.limit, offset: queries.offset}
         }
-        if(req.query.store_id && userRole !== 'employee'){
-            const {value, error} = Joi.number().required().integer().validate(req.query.store_id)
-            if(error === undefined){ filters.whereStoreInv.store_id = value }            
+        if(queries.store_id){
+            filters.whereStoreInv.store_id = queries.store_id
         }
-        if(req.query.name){
-            const {value, error} = Joi.string().required().trim().validate(req.query.name)
-            if(error === undefined){ filters.whereInv.name = value }
-        }   
-        if(req.query.empty_size_only === 'true'){
-            filters.whereStoreInvSize.empty_size_only = true
+        if(queries.name){
+            filters.whereInv.name = {[Op.iLike]: `%${where.name}%`} 
+        }
+        if(queries.empty_size_only){
+            filters.whereStoreInvSize.amount = null
         }            
+        // When the user is owner, get also the production price
+        if(userRole === 'owner'){
+            filters.invAttributes.push('production_price')
+        }
         const storeInvs = await StoreInventory.findAll({
-            where: (() => {
-                const where = {...filters.whereStoreInv}
-                // When user is employee, the store ID must be the store where they employed
-                if(userRole === 'employee'){ where.store_id = req.user.storeEmployee.store_id }
-                return where
-            })(),
-            attributes: ['id', 'total_amount', 'created_at'],
+            where: filters.whereStoreInv,
+            attributes: ['id', 'total_amount'],
             include: [
                 {
                     model: StoreInventorySize, as: 'sizes', 
                     attributes: ['id', 'inventory_size_id', 'amount'],
                     required: true,
-                    where: (() => {
-                        const where = {...filters.whereStoreInvSize}
-                        if(where.empty_size_only){
-                            where['amount'] = null
-                            delete where.empty_size_only
-                        }
-                        return where
-                    })()
+                    where: filters.whereStoreInvSize
                 },
                 {
                     model: Store, as: 'store', 
@@ -64,35 +70,21 @@ exports.index = async (req, res) => {
                 {
                     model: Inventory, as: 'inventory', 
                     attributes: ['id', 'name'],
-                    where: (() => {
-                        let where = {...filters.whereInv, owner_id: req.user.owner_id}
-                        if(where.name){ where.name = {[Op.iLike]: `%${where.name}%`} }
-                        return where
-                    })(),
+                    where: filters.whereInv,
                     required: true,
                     include: [{
                         model: InventorySize, as: 'sizes', 
-                        attributes: (() => {
-                            const attr = ['id', 'name', 'selling_price']
-                            // When user is owner, get also the production price
-                            if(userRole === 'owner'){ attr.push('production_price') }
-                            return attr
-                        })()                       
+                        attributes: filters.invAttributes                      
                     }]
                 },                          
             ],        
-            order: [['created_at', 'DESC']],
+            order: [['id', 'DESC']],
             ...filters.limitOffset
         })
 
         res.send({
             storeInvs: storeInvs, 
-            filters: {
-                ...filters.whereStoreInv,
-                ...filters.whereStoreInvSize,
-                ...filters.whereInv,
-                ...filters.limitOffset
-            }
+            filters: queries
         })          
     } catch(err) {
         logger.error(err, {errorObj: err})

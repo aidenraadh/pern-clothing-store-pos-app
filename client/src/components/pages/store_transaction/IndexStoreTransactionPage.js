@@ -15,7 +15,9 @@ import {format} from 'date-fns'
 function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
     const [disableBtn , setDisableBtn] = useState(false)  
     /* Filter store transactions */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters)
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
+        storeTrnsc.storeTrnscs ? false : true
+    ))
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Transaction details */
     const [storeTrnscIndex, setStoreTrnscIndex] = useState('')
@@ -144,9 +146,15 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             body={
                 <Grid numOfColumns={1} items={[
                     <Select label={'Store'} 
-                        options={storeTrnsc.stores.map(store => ({
-                            value: store.id, text: store.name.charAt(0) + store.name.slice(1)
-                        }))}
+                        options={(() => {
+                            const options = [{value: '', text: 'All'}]
+                            storeTrnsc.stores.forEach(store => {
+                                options.push({
+                                    value: store.id, text: store.name.charAt(0) + store.name.slice(1)
+                                })
+                            })
+                            return options
+                        })()}
                         formAttr={{
                             value: filters.store_id,
                             onChange: e => {dispatchFilters({

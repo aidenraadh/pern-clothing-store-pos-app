@@ -29,6 +29,10 @@ import UserPage from './components/pages/UserPage'
 import ProfilePage from './components/pages/ProfilePage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
+import {
+    InventoryPageLocalization
+} from './localizations/index.js'
+
 function App(){
     const [sidebarShown, setSidebarShown] = useState(false)
     const [inventory, dispatchInventory] = useReducer(inventoryReducer, INV_INIT_STATE)
@@ -44,6 +48,18 @@ function App(){
         if(user){ user.role.name = user.role.name.toLowerCase() }
         return user
     }, [])
+
+    const languageName = useMemo(() => {
+        if(!user){
+            return 'english'
+        }
+        const languages = JSON.parse(localStorage.getItem('languages'))
+
+        if(!languages){ return 'english' }
+
+        return languages[user.language_id].name
+    }, [user])
+
 
     const sidebarItems = {  
         dashboard: {
@@ -116,7 +132,8 @@ function App(){
                         }}/>                        
                         <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
                             props={{
-                                user: user, inventory: inventory, dispatchInventory: dispatchInventory
+                                user: user, inventory: inventory, dispatchInventory: dispatchInventory,
+                                loc: InventoryPageLocalization[languageName]
                             }}
                         />
                         <ProtectedRoute path={`/${sidebarItems.store.link}`} exact component={StorePage}

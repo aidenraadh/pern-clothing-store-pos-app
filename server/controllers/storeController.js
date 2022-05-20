@@ -16,32 +16,30 @@ exports.index = async (req, res) => {
                 })
             })
         }
-        // Set filters
+        // Sanitized the queries
+        const queries = {...req.query}
+        queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
+        queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
+        queries.name = Joi.string().required().trim().validate(queries.name)
+        queries.name = queries.name.error ? '' : queries.name.value        
+        // Set filters default values
         const filters = {
             where: {},
-            limitOffset: {
-                limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
-                offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
-            }
+            limitOffset: {limit: queries.limit, offset: queries.offset}
         }
-        if(req.query.name){
-            const {value, error} = Joi.string().required().trim().validate(req.query.name)
-            if(error === undefined){ filters.where.name = value }
+        if(queries.name){
+            filters.where.name = {[Op.iLike]: `%${queries.name}%`}
         }    
         const stores = await Store.findAll({
             attributes: ['id','name','type_id'],
-            where: (() => {
-                const where = {...filters.where, owner_id: req.user.owner_id}
-                if(where.name){ where.name =  {[Op.iLike]: `%${where.name}%`}}
-                return where
-            })(),
+            where: filters.where,
             order: [['id', 'DESC']],
             ...filters.limitOffset
         })
         res.send({
             stores: stores,
             storeTypes: Store.getTypes(),
-            filters: {...filters.where, ...filters.limitOffset}
+            filters: queries
         })
     } catch(err) {
         logger.error(err, {errorObj: err})

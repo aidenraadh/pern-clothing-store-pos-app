@@ -17,7 +17,9 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
     /* Delete invTransfer */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter invTransfer */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters())    
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
+        invTransfer.invTransfers ? false : true
+    ))    
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -61,7 +63,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                 }   
                 errorHandler(error) 
            })
-    }, [filters, invTransfer, dispatchInvTransfer])  
+    }, [filters, invTransfer, dispatchInvTransfer, user])  
 
     const confirmDeleteInvTransfer = useCallback(index => {
         setInvTransferIndex(index)

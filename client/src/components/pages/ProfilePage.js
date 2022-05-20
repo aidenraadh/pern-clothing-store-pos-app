@@ -63,7 +63,10 @@ function ProfilePage({user}){
             action={<>
                 <Button 
                     text={'Logout'} size={'sm'} color={'red'}
-                    attr={{onClick: logout}} 
+                    attr={{onClick: () => {
+                        localStorage.removeItem("languages");
+                        logout()
+                    }}} 
                 />              
             </>}
         />

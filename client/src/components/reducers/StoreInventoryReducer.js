@@ -106,7 +106,7 @@ export const filterReducer = (state, action) => {
     }
 }
 
-export const getFilters = () => {
+export const getFilters = (fresh = false) => {
     const defaultFilters = {
         name: '',
         store_id: '',
@@ -114,6 +114,9 @@ export const getFilters = () => {
         limit: 10, 
         offset: 0,           
     }
-    const filters = getResFilters(FILTER_KEY)
-    return {...defaultFilters, ...filters}
+    if(fresh){
+        return defaultFilters
+    }
+    const recentFilters = getResFilters(FILTER_KEY)
+    return {...defaultFilters, ...recentFilters}
 }

@@ -15,7 +15,25 @@ const logger                    = require('../utils/logger')
 exports.index = async (req, res) => {    
     try {
         const userRole = req.user.role.name.toLowerCase()
-        // Set filters
+        /*--------------- Sanitize queries ---------------*/
+
+        const queries = {...req.query}
+        queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
+        queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
+        queries.name = Joi.string().required().trim().validate(queries.name)
+        queries.name = queries.name.error ? '' : queries.name.value
+        // When the user is employee, they can only see StoreTransaction from the store they're employed to
+        if(userRole === 'employee'){
+            queries.store_id = req.user.storeEmployee.store_id
+        }
+        else{
+            queries.store_id = Joi.number().required().integer().validate(queries.store_id)
+            queries.store_id = queries.store_id.error ? '' : queries.store_id.value  
+        }
+        /*-------------------------------------------------*/      
+
+        /*--------------- Set filters ---------------*/
+
         const filters = {
             whereStoreTrnsc: {},
             whereInv: {},
@@ -24,14 +42,14 @@ exports.index = async (req, res) => {
                 offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
             }
         }
-        if(req.query.store_id && userRole !== 'employee'){
-            const {value, error} = Joi.number().required().integer().validate(req.query.store_id)
-            if(error === undefined){ filters.whereStoreTrnsc.store_id = value }            
+        if(queries.store_id){
+            filters.whereStoreTrnsc.store_id = queries.store_id
         }
-        if(req.query.name){
-            const {value, error} = Joi.string().required().trim().validate(req.query.name)
-            if(error === undefined){ filters.whereInv.name = value }
-        }     
+        if(queries.name){
+            filters.whereInv.name = {[Op.iLike]: `%${where.name}%`} 
+        }  
+        /*-------------------------------------------------*/   
+        
         // Get all regular stores   
         const stores = userRole === 'employee' ? [] : 
         await Store.findAll({
@@ -39,13 +57,9 @@ exports.index = async (req, res) => {
             attributes: ['id', 'name'],
             order: [['id', 'DESC']],
         })
+        // Get all StoreTransaction
         const storeTrnscs = await StoreTransaction.findAll({
-            where: (() => {
-                const where = {...filters.whereStoreTrnsc}
-                // When user is employee, the store ID must be the store where they employed
-                if(userRole === 'employee'){ where.store_id = req.user.storeEmployee.store_id }
-                return where
-            })(),
+            where: filters.whereStoreTrnsc,
             attributes: ['id', 'total_amount','total_cost','total_original_cost', 'transaction_date'],
             include: [
                 // Get the store, even if its soft deleted
@@ -54,6 +68,7 @@ exports.index = async (req, res) => {
                     attributes: ['id', 'name'],
                     where: {owner_id: req.user.owner_id},
                     paranoid: false,
+                    required: true,
                 },              
                 {
                     model: StoreTransactionInventory, as: 'storeTrnscInvs', 
@@ -63,11 +78,8 @@ exports.index = async (req, res) => {
                         {
                             model: Inventory, as: 'inventory', 
                             attributes: ['id', 'name'],
-                            where: (() => {
-                                let where = {...filters.whereInv}
-                                if(where.name){ where.name = {[Op.iLike]: `%${where.name}%`} }
-                                return where
-                            })(),                            
+                            where: filters.whereInv,
+                            paranoid: false              
                         },
                         // Get all inventory sizes including the soft deleted ones
                         {
@@ -85,11 +97,7 @@ exports.index = async (req, res) => {
         res.send({
             storeTrnscs: storeTrnscs, 
             stores: stores,
-            filters: {
-                ...filters.whereStoreTrnsc,
-                ...filters.whereInv,
-                ...filters.limitOffset
-            }
+            filters: queries
         })          
     } catch(err) {
         logger.error(err, {errorObj: err})
