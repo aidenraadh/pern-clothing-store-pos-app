@@ -1,10 +1,11 @@
-import { saveResFilters, getResFilters } from "../Utils";
+import { getResFilters, saveResFilters } from "../Utils"
 
-export const FILTER_KEY = 'invTransfer'
+const STATE_NAME = 'invTransfer'
 
 export const INIT_STATE = {
     invTransfers: null, // Array of invTransfers
     canLoadMore: true, // Wheter or not the invTransfers can be loaded more 
+    isLoaded: false, // Whether or not this state already loaded
 }
 export const ACTIONS = {
     APPEND: 'APPEND', 
@@ -12,11 +13,10 @@ export const ACTIONS = {
     REPLACE: 'REPLACE',
     REMOVE: 'REMOVE',
     RESET: 'RESET',
-}
-
-export const FILTER_ACTIONS = {
-    UPDATE: 'UPDATE',
-    RESET: 'RESET'
+    FILTERS: {
+        UPDATE: 'UPDATE',
+        RESET: 'RESET'        
+    }
 }
 
 
@@ -72,6 +72,7 @@ export const inventoryTransferReducer = (state, action) => {
             return {
                 ...state, invTransfers: [...payload.invTransfers],
                 stores: payload.stores,
+                isLoaded: true,
                 canLoadMore: payload.invTransfers.length < payload.filters.limit ? false : true
             };             
         default: throw new Error();
@@ -82,27 +83,33 @@ export const filterReducer = (state, action) => {
     const type= action.type
     const payload = {...action.payload}
     // If the filter is resetted, save to the local storage
-    if(type === FILTER_ACTIONS.RESET){
-        saveResFilters(FILTER_KEY, payload.filters);
+    if(type === ACTIONS.FILTERS.RESET && payload.filters){
+        saveResFilters(STATE_NAME, payload.filters);
     }
     switch(type){
-        case FILTER_ACTIONS.UPDATE: 
+        case ACTIONS.FILTERS.UPDATE: 
+            if(payload.key === undefined || payload.value === undefined){
+                throw new Error()
+            }        
             if(payload.key === 'limit'){
                 payload.value = parseInt(payload.value)
             }
             return {
                 ...state, [payload.key]: payload.value
             }; 
-        case FILTER_ACTIONS.RESET: 
-            return {
-                ...state, ...payload.filters
-            };          
+        case ACTIONS.FILTERS.RESET: 
+            if(payload.filters){
+                return {
+                    ...state, ...payload.filters
+                }; 
+            }      
+            return state   
         // Error
         default: throw new Error()
     }
 }
 
-export const getFilters = (fresh = false) => {
+export const getFilters = (isLoaded) => {
     const defaultFilters = {
         name: '',
         origin_store_id: '',
@@ -110,9 +117,15 @@ export const getFilters = (fresh = false) => {
         limit: 10, 
         offset: 0,           
     }
-    if(fresh){
+    if(isLoaded === false){
         return defaultFilters
     }
-    const recentFilters = getResFilters(FILTER_KEY)
-    return {...defaultFilters, ...recentFilters}
+    else if(isLoaded === true){
+        const recentFilters = getResFilters(STATE_NAME)
+
+        return {...defaultFilters, ...recentFilters}
+    }
+    else{
+        throw new Error()
+    }
 }

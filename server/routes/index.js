@@ -83,70 +83,70 @@ rootRouter.post('/login', [
 
 rootRouter
     .get('/users', [
-        isAuth, authorize('owner'), UserController.index
+        isAuth, authorize('admin'), UserController.index
     ])
     .post('/users', [
-        isAuth, authorize('owner'), UserController.store
+        isAuth, authorize('admin'), UserController.store
     ])
     .put('/users/:id', [
-        isAuth, authorize('owner'), UserController.update
+        isAuth, authorize('admin'), UserController.update
     ])
     .post('/users/update-profile', [
         isAuth, UserController.updateProfile
     ])
     .delete('/users/:id', [
-        isAuth, authorize('owner'), UserController.delete
+        isAuth, authorize('admin'), UserController.delete
     ])
     .get('/users/employee-stores', [
-        isAuth, authorize('owner'), UserController.getEmployeeStores
+        isAuth, authorize('admin'), UserController.getEmployeeStores
     ])
     .get('/users/user-roles', [
-        isAuth, authorize('owner'), UserController.getUserRoles
+        isAuth, authorize('admin'), UserController.getUserRoles
     ])
 
 rootRouter
     .get('/stores', [
-        isAuth, authorize('owner'), StoreController.index
+        isAuth, authorize('admin'), StoreController.index
     ])
     .post('/stores', [
-        isAuth, authorize('owner'), StoreController.store
+        isAuth, authorize('admin'), StoreController.store
     ])
     .put('/stores/:id', [
-        isAuth, authorize('owner'), StoreController.update
+        isAuth, authorize('admin'), StoreController.update
     ])
     .delete('/stores/:id', [
-        isAuth, authorize('owner'), StoreController.destroy
+        isAuth, authorize('admin'), StoreController.destroy
     ])
 
 rootRouter
     .get('/inventories', [
-        isAuth, authorize('owner'), InventoryController.index
+        isAuth, authorize('admin'), InventoryController.index
     ])
     .post('/inventories', [
-        isAuth, authorize('owner'), InventoryController.store
+        isAuth, authorize('admin'), InventoryController.store
     ])
     .put('/inventories/:id', [
-        isAuth, authorize('owner'), InventoryController.update
+        isAuth, authorize('admin'), InventoryController.update
     ])
     .delete('/inventories/:id', [
-        isAuth, authorize('owner'), InventoryController.destroy
+        isAuth, authorize('admin'), InventoryController.destroy
     ])
 
 rootRouter
     .get('/store-inventories', [
-        isAuth, authorize('owner', 'employee'), StoreInventoryController.index
+        isAuth, authorize('admin', 'employee'), StoreInventoryController.index
     ])
     .get('/store-inventories/create', [
-        isAuth, authorize('owner'), StoreInventoryController.create
+        isAuth, authorize('admin'), StoreInventoryController.create
     ])    
     .post('/store-inventories', [
-        isAuth, authorize('owner'), StoreInventoryController.store
+        isAuth, authorize('admin'), StoreInventoryController.store
     ])
     .put('/store-inventories/:id', [
-        isAuth, authorize('owner'), StoreInventoryController.update
+        isAuth, authorize('admin'), StoreInventoryController.update
     ])
     .delete('/store-inventories/:id', [
-        isAuth, authorize('owner'), StoreInventoryController.destroy
+        isAuth, authorize('admin'), StoreInventoryController.destroy
     ])
 
 rootRouter
@@ -162,13 +162,13 @@ rootRouter
 
 rootRouter
     .get('/inventory-transfers', [
-        isAuth, authorize('owner', 'employee'), inventoryTransferController.index
+        isAuth, authorize('admin', 'employee'), inventoryTransferController.index
     ])       
     .get('/inventory-transfers/create', [
-        isAuth, authorize('employee', 'owner'), inventoryTransferController.create
+        isAuth, authorize('employee', 'admin'), inventoryTransferController.create
     ])       
     .post('/inventory-transfers', [
-        isAuth, authorize('employee', 'owner'), inventoryTransferController.store
+        isAuth, authorize('employee', 'admin'), inventoryTransferController.store
     ])      
 
 module.exports = rootRouter

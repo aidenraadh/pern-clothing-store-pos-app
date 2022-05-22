@@ -1,6 +1,6 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import {ACTIONS, FILTER_ACTIONS, filterReducer, getFilters} from './../../reducers/StoreInventoryReducer'
+import {ACTIONS, filterReducer, getFilters} from './../../reducers/StoreInventoryReducer'
 import {api, errorHandler, getQueryString, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, Select, Checkbox} from '../../Forms'
@@ -9,19 +9,14 @@ import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 import Table from '../../Table'
 
-function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
+function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
-    const [stores, setStores] = useState(null)
     /* Edit store inventory */
     const [storeInvIndex, setStoreInvIndex] = useState('')
     const [storeInvSizes, setStoreInvSizes] = useState('')
-    const [modalShown, setModalShown] = useState(false)
-    /* Delete store inventory */
-    // const [popupShown, setPopupShown] = useState(false)
-    /* Filter store inventory */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
-        storeInv.storeInvs ? false : true
-    ))     
+    const [modalShown, setModalShown] = useState(false)   
+    /* Filters */
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(storeInv.isLoaded))    
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -35,37 +30,29 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-        if(storeInv.storeInvs !== null){
+        if(storeInv.isLoaded){
             setDisableBtn(true)
         }
         api.get(`/store-inventories${getQueryString(queries)}`)
            .then(response => {
-                if(storeInv.storeInvs !== null){
+                if(storeInv.isLoaded){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }                     
                 setStoreInvSizes('')     
-                dispatchStoreInv({type: actionType, payload: response.data})
-                dispatchFilters({
-                    type: FILTER_ACTIONS.RESET, payload: {
-                        filters: response.data.filters
-                    }
-                })                  
+                dispatchStoreInv({type: actionType, payload: response.data})  
+                dispatchFilters({type: ACTIONS.FILTERS.RESET, payload: {
+                    filters: response.data.filters
+                }})              
            })
            .catch(error => {
-                if(storeInv.storeInvs !== null){
+                if(storeInv.isLoaded){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [filters, storeInv, dispatchStoreInv])    
-
-    const getStores = useCallback(() => {
-        api.get(`/stores?getonly=id,name,type_id`)
-           .then(response => { setStores(response.data.stores) })
-           .catch(error => { errorHandler(error) })        
-    }, [])
+    }, [storeInv, filters, dispatchStoreInv])    
 
     const viewStoreInv = useCallback((index) => {
         const targetStoreInv = storeInv.storeInvs[index]
@@ -117,18 +104,15 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     }, [storeInvIndex, storeInvSizes, dispatchStoreInv, storeInv])   
 
     useEffect(() => {
-        if(storeInv.storeInvs === null){
+        if(storeInv.isLoaded === false){
             getStoreInvs(ACTIONS.RESET)
         }
     }, [storeInv, getStoreInvs])
 
-    useEffect(() => {
-        if(stores === null && user.role.name === 'owner'){ getStores() }
-    }, [stores, getStores, user])
 
     // When the store resource is not set yet
     // Return loading UI
-    if(storeInv.storeInvs === null){
+    if(storeInv.isLoaded === false){
         return 'Loading...'
     }    
     return (<>
@@ -139,7 +123,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
             }} />
             {user.role.name === 'employee' ? '' :
                 <Link to={'/store-inventories/create'}>
-                    <Button tag={'span'} text={'+ Store new'} size={'sm'}/>
+                    <Button tag={'span'} text={loc.storeNew} size={'sm'}/>
                 </Link>            
             }
         </section>
@@ -148,20 +132,21 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 <div className='flex-row items-center'>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: 'Search inventory', 
+                        formAttr={{value: filters.name, placeholder: loc.searchInvInStore, 
                             onChange: e => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'name', value: e.target.value}
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'name', value: e.target.value}
                             })},
                             onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStoreInvs(ACTIONS.RESET)})}
                         }} 
                     />   
-                    <Button text={'Search'} size={'sm'} attr={{disabled: disableBtn,
+                    <Button text={loc.search} size={'sm'} attr={{disabled: disableBtn,
                             style: {flexShrink: '0'},
                             onClick: () => {getStoreInvs(ACTIONS.RESET)}
                         }}
                     />                                       
                 </div>
                 <StoreInvs 
+                    loc={loc}
                     storeInvs={storeInv.storeInvs} 
                     viewStoreInv={viewStoreInv}
                 />
@@ -172,19 +157,19 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
             </>}
         />
         <Modal
-            heading={'Details'}
+            heading={loc.details}
             body={<>
                 <Table
                     headings={(() => {
-                        const headings = ['Size', 'Quantity', 'Selling Price']
-                        if(user.role.name === 'owner'){
-                           headings.splice(2, 0, 'Production Price') 
+                        const headings = [loc.size, loc.quantity, loc.sellingPrice]
+                        if(user.role.name === 'admin'){
+                           headings.splice(2, 0, loc.productionPrice) 
                         }
                         return headings
                     })()}
                     body={(() => {
                         if(!storeInvSizes){ return [] }
-                        if(user.role.name === 'owner'){
+                        if(user.role.name === 'admin'){
                             return storeInvSizes.map((size, index) => ([
                                 <span className='text-uppercase'>
                                     {size.sizeName}
@@ -217,7 +202,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 />
             </>}        
             footer={user.role.name === 'employee' ? '' :
-                <Button size={'sm'} text={'Save Changes'} attr={{
+                <Button size={'sm'} text={loc.saveChanges} attr={{
                     disabled: disableBtn,
                     onClick: () => {updateStoreInv()}
                 }}/>                
@@ -231,44 +216,42 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
             body={<Grid numOfColumns={1} 
                 items={(() => {
                     const items = [
-                        <Select label={'Rows shown'} 
+                        <Select label={loc.rowsShown} 
                             formAttr={{
                                 value: filters.limit,
                                 onChange: e => {dispatchFilters({
-                                    type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
+                                    type: ACTIONS.FILTERS.UPDATE, payload: {key: 'limit', value: e.target.value}
                                 })}                                   
                             }}
                             options={[
                                 {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
                             ]}
                         />,
-                        <Checkbox label={'Show only empty sizes'}
+                        <Checkbox label={loc.showOnlyEmptySizes}
                             formAttr={{
                                 defaultChecked: filters.empty_size_only,
                                 onChange: (e) => {dispatchFilters({
-                                    type: FILTER_ACTIONS.UPDATE, payload: {
+                                    type: ACTIONS.FILTERS.UPDATE, payload: {
                                     key: 'empty_size_only', value: filters.empty_size_only
                                 }}
                             )}
                         }}/>                        
                     ]
-                    if(user.role.name === 'owner'){
+                    if(user.role.name === 'admin'){
                         items.unshift(
-                            <Select label={'Store'} 
+                            <Select label={loc.store} 
                                 formAttr={{
                                     value: filters.store_id,
                                     onChange: e => {dispatchFilters({
-                                        type: FILTER_ACTIONS.UPDATE, payload: {key: 'store_id', value: e.target.value}
+                                        type: ACTIONS.FILTERS.UPDATE, payload: {key: 'store_id', value: e.target.value}
                                     })}                                       
                                 }}
                                 options={(() => {
-                                    const options = [{value: '', text: 'All stores'}]
-                                    if(stores !== null){
-                                        stores.forEach(store => {
-                                            const capitalizeStoreName = store.name.charAt(0) + store.name.slice(1)
-                                            options.push({value: store.id, text: capitalizeStoreName})
-                                        })
-                                    }
+                                    const options = [{value: '', text: loc.allStores}]
+                                    storeInv.stores.forEach(store => {
+                                        const capitalizeStoreName = store.name.charAt(0) + store.name.slice(1)
+                                        options.push({value: store.id, text: capitalizeStoreName})
+                                    })
                                     return options
                                 })()}
                             />                 
@@ -278,7 +261,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
                 })()}
             />}
             footer={
-                <Button size={'sm'} text={'Search'} attr={{
+                <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
                         onClick: () => {getStoreInvs(ACTIONS.RESET)}
                     }}
@@ -308,17 +291,17 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user}){
     </>)
 }
 
-const StoreInvs = ({storeInvs, viewStoreInv}) => {
+const StoreInvs = ({loc, storeInvs, viewStoreInv}) => {
     return (<>
         <div className="inventories-container">
             <Table
-                headings={['Inventory', 'Store', 'Total Stored', 'Actions']}
+                headings={[loc.inventory, loc.store, loc.totalStored, 'Actions']}
                 body={storeInvs.map((storeInv, index) => [
                     <span className='text-capitalize'>{storeInv.inventory.name}</span>, 
                     <span className='text-capitalize'>{storeInv.store.name}</span>, 
                     storeInv.total_amount ? formatNum(storeInv.total_amount) : 0,
                     <>
-                        <Button text={'View'} size={'sm'} 
+                        <Button text={loc.view} size={'sm'} 
                             attr={{onClick: () => {viewStoreInv(index)}}}
                         />
                     </>

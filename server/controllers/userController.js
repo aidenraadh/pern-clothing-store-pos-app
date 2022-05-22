@@ -379,7 +379,7 @@ const getUser = async (id, ownerId) => {
         if(idInput.error){
             idInput.value = ''
         }
-        // Get user and make sure it exists and the user's role is not super admin or owner,
+        // Get user and make sure it exists and the user's role is not super admin or admin,
         // also make sure the owner_id is the same as the auth user
         return await User.findOne({
             where: {

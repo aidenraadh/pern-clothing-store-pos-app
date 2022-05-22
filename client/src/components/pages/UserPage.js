@@ -1,5 +1,5 @@
 import {useState, useEffect, useCallback, useMemo} from 'react'
-import {OWNER_ACTIONS, OWNER_FILTER_KEY} from '../reducers/OwnerReducer'
+import {ACTIONS as ADMIN_ACTIONS} from '../reducers/AdminReducer'
 import {EMPLOYEE_ACTIONS, EMPLOYEE_FILTER_KEY} from '../reducers/EmployeeReducer'
 import {api, errorHandler, getResFilters, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
@@ -14,25 +14,18 @@ function UserPage(props){
     const [stores, setStores] = useState(null)
     const [roles, setRoles] = useState(null)
     /* Owner */
-    const owner = props.owner
-    const dispatchOwner = props.dispatchOwner
+    const admin = props.admin
+    const dispatchAdmin = props.dispatchAdmin
     /* Employee */
     const employee = props.employee
     const dispatchEmployee = props.dispatchEmployee
-    /* Filter owner */
-    const initOwnerFilters = getResFilters(OWNER_FILTER_KEY)
-    const [ownerFilters, setOwnerFilters] = useState({
-        limit: initOwnerFilters.limit ? initOwnerFilters.limit : 10, 
-        offset: initOwnerFilters.offset ? initOwnerFilters.offset : 0, 
-    })
-    const [ownerFilterModalShown, setOwnerFilterModalShown] = useState(false)
+     
     /* Filter employee */
     const initEmployeeFilters = getResFilters(EMPLOYEE_FILTER_KEY)
     const [employeeFilters, setEmployeeFilters] = useState({
         limit: initEmployeeFilters.limit ? initEmployeeFilters.limit : 10, 
         offset: initEmployeeFilters.offset ? initEmployeeFilters.offset : 0, 
     })
-    const [employeeFilterModalShown, setEmployeefilterModalShown] = useState(false)    
     /* Create, update, delete user */
     const [targetRole, setTargetRole] = useState('')
     const [userIndex, setUserIndex] = useState('')
@@ -52,35 +45,32 @@ function UserPage(props){
     const [succPopupShown, setSuccPopupShown] = useState(false)
     const [popupSuccMsg, setSuccPopupMsg] = useState('')       
     
-    const getOwners = useCallback((actionType) => {
+    const getAdmins = useCallback((actionType) => {
         // Get the queries
-        const queries = {...ownerFilters, role: 'owner'}
+        const queries = {...admin.filters, role: 'admin'}
         // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === OWNER_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
+        queries.offset = actionType === ADMIN_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
-        if(owner.owners !== null){
+        if(admin.admins !== null){
             setDisableBtn(true)
         }
         api.get(`/users${getQueryString(queries)}`)
            .then(response => {
-                if(owner.owners !== null){
+                if(admin.admins !== null){
                     setDisableBtn(false)
-                    setOwnerFilterModalShown(false)
                 }
-                dispatchOwner({type: actionType, payload: {
-                    owners: response.data.users,
+                dispatchAdmin({type: actionType, payload: {
+                    admins: response.data.users,
                     filters: response.data.filters,
                 }})
-                setOwnerFilters(getResFilters(OWNER_FILTER_KEY))
            })
            .catch(error => {
-                if(owner.owners !== null){
+                if(admin.admins !== null){
                     setDisableBtn(false)
-                    setOwnerFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [ownerFilters, owner, dispatchOwner]) 
+    }, [admin, dispatchAdmin]) 
 
     const getEmployees = useCallback((actionType) => {
         // Get the queries
@@ -95,7 +85,7 @@ function UserPage(props){
            .then(response => {
                 if(employee.employees !== null){
                     setDisableBtn(false)
-                    setEmployeefilterModalShown(false)
+                    // setEmployeefilterModalShown(false)
                 }
                 dispatchEmployee({type: actionType, payload: {
                     employees: response.data.users,
@@ -106,7 +96,7 @@ function UserPage(props){
            .catch(error => {
                 if(employee.employees !== null){
                     setDisableBtn(false)
-                    setEmployeefilterModalShown(false)
+                    // setEmployeefilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
@@ -136,7 +126,7 @@ function UserPage(props){
         let heading = ''
 
         switch(role){
-            case 'owner':
+            case 'admin':
                 heading = 'Create New Owner'
                 break;
             case 'employee':
@@ -155,9 +145,9 @@ function UserPage(props){
         let reducerAction = ''
 
         switch(targetRole){
-            case 'owner':
-                reducerAction = OWNER_ACTIONS.PREPEND;
-                dispatchFunction = dispatchOwner
+            case 'admin':
+                reducerAction = ADMIN_ACTIONS.PREPEND;
+                dispatchFunction = dispatchAdmin
                 break;
             case 'employee':
                 reducerAction = EMPLOYEE_ACTIONS.PREPEND;
@@ -185,7 +175,7 @@ function UserPage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})           
             })  
-    }, [targetRole, name, email, storeId, stores, dispatchOwner, dispatchEmployee])
+    }, [targetRole, name, email, storeId, stores, dispatchAdmin, dispatchEmployee])
 
     const editUser = useCallback((role, index) => {
         let user = null
@@ -332,10 +322,10 @@ function UserPage(props){
         return <Grid numOfColumns={1} items={body}/>
     }, [roles, roleId, stores, storeId])    
 
-    // Get owners if its not set yet
+    // Get admins if its not set yet
     useEffect(() => {
-        if(owner.owners === null){ getOwners(OWNER_ACTIONS.RESET) }      
-    }, [owner, getOwners])    
+        if(admin.admins === null){ getAdmins(ADMIN_ACTIONS.RESET) }      
+    }, [admin, getAdmins])    
 
     // Get employees if its not set yet
     useEffect(() => {
@@ -352,16 +342,16 @@ function UserPage(props){
         if(roles === null){ getUserRoles() }          
     }, [roles, getUserRoles])        
 
-    if(owner.owners === null || employee.employees === null){
+    if(admin.admins === null || employee.employees === null){
         return 'Loading...'
     }
 
     return (<>
     <TabbedCard 
         tabs={[ 
-            {link: 'Owner', panelID: 'owner', panelContent:
-                <UsersTable appProps={props} role={'owner'} 
-                    getUsers={getOwners} toggleCrtUser={createUser}
+            {link: 'Owner', panelID: 'admin', panelContent:
+                <UsersTable appProps={props} role={'admin'} 
+                    getUsers={getAdmins} toggleCrtUser={createUser}
                 />
             },
             {link: 'Employee', panelID: 'employee', panelContent:
@@ -371,7 +361,7 @@ function UserPage(props){
                 />
             },										
         ]}
-        currentPanelID={'owner'}    
+        currentPanelID={'admin'}    
     />    
     <Modal
         heading={crtModalHeading}
@@ -437,11 +427,11 @@ const UsersTable = ({appProps, role, getUsers, toggleCrtUser, toggleEdtUser, tog
     let loadMoreBtnAction
 
     switch(role){
-        case 'owner':
-            addBtnText = '+ Add owner'
-            tableBody = appProps.owner.owners.map(owner => ([owner.name]));
-            loadMoreBtnVis = appProps.owner.canLoadMore
-            loadMoreBtnAction = () => {getUsers(OWNER_ACTIONS.APPEND)}
+        case 'admin':
+            addBtnText = '+ Add admin'
+            tableBody = appProps.admin.admins.map(admin => ([admin.name]));
+            loadMoreBtnVis = appProps.admin.canLoadMore
+            loadMoreBtnAction = () => {getUsers(ADMIN_ACTIONS.APPEND)}
             break;
         case 'employee':
             addBtnText = '+ Add employee'

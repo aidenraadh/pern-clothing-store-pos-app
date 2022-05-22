@@ -1,0 +1,36 @@
+{
+    "english": {
+        "searchStore": "Search store",
+        "name": "Name",
+        "type": "Type",
+        "view": "View",
+        "delete": "Delete",
+        "search": "Search",
+        "regular": "Regular",
+        "storage": "Storage",
+        "createStore": "Create",     
+        "rowsShown": "Rows shown",
+        "saveChanges": "Save changes",
+        "remove": "Remove",
+        "cancel": "Cancel",
+        "createNewStore": "Create new store",
+        "storeDeleteWarningMsg": "Remove this store? All inventories in this store will also be removed"
+    },
+    "indonesian": {
+        "searchStore": "Cari toko",
+        "name": "Nama",
+        "type": "Tipe",
+        "view": "Lihat",
+        "delete": "Hapus",
+        "search": "Cari",        
+        "regular": "Reguler",
+        "storage": "Gudang",
+        "createStore": "Buat toko",
+        "rowsShown": "Baris ditampilkan",
+        "saveChanges": "Simpan perubahan",
+        "remove": "Hapus",
+        "cancel": "Batal",        
+        "createNewStore": "Buat Toko Baru",
+        "storeDeleteWarningMsg": "Hapus toko ini? Semua inventori di toko ini juga akan dihapus"
+    }
+}

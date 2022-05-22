@@ -42,15 +42,16 @@ exports.index = async (req, res) => {
             filters.whereStoreInv.store_id = queries.store_id
         }
         if(queries.name){
-            filters.whereInv.name = {[Op.iLike]: `%${where.name}%`} 
+            filters.whereInv.name = {[Op.iLike]: `%${queries.name}%`} 
         }
         if(queries.empty_size_only){
             filters.whereStoreInvSize.amount = null
         }            
-        // When the user is owner, get also the production price
-        if(userRole === 'owner'){
+        // When the user is admin, get also the production price
+        if(userRole === 'admin'){
             filters.invAttributes.push('production_price')
         }
+        // Get StoreInventory
         const storeInvs = await StoreInventory.findAll({
             where: filters.whereStoreInv,
             attributes: ['id', 'total_amount'],
@@ -81,9 +82,15 @@ exports.index = async (req, res) => {
             order: [['id', 'DESC']],
             ...filters.limitOffset
         })
+        // Get Store
+        const stores = userRole === 'employee' ? [] : await Store.findAll({
+            attributes: ['id', 'name'],
+            where: {owner_id: req.user.owner_id}
+        })
 
         res.send({
             storeInvs: storeInvs, 
+            stores: stores,
             filters: queries
         })          
     } catch(err) {
@@ -160,7 +167,7 @@ exports.store = async (req, res) => {
                         attributes: (() => {
                             const attr = ['id', 'name', 'selling_price']
                             // When user is owner, get also the production price
-                            if(userRole === 'owner'){ attr.push('production_price') }
+                            if(userRole === 'admin'){ attr.push('production_price') }
                             return attr
                         })()                       
                     }]

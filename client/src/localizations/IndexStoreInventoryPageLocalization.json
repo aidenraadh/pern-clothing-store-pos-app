@@ -1,0 +1,38 @@
+{
+    "english": {
+        "searchInvInStore": "Search inventory in store",
+        "storeNew": "+ Store new",
+        "search": "Search",
+        "view": "View",
+        "inventory": "Inventory",
+        "store": "Store",
+        "totalStored": "Total stored",
+        "allStores": "All stores",
+        "rowsShown": "Rows shown",
+        "showOnlyEmptySizes": "Show only inventory with empty sizes",
+        "details": "Details",
+        "size": "Size",
+        "quantity": "Quantity",
+        "productionPrice": "Production price",
+        "sellingPrice": "Selling price",       
+        "saveChanges": "Save changes"
+    },
+    "indonesian": {
+        "searchInvInStore": "Cari inventori dalam toko",
+        "storeNew": "+ Tambahkan",
+        "search": "Cari",
+        "view": "Lihat",
+        "inventory": "Inventori",
+        "store": "Toko",
+        "totalStored": "Total tersimpan",
+        "allStores": "Semua toko",
+        "rowsShown": "Baris ditampilkan",
+        "showOnlyEmptySizes": "Hanya tampilkan inventori dengan ukuran kosong",
+        "details": "Detail",
+        "size": "Ukuran",
+        "quantity": "Jumlah",
+        "productionPrice": "Harga Produksi",
+        "sellingPrice": "Harga jual",       
+        "saveChanges": "Simpan perubahan"
+    }
+}

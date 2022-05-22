@@ -1,11 +1,12 @@
-import { saveResFilters, getResFilters } from "../Utils";
+import { getResFilters, saveResFilters } from "../Utils"
 
-export const FILTER_KEY = 'store_inventory'
+const STATE_NAME = 'storeInv'
 
 export const INIT_STATE = {
     storeInvs: null, // Array of inventories
     stores: [], // Array of stores
     canLoadMore: true, // Wheter or not the inventories can be loaded more 
+    isLoaded: false, // Whether or not this state has been loaded
 }
 export const ACTIONS = {
     APPEND: 'APPEND', 
@@ -13,15 +14,16 @@ export const ACTIONS = {
     REPLACE: 'REPLACE',
     REMOVE: 'REMOVE',
     RESET: 'RESET',
-}
-
-export const FILTER_ACTIONS = {
-    UPDATE: 'UPDATE',
-    RESET: 'RESET'
+    // Filters Actions
+    FILTERS: {
+        UPDATE: 'UPDATE',
+        RESET: 'RESET'
+    }    
 }
 
 export const storeInventoryReducer = (state, action) => {
-    const {type, payload} = action
+    const type= action.type
+    const payload = {...action.payload}
 
     switch(type){
         // Append inventory(s) to 'inventories'
@@ -66,11 +68,13 @@ export const storeInventoryReducer = (state, action) => {
 
                     return storeInvs
                 })()
-            }; 
+            };       
         // Refresh the inventory resource
         case ACTIONS.RESET: 
             return {
                 ...state, storeInvs: [...payload.storeInvs],
+                stores: payload.stores,
+                isLoaded: true,
                 canLoadMore: payload.storeInvs.length < payload.filters.limit ? false : true
             };            
         default: throw new Error()
@@ -78,45 +82,58 @@ export const storeInventoryReducer = (state, action) => {
 }
 
 export const filterReducer = (state, action) => {
-    const type= action.type
+    const type = action.type
     const payload = {...action.payload}
-    // If the filter is resetted, save to the local storage
-    if(type === FILTER_ACTIONS.RESET){
-        saveResFilters(FILTER_KEY, payload.filters);
+
+    if(type === ACTIONS.FILTERS.RESET && payload.filters){
+        saveResFilters(STATE_NAME, payload.filters)
     }
-    switch(type){
-        // Append room type(s) to 'roomTypes'
-        case FILTER_ACTIONS.UPDATE: 
+    switch (type) {
+        case ACTIONS.FILTERS.UPDATE:
             if(payload.key === 'limit' || payload.key === 'store_id'){
                 payload.value = parseInt(payload.value)
             }
             if(payload.key === 'empty_size_only'){
                 payload.value = !payload.value
-            }            
+            }  
             return {
                 ...state, [payload.key]: payload.value
-            }; 
-        // Prepend array of room types(s) to 'roomTypes'
-        case FILTER_ACTIONS.RESET: 
+            };              
+        case ACTIONS.FILTERS.RESET:
+            if(payload.filters === undefined){
+                return state
+            }
             return {
                 ...state, ...payload.filters
-            };          
-        // Error
+            };      
         default: throw new Error()
     }
 }
 
-export const getFilters = (fresh = false) => {
+/**
+ * 
+ * @param {Boolean} - Whether or not the store is already loaded 
+ * @returns 
+ */
+
+export const getFilters = (isLoaded) => {
     const defaultFilters = {
         name: '',
         store_id: '',
         empty_size_only: false,
         limit: 10, 
-        offset: 0,           
+        offset: 0,      
     }
-    if(fresh){
+    // When the onventory
+    if(isLoaded === false){
         return defaultFilters
     }
-    const recentFilters = getResFilters(FILTER_KEY)
-    return {...defaultFilters, ...recentFilters}
+    else if(isLoaded === true){
+        const recentFilters = getResFilters(STATE_NAME)
+
+        return {...defaultFilters, ...recentFilters}
+    }
+    else{
+        throw new Error()
+    }
 }

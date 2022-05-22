@@ -10,7 +10,7 @@ module.exports = {
         updated_at: currentTime          
       },
       {
-        name: 'Owner',
+        name: 'Admin',
         created_at: currentTime,
         updated_at: currentTime          
       },     

@@ -1,6 +1,6 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import {ACTIONS, FILTER_ACTIONS, getFilters, filterReducer} from '../../reducers/StoreTransactionReducer.js'
+import {ACTIONS, filterReducer, getFilters} from '../../reducers/StoreTransactionReducer.js'
 import TransactionReceipt from './TransactionReceipt'
 import {api, errorHandler, formatNum, getQueryString} from '../../Utils.js'
 import {Button} from '../../Buttons'
@@ -14,10 +14,8 @@ import {format} from 'date-fns'
 
 function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
     const [disableBtn , setDisableBtn] = useState(false)  
-    /* Filter store transactions */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
-        storeTrnsc.storeTrnscs ? false : true
-    ))
+    /* Filters */
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(storeTrnsc.isLoaded))    
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Transaction details */
     const [storeTrnscIndex, setStoreTrnscIndex] = useState('')
@@ -31,35 +29,33 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
     /* Confirm delete popup */
     const [confirmDeletePopupShown, setConfirmDeletePopupShown] = useState(false)
 
-    const getStoreTrnscs = useCallback((actionType) => {
+    const getStoreTrnscs = useCallback(actionType => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-        if(storeTrnsc.storeTrnscs !== null){
+        if(storeTrnsc.isLoaded){
             setDisableBtn(true)
         }
         api.get(`/store-transactions${getQueryString(queries)}`)
            .then(response => {
-                if(storeTrnsc.storeTrnscs !== null){
+                if(storeTrnsc.isLoaded){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }                          
-                dispatchStoreTrnsc({type: actionType, payload: response.data})
-                dispatchFilters({
-                    type: FILTER_ACTIONS.RESET, payload: {
-                        filters: response.data.filters
-                    }
-                })                
+                dispatchStoreTrnsc({type: actionType, payload: response.data})  
+                dispatchFilters({type: ACTIONS.FILTERS.RESET, payload: {
+                    filters: response.data.filters
+                }})            
            })
            .catch(error => {
-                if(storeTrnsc.storeTrnscs !== null){
+                if(storeTrnsc.isLoaded){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [filters, storeTrnsc, dispatchStoreTrnsc])
+    }, [storeTrnsc, filters, dispatchStoreTrnsc])
 
     const viewStoreTrnsc = useCallback(index => {
         setStoreTrnscIndex(index)
@@ -95,12 +91,12 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
     }, [storeTrnsc.storeTrnscs, storeTrnscIndex, dispatchStoreTrnsc])
 
     useEffect(() => {
-        if(storeTrnsc.storeTrnscs === null){
+        if(storeTrnsc.isLoaded === false){
             getStoreTrnscs(ACTIONS.RESET)
         }
-    }, [getStoreTrnscs, storeTrnsc.storeTrnscs])
+    }, [getStoreTrnscs, storeTrnsc.isLoaded])
 
-    if(storeTrnsc.storeTrnscs === null){
+    if(storeTrnsc.isLoaded === false){
         return 'Loading...'
     }    
     return (<>
@@ -110,7 +106,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                     <Button tag={'span'} text={'+ New transaction'} size={'sm'}/>
                 </Link> : ''
             }
-            {user.role.name === 'owner' ?
+            {user.role.name === 'admin' ?
                 <Button size={'sm'} text={'Filter'} iconName={'sort_1'} attr={{
                     onClick: () => {setFilterModalShown(true)}
                 }}/> : ''
@@ -132,7 +128,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         />
         <Modal
             heading={'Transaction Detail'}
-            body={storeTrnscIndex === '' ? '' :
+            body={storeTrnsc.storeTrnscs[storeTrnscIndex] === undefined ? '' :
                 <TransactionReceipt 
                     inventories={storeTrnsc.storeTrnscs[storeTrnscIndex].storeTrnscInvs}
                     objType={'sequelize'}
@@ -158,7 +154,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                         formAttr={{
                             value: filters.store_id,
                             onChange: e => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'store_id', value: e.target.value}
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'store_id', value: e.target.value}
                             })}                            
                         }}
                     />,                    
@@ -166,7 +162,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                         formAttr={{
                             value: filters.limit,
                             onChange: e => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'limit', value: e.target.value}
                             })}                            
                         }}
                         options={[

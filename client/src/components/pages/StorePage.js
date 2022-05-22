@@ -1,5 +1,5 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
-import {ACTIONS, filterReducer, FILTER_ACTIONS, getFilters} from '../reducers/StoreReducer'
+import {ACTIONS, filterReducer, getFilters} from '../reducers/StoreReducer'
 import {api, errorHandler, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
@@ -8,7 +8,7 @@ import {Modal, ConfirmPopup} from '../Windows'
 import {Grid} from '../Layouts'
 import Table from '../Table'
 
-function StorePage({store, dispatchStore, user}){
+function StorePage({store, dispatchStore, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Create/edit store */
     const [storeIndex, setStoreIndex] = useState('')
@@ -16,12 +16,10 @@ function StorePage({store, dispatchStore, user}){
     const [storeTypeId, setStoreTypeId] = useState('')
     const [modalHeading, setModalHeading] = useState('')
     const [modalShown, setModalShown] = useState(false)
+    /* Filters */
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(store.isLoaded))    
     /* Delete store */
-    const [popupShown, setPopupShown] = useState(false)
-    /* Filter store */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
-        store.stores ? false : true
-    ))    
+    const [popupShown, setPopupShown] = useState(false)  
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -30,44 +28,42 @@ function StorePage({store, dispatchStore, user}){
     const [succPopupShown, setSuccPopupShown] = useState(false)
     const [popupSuccMsg, setSuccPopupMsg] = useState('')       
 
-    const getStores = useCallback((actionType) => {
+    const getStores = useCallback(actionType => {
         // Get the queries
         const queries = {...filters}
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
-        if(store.stores !== null){
+        if(store.isLoaded){
             setDisableBtn(true)
         }
         api.get(`/stores${getQueryString(queries)}`)
            .then(response => {
-                if(store.stores !== null){
+                if(store.isLoaded){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }                          
                 dispatchStore({type: actionType, payload: response.data})
-                dispatchFilters({
-                    type: FILTER_ACTIONS.RESET, payload: {
-                        filters: response.data.filters
-                    }
-                })                
+                dispatchFilters({type: ACTIONS.FILTERS.RESET, payload: {
+                    filters: response.data.filters
+                }})             
            })
            .catch(error => {
-                if(store.stores !== null){
+                if(store.isLoaded){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }   
                 errorHandler(error) 
            })
-    }, [filters, store, dispatchStore])  
+    }, [store, filters, dispatchStore])  
 
     const createStore = useCallback(() => {
         setStoreIndex('')
         setStoreTypeId(Object.keys(store.storeTypes)[0])
         setStoreName('')
-        setModalHeading('Create New Store')      
+        setModalHeading(loc.createNewStore)      
         setModalShown(true)
-    }, [store.storeTypes])
+    }, [store.storeTypes, loc])
 
     const storeStore = useCallback(() => {
         setDisableBtn(true)
@@ -155,14 +151,15 @@ function StorePage({store, dispatchStore, user}){
     }, [storeIndex, dispatchStore, store.stores])
 
     useEffect(() => {
-        if(store.stores === null){
+        if(store.isLoaded === false){
+            console.log('load store')
             getStores(ACTIONS.RESET)
         }
     }, [store, getStores])    
 
     // When the store resource is not set yet
     // Return loading UI
-    if(store.stores === null){
+    if(store.isLoaded === false){
         return 'Loading...'
     }    
     return (<>
@@ -171,26 +168,27 @@ function StorePage({store, dispatchStore, user}){
                 onClick: () => {setFilterModalShown(true)},
                 style: {marginRight: '1rem'}
             }} />
-            <Button text={'+ Create'} size={'sm'} attr={{onClick: createStore}}/>
+            <Button text={`+ ${loc.createStore}`} size={'sm'} attr={{onClick: createStore}}/>
         </section>
         <PlainCard 
             body={<>
                 <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: 'Search store', 
+                        formAttr={{value: filters.name, placeholder: loc.searchStore, 
                             onChange: e => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'name', value: e.target.value}
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'name', value: e.target.value}
                             })},
                             onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStores(ACTIONS.RESET)})}
                         }} 
                     />   
-                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                    <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
                         onClick: () => {getStores(ACTIONS.RESET)}
                     }}/>                                       
                 </div>            
                 <StoresTable 
+                    loc={loc}
                     stores={store.stores} 
                     storeTypes={store.storeTypes}
                     editStore={editStore}
@@ -199,14 +197,7 @@ function StorePage({store, dispatchStore, user}){
                 <LoadMoreBtn 
                     canLoadMore={store.canLoadMore}
                     action={() => {getStores(ACTIONS.APPEND)}}
-                />                  
-                {
-                    store.canLoadMore ? 
-                    <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
-                    onClick={() => {getStores(ACTIONS.APPEND)}}>
-                        Load More
-                    </button> : ''
-                }                
+                />                                 
             </>}
         />
         <Modal
@@ -214,7 +205,7 @@ function StorePage({store, dispatchStore, user}){
             size={'sm'}
             body={
                 <Grid numOfColumns={1} items={[
-                    <TextInput label={'Name'}
+                    <TextInput label={loc.name}
                         formAttr={{
                             value: storeName, onChange: (e) => {setStoreName(e.target.value)},
                             onKeyUp: (e) => {
@@ -223,9 +214,9 @@ function StorePage({store, dispatchStore, user}){
                             }
                         }}
                     />,
-                    <Select label={'Type'}
+                    <Select label={loc.type}
                         options={Object.keys(store.storeTypes).map(id => ({
-                            text: store.storeTypes[id].charAt(0).toUpperCase() + store.storeTypes[id].slice(1),
+                            text: loc[store.storeTypes[id]],
                             value: id,
                         }))}
                         formAttr={{
@@ -235,7 +226,7 @@ function StorePage({store, dispatchStore, user}){
                 ]}/>
             }        
             footer={
-                <Button size={'sm'} text={'Save Changes'} attr={{
+                <Button size={'sm'} text={loc.saveChanges} attr={{
                         disabled: disableBtn,
                         onClick: () => {
                             storeIndex !== '' ? updateStore() : storeStore()
@@ -250,11 +241,11 @@ function StorePage({store, dispatchStore, user}){
             heading={'Filter'}
             size={'sm'}
             body={<>
-                <Select label={'Rows shown'} 
+                <Select label={loc.rowsShown} 
                     formAttr={{
                         value: filters.limit,
                         onChange: e => {dispatchFilters({
-                            type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
+                            type: ACTIONS.FILTERS.UPDATE, payload: {key: 'limit', value: e.target.value}
                         })}                            
                     }}
                     options={[
@@ -263,7 +254,7 @@ function StorePage({store, dispatchStore, user}){
                 />
             </>}        
             footer={
-                <Button size={'sm'} text={'Search'} attr={{
+                <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
                         onClick: () => {getStores(ACTIONS.RESET)}
                     }}
@@ -275,9 +266,9 @@ function StorePage({store, dispatchStore, user}){
         <ConfirmPopup
             icon={'warning_1'}
             title={'Warning'}
-            body={'Are you sure want to remove this store?'}
-            confirmText={'Remove'}
-            cancelText={'Cancel'}
+            body={loc.storeDeleteWarningMsg}
+            confirmText={loc.remove}
+            cancelText={loc.cancel}
             shown={popupShown} togglePopup={() => {setPopupShown(state => !state)}} 
             confirmCallback={deleteStore}
         />
@@ -302,22 +293,22 @@ function StorePage({store, dispatchStore, user}){
     </>)
 }
 
-const StoresTable = ({stores, storeTypes, editStore, confirmDeleteStore}) => {
+const StoresTable = ({loc, stores, storeTypes, editStore, confirmDeleteStore}) => {
     return <Table
-        headings={['Name', 'Type', 'Actions']}
+        headings={[loc.name, loc.type, 'Actions']}
         body={stores.map((store, key) => ([
             <span className='text-capitalize'>{store.name}</span>,
-            <span className='text-capitalize'>{storeTypes[store.type_id]}</span>,
+            <span className='text-capitalize'>{loc[storeTypes[store.type_id]]}</span>,
             <>
                 <Button 
-                    size={'sm'} type={'light'} text={'View'}
+                    size={'sm'} type={'light'} text={loc.view}
                     attr={{
                         style: {marginRight: '1rem'},
                         onClick: () => {editStore(key)}
                     }}
                 />
                 <Button 
-                    size={'sm'} type={'light'} text={'Delete'} color={'red'}
+                    size={'sm'} type={'light'} text={loc.delete} color={'red'}
                     attr={{onClick: () => {confirmDeleteStore(key)}}}                            
                 />             
             </>

@@ -12,7 +12,7 @@ import {storeReducer, INIT_STATE as STORE_INIT_STATE} from "./components/reducer
 import {storeInventoryReducer, INIT_STATE as STOREINV_INIT_STATE} from "./components/reducers/StoreInventoryReducer";
 import {storeTransactionReducer, INIT_STATE as STORETRNSC_INIT_STATE} from "./components/reducers/StoreTransactionReducer";
 import {inventoryTransferReducer, INIT_STATE as INVTRANSFER_INIT_STATE} from "./components/reducers/InventoryTransferReducer";
-import {ownerReducer, OWNER_INIT_STATE} from "./components/reducers/OwnerReducer";
+import {adminReducer, INIT_STATE as ADMIN_INIT_STATE} from "./components/reducers/AdminReducer";
 import {employeeReducer, EMPLOYEE_INIT_STATE} from "./components/reducers/EmployeeReducer";
 
 import DashboardPage from './components/pages/DashboardPage'
@@ -30,7 +30,9 @@ import ProfilePage from './components/pages/ProfilePage'
 import NotFoundPage from './components/pages/NotFoundPage'
 
 import {
-    InventoryPageLocalization
+    InventoryPageLocalization,
+    StorePageLocalization,
+    IndexStoreInventoryPageLocalization
 } from './localizations/index.js'
 
 function App(){
@@ -40,7 +42,7 @@ function App(){
     const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
     const [storeTrnsc, dispatchStoreTrnsc] = useReducer(storeTransactionReducer, STORETRNSC_INIT_STATE)
     const [invTransfer, dispatchInvTransfer] = useReducer(inventoryTransferReducer, INVTRANSFER_INIT_STATE)
-    const [owner, dispatchOwner] = useReducer(ownerReducer, OWNER_INIT_STATE)
+    const [admin, dispatchAdmin] = useReducer(adminReducer, ADMIN_INIT_STATE)
     const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)     
 
     const user = useMemo(() => {
@@ -56,6 +58,7 @@ function App(){
         const languages = JSON.parse(localStorage.getItem('languages'))
 
         if(!languages){ return 'english' }
+        if(!languages[user.language_id]){ return 'english' }
 
         return languages[user.language_id].name
     }, [user])
@@ -106,7 +109,7 @@ function App(){
                             let sidebarItemNames = []
                             const userRole = user.role.name.toLowerCase()
                             switch(userRole){
-                                case 'owner': 
+                                case 'admin': 
                                     sidebarItemNames = [
                                         'dashboard','inventory','store','store_inventory','store_transaction',
                                         'inventory_transfer', 'user'
@@ -138,12 +141,14 @@ function App(){
                         />
                         <ProtectedRoute path={`/${sidebarItems.store.link}`} exact component={StorePage}
                             props={{
-                                user: user, store: store, dispatchStore: dispatchStore
+                                user: user, loc: StorePageLocalization[languageName], 
+                                store: store, dispatchStore: dispatchStore
                             }}
                         />     
                         <ProtectedRoute path={`/${sidebarItems.store_inventory.link}`} exact component={IndexStoreInventoryPage}
                             props={{
-                                user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv
+                                user: user, loc: IndexStoreInventoryPageLocalization[languageName],
+                                storeInv: storeInv, dispatchStoreInv: dispatchStoreInv
                             }}
                         />        
                         <ProtectedRoute path={`/${sidebarItems.store_inventory.link}/create`} exact 
@@ -170,7 +175,7 @@ function App(){
                         />                                   
                         <ProtectedRoute path={`/${sidebarItems.user.link}`} exact component={UserPage}
                             props={{
-                                user: user, owner: owner, dispatchOwner: dispatchOwner, employee: employee,
+                                user: user, admin: admin, dispatchAdmin: dispatchAdmin, employee: employee,
                                 dispatchEmployee: dispatchEmployee
                             }}
                         />       

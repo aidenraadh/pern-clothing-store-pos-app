@@ -13,8 +13,8 @@ module.exports = {
     const owner = await Owner.findOne({attributes: ['id']})
 
     // Get the owner role
-    const ownerRole = await Role.findOne({
-      where: {name: {[Op.iLike]: `owner`}},
+    const adminRole = await Role.findOne({
+      where: {name: {[Op.iLike]: `admin`}},
       attributes: ['id']
     })
 
@@ -28,7 +28,7 @@ module.exports = {
       {
         name: 'Test owner', email: 'testowner@gmail.com',
         password: await bcrypt.hash('12345678', 10),
-        role_id: ownerRole.id, owner_id: owner.id,
+        role_id: adminRole.id, owner_id: owner.id,
         language_id: 1,
         created_at: currentTime,
         updated_at: currentTime          

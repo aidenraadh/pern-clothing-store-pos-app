@@ -1,5 +1,5 @@
 import {useState, useEffect, useReducer, useCallback} from 'react'
-import {ACTIONS, filterReducer, FILTER_ACTIONS, getFilters} from '../../reducers/InventoryTransferReducer'
+import {ACTIONS, filterReducer, getFilters} from '../../reducers/InventoryTransferReducer'
 import {api, errorHandler, getQueryString, keyHandler, formatNum} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, Select} from '../../Forms'
@@ -17,9 +17,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
     /* Delete invTransfer */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter invTransfer */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(
-        invTransfer.invTransfers ? false : true
-    ))    
+    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(invTransfer.isLoaded)) 
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -34,30 +32,30 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
         // When the inventory is refreshed, set the offset to 0
         queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
 
-        if(invTransfer.invTransfers !== null){
+        if(invTransfer.isLoaded){
             setDisableBtn(true)
         }
         api.get(`/inventory-transfers${getQueryString(queries)}`)
            .then(response => {
-               const responseFilters = {...response.data.filters}
+               const responseData = response.data
                // When the user is employee, they cant search the inventory transfer from another store
                // they're not employed
-               if(user.role.name === 'employee'){
-                   responseFilters.origin_store_id = user.storeEmployee.store_id
-               }
-               if(invTransfer.invTransfers !== null){
+               if(invTransfer.isLoaded){
                    setDisableBtn(false)
                    setFilterModalShown(false)
                 }                          
-               dispatchInvTransfer({type: actionType, payload: response.data})
+               dispatchInvTransfer({type: actionType, payload: responseData})
+               if(responseData.filters){
+                    if(user.role.name === 'employee'){
+                        responseData.filters.origin_store_id = user.storeEmployee.store_id
+                    }                   
+               }
                dispatchFilters({
-                   type: FILTER_ACTIONS.RESET, payload: {
-                       filters: responseFilters
-                    }
+                   type: ACTIONS.FILTERS.RESET, payload: {filters: responseData.filters}
                 })                
            })
            .catch(error => {
-                if(invTransfer.invTransfers !== null){
+                if(invTransfer.isLoaded){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }   
@@ -93,14 +91,14 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
     }, [invTransferIndex, dispatchInvTransfer, invTransfer.invTransfers])
 
     useEffect(() => {
-        if(invTransfer.invTransfers === null){
+        if(invTransfer.isLoaded === false){
             getInvTransfers(ACTIONS.RESET)
         }
     }, [invTransfer, getInvTransfers])        
 
     // When the invTransfer resource is not set yet
     // Return loading UI
-    if(invTransfer.invTransfers === null){
+    if(invTransfer.isLoaded === false){
         return 'Loading...'
     }    
     return (<>
@@ -120,7 +118,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                         iconName={'search'}
                         formAttr={{value: filters.name, placeholder: 'Search inventory', 
                             onChange: e => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'name', value: e.target.value}
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'name', value: e.target.value}
                             })},
                             onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInvTransfers(ACTIONS.RESET)})}
                         }} 
@@ -157,7 +155,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                             disabled: (user.role.name === 'employee' ? true : false),
                             value: filters.origin_store_id,
                             onChange: e => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, 
+                                type: ACTIONS.FILTERS.UPDATE, 
                                 payload: {key: 'origin_store_id', value: e.target.value}
                             })}                            
                         }}
@@ -176,7 +174,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                         formAttr={{
                             value: filters.destination_store_id,
                             onChange: e => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, 
+                                type: ACTIONS.FILTERS.UPDATE, 
                                 payload: {key: 'destination_store_id', value: e.target.value}
                             })}                            
                         }}
@@ -195,7 +193,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                         formAttr={{
                             value: filters.limit,
                             onChange: e => {dispatchFilters({
-                                type: FILTER_ACTIONS.UPDATE, payload: {key: 'limit', value: e.target.value}
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'limit', value: e.target.value}
                             })}                            
                         }}
                         options={[
