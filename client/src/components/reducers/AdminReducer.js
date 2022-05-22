@@ -1,12 +1,11 @@
 import { saveResFilters, getResFilters } from "../Utils";
 
+export const STATE_NAME = 'admin'
+
 export const INIT_STATE = {
     admins: null, // Array of admins
     canLoadMore: true, // Whether or not the admins can be loaded more 
-    filters: {
-        limit: 10, 
-        offset: 0,   
-    },
+    isLoaded: false, // Whether or not store state has been loaded
 }
 export const ACTIONS = {
     APPEND: 'APPEND', 
@@ -14,12 +13,17 @@ export const ACTIONS = {
     REPLACE: 'REPLACE',
     REMOVE: 'REMOVE',
     RESET: 'RESET',
-    UPDATE_FILTERS: 'UPDATE_FILTERS',
+    // Filters Actions
+    FILTERS: {
+        UPDATE: 'UPDATE',
+        RESET: 'RESET'
+    }  
 }
 
 
 export const adminReducer = (state, action) => {
-    const {type, payload} = action
+    const type= action.type
+    const payload = {...action.payload}
 
     switch(type){
         // Append admin(s) to 'admins'
@@ -69,17 +73,64 @@ export const adminReducer = (state, action) => {
         case ACTIONS.RESET: 
             return {
                 ...state, admins: [...payload.admins],
-                filters: [...payload.filters],
+                isLoaded: true,
                 canLoadMore: payload.admins.length < payload.filters.limit ? false : true
-            };        
-        // Update the admin filters
-        case ACTIONS.UPDATE_FILTERS: 
+            };                        
+        default: throw new Error();
+    }
+}
+
+export const filterReducer = (state, action) => {
+    const type= action.type
+    const payload = {...action.payload}
+    // If the filter is resetted, save to the local storage
+    if(type === ACTIONS.FILTERS.RESET && payload.filters){
+        saveResFilters(STATE_NAME, payload.filters);
+    }
+    switch(type){
+        case ACTIONS.FILTERS.UPDATE: 
+            if(payload.key === undefined || payload.value === undefined){
+                throw new Error()
+            }        
             if(payload.key === 'limit'){
                 payload.value = parseInt(payload.value)
             }
             return {
-                ...state, filters: {...state.filters, [payload.key]: payload.value}
-            };                 
-        default: throw new Error();
+                ...state, [payload.key]: payload.value
+            }; 
+        case ACTIONS.FILTERS.RESET: 
+            if(payload.filters ===  undefined){
+                return state
+            }  
+            return {
+                ...state, ...payload.filters
+            };          
+        // Error
+        default: throw new Error()
+    }
+}
+
+/**
+ * 
+ * @param {Boolean} - Whether or not the store state is already loaded 
+ * @returns 
+ */
+
+export const getFilters = (isLoaded) => {
+    const defaultFilters = {
+        limit: 10, 
+        offset: 0,
+        role_id: 2,    
+    }
+    if(isLoaded === false){
+        return defaultFilters
+    }
+    else if(isLoaded === true){
+        const recentFilters = getResFilters(STATE_NAME)
+
+        return {...defaultFilters, ...recentFilters}
+    }
+    else{
+        throw new Error()
     }
 }
