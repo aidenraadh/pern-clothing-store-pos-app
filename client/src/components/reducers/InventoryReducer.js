@@ -92,7 +92,7 @@ export const filterReducer = (state, action) => {
             if(payload.key === undefined || payload.value === undefined){
                 throw new Error()
             }            
-            if(payload.key === 'limit'){
+            if(payload.key === 'limit' || payload.key === 'not_in_store'){
                 payload.value = parseInt(payload.value)
             }
             if(payload.key === 'shows_only'){
@@ -100,7 +100,7 @@ export const filterReducer = (state, action) => {
                     payload.value === 'empty_production_selling' || payload.value === 'empty_sizes' ?
                     payload.value : ''
                 )
-            }
+            }         
             return {
                 ...state, [payload.key]: payload.value
             };              
@@ -125,6 +125,7 @@ export const getFilters = (isLoaded) => {
     const defaultFilters = {
         name: '',
         shows_only: '',
+        not_in_store: '',
         limit: 10, 
         offset: 0,      
     }

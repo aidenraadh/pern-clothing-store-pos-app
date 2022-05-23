@@ -32,7 +32,8 @@ import NotFoundPage from './components/pages/NotFoundPage'
 import {
     InventoryPageLocalization,
     StorePageLocalization,
-    IndexStoreInventoryPageLocalization
+    IndexStoreInventoryPageLocalization,
+    CreateStoreInventoryPageLocalization
 } from './localizations/index.js'
 
 function App(){
@@ -152,8 +153,9 @@ function App(){
                             }}
                         />        
                         <ProtectedRoute path={`/${sidebarItems.store_inventory.link}/create`} exact 
-                            component={CreateStoreInventoryPage} prop={{
-                                user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv
+                            component={CreateStoreInventoryPage} props={{
+                                user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv,
+                                loc: CreateStoreInventoryPageLocalization[languageName]
                             }}
                         /> 
                         <ProtectedRoute path={`/${sidebarItems.store_transaction.link}`} exact 

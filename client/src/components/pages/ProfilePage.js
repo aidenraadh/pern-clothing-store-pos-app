@@ -1,16 +1,20 @@
-import {useState, useCallback}  from "react"
+import {useState, useCallback, useMemo}  from "react"
 import {api, errorHandler} from '../Utils'
 import {saveUser, logout} from '../Auth'
 import {Button} from '../Buttons'
 import {Modal, ConfirmPopup} from '../Windows'
-import {TextInput, TextInputWithBtn} from '../Forms'
+import {TextInput, Select, TextInputWithBtn} from '../Forms'
 import {SimpleCard} from '../Cards'
 import {Grid} from '../Layouts'
 
 function ProfilePage({user}){
+    const languages = useMemo(() => (
+        JSON.parse(localStorage.getItem('languages'))
+    ))
     const [disableBtn , setDisableBtn] = useState(false)
 
     const [name, setNameName] = useState(user.name)
+    const [languageId, setLanguageId] = useState(user.language_id)
     const [oldPassword, setOldPassword] = useState('')
     const [oldPasswordShown, setOldPasswordShown] = useState(true)
     const [newPassword, setNewPassword] = useState('')  
@@ -26,6 +30,7 @@ function ProfilePage({user}){
         setDisableBtn(true)
         api.post(`/users/update-profile`, {
             name: name,
+            languageId: languageId,
             old_password: oldPassword,
             new_password: newPassword,
         })
@@ -43,7 +48,7 @@ function ProfilePage({user}){
                 setErrPopupMsg(error.response.data.message)                      
             }})           
         })   
-    }, [name, oldPassword, newPassword, setUpdProfileModal, setDisableBtn])
+    }, [name, languageId, oldPassword, newPassword, setUpdProfileModal, setDisableBtn])
 
     if(!user){
         return 'Loading ...'
@@ -76,6 +81,19 @@ function ProfilePage({user}){
                 <TextInput label={'Name'} formAttr={{
                     value: name, onChange: (e) => {setNameName(e.target.value)}
                 }}/>,
+                <Select label={'Language'} formAttr={{
+                        value: languageId, onChange: (e) => {setLanguageId(e.target.value)}
+                    }}
+                    options={(() => {
+                        const options = []
+                        for (const id in languages) {
+                            options.push({
+                                value: id, text: languages[id].name
+                            })
+                        }
+                        return options                        
+                    })()}
+                />,
                 <TextInputWithBtn label={'Old password'} btnIconName={oldPasswordShown ? 'visible' : 'hidden'}
                     formAttr={{
                         type: (oldPasswordShown ? 'text' : 'password'),

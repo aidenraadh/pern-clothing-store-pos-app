@@ -15,21 +15,66 @@ const Joi                      = require('joi')
 
 const sequelize = require('sequelize')
 const models = require('../models/index')
+const filterKeys = require('../utils/filterKeys')
 const StoreInventory = models.StoreInventory
 const Inventory = models.Inventory
 const InventorySize = models.InventorySize
 const Store = models.Store
 const User = models.User
+const bcrypt        = require('bcrypt')
+const Owner = models.Owner
+
+
+
+rootRouter.get('/add-owner', async (req, res) => {
+    try {
+        let user = null
+
+
+        // const owner = await Owner.create({})
+        // const userData = {
+        //     name: 'Test admin A', email: 'testadmina@gmail.com',
+        //     password: await bcrypt.hash(
+        //         '12345678', 10
+        //     ),
+        //     owner_id: owner.id,
+        //     role_id: 2,
+        //     language_id: 1
+        // }       
+        // user = await User.create(userData)
+        
+        res.send({
+            data: user,
+            message: 'new user created'
+        })        
+    } catch (err) {
+        res.status(500).send({message: err.message})
+    }        
+})
 
 
 rootRouter.get('/hehe', async (req, res) => {
     try {
-        const inv = await User.update(
-            {language_id: 2},
-            {where: {id: 1}}
-        )
+        const filters = {}
+
+        filters.whereInv = `"owner_id"=${1} AND 
+        NOT EXISTS (SELECT id FROM "Store_Inventories" WHERE "inventory_id"="Inventory"."id")`
+        filters.whereInv = sequelize.literal(filters.whereInv)
+
+        const inventories = await Inventory.findAll({
+            attributes: ['id', 'name'],
+            where: filters.whereInv,
+            include: [{
+                model: InventorySize, as: 'sizes', 
+                attributes: ['id', 'name', 'production_price', 'selling_price'],
+                required: filters.requiredInvSizes,
+                where: filters.whereInvSizes
+            }],
+            order: [['id', 'DESC']],
+            ...filters.limitOffset
+        })
         res.send({
-            data: x
+            data: inventories
         })        
     } catch (err) {
         res.status(500).send({message: err.message})

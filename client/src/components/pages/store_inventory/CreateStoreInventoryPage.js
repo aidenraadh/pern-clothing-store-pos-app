@@ -6,18 +6,26 @@ import {ToolCard} from '../../Cards'
 import {Modal, ConfirmPopup} from '../../Windows'
 import {Grid} from '../../Layouts'
 import Table from '../../Table'
+import SVGIcons from '../../SVGIcons.js'
 
-function CreateStoreInventoryPage(){
+function CreateStoreInventoryPage({loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     const [stores, setStores] = useState(null)
     const [storeId, setStoreId] = useState('')
+    const [storeName, setStoreName] = useState('')
     const [addedInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
+    // Search inventories
     const [searchedInvs, setSearchedInvs] = useState([])
     const [modalShown, setModalShown] = useState(false)
-    const [invName, setInvName] = useState('')
+    const [invName, setInvName] = useState('')    
+    const maxInvShown = useMemo(() => (30), [])
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')
+    const [popupErrCallback, setPopupErrCallback] = useState(() => (
+        () => {}
+    ))
+
     /* Success Popup */
     const [succPopupShown, setSuccPopupShown] = useState(false)
     const [popupSuccMsg, setSuccPopupMsg] = useState('')      
@@ -26,15 +34,29 @@ function CreateStoreInventoryPage(){
         api.get(`/store-inventories/create`)
            .then(response => {
                const stores = response.data.stores
-               setStores(stores)
-               setStoreId(stores[0] ? stores[0].id : null)
+               if(stores.length){
+                   setStores(stores)
+                   setStoreId(stores[0].id)                   
+                   setStoreName(stores[0].name)
+               }
+               // When there are any store found
+               else{
+                   setPopupErrCallback(() => (
+                       () => {
+                           const host = window.location.origin
+                           window.location.href = `${host}/stores`                             
+                       }
+                   ))
+                   setErrPopupMsg("You don't have any store. Create first")
+                   setErrPopupShown(true)
+               }
             })
            .catch(error => { errorHandler(error) })        
     }, [])
 
     const getInvs = useCallback(() => {
         setDisableBtn(true)
-        api.get(`/inventories?name=${invName}&limit=20`)
+        api.get(`/inventories?name=${invName}&limit=${maxInvShown}&not_in_store=${storeId}`)
            .then(response => {
                 setSearchedInvs(response.data.inventories)
                 setDisableBtn(false) 
@@ -43,7 +65,7 @@ function CreateStoreInventoryPage(){
                 setDisableBtn(false)
                 errorHandler(error) 
            })        
-    }, [invName, setDisableBtn])
+    }, [invName, maxInvShown, storeId, stores, setDisableBtn])
 
     const storeInvs = useCallback(() => {
         api.post(`/store-inventories`, {
@@ -66,10 +88,13 @@ function CreateStoreInventoryPage(){
            .catch(error => { 
                 errorHandler(error, {'400': () => {
                     setErrPopupShown(true)
+                    setPopupErrCallback(() => (
+                        () => {}
+                    ))
                     setErrPopupMsg(error.response.data.message)                
                 }})                  
            })          
-    }, [storeId, addedInvs])
+    }, [storeId, stores, addedInvs])
 
     const AddedInvToolCards = useMemo(() => {
         return addedInvs.map((inventory, key) => (
@@ -77,7 +102,7 @@ function CreateStoreInventoryPage(){
                 body={inventory.sizes.length ? 
                 <Grid numOfColumns={4} 
                     items={inventory.sizes.map((size, sizeKey) => (
-                        <TextInput key={sizeKey} label={`Amount ${size.name.toUpperCase()}`} size={'sm'} formAttr={{
+                        <TextInput key={sizeKey} label={`${loc.amount} ${size.name.toUpperCase()}`} size={'sm'} formAttr={{
                             value: formatNum(size.amount),
                             onChange: (e) => {
                                 dispatchAddedInvs({
@@ -90,7 +115,7 @@ function CreateStoreInventoryPage(){
                             }
                         }}/>
                     ))}
-                /> : 'No sizes found'}           
+                /> : loc.noSizesFound}           
                 toggleButton={
                     <Button
                         size={'sm'} type={'light'} color={'blue'}                
@@ -122,53 +147,77 @@ function CreateStoreInventoryPage(){
         if(stores === null){ getStores() }
     }, [stores, getStores])       
 
+    // Whenever the store ID is changed, reset addedInvs and searchedInvs
+    useEffect(() => {
+        setSearchedInvs([])
+        dispatchAddedInvs({type: 'reset'})
+    }, [storeId])
+
+
     // When the stores is not set yet return loading UI
     if(stores === null){
         return 'Loading...'
     }     
     return (<>
         <Grid numOfColumns={1} items={[
-            <SelectAddon key={'a'} addon={'Select store'}
+            <SelectAddon key={'a'} addon={loc.selectStore}
                 options={stores.map(store => ({
                     value: store.id, text: store.name
                 }))}
-                formAttr={{onChange: (e) => { setStoreId(e.target.value) }}}
+                formAttr={{
+                    value: storeId,
+                    onChange: (e) => {
+                        setStoreName(
+                            stores.find(store => parseInt(store.id) === parseInt(e.target.value)).name
+                        )
+                        setStoreId(e.target.value)
+                    }
+                }}
             />,
             ...AddedInvToolCards,
-            <button key={'b'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
+            <button key={'b'} type="button" className='text-blue flex-row items-center' 
+            style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
             onClick={() => {setModalShown(true)}}>
-                + Add Inventory
+                <SVGIcons name={'search'} color={'blue'} attr={{style: {fontSize: '1.24em', marginRight: '0.6rem'}}}/>
+                {loc.searchInv}
             </button>,
             <div key={'c'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>,  
-            <Button key={'d'} size={'md'} text={'Store inventories'} attr={{
+            <Button key={'d'} size={'md'} text={loc.storeInv} attr={{
                 onClick: storeInvs
             }}/>              
         ]}/> 
         <Modal
-            heading={'Search Inventories'}
+            heading={loc.searchInv}
             body={<>
                 <div className='flex-row items-center'>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: invName, placeholder: 'Search inventory', 
+                        formAttr={{value: invName, placeholder: loc.searchInv, 
                             onChange: (e) => {
                                 setInvName(e.target.value)
                             },
                             onKeyUp: (e) => {keyHandler(e, 'Enter', getInvs)}
                         }} 
                     />   
-                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                    <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
                         onClick: () => {getInvs()}
                     }}/>                                       
                 </div>
+                <p className='text-dark-65' style={{fontSize: '1.36rem', marginTop: '1rem'}}>
+                    {loc.searchInvMsg1}
+                    <span className='text-capitalize text-blue'>
+                        {` ${storeName}. `}
+                    </span>
+                    {`${loc.searchInvMsg2} ${maxInvShown}`}
+                </p>
                 {
                     searchedInvs.length === 0 ? '' :
                     <Table
-                        headings={['Name', '']}
+                        headings={[loc.name, '']}
                         body={searchedInvs.map(inv => ([
                             <span className='text-capitalize'>{inv.name}</span>,
-                            <Button size={'sm'} text={'Select'} attr={{onClick: () => {
+                            <Button size={'sm'} text={loc.addInv} attr={{onClick: () => {
                                 dispatchAddedInvs({type: 'add', payload: {inv: inv}})
                             }}}/>
                         ]))}
@@ -204,6 +253,7 @@ function CreateStoreInventoryPage(){
             title={"Can't Proceed"}
             body={popupErrMsg}
             confirmText={'OK'}
+            confirmCallback={popupErrCallback}
             togglePopup={() => {setErrPopupShown(state => !state)}} 
         />              
     </>)
@@ -256,7 +306,9 @@ const addedInvsReducer = (state, action) => {
                 }
                 return addedInvs
             })()
-        default: return [...state];
+        case 'reset': return []
+
+        default: throw new Error();
     }
 }
 

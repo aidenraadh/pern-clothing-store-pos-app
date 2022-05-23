@@ -211,13 +211,17 @@ exports.getUserRoles = async (req, res) => {
 exports.updateProfile = async (req, res) => {    
     try{
         // Validate the input
-        const {values, errMsg} = await validateInput(req, ['name', 'old_password', 'new_password']) 
+        const {values, errMsg} = await validateInput(req, ['name', 'old_password', 'new_password', 'languageId']) 
         if(errMsg){
             return res.status(400).send({message: errMsg})
         }
         // Update the profile
-        const data = {name: values.name}
+        const data = {
+            name: values.name,
+            language_id: values.languageId
+        }
         if(values.new_password !== ''){ data.password = values.new_password }
+
         await User.update(data, {where: {id: req.user.id}})
         // Get the new profile
         const user = await User.findOne({
@@ -268,7 +272,15 @@ exports.updateProfile = async (req, res) => {
             // Validate the user's name
             name: Joi.string().required().trim().max(100).messages({
                 'string.max': "The user's name must below 100 characters",
-            }),       
+            }),     
+            // Make sure the user's email is unique
+            languageId: Joi.number().required().integer().external(async (value, helpers) => {
+                const languageIds = Object.keys(User.getLanguages()).map(id => parseInt(id))
+                if(!languageIds.includes(value)){
+                    throw {message: "The language doesn't exist"}
+                }
+                return value
+            }),                
             // Make sure the user's email is unique
             email: Joi.string().required().trim().email().external(async (value, helpers) => {
                 const user = await User.findOne({

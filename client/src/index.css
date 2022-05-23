@@ -139,3 +139,30 @@
 	margin-right: 0;
 }
 
+#login-page{
+	min-height: 100vh;
+}
+
+#login-page h1{
+	font-size: 4rem;
+}
+
+#login-page .grid{
+	width: 28vw;
+}
+
+#login-page .grid .btn.btn-primary{
+	width: 100%;
+}
+
+@media only screen and (max-width: 1100px){		
+	#login-page .grid{
+		width: 40vw;
+	}
+}
+
+@media only screen and (max-width: 700px){		
+	#login-page .grid{
+		width: 70vw;
+	}
+}

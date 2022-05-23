@@ -152,7 +152,6 @@ function StorePage({store, dispatchStore, user, loc}){
 
     useEffect(() => {
         if(store.isLoaded === false){
-            console.log('load store')
             getStores(ACTIONS.RESET)
         }
     }, [store, getStores])    

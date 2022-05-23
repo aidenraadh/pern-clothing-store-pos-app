@@ -51,10 +51,10 @@ exports.login = async (req, res) => {
             attributes: ['id', 'email', 'password']
         })
         if(!user){
-            return res.status(400).send({message: 'Invalid credentials'})
+            return res.status(400).send({message: 'Invalid email or password'})
         }
         if(!await bcrypt.compare(passwordInput.value, user.password)){
-            return res.status(400).send({message: 'Invalid credentials'})
+            return res.status(400).send({message: 'Invalid email or password'})
         }
         // Issue JWT
         const jwt = issueJWT(user)

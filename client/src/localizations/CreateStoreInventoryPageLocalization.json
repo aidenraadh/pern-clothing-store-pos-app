@@ -1,0 +1,26 @@
+{
+    "english": {
+        "selectStore": "Select store",
+        "searchInv": "Search inventories",
+        "storeInv": "Store inventories",
+        "search": "Search",
+        "name": "name",
+        "addInv": "+ Add",
+        "searchInvMsg1": "* Inventories shown is the ones not stored inside",
+        "searchInvMsg2": "Max shown:",
+        "amount": "Amount",
+        "noSizesFound": "No sizes found"
+    },
+    "indonesian": {
+        "selectStore": "Pilih toko",
+        "searchInv": "Cari inventori",
+        "storeInv": "Masukan inventori",
+        "search": "Cari",
+        "name": "Nama",
+        "addInv": "+ Tambahkan",
+        "searchInvMsg1": "* Inventori yang ditampilkan hanya yang belum ada di toko",
+        "searchInvMsg2": "Maksimal ditampilkan:",
+        "amount": "Jumlah",
+        "noSizesFound": "Ukuran tidak ditemukan"
+    }
+}

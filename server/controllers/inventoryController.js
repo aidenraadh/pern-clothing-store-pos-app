@@ -14,6 +14,7 @@ exports.index = async (req, res) => {
         const queries = {...req.query}
         queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
         queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
+        queries.not_in_store = parseInt(queries.not_in_store) ? parseInt(queries.not_in_store) : '' 
         queries.shows_only = Joi.string().required().trim().validate(queries.shows_only)
         queries.shows_only = queries.shows_only.error ? '' : queries.shows_only.value        
         queries.name = Joi.string().required().trim().validate(queries.name)
@@ -44,7 +45,19 @@ exports.index = async (req, res) => {
                 }
                 filters.whereInv = Sequelize.literal(filters.whereInv)
             }
-        }        
+        }      
+        if(queries.not_in_store){
+            filters.whereInv = `"owner_id"=${req.user.owner_id} AND 
+            NOT EXISTS (
+                SELECT id FROM "Store_Inventories" WHERE "inventory_id"="Inventory"."id"
+                AND "store_id"=${queries.not_in_store}
+            )`
+            
+            if(queries.name){
+                filters.whereInv = `"name" ILIKE "${queries.name}" AND `+filters.whereInv
+            }
+            filters.whereInv = Sequelize.literal(filters.whereInv)
+        }           
         const inventories = await Inventory.findAll({
             attributes: ['id', 'name'],
             where: filters.whereInv,

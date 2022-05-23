@@ -24,7 +24,7 @@ exports.index = async (req, res) => {
         queries.name = queries.name.error ? '' : queries.name.value        
         // Set filters default values
         const filters = {
-            where: {},
+            where: {owner_id: req.user.owner_id},
             limitOffset: {limit: queries.limit, offset: queries.offset}
         }
         if(queries.name){
