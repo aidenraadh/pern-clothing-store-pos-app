@@ -1,7 +1,8 @@
 import {formatNum} from '../../Utils.js'
 
-function TransactionReceipt({inventories, objType}){
+function TransactionReceipt({inventories, objType, loc}){
     const purchasedInvs = formatTransactionInvs(inventories, objType)
+    console.log(purchasedInvs)
     // Get all inventory IDs
     const invIds = purchasedInvs.map(inv => inv.inventoryId).filter((value, index, self) => (
         self.indexOf(value) === index
@@ -53,11 +54,11 @@ function TransactionReceipt({inventories, objType}){
         })}
         <hr style={{margin: `${upperSpace1} 0`}}/>
         <p className='flex-row items-center content-space-between'>
-            <span>Total amount:</span>
+            <span>{loc.totalAmount}:</span>
             <span>{totalAmount}</span>
         </p>
         <p className='flex-row items-center content-space-between' style={{marginTop: upperSpace2}}>
-            <span>Total cost:</span>
+            <span>{loc.totalCost}:</span>
             <span>Rp. {formatNum(totalCost)}</span>
         </p>        
     </div>

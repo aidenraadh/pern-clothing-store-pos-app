@@ -12,7 +12,7 @@ import {Grid} from '../../Layouts'
 import {format} from 'date-fns'
 
 
-function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
+function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)  
     /* Filters */
     const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(storeTrnsc.isLoaded))    
@@ -103,7 +103,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         <section className='flex-row content-end items-center' style={{marginBottom: '2rem'}}>
             {user.role.name === 'employee' ?
                 <Link to={'/store-transactions/create'}>
-                    <Button tag={'span'} text={'+ New transaction'} size={'sm'}/>
+                    <Button tag={'span'} text={loc.createTransaction} size={'sm'}/>
                 </Link> : ''
             }
             {user.role.name === 'admin' ?
@@ -115,6 +115,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         <PlainCard 
             body={<>
                 <StoreTrnscsTable
+                    loc={loc}
                     storeTrnscs={storeTrnsc.storeTrnscs}
                     user={user}
                     viewHandler={viewStoreTrnsc}
@@ -127,11 +128,12 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             </>}
         />
         <Modal
-            heading={'Transaction Detail'}
+            heading={loc.transactionDetails}
             body={storeTrnsc.storeTrnscs[storeTrnscIndex] === undefined ? '' :
                 <TransactionReceipt 
                     inventories={storeTrnsc.storeTrnscs[storeTrnscIndex].storeTrnscInvs}
                     objType={'sequelize'}
+                    loc={loc}
                 />
             }       
             shown={viewStoreTrnscMdlShown}
@@ -141,9 +143,9 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
             heading={'Filter'} size={'sm'}
             body={
                 <Grid numOfColumns={1} items={[
-                    <Select label={'Store'} 
+                    <Select label={loc.store} 
                         options={(() => {
-                            const options = [{value: '', text: 'All'}]
+                            const options = [{value: '', text: loc.allStores}]
                             storeTrnsc.stores.forEach(store => {
                                 options.push({
                                     value: store.id, text: store.name.charAt(0) + store.name.slice(1)
@@ -158,7 +160,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                             })}                            
                         }}
                     />,                    
-                    <Select label={'Rows shown'} 
+                    <Select label={loc.rowsShown} 
                         formAttr={{
                             value: filters.limit,
                             onChange: e => {dispatchFilters({
@@ -172,7 +174,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
                 ]}/>
             }        
             footer={
-                <Button size={'sm'} text={'Search'} attr={{
+                <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
                         onClick: () => {getStoreTrnscs(ACTIONS.RESET)}
                     }}
@@ -184,9 +186,9 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
         <ConfirmPopup
             icon={'warning_1'}
             title={'Warning'}
-            body={'Are you sure want to remove this transaction?'}
-            confirmText={'Remove'}
-            cancelText={'Cancel'}
+            body={loc.removeTrnscMsg}
+            confirmText={loc.remove}
+            cancelText={loc.cancel}
             shown={confirmDeletePopupShown} 
             togglePopup={() => {setConfirmDeletePopupShown(state => !state)}} 
             confirmCallback={deleteTransaction}
@@ -212,22 +214,24 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user}){
     </>)
 }
 
-const StoreTrnscsTable = ({storeTrnscs, user, viewHandler, deleteHandler}) => {
+const StoreTrnscsTable = ({loc, storeTrnscs, user, viewHandler, deleteHandler}) => {
     return <Table
-        headings={['No', 'Store', 'Total Amount', 'Total Cost', 'Transaction Date', 'Actions']}
+        headings={['No', loc.store, loc.totalAmount, loc.totalCost, loc.trnscDate, 'Actions']}
         body={storeTrnscs.map((storeTrnsc, index) => ([
             (index + 1),
-            storeTrnsc.store.name, 
+            <span className='text-capitalize'>
+                {storeTrnsc.store.name}
+            </span>, 
             formatNum(storeTrnsc.total_amount), 
             'Rp. '+formatNum(storeTrnsc.total_cost),
             format(new Date(storeTrnsc.transaction_date), 'eee, dd-MM-yyyy'),
             <span>
-                <Button size={'sm'} text={'View'} type={'light'} attr={{
+                <Button size={'sm'} text={loc.view} type={'light'} attr={{
                     style: {marginRight: '1.2rem'},
                     onClick: () => {viewHandler(index)}
                 }} />
                 {user.role.name === 'employee' ? 
-                <Button size={'sm'} text={'Delete'} color={'red'} type={'light'} attr={{
+                <Button size={'sm'} text={loc.remove} color={'red'} type={'light'} attr={{
                     onClick: () => {deleteHandler(index)}
                 }} /> : ''                
                 } 

@@ -1,0 +1,33 @@
+{
+    "english": {
+        "store": "Store",
+        "totalAmount": "Total amount",
+        "totalCost": "Total cost",
+        "trnscDate": "Transaction date",
+        "view": "View",
+        "rowsShown": "Rows shown",
+        "allStores": "All",
+        "search": "Search",
+        "transactionDetails": "Transaction Details",
+        "createTransaction": "+ New transaction",
+        "removeTrnscMsg": "Are you sure want to remove this transaction?",
+        "remove": "Remove",
+        "cancel": "Cancel" 
+
+    },
+    "indonesian": {
+        "store": "Toko",
+        "totalAmount": "Total jumlah",
+        "totalCost": "Total biaya",
+        "trnscDate": "Tanggal transaksi",
+        "view": "Lihat",
+        "rowsShown": "Baris ditampilkan",
+        "allStores": "Semua toko",
+        "search": "Cari",        
+        "transactionDetails": "Detail Transaksi",
+        "createTransaction": "+ Buat transaksi",
+        "removeTrnscMsg": "Hapus transaksi ini?",
+        "remove": "Hapus",
+        "cancel": "Batal"  
+    }
+}

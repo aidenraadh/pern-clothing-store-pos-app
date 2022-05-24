@@ -23,7 +23,8 @@ const Store = models.Store
 const User = models.User
 const bcrypt        = require('bcrypt')
 const Owner = models.Owner
-
+const utils = require('../hnsports-migration/store-inventories/utils.js')
+const first_100 = require('../hnsports-migration/store-inventories/store-1/1-100.json')
 
 
 rootRouter.get('/add-owner', async (req, res) => {
@@ -53,28 +54,13 @@ rootRouter.get('/add-owner', async (req, res) => {
 })
 
 
-rootRouter.get('/hehe', async (req, res) => {
+rootRouter.get('/hnsports', async (req, res) => {
     try {
-        const filters = {}
-
-        filters.whereInv = `"owner_id"=${1} AND 
-        NOT EXISTS (SELECT id FROM "Store_Inventories" WHERE "inventory_id"="Inventory"."id")`
-        filters.whereInv = sequelize.literal(filters.whereInv)
-
-        const inventories = await Inventory.findAll({
-            attributes: ['id', 'name'],
-            where: filters.whereInv,
-            include: [{
-                model: InventorySize, as: 'sizes', 
-                attributes: ['id', 'name', 'production_price', 'selling_price'],
-                required: filters.requiredInvSizes,
-                where: filters.whereInvSizes
-            }],
-            order: [['id', 'DESC']],
-            ...filters.limitOffset
-        })
+        const data = utils.getItemSizes(first_100)
+        console.log('output is: ')
+        console.log(data)
         res.send({
-            data: inventories
+            data: data
         })        
     } catch (err) {
         res.status(500).send({message: err.message})

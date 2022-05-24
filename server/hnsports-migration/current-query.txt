@@ -1,0 +1,7 @@
+SELECT 
+items_storage.id AS item_id,
+items_storage.name AS item_name,
+stores.id AS store_id,
+stores.name AS store_name
+FROM stores INNER JOIN items_storage
+ON JSON_SEARCH(JSON_KEYS(stores.items), "one", items_storage.id) IS NOT NULL AND stores.id=1 LIMIT 100 OFFSET 0
