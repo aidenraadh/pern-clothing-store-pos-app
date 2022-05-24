@@ -21,3 +21,10 @@ exports.getItemSizes = (storedItems) => {
     })
     return `SELECT JSON_OBJECT(${json_object_val.join(', ')}) FROM stores WHERE id=${store_id}`
 }
+
+exports.combineItemsAndSizes = (storedItems, storedSizes) => {
+    return storedItems.map(storedItem => {
+        const item_id = storedItem.item_id
+        return {...storedItem, sizes: storedSizes[`item_${item_id}`]}
+    })
+}

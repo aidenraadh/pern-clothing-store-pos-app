@@ -1,0 +1,4394 @@
+[
+    {
+      "item_id": 101,
+      "item_name": "kr ppj army muda abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:40:33"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:40:33"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:40:33"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:40:33"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:40:33"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:40:33"
+        },
+        "4l": {
+          "quantity": 3,
+          "updated_at": "2022-02-12 04:44:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:40:33"
+        }
+      }
+    },
+    {
+      "item_id": 102,
+      "item_name": "kr ppj fanta abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "s": {
+          "quantity": 3,
+          "updated_at": "2022-01-26 04:54:04"
+        },
+        "m": {
+          "quantity": 7,
+          "updated_at": "2022-01-26 04:52:15"
+        },
+        "l": {
+          "quantity": 17,
+          "updated_at": "2022-01-26 04:54:04"
+        },
+        "xl": {
+          "quantity": 2,
+          "updated_at": "2022-01-26 04:54:04"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:42:50"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:42:50"
+        },
+        "4l": {
+          "quantity": 1,
+          "updated_at": "2022-02-12 04:45:29"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-06-09 04:42:50"
+        }
+      }
+    },
+    {
+      "item_id": 106,
+      "item_name": "kr ppj pacul otak udang panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 05:00:52"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 05:00:52"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 05:00:52"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        }
+      }
+    },
+    {
+      "item_id": 107,
+      "item_name": "kr ppj pacul abu hitam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 04:16:10"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:17:16"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:17:16"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:17:16"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:17:16"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:17:16"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 04:16:10"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 04:16:10"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 04:16:10"
+        }
+      }
+    },
+    {
+      "item_id": 108,
+      "item_name": "kr ppj pacul kuning abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "s": {
+          "quantity": 105,
+          "updated_at": "2021-11-16 03:59:43"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-16 03:59:43"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "4l": {
+          "quantity": 3,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        }
+      }
+    },
+    {
+      "item_id": 109,
+      "item_name": "kr ppj pacul biru malam abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "m": {
+          "quantity": 1,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        }
+      }
+    },
+    {
+      "item_id": 111,
+      "item_name": "kr ppj pacul pink abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "s": {
+          "quantity": 25,
+          "updated_at": "2021-11-16 03:58:49"
+        },
+        "m": {
+          "quantity": 34,
+          "updated_at": "2021-12-11 06:29:47"
+        },
+        "l": {
+          "quantity": 80,
+          "updated_at": "2021-12-11 06:29:47"
+        },
+        "xl": {
+          "quantity": 11,
+          "updated_at": "2021-11-16 03:58:49"
+        },
+        "xxl": {
+          "quantity": 8,
+          "updated_at": "2021-11-16 03:58:49"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        }
+      }
+    },
+    {
+      "item_id": 112,
+      "item_name": "kr ppj pacul turkis abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        }
+      }
+    },
+    {
+      "item_id": 113,
+      "item_name": "kr ppj pacul orean abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-16 04:00:59"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-16 04:00:59"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-16 04:00:59"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-16 04:00:59"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        }
+      }
+    },
+    {
+      "item_id": 115,
+      "item_name": "kr ppj pacul stabilo hitam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "s": {
+          "quantity": 5,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "l": {
+          "quantity": 22,
+          "updated_at": "2021-11-16 04:03:45"
+        },
+        "xl": {
+          "quantity": 10,
+          "updated_at": "2021-11-16 04:03:45"
+        },
+        "xxl": {
+          "quantity": 3,
+          "updated_at": "2021-11-16 04:03:45"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:25:17"
+        }
+      }
+    },
+    {
+      "item_id": 116,
+      "item_name": "kr ppj pacul merah abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "s": {
+          "quantity": 18,
+          "updated_at": "2021-12-06 04:16:43"
+        },
+        "m": {
+          "quantity": 54,
+          "updated_at": "2021-12-06 04:16:43"
+        },
+        "l": {
+          "quantity": 78,
+          "updated_at": "2021-12-06 04:16:43"
+        },
+        "xl": {
+          "quantity": 42,
+          "updated_at": "2021-12-06 04:16:43"
+        },
+        "xxl": {
+          "quantity": 18,
+          "updated_at": "2021-12-06 04:16:43"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        }
+      }
+    },
+    {
+      "item_id": 117,
+      "item_name": "kr ppj pacul merah hitam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:21:50"
+        }
+      }
+    },
+    {
+      "item_id": 118,
+      "item_name": "kr ppj tanduk kuning panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:21:45"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        }
+      }
+    },
+    {
+      "item_id": 120,
+      "item_name": "kr ppj tanduk pink panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        }
+      }
+    },
+    {
+      "item_id": 121,
+      "item_name": "kr ppj tanduk tosca panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        }
+      }
+    },
+    {
+      "item_id": 122,
+      "item_name": "kr ppj tanduk otak udang panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:26:14"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:26:14"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        }
+      }
+    },
+    {
+      "item_id": 123,
+      "item_name": "kr ppj tanduk biru malam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        }
+      }
+    },
+    {
+      "item_id": 124,
+      "item_name": "kr ppj tanduk stabilo panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "s": {
+          "quantity": 23,
+          "updated_at": "2021-12-23 03:38:21"
+        },
+        "m": {
+          "quantity": 7,
+          "updated_at": "2021-12-23 03:38:21"
+        },
+        "l": {
+          "quantity": 53,
+          "updated_at": "2022-01-12 08:18:21"
+        },
+        "xl": {
+          "quantity": 11,
+          "updated_at": "2021-12-23 03:38:21"
+        },
+        "xxl": {
+          "quantity": 38,
+          "updated_at": "2021-12-23 03:38:21"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        }
+      }
+    },
+    {
+      "item_id": 125,
+      "item_name": "kr ppj tanduk merah panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-12-07 08:41:04"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "xl": {
+          "quantity": 19,
+          "updated_at": "2021-12-07 08:41:04"
+        },
+        "xxl": {
+          "quantity": 20,
+          "updated_at": "2021-11-16 04:06:57"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:30:31"
+        }
+      }
+    },
+    {
+      "item_id": 126,
+      "item_name": "kr ppj tanduk maron panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 03:07:32"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-12-16 09:01:14"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-18 03:54:58"
+        },
+        "l": {
+          "quantity": 24,
+          "updated_at": "2022-01-18 03:54:58"
+        },
+        "xl": {
+          "quantity": 27,
+          "updated_at": "2022-01-18 03:54:58"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-18 03:54:58"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 03:07:32"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 03:07:32"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 03:07:32"
+        }
+      }
+    },
+    {
+      "item_id": 127,
+      "item_name": "kr ppj tanduk orean panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 05:23:47"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 05:34:07"
+        }
+      }
+    },
+    {
+      "item_id": 128,
+      "item_name": "kr ppj V tosca abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-12-11 06:27:14"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        }
+      }
+    },
+    {
+      "item_id": 129,
+      "item_name": "kr ppj V turkis abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "s": {
+          "quantity": 35,
+          "updated_at": "2021-12-11 06:27:54"
+        },
+        "m": {
+          "quantity": 16,
+          "updated_at": "2021-12-20 04:22:53"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 08:30:01"
+        },
+        "xl": {
+          "quantity": 8,
+          "updated_at": "2021-12-11 06:27:54"
+        },
+        "xxl": {
+          "quantity": 32,
+          "updated_at": "2021-12-04 08:30:01"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 04:42:18"
+        }
+      }
+    },
+    {
+      "item_id": 130,
+      "item_name": "kr ppj V orean abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-23 04:23:09"
+        },
+        "s": {
+          "quantity": 31,
+          "updated_at": "2021-12-17 05:57:46"
+        },
+        "m": {
+          "quantity": 47,
+          "updated_at": "2021-12-17 05:57:46"
+        },
+        "l": {
+          "quantity": 81,
+          "updated_at": "2021-12-17 05:57:46"
+        },
+        "xl": {
+          "quantity": 56,
+          "updated_at": "2021-12-17 05:57:46"
+        },
+        "xxl": {
+          "quantity": 20,
+          "updated_at": "2021-12-11 06:26:49"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-23 04:23:09"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-23 04:23:09"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-23 04:23:09"
+        }
+      }
+    },
+    {
+      "item_id": 131,
+      "item_name": "kr ppj V merah abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "s": {
+          "quantity": 63,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "m": {
+          "quantity": 78,
+          "updated_at": "2021-12-11 06:25:19"
+        },
+        "l": {
+          "quantity": 32,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "xxl": {
+          "quantity": 17,
+          "updated_at": "2021-12-11 06:25:19"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        }
+      }
+    },
+    {
+      "item_id": 132,
+      "item_name": "kr ppj V stabilo abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-21 08:46:08"
+        },
+        "s": {
+          "quantity": 9,
+          "updated_at": "2022-02-19 04:32:31"
+        },
+        "m": {
+          "quantity": 53,
+          "updated_at": "2022-02-19 08:50:11"
+        },
+        "l": {
+          "quantity": 76,
+          "updated_at": "2022-02-19 04:32:31"
+        },
+        "xl": {
+          "quantity": 53,
+          "updated_at": "2022-02-19 04:32:31"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-02-19 04:32:31"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-21 08:46:08"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-21 08:46:08"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-21 08:46:08"
+        }
+      }
+    },
+    {
+      "item_id": 133,
+      "item_name": "kr ppj V kuning abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-21 08:51:31"
+        },
+        "s": {
+          "quantity": 31,
+          "updated_at": "2021-11-21 08:51:31"
+        },
+        "m": {
+          "quantity": 54,
+          "updated_at": "2021-12-16 08:59:39"
+        },
+        "l": {
+          "quantity": 65,
+          "updated_at": "2021-12-16 08:59:39"
+        },
+        "xl": {
+          "quantity": 46,
+          "updated_at": "2021-12-16 08:59:39"
+        },
+        "xxl": {
+          "quantity": 25,
+          "updated_at": "2021-12-16 08:59:39"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-21 08:51:31"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-21 08:51:31"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-21 08:51:31"
+        }
+      }
+    },
+    {
+      "item_id": 134,
+      "item_name": "kr ppj V biru malam abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-12-11 06:28:27"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-12-11 06:28:27"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        }
+      }
+    },
+    {
+      "item_id": 136,
+      "item_name": "kr ppj V biru pan abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "m": {
+          "quantity": 2,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "l": {
+          "quantity": 2,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        }
+      }
+    },
+    {
+      "item_id": 138,
+      "item_name": "kr ppj bahu merah panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:48:28"
+        },
+        "s": {
+          "quantity": 41,
+          "updated_at": "2021-12-07 08:47:09"
+        },
+        "m": {
+          "quantity": 8,
+          "updated_at": "2021-12-07 08:47:09"
+        },
+        "l": {
+          "quantity": 12,
+          "updated_at": "2021-12-07 08:47:09"
+        },
+        "xl": {
+          "quantity": 11,
+          "updated_at": "2021-12-07 08:47:09"
+        },
+        "xxl": {
+          "quantity": 26,
+          "updated_at": "2021-12-07 08:47:09"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:48:28"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:48:28"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:48:28"
+        }
+      }
+    },
+    {
+      "item_id": 139,
+      "item_name": "kr ppj bahu turkis panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:44:22"
+        },
+        "s": {
+          "quantity": 38,
+          "updated_at": "2021-12-04 07:44:22"
+        },
+        "m": {
+          "quantity": 9,
+          "updated_at": "2021-12-04 07:44:22"
+        },
+        "l": {
+          "quantity": 2,
+          "updated_at": "2021-12-04 07:44:22"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:44:22"
+        },
+        "xxl": {
+          "quantity": 3,
+          "updated_at": "2021-12-04 07:44:22"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:44:22"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:44:22"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:44:22"
+        }
+      }
+    },
+    {
+      "item_id": 140,
+      "item_name": "kr ppj bahu orean panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:54:13"
+        },
+        "s": {
+          "quantity": 23,
+          "updated_at": "2021-12-04 07:54:13"
+        },
+        "m": {
+          "quantity": 50,
+          "updated_at": "2021-12-04 07:54:13"
+        },
+        "l": {
+          "quantity": 100,
+          "updated_at": "2021-12-04 07:54:13"
+        },
+        "xl": {
+          "quantity": 50,
+          "updated_at": "2021-12-04 07:54:13"
+        },
+        "xxl": {
+          "quantity": 25,
+          "updated_at": "2021-12-04 07:54:13"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:54:13"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:54:13"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:54:13"
+        }
+      }
+    },
+    {
+      "item_id": 141,
+      "item_name": "kr ppj bahu biru malam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        }
+      }
+    },
+    {
+      "item_id": 148,
+      "item_name": "kr ppj pacul turkis pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "s": {
+          "quantity": 111,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "m": {
+          "quantity": 235,
+          "updated_at": "2021-11-23 04:15:14"
+        },
+        "l": {
+          "quantity": 332,
+          "updated_at": "2021-12-30 08:10:44"
+        },
+        "xl": {
+          "quantity": 201,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "xxl": {
+          "quantity": 62,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "4l": {
+          "quantity": 22,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "5l": {
+          "quantity": 9,
+          "updated_at": "2021-11-08 04:07:02"
+        }
+      }
+    },
+    {
+      "item_id": 149,
+      "item_name": "kr ppj pacul otak udang pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "s": {
+          "quantity": 13,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "m": {
+          "quantity": 46,
+          "updated_at": "2021-12-23 05:22:19"
+        },
+        "l": {
+          "quantity": 98,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "xl": {
+          "quantity": 47,
+          "updated_at": "2021-12-23 05:22:19"
+        },
+        "xxl": {
+          "quantity": 13,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        }
+      }
+    },
+    {
+      "item_id": 150,
+      "item_name": "kr ppj pacul biru malam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "s": {
+          "quantity": 7,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "m": {
+          "quantity": 18,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "l": {
+          "quantity": 50,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "xl": {
+          "quantity": 8,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        }
+      }
+    },
+    {
+      "item_id": 151,
+      "item_name": "kr ppj pacul orean abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "s": {
+          "quantity": 34,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "m": {
+          "quantity": 69,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "l": {
+          "quantity": 150,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "xl": {
+          "quantity": 90,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "xxl": {
+          "quantity": 32,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        }
+      }
+    },
+    {
+      "item_id": 152,
+      "item_name": "kr ppj pacul kuning abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "s": {
+          "quantity": 2,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "m": {
+          "quantity": 73,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-18 04:42:16"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "xxl": {
+          "quantity": 12,
+          "updated_at": "2022-01-18 04:43:02"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "4l": {
+          "quantity": 14,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        }
+      }
+    },
+    {
+      "item_id": 155,
+      "item_name": "kr ppj pacul merah hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "m": {
+          "quantity": 6,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "l": {
+          "quantity": 25,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "xl": {
+          "quantity": 27,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        }
+      }
+    },
+    {
+      "item_id": 156,
+      "item_name": "kr ppj pacul abu hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "s": {
+          "quantity": 11,
+          "updated_at": "2022-02-03 06:20:13"
+        },
+        "m": {
+          "quantity": 45,
+          "updated_at": "2021-11-20 09:08:50"
+        },
+        "l": {
+          "quantity": 84,
+          "updated_at": "2021-11-20 09:08:50"
+        },
+        "xl": {
+          "quantity": 43,
+          "updated_at": "2021-11-20 09:08:50"
+        },
+        "xxl": {
+          "quantity": 14,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:21:45"
+        }
+      }
+    },
+    {
+      "item_id": 157,
+      "item_name": "kr ppj pacul merah abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "s": {
+          "quantity": 54,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "l": {
+          "quantity": 78,
+          "updated_at": "2022-02-02 06:30:18"
+        },
+        "xl": {
+          "quantity": 9,
+          "updated_at": "2022-01-31 05:42:31"
+        },
+        "xxl": {
+          "quantity": 7,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "4l": {
+          "quantity": 3,
+          "updated_at": "2021-11-08 04:12:43"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:12:43"
+        }
+      }
+    },
+    {
+      "item_id": 158,
+      "item_name": "kr ppj V biru malam abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "s": {
+          "quantity": 16,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "m": {
+          "quantity": 52,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "l": {
+          "quantity": 108,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "xl": {
+          "quantity": 67,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "xxl": {
+          "quantity": 10,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:25:54"
+        }
+      }
+    },
+    {
+      "item_id": 159,
+      "item_name": "kr ppj V turkis abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "s": {
+          "quantity": 18,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "m": {
+          "quantity": 36,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "l": {
+          "quantity": 84,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "xl": {
+          "quantity": 37,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "xxl": {
+          "quantity": 18,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 04:42:18"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 04:42:18"
+        }
+      }
+    },
+    {
+      "item_id": 160,
+      "item_name": "kr ppj V biru pan abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "s": {
+          "quantity": 10,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "m": {
+          "quantity": 23,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "l": {
+          "quantity": 50,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "xl": {
+          "quantity": 17,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:21:58"
+        }
+      }
+    },
+    {
+      "item_id": 161,
+      "item_name": "kr ppj V merah abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "s": {
+          "quantity": 20,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "m": {
+          "quantity": 55,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "l": {
+          "quantity": 117,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "xl": {
+          "quantity": 55,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "xxl": {
+          "quantity": 20,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:12:44"
+        }
+      }
+    },
+    {
+      "item_id": 162,
+      "item_name": "kr ppj V stabilo abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-22 08:15:54"
+        },
+        "s": {
+          "quantity": 12,
+          "updated_at": "2021-11-22 08:15:54"
+        },
+        "m": {
+          "quantity": 50,
+          "updated_at": "2021-11-22 08:15:54"
+        },
+        "l": {
+          "quantity": 96,
+          "updated_at": "2021-11-22 08:15:54"
+        },
+        "xl": {
+          "quantity": 41,
+          "updated_at": "2021-11-22 08:15:54"
+        },
+        "xxl": {
+          "quantity": 13,
+          "updated_at": "2021-11-22 08:15:54"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-22 08:15:54"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-22 08:15:54"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-22 08:15:54"
+        }
+      }
+    },
+    {
+      "item_id": 163,
+      "item_name": "kr ppj V tosca abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "s": {
+          "quantity": 1,
+          "updated_at": "2021-12-28 05:56:10"
+        },
+        "m": {
+          "quantity": 26,
+          "updated_at": "2021-12-28 05:56:10"
+        },
+        "l": {
+          "quantity": 89,
+          "updated_at": "2021-12-28 05:56:10"
+        },
+        "xl": {
+          "quantity": 25,
+          "updated_at": "2021-12-28 05:56:10"
+        },
+        "xxl": {
+          "quantity": 8,
+          "updated_at": "2021-12-28 05:56:10"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-25 05:17:57"
+        }
+      }
+    },
+    {
+      "item_id": 164,
+      "item_name": "kr ppj tanduk orean pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "s": {
+          "quantity": 30,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "m": {
+          "quantity": 9,
+          "updated_at": "2021-12-13 03:55:41"
+        },
+        "l": {
+          "quantity": 42,
+          "updated_at": "2021-12-13 03:55:41"
+        },
+        "xl": {
+          "quantity": 15,
+          "updated_at": "2021-12-13 03:55:41"
+        },
+        "xxl": {
+          "quantity": 12,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        }
+      }
+    },
+    {
+      "item_id": 165,
+      "item_name": "kr ppj tanduk turkis pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "s": {
+          "quantity": 11,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "m": {
+          "quantity": 36,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "l": {
+          "quantity": 84,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "xl": {
+          "quantity": 34,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "xxl": {
+          "quantity": 12,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        }
+      }
+    },
+    {
+      "item_id": 166,
+      "item_name": "kr ppj tanduk merah pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "s": {
+          "quantity": 24,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "m": {
+          "quantity": 54,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "l": {
+          "quantity": 90,
+          "updated_at": "2021-11-16 07:10:06"
+        },
+        "xl": {
+          "quantity": 44,
+          "updated_at": "2021-11-16 07:10:06"
+        },
+        "xxl": {
+          "quantity": 18,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        }
+      }
+    },
+    {
+      "item_id": 167,
+      "item_name": "kr ppj tanduk otak udang pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "m": {
+          "quantity": 3,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "l": {
+          "quantity": 54,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "xl": {
+          "quantity": 15,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        }
+      }
+    },
+    {
+      "item_id": 169,
+      "item_name": "kr ppj tanduk kuning pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "s": {
+          "quantity": 32,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "m": {
+          "quantity": 19,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "l": {
+          "quantity": 21,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-08 04:07:02"
+        }
+      }
+    },
+    {
+      "item_id": 170,
+      "item_name": "kr ppj tanduk biru malam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "s": {
+          "quantity": 5,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "xxl": {
+          "quantity": 6,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        }
+      }
+    },
+    {
+      "item_id": 171,
+      "item_name": "kr ppj tanduk stabilo pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "s": {
+          "quantity": 53,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "m": {
+          "quantity": 98,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "l": {
+          "quantity": 177,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "xl": {
+          "quantity": 105,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "xxl": {
+          "quantity": 53,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:13:06"
+        }
+      }
+    },
+    {
+      "item_id": 172,
+      "item_name": "kr ppj tanduk pink pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "s": {
+          "quantity": 20,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "m": {
+          "quantity": 60,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "l": {
+          "quantity": 83,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "xl": {
+          "quantity": 48,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "xxl": {
+          "quantity": 12,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        }
+      }
+    },
+    {
+      "item_id": 173,
+      "item_name": "kr ppj tanduk tosca pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "s": {
+          "quantity": 46,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "m": {
+          "quantity": 44,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "l": {
+          "quantity": 171,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "xl": {
+          "quantity": 88,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "xxl": {
+          "quantity": 30,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 08:16:11"
+        }
+      }
+    },
+    {
+      "item_id": 174,
+      "item_name": "kr ppj bahu merah pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "s": {
+          "quantity": 11,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "l": {
+          "quantity": 33,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "xl": {
+          "quantity": 27,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "xxl": {
+          "quantity": 12,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        }
+      }
+    },
+    {
+      "item_id": 175,
+      "item_name": "kr ppj bahu biru malam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "s": {
+          "quantity": 1,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "l": {
+          "quantity": 1,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-12-04 07:51:37"
+        }
+      }
+    },
+    {
+      "item_id": 176,
+      "item_name": "kr ppj bahu stabilo pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "s": {
+          "quantity": 14,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "m": {
+          "quantity": 5,
+          "updated_at": "2021-12-06 03:32:01"
+        },
+        "l": {
+          "quantity": 7,
+          "updated_at": "2021-12-16 06:13:36"
+        },
+        "xl": {
+          "quantity": 1,
+          "updated_at": "2021-12-16 06:13:36"
+        },
+        "xxl": {
+          "quantity": 13,
+          "updated_at": "2021-12-16 06:13:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        }
+      }
+    },
+    {
+      "item_id": 178,
+      "item_name": "kr ppj bahu kuning pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "s": {
+          "quantity": 18,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "m": {
+          "quantity": 21,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "l": {
+          "quantity": 24,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "xl": {
+          "quantity": 16,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "xxl": {
+          "quantity": 18,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        }
+      }
+    },
+    {
+      "item_id": 179,
+      "item_name": "kr ppj bahu orean pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-12-16 04:26:55"
+        },
+        "s": {
+          "quantity": 18,
+          "updated_at": "2021-12-16 04:26:55"
+        },
+        "m": {
+          "quantity": 13,
+          "updated_at": "2021-12-16 04:26:55"
+        },
+        "l": {
+          "quantity": 18,
+          "updated_at": "2021-12-16 04:26:55"
+        },
+        "xl": {
+          "quantity": 7,
+          "updated_at": "2021-12-16 04:26:55"
+        },
+        "xxl": {
+          "quantity": 18,
+          "updated_at": "2021-12-16 04:26:55"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-12-16 04:26:55"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-12-16 04:26:55"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-12-16 04:26:55"
+        }
+      }
+    },
+    {
+      "item_id": 180,
+      "item_name": "kr ppj bahu turkis pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "s": {
+          "quantity": 12,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-07 07:51:11"
+        }
+      }
+    },
+    {
+      "item_id": 187,
+      "item_name": "kr ppj biru malam abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 04:26:02"
+        },
+        "s": {
+          "quantity": 24,
+          "updated_at": "2022-02-15 06:49:30"
+        },
+        "m": {
+          "quantity": 59,
+          "updated_at": "2022-02-15 06:49:30"
+        },
+        "l": {
+          "quantity": 58,
+          "updated_at": "2022-02-15 06:49:30"
+        },
+        "xl": {
+          "quantity": 36,
+          "updated_at": "2022-02-15 06:49:30"
+        },
+        "xxl": {
+          "quantity": 6,
+          "updated_at": "2022-02-15 06:49:30"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 04:26:02"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:53:12"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 04:26:02"
+        }
+      }
+    },
+    {
+      "item_id": 195,
+      "item_name": "kr ppj hijau fuji kr kuning pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 03:55:40"
+        },
+        "s": {
+          "quantity": 13,
+          "updated_at": "2021-11-01 03:55:40"
+        },
+        "m": {
+          "quantity": 25,
+          "updated_at": "2021-11-01 03:55:40"
+        },
+        "l": {
+          "quantity": 26,
+          "updated_at": "2021-11-01 03:55:40"
+        },
+        "xl": {
+          "quantity": 33,
+          "updated_at": "2021-11-01 03:55:40"
+        },
+        "xxl": {
+          "quantity": 12,
+          "updated_at": "2021-11-01 03:55:40"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 03:55:40"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 03:55:40"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 03:55:40"
+        }
+      }
+    },
+    {
+      "item_id": 196,
+      "item_name": "kr ppj putih abu les stabilo pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 05:02:32"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-02-14 08:04:42"
+        },
+        "m": {
+          "quantity": 30,
+          "updated_at": "2022-02-14 08:04:42"
+        },
+        "l": {
+          "quantity": 54,
+          "updated_at": "2022-02-14 08:04:42"
+        },
+        "xl": {
+          "quantity": 30,
+          "updated_at": "2022-02-14 08:04:42"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-02-14 08:04:42"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 05:02:32"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 05:02:32"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 05:02:32"
+        }
+      }
+    },
+    {
+      "item_id": 198,
+      "item_name": "kr ppj putih abu les maron panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 07:03:36"
+        },
+        "s": {
+          "quantity": 4,
+          "updated_at": "2021-12-31 06:24:05"
+        },
+        "m": {
+          "quantity": 15,
+          "updated_at": "2022-02-14 06:25:16"
+        },
+        "l": {
+          "quantity": 52,
+          "updated_at": "2022-02-14 06:25:16"
+        },
+        "xl": {
+          "quantity": 29,
+          "updated_at": "2022-02-14 06:25:16"
+        },
+        "xxl": {
+          "quantity": 6,
+          "updated_at": "2021-11-01 07:03:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 07:03:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 07:03:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 07:03:36"
+        }
+      }
+    },
+    {
+      "item_id": 199,
+      "item_name": "kr ppj otak udang abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:38:11"
+        },
+        "s": {
+          "quantity": 19,
+          "updated_at": "2022-01-26 04:59:24"
+        },
+        "m": {
+          "quantity": 68,
+          "updated_at": "2022-01-26 04:59:24"
+        },
+        "l": {
+          "quantity": 71,
+          "updated_at": "2022-01-26 04:59:24"
+        },
+        "xl": {
+          "quantity": 37,
+          "updated_at": "2022-01-26 04:59:24"
+        },
+        "xxl": {
+          "quantity": 18,
+          "updated_at": "2022-01-19 03:44:03"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:38:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:38:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:38:11"
+        }
+      }
+    },
+    {
+      "item_id": 201,
+      "item_name": "kr ppj maron abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:17:36"
+        },
+        "s": {
+          "quantity": 26,
+          "updated_at": "2022-01-23 02:56:54"
+        },
+        "m": {
+          "quantity": 59,
+          "updated_at": "2022-02-22 02:41:11"
+        },
+        "l": {
+          "quantity": 112,
+          "updated_at": "2022-01-18 09:01:53"
+        },
+        "xl": {
+          "quantity": 76,
+          "updated_at": "2022-01-18 09:01:53"
+        },
+        "xxl": {
+          "quantity": 24,
+          "updated_at": "2022-01-18 09:01:53"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:17:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:17:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:17:36"
+        }
+      }
+    },
+    {
+      "item_id": 202,
+      "item_name": "kr ppj turkis muda abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:26:07"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 07:37:27"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 07:37:27"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 07:37:27"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 07:37:27"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 07:37:48"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:26:07"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:26:07"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 06:26:07"
+        }
+      }
+    },
+    {
+      "item_id": 203,
+      "item_name": "kr ppj putih abu les stabilo panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 07:05:13"
+        },
+        "s": {
+          "quantity": 4,
+          "updated_at": "2021-11-01 07:05:13"
+        },
+        "m": {
+          "quantity": 36,
+          "updated_at": "2021-11-01 07:05:13"
+        },
+        "l": {
+          "quantity": 60,
+          "updated_at": "2021-11-01 07:05:13"
+        },
+        "xl": {
+          "quantity": 34,
+          "updated_at": "2021-11-14 00:36:44"
+        },
+        "xxl": {
+          "quantity": 6,
+          "updated_at": "2021-11-01 07:05:13"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 07:05:13"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 07:05:13"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-01 07:05:13"
+        }
+      }
+    },
+    {
+      "item_id": 206,
+      "item_name": "enzino tyt hitam fuji pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-23 04:09:17"
+        },
+        "m": {
+          "quantity": 3,
+          "updated_at": "2022-01-23 04:09:17"
+        },
+        "l": {
+          "quantity": 10,
+          "updated_at": "2021-11-14 04:30:09"
+        },
+        "xl": {
+          "quantity": 3,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        }
+      }
+    },
+    {
+      "item_id": 207,
+      "item_name": "enzino tyt biru pan hitam pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "l": {
+          "quantity": 5,
+          "updated_at": "2021-11-14 04:29:21"
+        },
+        "xl": {
+          "quantity": 12,
+          "updated_at": "2021-11-14 04:29:21"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        }
+      }
+    },
+    {
+      "item_id": 208,
+      "item_name": "enzino tyt abu hitam pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-23 04:07:47"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-23 04:07:47"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-23 04:07:47"
+        },
+        "xl": {
+          "quantity": 6,
+          "updated_at": "2022-01-23 04:07:47"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        }
+      }
+    },
+    {
+      "item_id": 209,
+      "item_name": "enzino tyt orean hitam pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-23 04:08:24"
+        },
+        "xl": {
+          "quantity": 5,
+          "updated_at": "2022-01-23 04:08:24"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        }
+      }
+    },
+    {
+      "item_id": 210,
+      "item_name": "enzino tyt hitam stabilo pendek 22",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:44:54"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:44:54"
+        },
+        "m": {
+          "quantity": 36,
+          "updated_at": "2022-01-20 07:09:17"
+        },
+        "l": {
+          "quantity": 36,
+          "updated_at": "2022-01-20 07:09:17"
+        },
+        "xl": {
+          "quantity": 24,
+          "updated_at": "2022-01-20 06:44:54"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:44:54"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:44:54"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:44:54"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:44:54"
+        }
+      }
+    },
+    {
+      "item_id": 211,
+      "item_name": "enzino tyt merah hitam pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:50:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:50:46"
+        },
+        "m": {
+          "quantity": 12,
+          "updated_at": "2022-01-23 04:06:50"
+        },
+        "l": {
+          "quantity": 24,
+          "updated_at": "2022-01-23 04:06:50"
+        },
+        "xl": {
+          "quantity": 12,
+          "updated_at": "2022-01-23 04:06:50"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:50:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:50:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:50:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:50:46"
+        }
+      }
+    },
+    {
+      "item_id": 213,
+      "item_name": "enzino tyt hijau fuji hitam pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:47:59"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:47:59"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:47:59"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:47:59"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-23 04:06:08"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:47:59"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:47:59"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:47:59"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:47:59"
+        }
+      }
+    },
+    {
+      "item_id": 215,
+      "item_name": "enzino maron polos kuas pendek 22 fix",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:43:54"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:43:54"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-30 03:45:50"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-30 03:45:50"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:43:54"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:43:54"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:43:54"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:43:54"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2022-01-20 06:43:54"
+        }
+      }
+    },
+    {
+      "item_id": 216,
+      "item_name": "enzino putih polos kuas pendek 22 fix",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-30 03:44:38"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-30 03:44:38"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:38:38"
+        }
+      }
+    },
+    {
+      "item_id": 217,
+      "item_name": "enzino biru malam polos kuas pendek 22 fix",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:41:22"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:41:22"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-12-11 06:20:12"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-12-11 06:20:12"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-12-11 06:20:12"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:32:12"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:41:22"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:41:22"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:41:22"
+        }
+      }
+    },
+    {
+      "item_id": 218,
+      "item_name": "enzino army polos kuas pendek 22 fix",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:27:24"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:27:24"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:27:24"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:27:24"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        }
+      }
+    },
+    {
+      "item_id": 220,
+      "item_name": "enzino hitam polos kuas pendek 22 fix",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:28:29"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:28:29"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:28:20"
+        },
+        "l": {
+          "quantity": 1,
+          "updated_at": "2022-02-20 08:28:20"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:28:29"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:28:29"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:28:29"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:28:29"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:28:29"
+        }
+      }
+    },
+    {
+      "item_id": 222,
+      "item_name": "enzino putih les 2 biru pan pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "l": {
+          "quantity": 5,
+          "updated_at": "2021-11-14 04:28:35"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        }
+      }
+    },
+    {
+      "item_id": 226,
+      "item_name": "enzino putih les 2 merah pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "m": {
+          "quantity": 12,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "l": {
+          "quantity": 12,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "xl": {
+          "quantity": 5,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        }
+      }
+    },
+    {
+      "item_id": 228,
+      "item_name": "enzino hitam les 1 merah bahu pendek 22 fix",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 04:08:41"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 04:08:41"
+        },
+        "m": {
+          "quantity": 24,
+          "updated_at": "2021-12-06 04:08:41"
+        },
+        "l": {
+          "quantity": 24,
+          "updated_at": "2021-12-06 04:08:41"
+        },
+        "xl": {
+          "quantity": 24,
+          "updated_at": "2021-12-06 04:08:41"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 04:08:41"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 04:08:41"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 04:08:41"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-12-06 04:08:41"
+        }
+      }
+    },
+    {
+      "item_id": 230,
+      "item_name": "enzino putih les 2 hitam pendek 22 FIX",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "m": {
+          "quantity": 10,
+          "updated_at": "2021-12-15 04:12:14"
+        },
+        "l": {
+          "quantity": 10,
+          "updated_at": "2021-11-14 04:27:13"
+        },
+        "xl": {
+          "quantity": 12,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-04 07:35:42"
+        }
+      }
+    },
+    {
+      "item_id": 234,
+      "item_name": "kr ppj misty tua polos panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-29 04:05:59"
+        }
+      }
+    },
+    {
+      "item_id": 235,
+      "item_name": "ob wabukoba putih polos panjang biasa",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        },
+        "s": {
+          "quantity": 165,
+          "updated_at": "2021-12-17 06:08:07"
+        },
+        "m": {
+          "quantity": 154,
+          "updated_at": "2022-02-12 06:37:53"
+        },
+        "l": {
+          "quantity": 116,
+          "updated_at": "2022-02-12 06:37:53"
+        },
+        "xl": {
+          "quantity": 292,
+          "updated_at": "2022-02-12 06:37:53"
+        },
+        "xxl": {
+          "quantity": 90,
+          "updated_at": "2022-02-02 07:07:43"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        }
+      }
+    },
+    {
+      "item_id": 236,
+      "item_name": "ob wabukoba putih polos panjang manset",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        },
+        "s": {
+          "quantity": 78,
+          "updated_at": "2022-02-07 05:54:34"
+        },
+        "m": {
+          "quantity": 21,
+          "updated_at": "2022-02-12 04:42:03"
+        },
+        "l": {
+          "quantity": 411,
+          "updated_at": "2022-02-22 02:42:14"
+        },
+        "xl": {
+          "quantity": 174,
+          "updated_at": "2022-02-22 02:42:14"
+        },
+        "xxl": {
+          "quantity": 206,
+          "updated_at": "2022-02-22 02:42:14"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-02-04 08:24:00"
+        },
+        "4l": {
+          "quantity": 27,
+          "updated_at": "2022-02-04 07:59:56"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        }
+      }
+    },
+    {
+      "item_id": 238,
+      "item_name": "ob wabukoba putih polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        },
+        "s": {
+          "quantity": 185,
+          "updated_at": "2022-02-20 08:32:39"
+        },
+        "m": {
+          "quantity": 397,
+          "updated_at": "2022-02-12 05:51:14"
+        },
+        "l": {
+          "quantity": 401,
+          "updated_at": "2022-02-20 08:32:39"
+        },
+        "xl": {
+          "quantity": 107,
+          "updated_at": "2022-02-20 08:32:39"
+        },
+        "xxl": {
+          "quantity": 240,
+          "updated_at": "2022-02-20 08:32:39"
+        },
+        "3l": {
+          "quantity": 76,
+          "updated_at": "2022-02-20 08:32:39"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-03 04:29:28"
+        }
+      }
+    },
+    {
+      "item_id": 239,
+      "item_name": "kr hds putih krah abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:47:52"
+        }
+      }
+    },
+    {
+      "item_id": 240,
+      "item_name": "kr hds putih krah merah panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:46:54"
+        }
+      }
+    },
+    {
+      "item_id": 241,
+      "item_name": "kr hds biru pan krah abu tua panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "m": {
+          "quantity": 151,
+          "updated_at": "2022-02-19 08:05:36"
+        },
+        "l": {
+          "quantity": 165,
+          "updated_at": "2022-02-19 08:05:36"
+        },
+        "xl": {
+          "quantity": 266,
+          "updated_at": "2022-02-19 08:05:36"
+        },
+        "xxl": {
+          "quantity": 105,
+          "updated_at": "2022-02-19 08:05:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        }
+      }
+    },
+    {
+      "item_id": 242,
+      "item_name": "kr hds abu biru muda/ungu krah abu tua panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:43:21"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:43:21"
+        },
+        "m": {
+          "quantity": 72,
+          "updated_at": "2022-02-02 07:51:16"
+        },
+        "l": {
+          "quantity": 256,
+          "updated_at": "2022-02-02 07:51:16"
+        },
+        "xl": {
+          "quantity": 284,
+          "updated_at": "2022-02-02 07:51:16"
+        },
+        "xxl": {
+          "quantity": 94,
+          "updated_at": "2022-02-02 07:51:16"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:43:21"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:43:21"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2022-01-25 06:43:21"
+        }
+      }
+    },
+    {
+      "item_id": 243,
+      "item_name": "kr hds merah krah abu tua panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        },
+        "m": {
+          "quantity": 322,
+          "updated_at": "2022-02-12 04:35:08"
+        },
+        "l": {
+          "quantity": 416,
+          "updated_at": "2022-02-12 04:35:08"
+        },
+        "xl": {
+          "quantity": 512,
+          "updated_at": "2022-02-12 04:35:08"
+        },
+        "xxl": {
+          "quantity": 336,
+          "updated_at": "2022-01-26 05:55:39"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        }
+      }
+    },
+    {
+      "item_id": 244,
+      "item_name": "kr hds coklat krah abu tua panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "m": {
+          "quantity": 17,
+          "updated_at": "2022-01-27 03:23:57"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "xl": {
+          "quantity": 1,
+          "updated_at": "2021-11-28 06:59:21"
+        },
+        "xxl": {
+          "quantity": 14,
+          "updated_at": "2021-11-28 06:59:21"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        }
+      }
+    },
+    {
+      "item_id": 245,
+      "item_name": "kr hds hitam krah abu tua panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        },
+        "m": {
+          "quantity": 91,
+          "updated_at": "2022-02-10 07:40:09"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-28 06:46:44"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-12-20 04:56:18"
+        },
+        "xxl": {
+          "quantity": 3,
+          "updated_at": "2022-01-24 03:30:25"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:03:15"
+        }
+      }
+    },
+    {
+      "item_id": 246,
+      "item_name": "kr hds orean krah abu tua panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "m": {
+          "quantity": 169,
+          "updated_at": "2022-01-10 04:38:51"
+        },
+        "l": {
+          "quantity": 120,
+          "updated_at": "2022-01-10 04:38:51"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-02 05:26:52"
+        },
+        "xxl": {
+          "quantity": 49,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:08:49"
+        }
+      }
+    },
+    {
+      "item_id": 247,
+      "item_name": "kr hds kuning krah abu tua panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:29:00"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:29:00"
+        },
+        "m": {
+          "quantity": 53,
+          "updated_at": "2021-12-31 06:21:44"
+        },
+        "l": {
+          "quantity": 6,
+          "updated_at": "2022-01-06 07:41:07"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-28 06:44:48"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-12-31 06:21:44"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:29:00"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:29:00"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:29:00"
+        }
+      }
+    },
+    {
+      "item_id": 248,
+      "item_name": "kr hds tosca krah abu tua panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "m": {
+          "quantity": 9,
+          "updated_at": "2022-01-10 04:38:04"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-12-20 04:27:17"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-06 07:07:11"
+        },
+        "xxl": {
+          "quantity": 90,
+          "updated_at": "2022-01-10 04:38:04"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-06 07:20:34"
+        }
+      }
+    }
+  ]

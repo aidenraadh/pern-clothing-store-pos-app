@@ -23,8 +23,11 @@ const Store = models.Store
 const User = models.User
 const bcrypt        = require('bcrypt')
 const Owner = models.Owner
+
+const fs = require('fs');
 const utils = require('../hnsports-migration/store-inventories/utils.js')
-const first_100 = require('../hnsports-migration/store-inventories/store-1/1-100.json')
+const six_100 = require('../hnsports-migration/store-inventories/store-1/6-100.json')
+const six_100_sizes = require('../hnsports-migration/store-inventories/store-1/6-100-sizes.json')
 
 
 rootRouter.get('/add-owner', async (req, res) => {
@@ -56,9 +59,14 @@ rootRouter.get('/add-owner', async (req, res) => {
 
 rootRouter.get('/hnsports', async (req, res) => {
     try {
-        const data = utils.getItemSizes(first_100)
-        console.log('output is: ')
+        const data = utils.getStoredItemsSQL(1, 8)
         console.log(data)
+        // fs.writeFile('user.json', JSON.stringify(data), (err) => {
+        //     if (err) {
+        //         throw err;
+        //     }
+        //     console.log("JSON data is saved.");
+        // });        
         res.send({
             data: data
         })        
