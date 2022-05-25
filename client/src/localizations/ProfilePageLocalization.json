@@ -1,0 +1,22 @@
+{
+    "english": {
+        "yourProfile": "Your Profile",
+        "name": "Name",
+        "updateProfile": "Update profile",
+        "language": "Language",
+        "oldPassword": "Old password",     
+        "newPassword": "New password",
+        "saveChanges": "Save changes",
+        "succMsg": "Success updating profile"
+    },
+    "indonesian": {
+        "yourProfile": "Profil Anda",
+        "name": "Nama",
+        "updateProfile": "Update profil",
+        "language": "Bahasa",
+        "oldPassword": "Password lama",
+        "newPassword": "Password baru",
+        "saveChanges": "Simpan perubahan",
+        "succMsg": "Update profil berhasil"
+    }
+}

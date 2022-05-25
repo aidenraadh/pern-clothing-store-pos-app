@@ -92,7 +92,6 @@
 	grid-gap: 1.4rem;
 }
 .grid.grid-1{
-	
 	grid-template-columns: auto;
 }
 
@@ -106,4 +105,8 @@
 
 .grid.grid-4{
 	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid .grid-item{
+	overflow: hidden;
 }

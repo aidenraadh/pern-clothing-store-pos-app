@@ -10,7 +10,7 @@
         "search": "Search",
         "transactionDetails": "Transaction Details",
         "createTransaction": "+ New transaction",
-        "removeTrnscMsg": "Are you sure want to remove this transaction?",
+        "removeTrnscMsg": "Are you sure want to remove this transaction? All sold inventories will be returned to the original store",
         "remove": "Remove",
         "cancel": "Cancel" 
 
@@ -26,7 +26,7 @@
         "search": "Cari",        
         "transactionDetails": "Detail Transaksi",
         "createTransaction": "+ Buat transaksi",
-        "removeTrnscMsg": "Hapus transaksi ini?",
+        "removeTrnscMsg": "Hapus transaksi ini? Semua inventori yang terjual akan dikembalikan ke toko asalnya",
         "remove": "Hapus",
         "cancel": "Batal"  
     }

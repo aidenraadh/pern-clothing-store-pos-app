@@ -2,7 +2,6 @@ import {formatNum} from '../../Utils.js'
 
 function TransactionReceipt({inventories, objType, loc}){
     const purchasedInvs = formatTransactionInvs(inventories, objType)
-    console.log(purchasedInvs)
     // Get all inventory IDs
     const invIds = purchasedInvs.map(inv => inv.inventoryId).filter((value, index, self) => (
         self.indexOf(value) === index

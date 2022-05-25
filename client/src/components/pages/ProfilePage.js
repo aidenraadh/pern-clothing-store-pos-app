@@ -7,7 +7,7 @@ import {TextInput, Select, TextInputWithBtn} from '../Forms'
 import {SimpleCard} from '../Cards'
 import {Grid} from '../Layouts'
 
-function ProfilePage({user}){
+function ProfilePage({user, loc}){
     const languages = useMemo(() => (
         JSON.parse(localStorage.getItem('languages'))
     ))
@@ -56,14 +56,19 @@ function ProfilePage({user}){
     return (<>
         <SimpleCard
             attr={{id: 'profile-card'}}
-            heading={'Your Profile'}
+            heading={loc.yourProfile}
             body={<>
-                <p>
-                    Name: {user.name}<br/>
-                </p>
-                <Button text={'Update profile'} size={'sm'} attr={{
-                    onClick: () => {setUpdProfileModal(true)}
-                }}/>                
+                <p className="flex-row items-start" id="profile-box">
+                    <img src='images/user_default_thumbnail.jpg'/>
+                    <span className="flex-col">
+                        <span>{loc.name}: {user.name}</span>
+                        <span>Role: {user.role.name}</span>
+                        <Button text={loc.updateProfile} size={'sm'} attr={{
+                            style: {marginTop: '2rem'},
+                            onClick: () => {setUpdProfileModal(true)}
+                        }}/>                         
+                    </span>
+                </p>               
             </>}
             action={<>
                 <Button 
@@ -76,32 +81,32 @@ function ProfilePage({user}){
             </>}
         />
         <Modal
-            heading={'Update Profile'}
+            heading={loc.updateProfile}
             body={<Grid numOfColumns={1} items={[
-                <TextInput label={'Name'} formAttr={{
+                <TextInput label={loc.name} formAttr={{
                     value: name, onChange: (e) => {setNameName(e.target.value)}
                 }}/>,
-                <Select label={'Language'} formAttr={{
+                <Select label={loc.language} formAttr={{
                         value: languageId, onChange: (e) => {setLanguageId(e.target.value)}
                     }}
                     options={(() => {
                         const options = []
                         for (const id in languages) {
                             options.push({
-                                value: id, text: languages[id].name
+                                value: id, text: languages[id].name.charAt(0).toUpperCase() + languages[id].name.slice(1)
                             })
                         }
                         return options                        
                     })()}
                 />,
-                <TextInputWithBtn label={'Old password'} btnIconName={oldPasswordShown ? 'visible' : 'hidden'}
+                <TextInputWithBtn label={loc.oldPassword} btnIconName={oldPasswordShown ? 'visible' : 'hidden'}
                     formAttr={{
                         type: (oldPasswordShown ? 'text' : 'password'),
                         value: oldPassword, onChange: (e) => {setOldPassword(e.target.value)}
                     }}
                     btnAttr={{onClick: () => {setOldPasswordShown(state => !state)}}}
                 />,
-                <TextInputWithBtn label={'New password'} btnIconName={newPasswordShown ? 'visible' : 'hidden'}
+                <TextInputWithBtn label={loc.newPassword} btnIconName={newPasswordShown ? 'visible' : 'hidden'}
                     formAttr={{
                         type: (newPasswordShown ? 'text' : 'password'),
                         value: newPassword, onChange: (e) => {setNewPassword(e.target.value)}
@@ -111,7 +116,7 @@ function ProfilePage({user}){
             ]}/>}
             shown={updProfileModal}
             toggleModal={() => {setUpdProfileModal(state => !state)}}
-            footer={<Button size={'md'} text={'Save changes'} attr={{
+            footer={<Button size={'md'} text={loc.saveChanges} attr={{
                 disabled: disableBtn,
                 onClick: () => {updateProfile()}
             }}/>}
@@ -130,7 +135,7 @@ function ProfilePage({user}){
             icon={'done_circle'}
             iconColor={'blue'}
             title={"Success"}
-            body={'Success updating profile'}
+            body={loc.succMsg}
             confirmText={'OK'}
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
             confirmCallback={() => {

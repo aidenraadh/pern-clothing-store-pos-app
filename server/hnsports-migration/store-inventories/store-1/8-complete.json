@@ -1,0 +1,4402 @@
+[
+    {
+      "item_id": 806,
+      "item_name": "jaket estelan diadora turkis biru malam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "m": {
+          "quantity": 11,
+          "updated_at": "2021-11-14 08:52:57"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        }
+      }
+    },
+    {
+      "item_id": 807,
+      "item_name": "jaket estelan diadora kuning hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "m": {
+          "quantity": 20,
+          "updated_at": "2021-11-14 08:53:33"
+        },
+        "l": {
+          "quantity": 49,
+          "updated_at": "2021-11-14 08:53:33"
+        },
+        "xl": {
+          "quantity": 25,
+          "updated_at": "2021-11-14 08:53:33"
+        },
+        "xxl": {
+          "quantity": 15,
+          "updated_at": "2021-11-14 08:53:33"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        }
+      }
+    },
+    {
+      "item_id": 808,
+      "item_name": "jaket estelan diadora kuning les 1 hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "m": {
+          "quantity": 27,
+          "updated_at": "2021-11-14 08:54:18"
+        },
+        "l": {
+          "quantity": 49,
+          "updated_at": "2021-11-14 08:54:18"
+        },
+        "xl": {
+          "quantity": 28,
+          "updated_at": "2021-11-14 08:54:18"
+        },
+        "xxl": {
+          "quantity": 1,
+          "updated_at": "2021-11-14 08:54:18"
+        },
+        "3l": {
+          "quantity": 4,
+          "updated_at": "2021-11-14 08:54:18"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        }
+      }
+    },
+    {
+      "item_id": 809,
+      "item_name": "jaket estelan diadora merah les 1 hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "l": {
+          "quantity": 22,
+          "updated_at": "2021-11-14 08:54:54"
+        },
+        "xl": {
+          "quantity": 34,
+          "updated_at": "2021-11-14 08:54:54"
+        },
+        "xxl": {
+          "quantity": 10,
+          "updated_at": "2021-11-14 08:54:54"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        }
+      }
+    },
+    {
+      "item_id": 810,
+      "item_name": "jaket estelan diadora maron hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:02:15"
+        }
+      }
+    },
+    {
+      "item_id": 811,
+      "item_name": "jaket estelan diadora dewasa stabilo bmalam/kuning",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        }
+      }
+    },
+    {
+      "item_id": 812,
+      "item_name": "jaket estelan diadora anak merah les hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "m": {
+          "quantity": 3,
+          "updated_at": "2021-11-22 04:59:07"
+        },
+        "l": {
+          "quantity": 8,
+          "updated_at": "2021-11-22 04:59:07"
+        },
+        "xl": {
+          "quantity": 19,
+          "updated_at": "2021-11-22 04:59:07"
+        },
+        "xxl": {
+          "quantity": 20,
+          "updated_at": "2021-11-22 04:59:07"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        }
+      }
+    },
+    {
+      "item_id": 813,
+      "item_name": "jaket estelan diadora anak tosca les hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "m": {
+          "quantity": 14,
+          "updated_at": "2021-11-22 04:59:53"
+        },
+        "l": {
+          "quantity": 45,
+          "updated_at": "2021-11-22 04:59:53"
+        },
+        "xl": {
+          "quantity": 3,
+          "updated_at": "2021-11-22 04:59:53"
+        },
+        "xxl": {
+          "quantity": 3,
+          "updated_at": "2021-11-22 04:59:53"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        }
+      }
+    },
+    {
+      "item_id": 814,
+      "item_name": "jaket estelan diadora anak stabilo les hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "m": {
+          "quantity": 7,
+          "updated_at": "2021-11-22 05:00:25"
+        },
+        "l": {
+          "quantity": 34,
+          "updated_at": "2021-11-22 05:00:25"
+        },
+        "xl": {
+          "quantity": 19,
+          "updated_at": "2021-11-22 05:00:25"
+        },
+        "xxl": {
+          "quantity": 8,
+          "updated_at": "2021-11-22 05:00:25"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        }
+      }
+    },
+    {
+      "item_id": 815,
+      "item_name": "jaket estelan diadora dewasa maron bmalam/kuning",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:08:13"
+        }
+      }
+    },
+    {
+      "item_id": 816,
+      "item_name": "kr wr lakos orean muda polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "l": {
+          "quantity": 90,
+          "updated_at": "2021-12-06 05:41:58"
+        },
+        "xl": {
+          "quantity": 84,
+          "updated_at": "2021-12-15 04:10:17"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 817,
+      "item_name": "kr wr lakos orean sedang polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 13,
+          "updated_at": "2021-12-23 07:16:57"
+        },
+        "l": {
+          "quantity": 25,
+          "updated_at": "2021-12-23 07:16:57"
+        },
+        "xl": {
+          "quantity": 8,
+          "updated_at": "2021-12-23 07:16:57"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 818,
+      "item_name": "kr wr lakos orean polos les hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 97,
+          "updated_at": "2021-12-06 05:46:11"
+        },
+        "l": {
+          "quantity": 170,
+          "updated_at": "2022-01-18 05:13:36"
+        },
+        "xl": {
+          "quantity": 56,
+          "updated_at": "2022-02-12 05:55:08"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 819,
+      "item_name": "kr wr lakos biru malam polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 820,
+      "item_name": "kr wr lakos merah les 1 hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "l": {
+          "quantity": 43,
+          "updated_at": "2022-01-31 07:05:36"
+        },
+        "xl": {
+          "quantity": 60,
+          "updated_at": "2021-12-07 05:40:27"
+        },
+        "xxl": {
+          "quantity": 42,
+          "updated_at": "2021-12-07 05:40:27"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 821,
+      "item_name": "kr wr lakos pink les hitam putih pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 85,
+          "updated_at": "2021-12-06 05:59:37"
+        },
+        "l": {
+          "quantity": 45,
+          "updated_at": "2021-12-06 05:59:37"
+        },
+        "xl": {
+          "quantity": 59,
+          "updated_at": "2021-12-06 05:59:37"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 822,
+      "item_name": "kr wr lakos abu les putih hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 65,
+          "updated_at": "2022-01-19 03:50:06"
+        },
+        "l": {
+          "quantity": 52,
+          "updated_at": "2022-01-19 03:50:06"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 823,
+      "item_name": "kr wr lakos biru pan pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 824,
+      "item_name": "kr wr lakos tosca pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-10 06:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 825,
+      "item_name": "ob c59 anak merah biru malam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "s": {
+          "quantity": 59,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "m": {
+          "quantity": 120,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "l": {
+          "quantity": 120,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "xl": {
+          "quantity": 59,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "xxl": {
+          "quantity": 60,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        }
+      }
+    },
+    {
+      "item_id": 826,
+      "item_name": "ob c59 anak merah polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "s": {
+          "quantity": 83,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "m": {
+          "quantity": 76,
+          "updated_at": "2022-01-19 08:20:58"
+        },
+        "l": {
+          "quantity": 142,
+          "updated_at": "2022-01-19 08:20:58"
+        },
+        "xl": {
+          "quantity": 86,
+          "updated_at": "2022-01-18 03:47:39"
+        },
+        "xxl": {
+          "quantity": 19,
+          "updated_at": "2021-12-04 04:04:40"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        }
+      }
+    },
+    {
+      "item_id": 827,
+      "item_name": "ob rebon anak putih panjang biasa",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "s": {
+          "quantity": 5,
+          "updated_at": "2021-11-26 07:29:34"
+        },
+        "m": {
+          "quantity": 33,
+          "updated_at": "2022-02-16 04:41:50"
+        },
+        "l": {
+          "quantity": 94,
+          "updated_at": "2022-02-16 04:41:50"
+        },
+        "xl": {
+          "quantity": 162,
+          "updated_at": "2021-11-26 07:29:34"
+        },
+        "xxl": {
+          "quantity": 105,
+          "updated_at": "2021-12-28 06:52:27"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:45:23"
+        }
+      }
+    },
+    {
+      "item_id": 828,
+      "item_name": "ob c59 orean polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:48:24"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:48:24"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:48:24"
+        },
+        "l": {
+          "quantity": 255,
+          "updated_at": "2021-11-11 08:48:24"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:48:24"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:48:24"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:48:24"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:48:24"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:48:24"
+        }
+      }
+    },
+    {
+      "item_id": 829,
+      "item_name": "ob c59 hitam polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-01-11 06:09:00"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-01-18 03:45:23"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-18 03:45:23"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        }
+      }
+    },
+    {
+      "item_id": 830,
+      "item_name": "ob c59 biru malam/navy polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "m": {
+          "quantity": 108,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "l": {
+          "quantity": 306,
+          "updated_at": "2022-01-11 05:45:02"
+        },
+        "xl": {
+          "quantity": 23,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "xxl": {
+          "quantity": 41,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        }
+      }
+    },
+    {
+      "item_id": 831,
+      "item_name": "ob c59 putih polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-15 06:48:15"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-15 06:48:15"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        }
+      }
+    },
+    {
+      "item_id": 832,
+      "item_name": "ob c59 hijau fuji polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-12-13 03:22:08"
+        },
+        "l": {
+          "quantity": 37,
+          "updated_at": "2021-12-13 03:22:08"
+        },
+        "xl": {
+          "quantity": 48,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "xxl": {
+          "quantity": 36,
+          "updated_at": "2021-12-13 03:22:08"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        }
+      }
+    },
+    {
+      "item_id": 833,
+      "item_name": "ob c59 stabilo polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "l": {
+          "quantity": 44,
+          "updated_at": "2022-01-11 05:47:13"
+        },
+        "xl": {
+          "quantity": 1,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 08:58:50"
+        }
+      }
+    },
+    {
+      "item_id": 834,
+      "item_name": "ob c59 maron polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "m": {
+          "quantity": 26,
+          "updated_at": "2022-01-11 05:44:25"
+        },
+        "l": {
+          "quantity": 1,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "xl": {
+          "quantity": 23,
+          "updated_at": "2022-01-11 05:44:25"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        }
+      }
+    },
+    {
+      "item_id": 835,
+      "item_name": "ob c59 biru pan/benhur polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "xl": {
+          "quantity": 1,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        }
+      }
+    },
+    {
+      "item_id": 836,
+      "item_name": "ob c59 biru muda polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-15 06:50:41"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "xxl": {
+          "quantity": 1,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        }
+      }
+    },
+    {
+      "item_id": 837,
+      "item_name": "ob c59 kuning polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "l": {
+          "quantity": 108,
+          "updated_at": "2022-01-11 05:46:43"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        }
+      }
+    },
+    {
+      "item_id": 838,
+      "item_name": "ob rebon putih polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "s": {
+          "quantity": 5,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "m": {
+          "quantity": 50,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "l": {
+          "quantity": 6,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "xxl": {
+          "quantity": 1,
+          "updated_at": "2021-11-15 06:49:10"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:12:36"
+        }
+      }
+    },
+    {
+      "item_id": 839,
+      "item_name": "ob hd putih polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "m": {
+          "quantity": 41,
+          "updated_at": "2022-01-10 03:39:17"
+        },
+        "l": {
+          "quantity": 414,
+          "updated_at": "2022-01-10 03:39:17"
+        },
+        "xl": {
+          "quantity": 4,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "xxl": {
+          "quantity": 10,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 840,
+      "item_name": "ob hd orean polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 841,
+      "item_name": "ob c59 abu biru pan pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "m": {
+          "quantity": 13,
+          "updated_at": "2021-11-13 03:56:55"
+        },
+        "l": {
+          "quantity": 57,
+          "updated_at": "2021-11-13 03:56:55"
+        },
+        "xl": {
+          "quantity": 17,
+          "updated_at": "2021-11-13 03:56:55"
+        },
+        "xxl": {
+          "quantity": 30,
+          "updated_at": "2021-11-13 03:56:55"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:16:46"
+        }
+      }
+    },
+    {
+      "item_id": 842,
+      "item_name": "ob dua putri putih pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:18:50"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:18:50"
+        },
+        "m": {
+          "quantity": 40,
+          "updated_at": "2021-11-11 10:18:50"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:18:50"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:18:50"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:18:50"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:18:50"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:18:50"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-11 10:18:50"
+        }
+      }
+    },
+    {
+      "item_id": 843,
+      "item_name": "ob c59 anak putih polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-12-15 04:01:55"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        }
+      }
+    },
+    {
+      "item_id": 844,
+      "item_name": "ob c59 anak kuning polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "s": {
+          "quantity": 55,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "m": {
+          "quantity": 106,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "l": {
+          "quantity": 115,
+          "updated_at": "2022-01-25 08:38:34"
+        },
+        "xl": {
+          "quantity": 33,
+          "updated_at": "2022-01-25 08:38:34"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        }
+      }
+    },
+    {
+      "item_id": 845,
+      "item_name": "ob c59 anak hijau fuji polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "s": {
+          "quantity": 6,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "m": {
+          "quantity": 25,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "l": {
+          "quantity": 24,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xl": {
+          "quantity": 24,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xxl": {
+          "quantity": 17,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        }
+      }
+    },
+    {
+      "item_id": 846,
+      "item_name": "ob c59 anak biru pan polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "s": {
+          "quantity": 175,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "m": {
+          "quantity": 267,
+          "updated_at": "2022-02-07 05:42:35"
+        },
+        "l": {
+          "quantity": 263,
+          "updated_at": "2022-01-23 02:58:54"
+        },
+        "xl": {
+          "quantity": 187,
+          "updated_at": "2022-02-09 05:55:35"
+        },
+        "xxl": {
+          "quantity": 89,
+          "updated_at": "2021-12-11 05:49:24"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        }
+      }
+    },
+    {
+      "item_id": 847,
+      "item_name": "ob c59 anak biru malam polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "s": {
+          "quantity": 131,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "m": {
+          "quantity": 189,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "l": {
+          "quantity": 128,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xl": {
+          "quantity": 218,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xxl": {
+          "quantity": 11,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        }
+      }
+    },
+    {
+      "item_id": 848,
+      "item_name": "ob c59 anak hitam polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "s": {
+          "quantity": 39,
+          "updated_at": "2022-01-10 06:45:31"
+        },
+        "m": {
+          "quantity": 69,
+          "updated_at": "2022-01-10 06:45:52"
+        },
+        "l": {
+          "quantity": 74,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xl": {
+          "quantity": 54,
+          "updated_at": "2022-02-12 05:54:05"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-01-18 03:48:17"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        }
+      }
+    },
+    {
+      "item_id": 849,
+      "item_name": "ob c59 anak pink polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "s": {
+          "quantity": 20,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "m": {
+          "quantity": 56,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "l": {
+          "quantity": 54,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xl": {
+          "quantity": 28,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xxl": {
+          "quantity": 46,
+          "updated_at": "2021-12-11 05:48:13"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        }
+      }
+    },
+    {
+      "item_id": 850,
+      "item_name": "ob c59 anak stabilo polos pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "s": {
+          "quantity": 38,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "m": {
+          "quantity": 59,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "l": {
+          "quantity": 64,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xl": {
+          "quantity": 63,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "xxl": {
+          "quantity": 12,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 03:55:26"
+        }
+      }
+    },
+    {
+      "item_id": 851,
+      "item_name": "ob bpk biru pan abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "m": {
+          "quantity": 31,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "l": {
+          "quantity": 30,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "xl": {
+          "quantity": 37,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "xxl": {
+          "quantity": 22,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        }
+      }
+    },
+    {
+      "item_id": 852,
+      "item_name": "ob bpk merah abu",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "m": {
+          "quantity": 27,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "l": {
+          "quantity": 46,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "xxl": {
+          "quantity": 12,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        }
+      }
+    },
+    {
+      "item_id": 853,
+      "item_name": "ob bpk orean abu",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        }
+      }
+    },
+    {
+      "item_id": 854,
+      "item_name": "ob bpk coklat abu",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "m": {
+          "quantity": 47,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "l": {
+          "quantity": 65,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "xl": {
+          "quantity": 123,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "xxl": {
+          "quantity": 66,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        }
+      }
+    },
+    {
+      "item_id": 855,
+      "item_name": "ob bpk army hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "m": {
+          "quantity": 163,
+          "updated_at": "2022-02-20 08:58:07"
+        },
+        "l": {
+          "quantity": 90,
+          "updated_at": "2022-02-20 08:58:07"
+        },
+        "xl": {
+          "quantity": 50,
+          "updated_at": "2022-02-20 08:58:07"
+        },
+        "xxl": {
+          "quantity": 28,
+          "updated_at": "2022-01-06 08:16:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:43:20"
+        }
+      }
+    },
+    {
+      "item_id": 856,
+      "item_name": "ob bpk army loreng hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "m": {
+          "quantity": 90,
+          "updated_at": "2022-01-26 08:18:52"
+        },
+        "l": {
+          "quantity": 1,
+          "updated_at": "2022-01-26 08:18:52"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-01-26 08:09:56"
+        },
+        "xxl": {
+          "quantity": 8,
+          "updated_at": "2022-01-26 08:18:52"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        }
+      }
+    },
+    {
+      "item_id": 857,
+      "item_name": "ob bpk stabilo hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "m": {
+          "quantity": 1,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "l": {
+          "quantity": 29,
+          "updated_at": "2022-02-02 07:56:02"
+        },
+        "xl": {
+          "quantity": 6,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "xxl": {
+          "quantity": 67,
+          "updated_at": "2022-02-02 07:56:02"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        }
+      }
+    },
+    {
+      "item_id": 858,
+      "item_name": "ob bpk merah hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "m": {
+          "quantity": 206,
+          "updated_at": "2022-01-06 08:17:59"
+        },
+        "l": {
+          "quantity": 257,
+          "updated_at": "2022-01-06 08:17:59"
+        },
+        "xl": {
+          "quantity": 143,
+          "updated_at": "2022-01-06 08:17:59"
+        },
+        "xxl": {
+          "quantity": 67,
+          "updated_at": "2021-12-30 04:02:10"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        }
+      }
+    },
+    {
+      "item_id": 859,
+      "item_name": "ob bpk biru pan hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "m": {
+          "quantity": 139,
+          "updated_at": "2022-01-18 05:43:13"
+        },
+        "l": {
+          "quantity": 110,
+          "updated_at": "2022-01-18 05:43:13"
+        },
+        "xl": {
+          "quantity": 28,
+          "updated_at": "2022-01-18 03:37:20"
+        },
+        "xxl": {
+          "quantity": 55,
+          "updated_at": "2022-01-18 03:37:20"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        }
+      }
+    },
+    {
+      "item_id": 860,
+      "item_name": "ob bpk abu hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "m": {
+          "quantity": 37,
+          "updated_at": "2022-02-07 05:11:12"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-02-07 05:11:12"
+        },
+        "xl": {
+          "quantity": 12,
+          "updated_at": "2022-02-07 05:11:12"
+        },
+        "xxl": {
+          "quantity": 4,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:50:11"
+        }
+      }
+    },
+    {
+      "item_id": 861,
+      "item_name": "ob bpk orean hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "m": {
+          "quantity": 87,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-02-07 05:17:51"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        }
+      }
+    },
+    {
+      "item_id": 862,
+      "item_name": "ob bpk kuning hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "m": {
+          "quantity": 58,
+          "updated_at": "2021-11-14 05:07:20"
+        },
+        "l": {
+          "quantity": 104,
+          "updated_at": "2022-01-06 08:20:06"
+        },
+        "xl": {
+          "quantity": 84,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "xxl": {
+          "quantity": 29,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        }
+      }
+    },
+    {
+      "item_id": 863,
+      "item_name": "ob bpk biru malam hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "m": {
+          "quantity": 31,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        }
+      }
+    },
+    {
+      "item_id": 864,
+      "item_name": "ob bpk ungu hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "xl": {
+          "quantity": 107,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        }
+      }
+    },
+    {
+      "item_id": 865,
+      "item_name": "ob bpk hijau fuji hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "m": {
+          "quantity": 23,
+          "updated_at": "2021-12-13 08:34:14"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-12-13 08:34:14"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-12-13 08:34:14"
+        },
+        "xxl": {
+          "quantity": 15,
+          "updated_at": "2021-12-13 08:34:14"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        },
+        "4l": {
+          "quantity": 70,
+          "updated_at": "2021-12-13 08:34:14"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 07:54:36"
+        }
+      }
+    },
+    {
+      "item_id": 866,
+      "item_name": "ob bpk turkis muda hitam",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "xl": {
+          "quantity": 43,
+          "updated_at": "2022-01-06 08:20:39"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        }
+      }
+    },
+    {
+      "item_id": 867,
+      "item_name": "ob bpk coklat muda coklat tua",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "m": {
+          "quantity": 55,
+          "updated_at": "2022-01-06 08:21:43"
+        },
+        "l": {
+          "quantity": 53,
+          "updated_at": "2022-01-19 08:22:33"
+        },
+        "xl": {
+          "quantity": 94,
+          "updated_at": "2022-01-19 08:22:33"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        }
+      }
+    },
+    {
+      "item_id": 868,
+      "item_name": "ob bpk coklat tua coklat muda",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "m": {
+          "quantity": 100,
+          "updated_at": "2022-02-19 08:09:05"
+        },
+        "l": {
+          "quantity": 58,
+          "updated_at": "2022-02-19 08:09:05"
+        },
+        "xl": {
+          "quantity": 138,
+          "updated_at": "2022-02-19 08:09:05"
+        },
+        "xxl": {
+          "quantity": 38,
+          "updated_at": "2022-02-19 08:09:05"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        }
+      }
+    },
+    {
+      "item_id": 869,
+      "item_name": "ob bpk hitam merah",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "m": {
+          "quantity": 48,
+          "updated_at": "2022-01-06 08:23:16"
+        },
+        "l": {
+          "quantity": 164,
+          "updated_at": "2022-01-06 08:23:16"
+        },
+        "xl": {
+          "quantity": 73,
+          "updated_at": "2022-01-06 08:23:16"
+        },
+        "xxl": {
+          "quantity": 30,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        }
+      }
+    },
+    {
+      "item_id": 870,
+      "item_name": "ob bpk hitam orean",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-23 04:32:37"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-23 04:32:37"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:06:57"
+        }
+      }
+    },
+    {
+      "item_id": 871,
+      "item_name": "ob bpk hitam biru malam/navy",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:11:00"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:11:00"
+        },
+        "m": {
+          "quantity": 10,
+          "updated_at": "2021-11-13 08:11:00"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-12-13 03:22:39"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:11:00"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:11:00"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:11:00"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:11:00"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-13 08:11:00"
+        }
+      }
+    },
+    {
+      "item_id": 872,
+      "item_name": "kr ardent orean hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "m": {
+          "quantity": 33,
+          "updated_at": "2022-02-19 04:28:57"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-02-08 03:46:52"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-02-08 03:46:31"
+        },
+        "xxl": {
+          "quantity": 9,
+          "updated_at": "2022-02-19 04:28:57"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        }
+      }
+    },
+    {
+      "item_id": 873,
+      "item_name": "kr ardent biru pan hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "m": {
+          "quantity": 185,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "l": {
+          "quantity": 221,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "xl": {
+          "quantity": 121,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        }
+      }
+    },
+    {
+      "item_id": 874,
+      "item_name": "kr ardent stabilo hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        }
+      }
+    },
+    {
+      "item_id": 875,
+      "item_name": "kr ardent merah hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "m": {
+          "quantity": 59,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "l": {
+          "quantity": 101,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "xl": {
+          "quantity": 24,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "xxl": {
+          "quantity": 25,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        }
+      }
+    },
+    {
+      "item_id": 876,
+      "item_name": "kr ardent turkis hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "m": {
+          "quantity": 298,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "l": {
+          "quantity": 292,
+          "updated_at": "2022-02-08 03:45:08"
+        },
+        "xl": {
+          "quantity": 148,
+          "updated_at": "2022-02-08 03:45:08"
+        },
+        "xxl": {
+          "quantity": 42,
+          "updated_at": "2022-01-05 06:36:33"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:06:23"
+        }
+      }
+    },
+    {
+      "item_id": 877,
+      "item_name": "kr ardent biru muda biru malam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "s": {
+          "quantity": 36,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "m": {
+          "quantity": 131,
+          "updated_at": "2021-12-02 08:47:29"
+        },
+        "l": {
+          "quantity": 191,
+          "updated_at": "2021-12-02 08:47:29"
+        },
+        "xl": {
+          "quantity": 189,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "xxl": {
+          "quantity": 25,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        }
+      }
+    },
+    {
+      "item_id": 878,
+      "item_name": "kr ardent abu hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "s": {
+          "quantity": 76,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "m": {
+          "quantity": 163,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "l": {
+          "quantity": 183,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "xl": {
+          "quantity": 125,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "xxl": {
+          "quantity": 128,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "3l": {
+          "quantity": 24,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        }
+      }
+    },
+    {
+      "item_id": 879,
+      "item_name": "kr ardent hijau fuji hitam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "l": {
+          "quantity": 186,
+          "updated_at": "2022-01-11 06:16:46"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        }
+      }
+    },
+    {
+      "item_id": 880,
+      "item_name": "kr ardent biru malam biru muda pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "s": {
+          "quantity": 96,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        }
+      }
+    },
+    {
+      "item_id": 881,
+      "item_name": "kr colins hijau fuji abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "m": {
+          "quantity": 8,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "l": {
+          "quantity": 47,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "xl": {
+          "quantity": 8,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "xxl": {
+          "quantity": 30,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:09:46"
+        }
+      }
+    },
+    {
+      "item_id": 882,
+      "item_name": "kr colins merah abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "m": {
+          "quantity": 116,
+          "updated_at": "2022-01-05 06:38:30"
+        },
+        "l": {
+          "quantity": 267,
+          "updated_at": "2022-01-05 06:38:30"
+        },
+        "xl": {
+          "quantity": 152,
+          "updated_at": "2022-01-05 06:38:30"
+        },
+        "xxl": {
+          "quantity": 84,
+          "updated_at": "2022-01-05 06:38:30"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        }
+      }
+    },
+    {
+      "item_id": 883,
+      "item_name": "kr colins biru pan abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "l": {
+          "quantity": 1,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "xxl": {
+          "quantity": 14,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        }
+      }
+    },
+    {
+      "item_id": 884,
+      "item_name": "kr colins kuning abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "m": {
+          "quantity": 45,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "l": {
+          "quantity": 53,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "xl": {
+          "quantity": 1,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        }
+      }
+    },
+    {
+      "item_id": 885,
+      "item_name": "kr colins biru muda biru malam pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "m": {
+          "quantity": 18,
+          "updated_at": "2022-01-05 06:39:13"
+        },
+        "l": {
+          "quantity": 77,
+          "updated_at": "2022-01-05 06:39:13"
+        },
+        "xl": {
+          "quantity": 39,
+          "updated_at": "2022-01-05 06:39:13"
+        },
+        "xxl": {
+          "quantity": 48,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        }
+      }
+    },
+    {
+      "item_id": 886,
+      "item_name": "kr ardent hitam abu pendek",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "s": {
+          "quantity": 180,
+          "updated_at": "2022-01-05 06:40:11"
+        },
+        "m": {
+          "quantity": 305,
+          "updated_at": "2022-01-05 06:40:11"
+        },
+        "l": {
+          "quantity": 553,
+          "updated_at": "2022-01-05 06:40:11"
+        },
+        "xl": {
+          "quantity": 102,
+          "updated_at": "2022-01-11 06:16:12"
+        },
+        "xxl": {
+          "quantity": 44,
+          "updated_at": "2022-01-05 06:40:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 01:13:02"
+        }
+      }
+    },
+    {
+      "item_id": 887,
+      "item_name": "enzino army polos kuas panjang 22",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:26:41"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:26:41"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:26:41"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:26:41"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:26:41"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        }
+      }
+    },
+    {
+      "item_id": 888,
+      "item_name": "enzino maron polos kuas panjang 22",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "m": {
+          "quantity": 1,
+          "updated_at": "2022-01-30 06:36:02"
+        },
+        "l": {
+          "quantity": 1,
+          "updated_at": "2022-01-23 04:12:11"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        }
+      }
+    },
+    {
+      "item_id": 889,
+      "item_name": "enzino biru malam polos kuas panjang 22",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:29:09"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:29:09"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:29:09"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:29:09"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2022-02-20 08:29:09"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 04:37:21"
+        }
+      }
+    },
+    {
+      "item_id": 898,
+      "item_name": "ob contri putih polos panjang (bilabong)",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 06:16:23"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 06:16:23"
+        },
+        "m": {
+          "quantity": 261,
+          "updated_at": "2022-01-05 05:49:30"
+        },
+        "l": {
+          "quantity": 336,
+          "updated_at": "2022-01-05 05:49:30"
+        },
+        "xl": {
+          "quantity": 318,
+          "updated_at": "2022-01-05 05:49:30"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 06:16:23"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 06:16:23"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 06:16:23"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 06:16:23"
+        }
+      }
+    },
+    {
+      "item_id": 899,
+      "item_name": "ob contri hitam polos panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:05:44"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:05:44"
+        },
+        "m": {
+          "quantity": 257,
+          "updated_at": "2021-11-14 08:05:44"
+        },
+        "l": {
+          "quantity": 347,
+          "updated_at": "2022-02-20 08:36:59"
+        },
+        "xl": {
+          "quantity": 287,
+          "updated_at": "2022-02-20 08:36:59"
+        },
+        "xxl": {
+          "quantity": 72,
+          "updated_at": "2022-02-20 08:36:59"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:05:44"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:05:44"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:05:44"
+        }
+      }
+    },
+    {
+      "item_id": 900,
+      "item_name": "ob contri hijau fuji hitam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "m": {
+          "quantity": 51,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "l": {
+          "quantity": 71,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "xl": {
+          "quantity": 13,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "xxl": {
+          "quantity": 16,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        }
+      }
+    },
+    {
+      "item_id": 901,
+      "item_name": "ob contri stabilo hitam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "m": {
+          "quantity": 100,
+          "updated_at": "2022-02-12 04:29:21"
+        },
+        "l": {
+          "quantity": 124,
+          "updated_at": "2022-02-12 04:29:21"
+        },
+        "xl": {
+          "quantity": 80,
+          "updated_at": "2022-02-12 04:29:21"
+        },
+        "xxl": {
+          "quantity": 39,
+          "updated_at": "2022-02-12 04:29:21"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        }
+      }
+    },
+    {
+      "item_id": 902,
+      "item_name": "ob contri orean hitam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "m": {
+          "quantity": 7,
+          "updated_at": "2022-01-26 06:06:52"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "xl": {
+          "quantity": 26,
+          "updated_at": "2022-02-19 08:38:46"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        }
+      }
+    },
+    {
+      "item_id": 903,
+      "item_name": "ob contri merah hitam panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "m": {
+          "quantity": 138,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "l": {
+          "quantity": 205,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "xl": {
+          "quantity": 121,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "xxl": {
+          "quantity": 54,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:52:58"
+        }
+      }
+    },
+    {
+      "item_id": 904,
+      "item_name": "ob hds biru malam abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "m": {
+          "quantity": 121,
+          "updated_at": "2021-12-27 04:08:53"
+        },
+        "l": {
+          "quantity": 223,
+          "updated_at": "2021-12-27 04:08:53"
+        },
+        "xl": {
+          "quantity": 59,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "xxl": {
+          "quantity": 133,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        }
+      }
+    },
+    {
+      "item_id": 905,
+      "item_name": "ob hds maron abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "m": {
+          "quantity": 199,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "l": {
+          "quantity": 363,
+          "updated_at": "2022-01-06 07:57:32"
+        },
+        "xl": {
+          "quantity": 115,
+          "updated_at": "2022-01-06 07:57:32"
+        },
+        "xxl": {
+          "quantity": 83,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        }
+      }
+    },
+    {
+      "item_id": 906,
+      "item_name": "ob hds coklat abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "m": {
+          "quantity": 201,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "l": {
+          "quantity": 511,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "xl": {
+          "quantity": 181,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "xxl": {
+          "quantity": 99,
+          "updated_at": "2021-12-27 04:10:20"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        }
+      }
+    },
+    {
+      "item_id": 907,
+      "item_name": "ob hds turkis muda abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "m": {
+          "quantity": 184,
+          "updated_at": "2022-01-10 06:11:07"
+        },
+        "l": {
+          "quantity": 321,
+          "updated_at": "2022-01-10 06:11:07"
+        },
+        "xl": {
+          "quantity": 138,
+          "updated_at": "2022-01-10 06:11:07"
+        },
+        "xxl": {
+          "quantity": 95,
+          "updated_at": "2022-01-10 06:11:07"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        }
+      }
+    },
+    {
+      "item_id": 908,
+      "item_name": "ob hds turkis tua abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "m": {
+          "quantity": 135,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "l": {
+          "quantity": 353,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "xl": {
+          "quantity": 62,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "xxl": {
+          "quantity": 44,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 07:57:00"
+        }
+      }
+    },
+    {
+      "item_id": 909,
+      "item_name": "ob hds abu biru muda/abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "m": {
+          "quantity": 78,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "l": {
+          "quantity": 305,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "xl": {
+          "quantity": 76,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "xxl": {
+          "quantity": 56,
+          "updated_at": "2021-11-29 03:14:03"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        }
+      }
+    },
+    {
+      "item_id": 910,
+      "item_name": "ob hds biru pan abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "m": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "xl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "xxl": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        }
+      }
+    },
+    {
+      "item_id": 911,
+      "item_name": "ob hds biru muda abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "m": {
+          "quantity": 185,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "l": {
+          "quantity": 445,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "xl": {
+          "quantity": 170,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "xxl": {
+          "quantity": 90,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        }
+      }
+    },
+    {
+      "item_id": 912,
+      "item_name": "ob hds army abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "m": {
+          "quantity": 186,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "l": {
+          "quantity": 416,
+          "updated_at": "2022-01-06 07:56:50"
+        },
+        "xl": {
+          "quantity": 117,
+          "updated_at": "2022-01-06 07:56:50"
+        },
+        "xxl": {
+          "quantity": 119,
+          "updated_at": "2022-01-06 07:56:50"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        }
+      }
+    },
+    {
+      "item_id": 913,
+      "item_name": "ob hds kuning abu panjang",
+      "store_id": 1,
+      "store_name": "ruko",
+      "sizes": {
+        "xs": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "s": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "m": {
+          "quantity": 184,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "l": {
+          "quantity": 525,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "xl": {
+          "quantity": 154,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "xxl": {
+          "quantity": 89,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "3l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "4l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        },
+        "5l": {
+          "quantity": 0,
+          "updated_at": "2021-11-14 08:00:11"
+        }
+      }
+    }
+  ]

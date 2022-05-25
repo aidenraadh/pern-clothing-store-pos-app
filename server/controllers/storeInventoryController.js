@@ -520,14 +520,14 @@ const refreshStoreInventory = async (ids, model, removeDeletedSize = true) => {
             }
             // Update the total amount of store inventory
             if(storeInv.total_amount !== totalAmount){
-                storeInv.total_amount = totalAmount
+                storeInv.total_amount = totalAmount ? totalAmount : null
                 await storeInv.save()
             }
         }    
         for (const storeInvSize of updatedStoreInvSizes) {
             await StoreInventorySize.update(
                 {amount: storeInvSize.amount},
-                {id: storeInvSize.id}
+                {where: {id: storeInvSize.id}}
             )
         }
         // Remove the size that doesnt exist

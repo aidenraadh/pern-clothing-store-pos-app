@@ -294,8 +294,9 @@ function StorePage({store, dispatchStore, user, loc}){
 
 const StoresTable = ({loc, stores, storeTypes, editStore, confirmDeleteStore}) => {
     return <Table
-        headings={[loc.name, loc.type, 'Actions']}
+        headings={['No', loc.name, loc.type, 'Actions']}
         body={stores.map((store, key) => ([
+            (key + 1),
             <span className='text-capitalize'>{store.name}</span>,
             <span className='text-capitalize'>{loc[storeTypes[store.type_id]]}</span>,
             <>

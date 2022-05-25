@@ -1,0 +1,1588 @@
+{
+    "data": [
+      {
+        "item_id": 218,
+        "item_name": "enzino army polos kuas pendek 22 fix",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2022-05-18 07:03:55"
+          },
+          "s": {
+            "quantity": 6,
+            "updated_at": "2022-05-18 07:03:55"
+          },
+          "m": {
+            "quantity": 26,
+            "updated_at": "2022-05-18 07:03:55"
+          },
+          "l": {
+            "quantity": 37,
+            "updated_at": "2022-05-18 07:03:55"
+          },
+          "xl": {
+            "quantity": 35,
+            "updated_at": "2022-05-18 07:03:55"
+          },
+          "xxl": {
+            "quantity": 10,
+            "updated_at": "2022-05-18 07:03:55"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2022-05-18 07:03:55"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2022-05-18 07:03:55"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2022-05-18 07:03:55"
+          }
+        }
+      },
+      {
+        "item_id": 239,
+        "item_name": "kr hds putih krah abu panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:56:45"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:56:45"
+          },
+          "m": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:56:45"
+          },
+          "l": {
+            "quantity": 9,
+            "updated_at": "2021-09-14 06:56:45"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:56:45"
+          },
+          "xxl": {
+            "quantity": 22,
+            "updated_at": "2021-09-14 06:56:45"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:56:45"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:56:45"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:56:45"
+          }
+        }
+      },
+      {
+        "item_id": 240,
+        "item_name": "kr hds putih krah merah panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:23"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:23"
+          },
+          "m": {
+            "quantity": 3,
+            "updated_at": "2021-09-14 06:57:23"
+          },
+          "l": {
+            "quantity": 23,
+            "updated_at": "2021-09-14 06:57:23"
+          },
+          "xl": {
+            "quantity": 20,
+            "updated_at": "2021-09-14 06:57:23"
+          },
+          "xxl": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 06:57:23"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:23"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:23"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:23"
+          }
+        }
+      },
+      {
+        "item_id": 241,
+        "item_name": "kr hds biru pan krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:59"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:59"
+          },
+          "m": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 06:57:59"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:59"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:59"
+          },
+          "xxl": {
+            "quantity": 16,
+            "updated_at": "2021-09-14 06:57:59"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:59"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:59"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 06:57:59"
+          }
+        }
+      },
+      {
+        "item_id": 242,
+        "item_name": "kr hds abu biru muda/ungu krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:01:06"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:01:06"
+          },
+          "m": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:01:06"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:01:06"
+          },
+          "xl": {
+            "quantity": 18,
+            "updated_at": "2021-09-14 07:01:06"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:01:06"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:01:06"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:01:06"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:01:06"
+          }
+        }
+      },
+      {
+        "item_id": 243,
+        "item_name": "kr hds merah krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:02:26"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:02:26"
+          },
+          "m": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 07:02:26"
+          },
+          "l": {
+            "quantity": 23,
+            "updated_at": "2021-09-14 07:02:26"
+          },
+          "xl": {
+            "quantity": 20,
+            "updated_at": "2021-09-14 07:02:26"
+          },
+          "xxl": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 07:02:26"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:02:26"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:02:26"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:02:26"
+          }
+        }
+      },
+      {
+        "item_id": 244,
+        "item_name": "kr hds coklat krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:00"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:00"
+          },
+          "m": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 07:07:00"
+          },
+          "l": {
+            "quantity": 18,
+            "updated_at": "2021-09-14 07:07:00"
+          },
+          "xl": {
+            "quantity": 19,
+            "updated_at": "2021-09-14 07:07:00"
+          },
+          "xxl": {
+            "quantity": 9,
+            "updated_at": "2021-09-14 07:07:00"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:00"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:00"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:00"
+          }
+        }
+      },
+      {
+        "item_id": 245,
+        "item_name": "kr hds hitam krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:43"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:43"
+          },
+          "m": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 07:49:29"
+          },
+          "l": {
+            "quantity": 7,
+            "updated_at": "2021-09-14 07:49:46"
+          },
+          "xl": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 07:50:03"
+          },
+          "xxl": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 07:50:22"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:43"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:43"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:07:43"
+          }
+        }
+      },
+      {
+        "item_id": 246,
+        "item_name": "kr hds orean krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:08:15"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:08:15"
+          },
+          "m": {
+            "quantity": 22,
+            "updated_at": "2021-09-14 07:08:15"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:08:15"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:08:15"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:08:15"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:08:15"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:08:15"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:08:15"
+          }
+        }
+      },
+      {
+        "item_id": 247,
+        "item_name": "kr hds kuning krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:00"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:00"
+          },
+          "m": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 07:09:00"
+          },
+          "l": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 07:09:00"
+          },
+          "xl": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 07:09:00"
+          },
+          "xxl": {
+            "quantity": 8,
+            "updated_at": "2021-09-14 07:09:00"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:00"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:00"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:00"
+          }
+        }
+      },
+      {
+        "item_id": 248,
+        "item_name": "kr hds tosca krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:35"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:35"
+          },
+          "m": {
+            "quantity": 15,
+            "updated_at": "2021-09-14 07:09:35"
+          },
+          "l": {
+            "quantity": 17,
+            "updated_at": "2021-09-14 07:09:35"
+          },
+          "xl": {
+            "quantity": 3,
+            "updated_at": "2021-09-14 07:09:35"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:35"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:35"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:35"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:09:35"
+          }
+        }
+      },
+      {
+        "item_id": 249,
+        "item_name": "kr hds maron krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:14:55"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:14:55"
+          },
+          "m": {
+            "quantity": 3,
+            "updated_at": "2021-09-14 07:14:55"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:14:55"
+          },
+          "xl": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 07:14:55"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:14:55"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:14:55"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:14:55"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:14:55"
+          }
+        }
+      },
+      {
+        "item_id": 250,
+        "item_name": "kr hds turkis muda krah abu panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:18:44"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:18:44"
+          },
+          "m": {
+            "quantity": 2,
+            "updated_at": "2021-09-14 07:18:44"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:18:44"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:18:44"
+          },
+          "xxl": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 07:18:44"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:18:44"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:18:44"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:18:44"
+          }
+        }
+      },
+      {
+        "item_id": 251,
+        "item_name": "kr hds misty muda krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:42:24"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:42:24"
+          },
+          "m": {
+            "quantity": 4,
+            "updated_at": "2021-09-14 07:42:24"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:42:24"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:42:24"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:42:24"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:42:24"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:42:24"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:42:24"
+          }
+        }
+      },
+      {
+        "item_id": 252,
+        "item_name": "kr hds stabilo krah abu panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:43:03"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:43:03"
+          },
+          "m": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 07:43:03"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:43:03"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:43:03"
+          },
+          "xxl": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 07:43:03"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:43:03"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:43:03"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:43:03"
+          }
+        }
+      },
+      {
+        "item_id": 253,
+        "item_name": "kr hds hijau fuji krah abu panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:44:00"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:44:00"
+          },
+          "m": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 07:44:00"
+          },
+          "l": {
+            "quantity": 18,
+            "updated_at": "2021-09-14 07:44:00"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:44:00"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:44:00"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:44:00"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:44:00"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:44:00"
+          }
+        }
+      },
+      {
+        "item_id": 254,
+        "item_name": "kr hds misty tua krah abu muda panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:58:51"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:58:51"
+          },
+          "m": {
+            "quantity": 24,
+            "updated_at": "2021-09-14 07:58:51"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:58:51"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:58:51"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:58:51"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:58:51"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:58:51"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:58:51"
+          }
+        }
+      },
+      {
+        "item_id": 255,
+        "item_name": "kr hds maron krah abu muda panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:54:40"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:54:40"
+          },
+          "m": {
+            "quantity": 24,
+            "updated_at": "2021-09-14 07:54:40"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:54:40"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:54:40"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:54:40"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:54:40"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:54:40"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:54:40"
+          }
+        }
+      },
+      {
+        "item_id": 256,
+        "item_name": "kr hds orean stabilo krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:52:49"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:52:49"
+          },
+          "m": {
+            "quantity": 8,
+            "updated_at": "2021-09-14 07:52:49"
+          },
+          "l": {
+            "quantity": 18,
+            "updated_at": "2021-09-14 07:52:49"
+          },
+          "xl": {
+            "quantity": 19,
+            "updated_at": "2021-09-14 07:52:49"
+          },
+          "xxl": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 07:52:49"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:52:49"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:52:49"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:52:49"
+          }
+        }
+      },
+      {
+        "item_id": 257,
+        "item_name": "kr hds biru turkis krah abu tua panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:51:28"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:51:28"
+          },
+          "m": {
+            "quantity": 13,
+            "updated_at": "2021-09-14 07:51:28"
+          },
+          "l": {
+            "quantity": 27,
+            "updated_at": "2021-09-14 07:51:28"
+          },
+          "xl": {
+            "quantity": 10,
+            "updated_at": "2021-09-14 07:51:28"
+          },
+          "xxl": {
+            "quantity": 10,
+            "updated_at": "2021-09-14 07:51:28"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:51:28"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:51:28"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 07:51:28"
+          }
+        }
+      },
+      {
+        "item_id": 258,
+        "item_name": "kr hds biru malam krah abu panjang",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:01:48"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:01:48"
+          },
+          "m": {
+            "quantity": 8,
+            "updated_at": "2021-09-14 08:01:48"
+          },
+          "l": {
+            "quantity": 14,
+            "updated_at": "2021-09-14 08:01:48"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:01:48"
+          },
+          "xxl": {
+            "quantity": 4,
+            "updated_at": "2021-09-14 08:01:48"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:01:48"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:01:48"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:01:48"
+          }
+        }
+      },
+      {
+        "item_id": 259,
+        "item_name": "kr hds merah abu pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:06:52"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:06:52"
+          },
+          "m": {
+            "quantity": 1,
+            "updated_at": "2021-09-14 08:06:52"
+          },
+          "l": {
+            "quantity": 1,
+            "updated_at": "2021-09-14 08:06:52"
+          },
+          "xl": {
+            "quantity": 4,
+            "updated_at": "2021-09-14 08:06:52"
+          },
+          "xxl": {
+            "quantity": 3,
+            "updated_at": "2021-09-14 08:06:52"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:06:52"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:06:52"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:06:52"
+          }
+        }
+      },
+      {
+        "item_id": 260,
+        "item_name": "kr hds kuning krah abu tua pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:07:27"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:07:27"
+          },
+          "m": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 08:07:27"
+          },
+          "l": {
+            "quantity": 13,
+            "updated_at": "2021-09-14 08:07:27"
+          },
+          "xl": {
+            "quantity": 21,
+            "updated_at": "2021-09-14 08:07:27"
+          },
+          "xxl": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 08:07:27"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:07:27"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:07:27"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:07:27"
+          }
+        }
+      },
+      {
+        "item_id": 261,
+        "item_name": "kr hds misty muda krah abu tua pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:19"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:19"
+          },
+          "m": {
+            "quantity": 13,
+            "updated_at": "2021-09-14 08:08:19"
+          },
+          "l": {
+            "quantity": 13,
+            "updated_at": "2021-09-14 08:08:19"
+          },
+          "xl": {
+            "quantity": 9,
+            "updated_at": "2021-09-14 08:08:19"
+          },
+          "xxl": {
+            "quantity": 5,
+            "updated_at": "2021-09-14 08:08:19"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:19"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:19"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:19"
+          }
+        }
+      },
+      {
+        "item_id": 262,
+        "item_name": "kr hds putih krah fuji pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:54"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:54"
+          },
+          "m": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 08:08:54"
+          },
+          "l": {
+            "quantity": 18,
+            "updated_at": "2021-09-14 08:08:54"
+          },
+          "xl": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 08:08:54"
+          },
+          "xxl": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 08:08:54"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:54"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:54"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:08:54"
+          }
+        }
+      },
+      {
+        "item_id": 263,
+        "item_name": "kr hds biru malam krah abu pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:09:42"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:09:42"
+          },
+          "m": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 08:09:42"
+          },
+          "l": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 08:32:31"
+          },
+          "xl": {
+            "quantity": 7,
+            "updated_at": "2021-09-14 08:09:42"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:09:42"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:09:42"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:09:42"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:09:42"
+          }
+        }
+      },
+      {
+        "item_id": 264,
+        "item_name": "kr hds orean stabilo abu pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:16:18"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:16:18"
+          },
+          "m": {
+            "quantity": 23,
+            "updated_at": "2021-09-14 08:16:18"
+          },
+          "l": {
+            "quantity": 10,
+            "updated_at": "2021-09-14 08:16:18"
+          },
+          "xl": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 08:16:18"
+          },
+          "xxl": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 08:16:18"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:16:18"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:16:18"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:16:18"
+          }
+        }
+      },
+      {
+        "item_id": 265,
+        "item_name": "kr hds abu biru muda/ungu krah abu tua pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:17:38"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:17:38"
+          },
+          "m": {
+            "quantity": 24,
+            "updated_at": "2021-09-14 08:17:38"
+          },
+          "l": {
+            "quantity": 27,
+            "updated_at": "2021-09-14 08:17:38"
+          },
+          "xl": {
+            "quantity": 24,
+            "updated_at": "2021-09-14 08:17:38"
+          },
+          "xxl": {
+            "quantity": 9,
+            "updated_at": "2021-09-14 08:17:38"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:17:38"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:17:38"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:17:38"
+          }
+        }
+      },
+      {
+        "item_id": 266,
+        "item_name": "kr hds coklat krah abu tua pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:18:53"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:18:53"
+          },
+          "m": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 08:18:53"
+          },
+          "l": {
+            "quantity": 19,
+            "updated_at": "2021-09-14 08:18:53"
+          },
+          "xl": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 08:18:53"
+          },
+          "xxl": {
+            "quantity": 8,
+            "updated_at": "2021-09-14 08:18:53"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:18:53"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:18:53"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:18:53"
+          }
+        }
+      },
+      {
+        "item_id": 267,
+        "item_name": "kr hds biru pan krah abu tua pendek",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:19:35"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:19:35"
+          },
+          "m": {
+            "quantity": 8,
+            "updated_at": "2021-09-14 08:19:35"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:19:35"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:19:35"
+          },
+          "xxl": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 08:19:35"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:19:35"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:19:35"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:19:35"
+          }
+        }
+      },
+      {
+        "item_id": 268,
+        "item_name": "kr hds turkis muda krah abu tua pendek 22",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:20:11"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:20:11"
+          },
+          "m": {
+            "quantity": 6,
+            "updated_at": "2021-09-14 08:20:11"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:20:11"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:20:11"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:20:11"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:20:11"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:20:11"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:20:11"
+          }
+        }
+      },
+      {
+        "item_id": 269,
+        "item_name": "kr hds hijau fuji krah abu tua pendek 22",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:23:58"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:23:58"
+          },
+          "m": {
+            "quantity": 18,
+            "updated_at": "2021-09-14 08:23:58"
+          },
+          "l": {
+            "quantity": 23,
+            "updated_at": "2021-09-14 08:23:58"
+          },
+          "xl": {
+            "quantity": 21,
+            "updated_at": "2021-09-14 08:23:58"
+          },
+          "xxl": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 08:23:58"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:23:58"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:23:58"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:23:58"
+          }
+        }
+      },
+      {
+        "item_id": 270,
+        "item_name": "kr hds stabilo krah abu tua pendek 22",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:24:39"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:24:39"
+          },
+          "m": {
+            "quantity": 12,
+            "updated_at": "2021-09-14 08:24:39"
+          },
+          "l": {
+            "quantity": 19,
+            "updated_at": "2021-09-14 08:24:39"
+          },
+          "xl": {
+            "quantity": 13,
+            "updated_at": "2021-09-14 08:24:39"
+          },
+          "xxl": {
+            "quantity": 5,
+            "updated_at": "2021-09-14 08:24:39"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:24:39"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:24:39"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:24:39"
+          }
+        }
+      },
+      {
+        "item_id": 271,
+        "item_name": "kr hds putih krah abu tua pendek 22",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:07"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:07"
+          },
+          "m": {
+            "quantity": 15,
+            "updated_at": "2021-09-14 08:26:07"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:07"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:07"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:07"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:07"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:07"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:07"
+          }
+        }
+      },
+      {
+        "item_id": 272,
+        "item_name": "kr hds misty tua krah abu muda pendek 22",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:52"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:52"
+          },
+          "m": {
+            "quantity": 16,
+            "updated_at": "2021-09-14 08:26:52"
+          },
+          "l": {
+            "quantity": 15,
+            "updated_at": "2021-09-14 08:26:52"
+          },
+          "xl": {
+            "quantity": 5,
+            "updated_at": "2021-09-14 08:26:52"
+          },
+          "xxl": {
+            "quantity": 11,
+            "updated_at": "2021-09-14 08:26:52"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:52"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:52"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:26:52"
+          }
+        }
+      },
+      {
+        "item_id": 273,
+        "item_name": "kr hds tosca krah abu pendek 22",
+        "store_id": 4,
+        "store_name": "toko minseng/iyan",
+        "sizes": {
+          "xs": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:27:50"
+          },
+          "s": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:27:50"
+          },
+          "m": {
+            "quantity": 0,
+            "updated_at": "2022-03-17 22:29:15"
+          },
+          "l": {
+            "quantity": 0,
+            "updated_at": "2022-03-17 22:29:15"
+          },
+          "xl": {
+            "quantity": 0,
+            "updated_at": "2022-03-17 22:29:15"
+          },
+          "xxl": {
+            "quantity": 0,
+            "updated_at": "2022-03-17 22:29:15"
+          },
+          "3l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:27:50"
+          },
+          "4l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:27:50"
+          },
+          "5l": {
+            "quantity": 0,
+            "updated_at": "2021-09-14 08:27:50"
+          }
+        }
+      }
+    ]
+  }

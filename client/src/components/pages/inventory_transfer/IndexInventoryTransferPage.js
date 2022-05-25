@@ -245,10 +245,11 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
 const InvTransfersTable = ({invTransfers, confirmDeleteInvTransfer}) => {
     return <Table
         headings={[
-            'Inventory', 'Size', 'Amount', 'Origin Store', 
+            'No', 'Inventory', 'Size', 'Amount', 'Origin Store', 
             'Destination Store', 'Transfer Date', 'Actions'
         ]}
         body={invTransfers.map((invTransfer, key) => ([
+            (key + 1),
             <span className='text-capitalize'>{invTransfer.inventory.name}</span>,
             <span className='text-uppercase'>{invTransfer.inventorySize.name}</span>,
             formatNum(invTransfer.amount),

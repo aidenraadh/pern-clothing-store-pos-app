@@ -4,49 +4,6 @@
 @import 'css/utilities.css';
 @import 'css/media-queries.css';
 
-.dropzone{
-	border-radius: 0.55rem;
-	border: 0.2rem solid #E4E6EF;
-}
-
-.dropzone .dz-message{
-	margin: 2.6em 0 0;
-	font-size: 1.8rem;
-	font-weight: 500;
-	color: #868DB3;
-}
-
-.dropzone.single-file{
-	display: block;
-	width: 100%;
-	padding: 1.4rem;
-}
-
-.dropzone.single-file .dz-image-preview{
-	display: block;
-	margin: 0 auto;
-}
-
-.dropzone.single-file .dz-image{
-	margin: 0 auto;
-}
-
-.page-header .heading{
-	font-size: 1.8rem;
-	color: #5E6278;
-}
-
-.page-header .heading .svg-icon{
-	width: 4rem;
-	height: 4rem;
-	border-radius: 0.55rem;
-}
-
-.page-header .heading .svg-icon svg{
-	width: 70%;
-	height: 70%;
-}
-
 .load-more-btn{
 	margin: 2rem auto 0;
 }
@@ -113,30 +70,9 @@
 	margin-right: 0;
 }
 
-.inventories-container .inventory{
-	padding: 1rem 0;
-	border-bottom: 0.1rem solid #D9D9D9;
-}
-
-.inventories-container .inventory:first-child{
-	padding: 0 0 1rem;
-	border-bottom: 0.1rem solid #D9D9D9;
-}
-
-.inventories-container .inventory:last-child{
-	padding: 1rem 0 0;
-	border-bottom: none;
-}
-
-.inventories-container .name{
-	text-transform: capitalize;
-}
-
-.inventories-container .actions > *{
-	margin-right: 1rem;
-}
-.inventories-container .actions > *:last-child{
-	margin-right: 0;
+#profile-box img{
+	width: 20rem;
+	margin-right: 2rem;
 }
 
 #login-page{

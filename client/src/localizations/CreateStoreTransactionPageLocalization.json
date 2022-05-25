@@ -1,0 +1,37 @@
+{
+    "english": {
+        "totalAmount": "Total amount",
+        "totalCost": "Total cost",
+        "search": "Search",
+        "inventory": "Inventory",
+        "searchInv": "Search Inventories",
+        "checkout": "Checkout",
+        "name": "Name",
+        "size": "Size",
+        "amount": "Amount",
+        "price": "Price",
+        "addInv": "+ Add",
+        "date": "Date",
+        "checkoutTrnsc": "Checkout Transaction",
+        "createTrnsc": "Create Transaction",
+        "succMsg": "Success creating transaction"
+
+    },
+    "indonesian": {
+        "totalAmount": "Total jumlah",
+        "totalCost": "Total biaya",
+        "search": "Cari",        
+        "inventory": "Inventori",
+        "searchInv": "Cari Inventori",
+        "checkout": "Checkout",
+        "name": "Nama",
+        "size": "Ukuran",
+        "amount": "Jumlah",
+        "price": "Harga",
+        "addInv": "+ Tambahkan",
+        "date": "Tanggal",
+        "checkoutTrnsc": "Checkout Transaksi",
+        "createTrnsc": "Buat Transaksi",
+        "succMsg": "Transaksi berhasil dibuat"
+    }
+}

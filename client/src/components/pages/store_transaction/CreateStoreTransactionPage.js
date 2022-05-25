@@ -10,7 +10,7 @@ import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 import SVGIcons from '../../SVGIcons'
 
-function CreateStoreTransactionPage(){
+function CreateStoreTransactionPage({loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     const [transactionDate, setTransactionDate] = useState(format(new Date(), 'yyyy-MM-dd'))
     const [addedInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
@@ -67,7 +67,7 @@ function CreateStoreTransactionPage(){
         return <PlainCard
             body={
                 <Table
-                    headings={['Inventory', 'Size', 'Amount', 'Price']}
+                    headings={[loc.inventory, loc.size, loc.amount, loc.price]}
                     body={addedInvs.map((inv, key) => ([
                         <span className='flex-row items-center'>
                             <button className='flex-row items-center'
@@ -137,36 +137,39 @@ function CreateStoreTransactionPage(){
     return (<>
         <Grid numOfColumns={1} items={[
             <TextInputAddon 
-                addon={'Date'}
+                addon={loc.date}
                 formAttr={{
                     type: 'date', value: transactionDate,
                     onChange: (e) => {setTransactionDate(e.target.value)}
                 }}
             />,
             AddedInvsTable,
-            <button key={'a'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
+            <button key={'a'} type="button" className='text-blue flex-row items-center block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
             onClick={() => {setModalShown(true)}}>
-                + Add Inventory
+                <SVGIcons name={'search'} color={'blue'} attr={{
+                    style: {fontSize: '1.46em', marginRight: '0.4rem'}
+                }} />
+                {loc.searchInv}
             </button>,        
             <div key={'b'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>, 
-            <Button key={'c'} size={'md'} text={'Checkout'} attr={{
+            <Button key={'c'} size={'md'} text={loc.checkout} attr={{
                 onClick: () => {setReceiptModalShown(true)}
             }}/>                   
         ]}/>
         <Modal
-            heading={'Search Inventories'}
+            heading={loc.searchInv}
             body={<>
                 <div className='flex-row items-center'>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: invName, placeholder: 'Search inventory', 
+                        formAttr={{value: invName, placeholder: loc.searchInv, 
                             onChange: (e) => {
                                 setInvName(e.target.value)
                             },
                             onKeyUp: (e) => {keyHandler(e, 'Enter', getInvs)}
                         }} 
                     />   
-                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                    <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
                         onClick: () => {getInvs()}
                     }}/>                                       
@@ -174,7 +177,7 @@ function CreateStoreTransactionPage(){
                 {
                     searchedStoreInvs.length === 0 ? '' :
                     <Table
-                        headings={['Name', 'Size', '']}
+                        headings={[loc.name, loc.size, '']}
                         body={searchedStoreInvs.map((searchedStoreInv, index) => ([
                             <span className='text-capitalize'>{searchedStoreInv.inventory.name}</span>,
                             <Select
@@ -197,7 +200,7 @@ function CreateStoreTransactionPage(){
                                     })}
                                 }}
                             />,
-                            <Button size={'sm'} text={'Select'} attr={{onClick: () => {
+                            <Button size={'sm'} text={loc.addInv} attr={{onClick: () => {
                                 dispatchAddedInvs({type: 'add', payload: {storeInv: searchedStoreInv}})
                             }}}/>
                         ]))}
@@ -208,12 +211,12 @@ function CreateStoreTransactionPage(){
             toggleModal={() => {setModalShown(state => !state)}}
         />      
         <Modal
-            heading={'Checkout Transaction'}
-            body={<TransactionReceipt inventories={addedInvs} objType={'plain'} />}        
+            heading={loc.checkoutTrnsc}
+            body={<TransactionReceipt inventories={addedInvs} objType={'plain'} loc={loc} />}        
             shown={receiptModalShown}
             toggleModal={() => {setReceiptModalShown(state => !state)}}
             footer={
-                <Button size={'md'} text={'Create transaction'} attr={{
+                <Button size={'md'} text={loc.createTrnsc} attr={{
                     onClick: storeTransaction
                 }}/>                 
             }
@@ -234,11 +237,11 @@ function CreateStoreTransactionPage(){
             title={"Success"}
             body={
                 <p>
-                    Success transfering inventories
+                    {loc.succMsg}
                 </p>
             }
-            confirmText={'Transfer again'}
-            cancelText={'View transfer'}
+            confirmText={'Create new transaction'}
+            cancelText={'View transactions'}
             cancelBtnColor={'blue'}
             togglePopup={() => {setSuccPopupShown(state => !state)}} 
             confirmCallback={() => {
@@ -247,7 +250,7 @@ function CreateStoreTransactionPage(){
             }}
             cancelCallback={() => {
                 const host = window.location.origin
-                window.location.href = `${host}/inventory-transfers`
+                window.location.href = `${host}/store-transactions`
             }}
         />                  
     </>)
@@ -287,7 +290,7 @@ const addedInvsReducer = (state, action) => {
                     originalAmount: '',
                     cost: invSize.selling_price,
                     originalCost: invSize.selling_price,
-                    amountLeft: storedInvSize.amount,
+                    amountLeft: storedInvSize.amount ? storedInvSize.amount : 0,
                     amountStored: storedInvSize.amount,                    
                 }
             ]

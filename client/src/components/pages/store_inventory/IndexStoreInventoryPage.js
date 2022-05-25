@@ -193,8 +193,8 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                         }
                         if(user.role.name === 'employee'){
                             return storeInvSizes.map((size, index) => ([
-                                size.name,
-                                formatNum(size.amount),
+                                <span className='text-capitalize'>{size.sizeName}</span>,
+                                formatNum(size.amount ? size.amount : 0),
                                 `Rp. ${formatNum(size.selling_price)}` 
                             ]))
                         }                        
@@ -295,8 +295,9 @@ const StoreInvs = ({loc, storeInvs, viewStoreInv}) => {
     return (<>
         <div className="inventories-container">
             <Table
-                headings={[loc.inventory, loc.store, loc.totalStored, 'Actions']}
+                headings={['No', loc.inventory, loc.store, loc.totalStored, 'Actions']}
                 body={storeInvs.map((storeInv, index) => [
+                    (index + 1),
                     <span className='text-capitalize'>{storeInv.inventory.name}</span>, 
                     <span className='text-capitalize'>{storeInv.store.name}</span>, 
                     storeInv.total_amount ? formatNum(storeInv.total_amount) : 0,

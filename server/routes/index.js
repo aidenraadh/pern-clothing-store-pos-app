@@ -25,10 +25,7 @@ const bcrypt        = require('bcrypt')
 const Owner = models.Owner
 
 const fs = require('fs');
-const utils = require('../hnsports-migration/store-inventories/utils.js')
-const six_100 = require('../hnsports-migration/store-inventories/store-1/6-100.json')
-const six_100_sizes = require('../hnsports-migration/store-inventories/store-1/6-100-sizes.json')
-
+const utils = require('../hnsports-migration/inventories/utils.js')
 
 rootRouter.get('/add-owner', async (req, res) => {
     try {
@@ -59,16 +56,17 @@ rootRouter.get('/add-owner', async (req, res) => {
 
 rootRouter.get('/hnsports', async (req, res) => {
     try {
-        const data = utils.getStoredItemsSQL(1, 8)
-        console.log(data)
-        // fs.writeFile('user.json', JSON.stringify(data), (err) => {
-        //     if (err) {
-        //         throw err;
-        //     }
-        //     console.log("JSON data is saved.");
-        // });        
+        const x = [
+            {a: 'a'}, {b: 'b'}
+        ]
+        console.log('first x ', x)
+        const y = [
+            {c: 'c'}, {d: 'd'}
+        ]
+        x.push(...y)
+        console.log('second x ', x)
         res.send({
-            data: data
+            data: 'ssss'
         })        
     } catch (err) {
         res.status(500).send({message: err.message})

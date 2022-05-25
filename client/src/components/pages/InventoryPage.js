@@ -367,31 +367,33 @@ const sizesReducer = (state, action) => {
 }
 
 const InventoryList = ({loc, inventories, editInventory, confirmDeleteInventory}) => {
-    return (<>
-        <div className="inventories-container">
-            {inventories.map((inventory, key) => (
-                <div className="inventory flex-row items-center content-space-between" key={key}>
-                    <span className="name">{inventory.name}</span>          
-                    <span className="actions">
-                        <Button 
-                            size={'sm'} type={'light'} text={loc['view']}
-                            attr={{onClick: () => {
-                                    editInventory(key, inventory.id, inventory.name, inventory.sizes)
-                                }
-                            }}
-                        />
-                        <Button 
-                            size={'sm'} type={'light'} text={loc['delete']} color={'red'}
-                            attr={{onClick: () => {
-                                    confirmDeleteInventory(inventory.id, key)
-                                }
-                            }}                            
-                        />                        
-                    </span>             
-                </div>
-            ))}
-        </div>    
-    </>)
+    return (
+        <Table
+            headings={['No', 'Name', 'Actions']}
+            body={inventories.map((inventory, key) => ([
+                (key + 1),
+                <span className="text-capitalize">{inventory.name}</span>,
+                <span>
+                    <Button 
+                        size={'sm'} type={'light'} text={loc['view']}
+                        attr={{
+                            style: {marginRight: '1rem'},
+                            onClick: () => {
+                                editInventory(key, inventory.id, inventory.name, inventory.sizes)
+                            }
+                        }}
+                    />
+                    <Button 
+                        size={'sm'} type={'light'} text={loc['delete']} color={'red'}
+                        attr={{onClick: () => {
+                                confirmDeleteInventory(inventory.id, key)
+                            }
+                        }}                            
+                    />                        
+                </span>                
+            ]))}
+        />
+    )
 }
 
 const LoadMoreBtn = ({canLoadMore, action}) => {

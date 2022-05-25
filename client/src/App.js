@@ -34,7 +34,10 @@ import {
     StorePageLocalization,
     IndexStoreInventoryPageLocalization,
     CreateStoreInventoryPageLocalization,
-    IndexStoreTransactionPageLocalization
+    IndexStoreTransactionPageLocalization,
+    CreateStoreTransactionPageLocalization,
+    NavigationsLocalization,
+    ProfilePageLocalization
 } from './localizations/index.js'
 
 function App(){
@@ -71,19 +74,19 @@ function App(){
             icon: 'layers', text: 'Dashboard', link: ''
         },                
         inventory: {
-            icon: 'hanger', text: 'Inventories', link: 'inventories'
+            icon: 'hanger', text: NavigationsLocalization[languageName].inventories, link: 'inventories'
         },
         store: {
-            icon: 'ecm004', text: 'Stores', link: 'stores'
+            icon: 'ecm004', text: NavigationsLocalization[languageName].stores, link: 'stores'
         },
         store_inventory: {
-            icon: 'gen017', text: 'Store Inventories', link: 'store-inventories'
+            icon: 'gen017', text: NavigationsLocalization[languageName].storeInvs, link: 'store-inventories'
         },
         store_transaction: {
-            icon: 'cart', text: 'Store Transactions', link: 'store-transactions'
+            icon: 'cart', text: NavigationsLocalization[languageName].storeTrnscs, link: 'store-transactions'
         },        
         inventory_transfer: {
-            icon: 'share', text: 'Inventory Transfers', link: 'inventory-transfers'
+            icon: 'share', text: NavigationsLocalization[languageName].invTransfers, link: 'inventory-transfers'
         },          
         user: {
             icon: 'group', text: 'Users', link: 'users'
@@ -168,6 +171,7 @@ function App(){
                         <ProtectedRoute path={`/${sidebarItems.store_transaction.link}/create`} exact 
                             component={CreateStoreTransactionPage} props={{
                                 user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv,
+                                loc: CreateStoreTransactionPageLocalization[languageName]
                             }}
                         />                      
                         <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}`} exact 
@@ -184,7 +188,7 @@ function App(){
                             }}
                         />       
                         <ProtectedRoute path={`/profile`} exact component={ProfilePage} props={{
-                            user: user
+                            user: user, loc: ProfilePageLocalization[languageName]
                         }}/>                                                                                                                
                         <Route path={'*'} component={NotFoundPage}/>
                     </Switch>                    
