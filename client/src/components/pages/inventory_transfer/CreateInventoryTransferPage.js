@@ -9,7 +9,7 @@ import Table from '../../Table'
 import SVGIcons from '../../SVGIcons'
 import {format} from 'date-fns'
 
-function CreateInventoryTransferPage({user}){
+function CreateInventoryTransferPage({user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     const [stores, setStores] = useState(null)
     const [transferDate, setTransferDate] = useState(format(new Date(), 'yyyy-MM-dd'))
@@ -66,7 +66,7 @@ function CreateInventoryTransferPage({user}){
     const AddedInvsTable = useMemo(() => {
         return addedInvs.length === 0 ? '' : 
         <Table
-            headings={['Inventory', 'Size', 'Amount Transfered']}
+            headings={[loc.inventory, loc.size, loc.amountTransfered]}
             body={addedInvs.map((inv, key) => ([
                 <span className='flex-row items-center'>
                     <button className='flex-row items-center'
@@ -75,8 +75,7 @@ function CreateInventoryTransferPage({user}){
                             type: 'remove', payload: {index: key}
                         })}}
                     >
-                        <SVGIcons color={'red'} name={'error_circle'}
-                        />
+                        <SVGIcons color={'red'} name={'error_circle'}/>
                     </button>
                     <span className='text-capitalize'>
                         {inv.inventoryName}
@@ -114,7 +113,7 @@ function CreateInventoryTransferPage({user}){
                 </span>,                
             ]))}
         />            
-    }, [addedInvs, dispatchAddedInvs])    
+    }, [addedInvs, dispatchAddedInvs, loc.inventory, loc.size, loc.amountTransfered])    
     
     const storeInvTransfers = useCallback(() => {
         setDisableBtn(true)
@@ -155,10 +154,10 @@ function CreateInventoryTransferPage({user}){
     }    
     return (<>
         <SimpleCard
-            heading={'Transfer Inventory'}
+            heading={loc.transferInv}
             body={<>
                 <Grid numOfColumns={3} items={[
-                    <Select label={'Origin Store'}
+                    <Select label={loc.originStore}
                         formAttr={{
                             value: originStoreId, onChange: (e) => {
                                 setOriginStoreId(e.target.value)
@@ -168,7 +167,7 @@ function CreateInventoryTransferPage({user}){
                             value: store.id, text: (store.name.charAt(0).toUpperCase() + store.name.slice(1))
                         }))}
                     />,
-                    <Select label={'Destination Store'}
+                    <Select label={loc.destinationStore}
                         formAttr={{
                             value: destinationStoreId, onChange: (e) => {
                                 setDestinationStoreId(e.target.value)
@@ -178,7 +177,7 @@ function CreateInventoryTransferPage({user}){
                             value: store.id, text: (store.name.charAt(0).toUpperCase() + store.name.slice(1))
                         }))}
                     />,      
-                    <TextInput label={'Transfer date'}
+                    <TextInput label={loc.transferDate}
                         formAttr={{
                             type: 'date', value: transferDate,
                             onChange: (e) => {setTransferDate(e.target.value)}
@@ -186,32 +185,35 @@ function CreateInventoryTransferPage({user}){
                     />              
                 ]}/>
                 {AddedInvsTable}      
-                <button key={'a'} type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
+                <button key={'a'} type="button" className='text-blue block flex-row items-center' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
                 onClick={() => {setModalShown(true)}}>
-                    + Add Inventory
+                    <SVGIcons name={'search'} color={'blue'} attr={{
+                        style: {fontSize: '1.46em', marginRight: '0.4rem'}
+                    }} />                    
+                    {loc.searchInvInStore}
                 </button>               
             </>}
             footer={
-                <Button text={'Save changes'} attr={{
+                <Button text={loc.saveChanges} attr={{
                     disabled: disableBtn,
                     onClick: storeInvTransfers}}
                 />
             }
         />
         <Modal
-            heading={'Search Inventories'}
+            heading={loc.searchInvInStore}
             body={<>
                 <div className='flex-row items-center'>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: invName, placeholder: 'Search inventory', 
+                        formAttr={{value: invName, placeholder: loc.searchInvInStore, 
                             onChange: (e) => {
                                 setInvName(e.target.value)
                             },
                             onKeyUp: (e) => {keyHandler(e, 'Enter', getInvs)}
                         }} 
                     />   
-                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                    <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
                         onClick: () => {getInvs()}
                     }}/>                                       
@@ -219,7 +221,7 @@ function CreateInventoryTransferPage({user}){
                 {
                     searchedStoreInvs.length === 0 ? '' :
                     <Table
-                        headings={['Name', 'Size', '']}
+                        headings={[loc.name, loc.size, '']}
                         body={searchedStoreInvs.map((searchedStoreInv, index) => ([
                             <span className='text-capitalize'>{searchedStoreInv.inventory.name}</span>,
                             <Select
@@ -242,7 +244,7 @@ function CreateInventoryTransferPage({user}){
                                     })}
                                 }}
                             />,
-                            <Button size={'sm'} text={'Select'} attr={{onClick: () => {
+                            <Button size={'sm'} text={loc.addInv} attr={{onClick: () => {
                                 dispatchAddedInvs({type: 'add', payload: {storeInv: searchedStoreInv}})
                             }}}/>
                         ]))}
@@ -313,7 +315,7 @@ const addedInvsReducer = (state, action) => {
                     inventoryName: payload.storeInv.inventory.name,
                     sizeName: invSize.name,
                     amount: '',
-                    amountLeft: storedInvSize.amount,
+                    amountLeft: storedInvSize.amount ? storedInvSize.amount : 0,
                     amountStored: storedInvSize.amount,                    
                 }
             ]

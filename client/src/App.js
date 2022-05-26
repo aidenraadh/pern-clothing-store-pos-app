@@ -37,7 +37,9 @@ import {
     IndexStoreTransactionPageLocalization,
     CreateStoreTransactionPageLocalization,
     NavigationsLocalization,
-    ProfilePageLocalization
+    ProfilePageLocalization,
+    IndexInventoryTransferPageLocalization,
+    CreateInventoryTransferPageLocalization
 } from './localizations/index.js'
 
 function App(){
@@ -176,10 +178,13 @@ function App(){
                         />                      
                         <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}`} exact 
                         component={IndexInventoryTransferPage} props={{
-                            user: user, invTransfer: invTransfer, dispatchInvTransfer: dispatchInvTransfer
+                            user: user, invTransfer: invTransfer, dispatchInvTransfer: dispatchInvTransfer,
+                            loc: IndexInventoryTransferPageLocalization[languageName]
                         }}/>              
                         <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}/create`} exact 
-                            component={CreateInventoryTransferPage} props={{user: user}}
+                            component={CreateInventoryTransferPage} props={{
+                                user: user, loc: CreateInventoryTransferPageLocalization[languageName]
+                            }}
                         />                                   
                         <ProtectedRoute path={`/${sidebarItems.user.link}`} exact component={UserPage}
                             props={{

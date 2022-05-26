@@ -70,11 +70,6 @@
 	margin-right: 0;
 }
 
-#profile-box img{
-	width: 20rem;
-	margin-right: 2rem;
-}
-
 #login-page{
 	min-height: 100vh;
 }
@@ -91,6 +86,21 @@
 	width: 100%;
 }
 
+#profile-card .card-body > p{
+	position: relative;
+}
+
+#profile-card .card-body > p img{
+	width: 20rem;
+	margin-right: 2rem;	
+}
+
+#profile-card .card-body > p .btn.btn-primary{
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
 @media only screen and (max-width: 1100px){		
 	#login-page .grid{
 		width: 40vw;
@@ -101,4 +111,12 @@
 	#login-page .grid{
 		width: 70vw;
 	}
+	#profile-card .card-body > p img{
+		margin: 6rem auto 2rem;
+		width: 18rem;
+	}		
+	#profile-card .card-body > p{
+		display: flex;
+		flex-direction: column;
+	}	
 }

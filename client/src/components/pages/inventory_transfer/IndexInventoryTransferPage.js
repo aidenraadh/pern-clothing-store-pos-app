@@ -10,7 +10,7 @@ import Table from '../../Table'
 import {format} from 'date-fns'
 import { Link } from 'react-router-dom'
 
-function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
+function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Create/edit invTransfer */
     const [invTransferIndex, setInvTransferIndex] = useState('')
@@ -116,19 +116,20 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                 <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: 'Search inventory', 
+                        formAttr={{value: filters.name, placeholder: loc.searchInv, 
                             onChange: e => {dispatchFilters({
                                 type: ACTIONS.FILTERS.UPDATE, payload: {key: 'name', value: e.target.value}
                             })},
                             onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInvTransfers(ACTIONS.RESET)})}
                         }} 
                     />   
-                    <Button size={'sm'} text={'Search'} attr={{disabled: disableBtn,
+                    <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
                         onClick: () => {getInvTransfers(ACTIONS.RESET)}
                     }}/>                                       
                 </div>            
                 <InvTransfersTable 
+                    loc={loc}
                     invTransfers={invTransfer.invTransfers} 
                     confirmDeleteInvTransfer={confirmDeleteInvTransfer}
                 />
@@ -150,7 +151,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
             size={'sm'}
             body={
                 <Grid numOfColumns={1} items={[
-                    <Select label={'Origin store'} 
+                    <Select label={loc.originStore} 
                         formAttr={{
                             disabled: (user.role.name === 'employee' ? true : false),
                             value: filters.origin_store_id,
@@ -170,7 +171,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                             return options
                         })()}
                     />,
-                    <Select label={'Destination store'} 
+                    <Select label={loc.destinationStore} 
                         formAttr={{
                             value: filters.destination_store_id,
                             onChange: e => {dispatchFilters({
@@ -189,7 +190,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                             return options
                         })()}
                     />,     
-                    <Select label={'Rows shown'} 
+                    <Select label={loc.rowsShown} 
                         formAttr={{
                             value: filters.limit,
                             onChange: e => {dispatchFilters({
@@ -203,7 +204,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
                 ]}/>
             }  
             footer={
-                <Button size={'sm'} text={'Search'} attr={{
+                <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
                         onClick: () => {getInvTransfers(ACTIONS.RESET)}
                     }}
@@ -215,9 +216,9 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
         <ConfirmPopup
             icon={'warning_1'}
             title={'Warning'}
-            body={'Are you sure want to remove this transfer? All transfered inventories will be returned to the origin store'}
-            confirmText={'Remove'}
-            cancelText={'Cancel'}
+            body={loc.deleteMsg}
+            confirmText={loc.remove}
+            cancelText={loc.cancel}
             shown={popupShown} togglePopup={() => {setPopupShown(state => !state)}} 
             confirmCallback={deleteInvTransfer}
         />
@@ -242,11 +243,11 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user}){
     </>)
 }
 
-const InvTransfersTable = ({invTransfers, confirmDeleteInvTransfer}) => {
+const InvTransfersTable = ({invTransfers, confirmDeleteInvTransfer, loc}) => {
     return <Table
         headings={[
-            'No', 'Inventory', 'Size', 'Amount', 'Origin Store', 
-            'Destination Store', 'Transfer Date', 'Actions'
+            'No', loc.inv, loc.size, loc.amount, loc.originStore, 
+            loc.destinationStore, loc.transferDate, 'Actions'
         ]}
         body={invTransfers.map((invTransfer, key) => ([
             (key + 1),
@@ -258,7 +259,7 @@ const InvTransfersTable = ({invTransfers, confirmDeleteInvTransfer}) => {
             format(new Date(invTransfer.transfer_date), 'eee, dd-MM-yyyy'),
             <>
                 <Button 
-                    size={'sm'} type={'light'} text={'Delete'} color={'red'}
+                    size={'sm'} type={'light'} text={loc.delete} color={'red'}
                     attr={{onClick: () => {confirmDeleteInvTransfer(key)}}}                            
                 />             
             </>

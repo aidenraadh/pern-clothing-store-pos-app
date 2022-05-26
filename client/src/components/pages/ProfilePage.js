@@ -10,7 +10,7 @@ import {Grid} from '../Layouts'
 function ProfilePage({user, loc}){
     const languages = useMemo(() => (
         JSON.parse(localStorage.getItem('languages'))
-    ))
+    ), [])
     const [disableBtn , setDisableBtn] = useState(false)
 
     const [name, setNameName] = useState(user.name)
@@ -58,16 +58,15 @@ function ProfilePage({user, loc}){
             attr={{id: 'profile-card'}}
             heading={loc.yourProfile}
             body={<>
-                <p className="flex-row items-start" id="profile-box">
-                    <img src='images/user_default_thumbnail.jpg'/>
+                <p className="flex-row items-start">
+                    <img src='images/user_default_thumbnail.jpg' alt='user avatar'/>
                     <span className="flex-col">
                         <span>{loc.name}: {user.name}</span>
-                        <span>Role: {user.role.name}</span>
-                        <Button text={loc.updateProfile} size={'sm'} attr={{
-                            style: {marginTop: '2rem'},
-                            onClick: () => {setUpdProfileModal(true)}
-                        }}/>                         
+                        <span>Role: {user.role.name}</span>                        
                     </span>
+                    <Button text={loc.updateProfile} size={'sm'} attr={{
+                        onClick: () => {setUpdProfileModal(true)}
+                    }}/>                     
                 </p>               
             </>}
             action={<>

@@ -4,8 +4,8 @@ import TransactionReceipt from './TransactionReceipt'
 import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
-import {TextInput, TextInputAddon, TextInputWithBtn, Select} from '../../Forms'
-import {PlainCard} from '../../Cards'
+import {TextInput, TextInputWithBtn, Select} from '../../Forms'
+import {SimpleCard} from '../../Cards'
 import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 import SVGIcons from '../../SVGIcons'
@@ -64,56 +64,31 @@ function CreateStoreTransactionPage({loc}){
     }
 
     const AddedInvsTable = useMemo(() => {
-        return <PlainCard
-            body={
-                <Table
-                    headings={[loc.inventory, loc.size, loc.amount, loc.price]}
-                    body={addedInvs.map((inv, key) => ([
-                        <span className='flex-row items-center'>
-                            <button className='flex-row items-center'
-                                style={{fontSize: '2.2rem', marginRight: '1rem'}}
-                                onClick={() => {dispatchAddedInvs({
-                                    type: 'remove', payload: {index: key}
-                                })}}
-                            >
-                                <SVGIcons color={'red'} name={'error_circle'}
-                                />
-                            </button>
-                            <span className='text-capitalize'>{inv.inventoryName}</span>
-                        </span>,
-                        inv.sizeName,
-                        <span className='flex-row items-center flex-inline' style={{width: '100%'}}>
-                            <TextInputWithBtn size={'sm'} containerAttr={{style: {width: '100%'}}}
-                                formAttr={{value: formatNum(inv.amount),
-                                    style: {width: '100%'},
-                                    onChange: (e) => {
-                                        dispatchAddedInvs({
-                                            type: 'update', payload: {
-                                                index: key, key: 'amount', 
-                                                value: e.target.value
-                                            }
-                                        })
-                                    }
-                                }}
-                                btnAttr={{onClick: () => {
-                                    dispatchAddedInvs({
-                                        type: 'update', payload: {
-                                            index: key, key: 'amount',
-                                            value: inv.originalAmount
-                                        }
-                                    })                                    
-                                }}}
+        return (addedInvs.length === 0 ? '' :
+            <Table
+                headings={[loc.inventory, loc.size, loc.amount, loc.price]}
+                body={addedInvs.map((inv, key) => ([
+                    <span className='flex-row items-center'>
+                        <button className='flex-row items-center'
+                            style={{fontSize: '2.2rem', marginRight: '1rem'}}
+                            onClick={() => {dispatchAddedInvs({
+                                type: 'remove', payload: {index: key}
+                            })}}
+                        >
+                            <SVGIcons color={'red'} name={'error_circle'}
                             />
-                            <span className={inv.amountLeft < 0 ? 'text-red' : 'text-dark-50'} 
-                            style={{fontSize: '1.34rem', marginLeft: '0.6rem', flexShrink: 0}}>
-                                {`/ ${inv.amountLeft}`}
-                            </span>
-                        </span>,
-                        <TextInputWithBtn key={key} size={'sm'} formAttr={{value: formatNum(inv.cost),
+                        </button>
+                        <span className='text-capitalize'>{inv.inventoryName}</span>
+                    </span>,
+                    inv.sizeName,
+                    <span className='flex-row items-center flex-inline' style={{width: '100%'}}>
+                        <TextInputWithBtn size={'sm'} containerAttr={{style: {width: '100%'}}}
+                            formAttr={{value: formatNum(inv.amount),
+                                style: {width: '100%'},
                                 onChange: (e) => {
                                     dispatchAddedInvs({
                                         type: 'update', payload: {
-                                            index: key, key: 'cost',
+                                            index: key, key: 'amount', 
                                             value: e.target.value
                                         }
                                     })
@@ -122,40 +97,69 @@ function CreateStoreTransactionPage({loc}){
                             btnAttr={{onClick: () => {
                                 dispatchAddedInvs({
                                     type: 'update', payload: {
-                                        index: key, key: 'cost',
-                                        value: inv.originalCost
+                                        index: key, key: 'amount',
+                                        value: inv.originalAmount
                                     }
                                 })                                    
                             }}}
-                        />                  
-                    ]))}
-                />  
-            }
-        />     
-    }, [addedInvs, dispatchAddedInvs])    
+                        />
+                        <span className={inv.amountLeft < 0 ? 'text-red' : 'text-dark-50'} 
+                        style={{fontSize: '1.34rem', marginLeft: '0.6rem', flexShrink: 0}}>
+                            {`/ ${inv.amountLeft}`}
+                        </span>
+                    </span>,
+                    <TextInputWithBtn key={key} size={'sm'} formAttr={{value: formatNum(inv.cost),
+                            onChange: (e) => {
+                                dispatchAddedInvs({
+                                    type: 'update', payload: {
+                                        index: key, key: 'cost',
+                                        value: e.target.value
+                                    }
+                                })
+                            }
+                        }}
+                        btnAttr={{onClick: () => {
+                            dispatchAddedInvs({
+                                type: 'update', payload: {
+                                    index: key, key: 'cost',
+                                    value: inv.originalCost
+                                }
+                            })                                    
+                        }}}
+                    />                  
+                ]))}
+            />  
+        )
+    }, [addedInvs, dispatchAddedInvs, loc.amount, loc.size, loc.inventory, loc.price])    
 
     return (<>
-        <Grid numOfColumns={1} items={[
-            <TextInputAddon 
-                addon={loc.date}
-                formAttr={{
-                    type: 'date', value: transactionDate,
-                    onChange: (e) => {setTransactionDate(e.target.value)}
-                }}
-            />,
-            AddedInvsTable,
-            <button key={'a'} type="button" className='text-blue flex-row items-center block' style={{fontSize: '1.46rem', margin: '1.4rem auto'}} 
-            onClick={() => {setModalShown(true)}}>
-                <SVGIcons name={'search'} color={'blue'} attr={{
-                    style: {fontSize: '1.46em', marginRight: '0.4rem'}
-                }} />
-                {loc.searchInv}
-            </button>,        
-            <div key={'b'} style={{height: '0.1rem', backgroundColor: '#D9D9D9'}}></div>, 
-            <Button key={'c'} size={'md'} text={loc.checkout} attr={{
-                onClick: () => {setReceiptModalShown(true)}
-            }}/>                   
-        ]}/>
+        <SimpleCard
+            heading={loc.createTrnsc}
+            footer={
+                <Button key={'c'} size={'md'} text={loc.checkout} attr={{
+                    onClick: () => {setReceiptModalShown(true)}
+                }}/>                 
+            }
+            body={
+                <Grid numOfColumns={1} items={[
+                    <TextInput label={loc.date}
+                        formAttr={{
+                            type: 'date', value: transactionDate,
+                            onChange: (e) => {setTransactionDate(e.target.value)}
+                        }}
+                    />,
+                    AddedInvsTable,
+                    <button key={'a'} type="button" className='text-blue flex-row items-center block' style={{
+                        fontSize: '1.46rem', margin: '1.4rem auto'
+                    }} onClick={() => {setModalShown(true)}}>
+                        <SVGIcons name={'search'} color={'blue'} attr={{
+                            style: {fontSize: '1.46em', marginRight: '0.4rem'}
+                        }} />
+                        {loc.searchInv}
+                    </button>,                      
+                ]}/>
+            }
+        />
         <Modal
             heading={loc.searchInv}
             body={<>

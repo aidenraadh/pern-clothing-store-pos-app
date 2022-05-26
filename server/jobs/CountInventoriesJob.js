@@ -31,5 +31,38 @@ class CountInventoriesJob extends Job{
         }
     }
 }
+/*
+    var myAsyncFuncs = [
+        async () => {
+            const store = await Store.findOne()
+            return Promise.resolve(store.name)  
+        },
+        async (val) => {
+            console.log('the val is ', val)
+            return Promise.resolve(val)
+        },
+        async(val) => {
+            console.log(x + 1)
+            console.log('the val is ', val)
+            return Promise.resolve(val)
+        },
+        async (val) => {
+            console.log('the val is ', val)
+            return Promise.resolve(val)
+        }
+    ];
 
+    const calc = (prev, curr) => {
+        return prev.then(curr)
+    }
+    let total = 0
+    await myAsyncFuncs.reduce(calc, Promise.resolve())
+    .then(result => {
+        console.log('RESULT is ' + total)  // prints "RESULT is 7"
+    })
+    .catch(error => {
+        total = 'Error bruuuh'
+    })
+    console.log('sending result')
+*/
 module.exports = CountInventoriesJob

@@ -1,0 +1,30 @@
+{
+    "english": {
+        "transferInv": "Tranfer Inventories",
+        "searchInvInStore": "Search inventory",
+        "addInv": "+ Add",
+        "search": "Search",
+        "inventory": "Inventory",
+        "name": "Name",
+        "size": "Size",
+        "amountTransfered": "Amount transfered",
+        "saveChanges": "Save changes",
+        "originStore": "Origin store",
+        "destinationStore": "Destination store",
+        "transferDate": "Transfer date"
+    },
+    "indonesian": {
+        "transferInv": "Tranfer Inventori",
+        "searchInvInStore": "Cari inventori",
+        "addInv": "+ Tambahkan",
+        "search": "Cari",
+        "inventory": "Inventori",
+        "name": "Nama",
+        "size": "Ukuran",
+        "amountTransfered": "Jumlah ditransfer",
+        "saveChanges": "Simpan perubahan",
+        "originStore": "Toko asal",
+        "destinationStore": "Toko tujuan",
+        "transferDate": "Tanggal transfer"        
+    }
+}

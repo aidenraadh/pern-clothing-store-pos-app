@@ -65,7 +65,7 @@ function CreateStoreInventoryPage({loc}){
                 setDisableBtn(false)
                 errorHandler(error) 
            })        
-    }, [invName, maxInvShown, storeId, stores, setDisableBtn])
+    }, [invName, maxInvShown, storeId, setDisableBtn])
 
     const storeInvs = useCallback(() => {
         api.post(`/store-inventories`, {
@@ -94,7 +94,7 @@ function CreateStoreInventoryPage({loc}){
                     setErrPopupMsg(error.response.data.message)                
                 }})                  
            })          
-    }, [storeId, stores, addedInvs])
+    }, [storeId, addedInvs])
 
     const AddedInvToolCards = useMemo(() => {
         return addedInvs.map((inventory, key) => (
@@ -141,7 +141,7 @@ function CreateStoreInventoryPage({loc}){
                 }
             />
         ))        
-    }, [addedInvs, dispatchAddedInvs])
+    }, [addedInvs, dispatchAddedInvs, loc.amount, loc.noSizesFound])
 
     useEffect(() => {
         if(stores === null){ getStores() }

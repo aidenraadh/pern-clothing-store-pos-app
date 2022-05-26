@@ -1,0 +1,32 @@
+{
+    "english": {
+        "searchInv": "Search inventories",
+        "inv": "Inventory",
+        "size": "Size",
+        "amount": "Amount",
+        "originStore": "Origin store",
+        "destinationStore": "Destination store",
+        "transferDate": "Transfer date",
+        "search": "Search",
+        "rowsShown": "Rows shown",
+        "deleteMsg": "Are you sure want to remove this transfer? All transfered inventories will be returned to the origin store",
+        "delete": "Delete",
+        "remove": "Remove",
+        "cancel": "Cancel"        
+    },
+    "indonesian": {
+        "searchInv": "Cari inventori",
+        "inv": "Inventori",
+        "size": "Ukuran",
+        "amount": "Jumlah",
+        "originStore": "Toko asal",
+        "destinationStore": "Toko tujuan",
+        "transferDate": "Tanggal transfer",
+        "search": "Cari",
+        "rowsShown": "Baris ditampilkan",
+        "deleteMsg": "Hapus transfer ini? Semua inventori yang ditransfer akan dikembalikan ke toko asalnya",
+        "delete": "Hapus",
+        "remove": "Hapus",
+        "cancel": "Batal"          
+    }
+}

@@ -13,7 +13,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     /* Edit store inventory */
     const [storeInvIndex, setStoreInvIndex] = useState('')
-    const [storeInvSizes, setStoreInvSizes] = useState('')
+    const [storeInvSizes, setStoreInvSizes] = useState([])
     const [modalShown, setModalShown] = useState(false)   
     /* Filters */
     const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(storeInv.isLoaded))    
@@ -39,7 +39,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                     setDisableBtn(false)
                     setFilterModalShown(false)
                 }                     
-                setStoreInvSizes('')     
+                setStoreInvSizes([])     
                 dispatchStoreInv({type: actionType, payload: response.data})  
                 dispatchFilters({type: ACTIONS.FILTERS.RESET, payload: {
                     filters: response.data.filters
@@ -66,17 +66,25 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                     parseInt(storeInvSize.inventory_size_id) === parseInt(invSize.id)
                 ))
                 if(storeInvSize){
-                    invSizes.push({
+                    const sizeDetails = {
                         ...storeInvSize,
-                        sizeName: invSize.name, production_price: invSize.production_price,
-                        selling_price: invSize.selling_price, isChanged: false              
-                    })  
+                        sizeName: invSize.name, isChanged: false                            
+                    }
+                    // For admin
+                    if(parseInt(user.role_id) === 2){
+                        sizeDetails.production_price = invSize.production_price ? invSize.production_price : ''
+                    }
+                    // For regular store
+                    if(parseInt(targetStoreInv.store.type_id) === 1){
+                        sizeDetails.selling_price = invSize.selling_price ? invSize.selling_price : ''
+                    }
+                    invSizes.push(sizeDetails)  
                 }
             })
             return invSizes
         })
         setModalShown(true)
-    }, [storeInv])
+    }, [storeInv, user])
     
     const updateStoreInv = useCallback(() => {
         setDisableBtn(true)
@@ -108,7 +116,6 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
             getStoreInvs(ACTIONS.RESET)
         }
     }, [storeInv, getStoreInvs])
-
 
     // When the store resource is not set yet
     // Return loading UI
@@ -161,23 +168,27 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
             body={<>
                 <Table
                     headings={(() => {
-                        const headings = [loc.size, loc.quantity, loc.sellingPrice]
-                        if(user.role.name === 'admin'){
-                           headings.splice(2, 0, loc.productionPrice) 
+                        const headings = [loc.size, loc.quantity]
+                        if(storeInvSizes.length){
+                            if(storeInvSizes[0].selling_price !== undefined){
+                                headings.splice(2, 0, loc.sellingPrice) 
+                            }                      
+                            if(storeInvSizes[0].production_price !== undefined){
+                                headings.splice(2, 0, loc.productionPrice) 
+                            }                    
                         }
                         return headings
                     })()}
-                    body={(() => {
-                        if(!storeInvSizes){ return [] }
-                        if(user.role.name === 'admin'){
-                            return storeInvSizes.map((size, index) => ([
-                                <span className='text-uppercase'>
-                                    {size.sizeName}
-                                </span>,
+                    body={storeInvSizes.map((size, index) => {
+                        const row = [
+                            <span className='text-uppercase'>{size.sizeName}</span>                            
+                        ]
+                        // For admin, can change the amount of the size
+                        if(user.role.id === 2){
+                            row.push(
                                 <TextInput size={'md'}
                                     formAttr={{
-                                        pattern: '[0-9]*', 
-                                        value: size.amount,
+                                        pattern: '[0-9]*', value: size.amount,
                                         onChange: (e) => {setStoreInvSizes(state => {
                                             const sizes = [...state]
                                             sizes[index].amount = e.target.value
@@ -186,19 +197,26 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                                         })}
                                     }}
                                     containerAttr={{style: {width: '10rem'}}}
-                                />,
-                                `Rp. ${size.production_price ? formatNum(size.production_price) : '--'}`,
-                                `Rp. ${size.selling_price ? formatNum(size.selling_price) : '--'}` 
-                            ]))
+                                />
+                            )
                         }
-                        if(user.role.name === 'employee'){
-                            return storeInvSizes.map((size, index) => ([
-                                <span className='text-capitalize'>{size.sizeName}</span>,
-                                formatNum(size.amount ? size.amount : 0),
-                                `Rp. ${formatNum(size.selling_price)}` 
-                            ]))
-                        }                        
-                    })()}
+                        else{
+                            row.push(
+                                formatNum(size.amount ? size.amount : 0)
+                            )
+                        }
+                        if(size.production_price !== undefined){
+                            row.push(
+                                `Rp. ${formatNum(size.production_price)}`
+                            )
+                        }
+                        if(size.selling_price !== undefined){
+                            row.push(
+                                `Rp. ${formatNum(size.selling_price)}`
+                            )
+                        }     
+                        return row                   
+                    })}
                 />
             </>}        
             footer={user.role.name === 'employee' ? '' :
