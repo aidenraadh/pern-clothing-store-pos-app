@@ -10,8 +10,21 @@ import { errorHandler } from "../Utils"
 import {isAuth, login} from '../Auth'
 
 const backgroundStyle = {
-    background: 'url("images/bg-1.png") no-repeat scroll 0 0',
+    background: 'url("images/bg-1.jpg")',
+    backgroundPosition: '0 0',
+    backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover'
+}
+
+const bg2Style = {
+    position: 'absolute',
+    top: '0', left: '0',
+    width: '100%', height: '100%',
+    background: 'linear-gradient(to left, #1058df 0%, #614092 100%)',
+    backgroundPosition: '0 0',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    opacity: '0.86' 
 }
 
 const LoginPage = (props) => {
@@ -52,9 +65,11 @@ const LoginPage = (props) => {
         return <Redirect to={'/'}/>
     }
     return (<>
-        <div id="login-page" className="flex-col items-center content-center" style={backgroundStyle}>
+        <div id="login-page" className="flex-col items-center content-center" style={backgroundStyle}>      
+            <div aria-hidden='true' style={bg2Style}>
+            </div>              
             <Grid numOfColumns={1} items={[
-                <h1 className="text-bold text-white text-center">HNSports</h1>,
+                <h1 className="text-bold text-white text-center">Clothing Store App</h1>,
                 <TextInput
                     formAttr={{
                         value: email, placeholder: 'Email', 
@@ -75,7 +90,7 @@ const LoginPage = (props) => {
                     disabled: disableBtn,
                     onClick: requestLogin
                 }}/>  
-            ]}/>
+            ]}/>                         
         </div>
         <ConfirmPopup
             shown={errPopupShown}
@@ -85,7 +100,13 @@ const LoginPage = (props) => {
             body={popupErrMsg}
             confirmText={'OK'}
             togglePopup={() => {setErrPopupShown(state => !state)}} 
-        />         
+        />    
+        <footer id="footer" className="flex-row content-space-between text-white">
+            <span></span>
+            <span>
+                Developed by: <a className="text-blue text-underline" target="_blank" href="https://aidenraadh.com/">aidenraadh.com</a>
+                </span>
+        </footer>            
     </>)
 }
 

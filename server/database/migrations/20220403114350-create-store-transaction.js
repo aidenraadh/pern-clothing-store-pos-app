@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Store_Transactions', {
+    await queryInterface.createTable('store_transactions', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -42,18 +42,18 @@ module.exports = {
       } 
     });
     // Add foreign key to store_id
-    await queryInterface.addConstraint('Store_Transactions', {
+    await queryInterface.addConstraint('store_transactions', {
       fields: ['store_id'],
       type: 'foreign key',
       name: 'fk_store_transactions_store_id',
       references: {
-        table: 'Stores',
+        table: 'stores',
         field: 'id',
       }
     })      
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint('Store_Transactions', 'fk_store_transactions_store_id');
-    await queryInterface.dropTable('Store_Transactions');
+    await queryInterface.removeConstraint('store_transactions', 'fk_store_transactions_store_id');
+    await queryInterface.dropTable('store_transactions');
   }
 };

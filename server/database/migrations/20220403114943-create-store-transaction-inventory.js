@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Store_Transaction_Inventories', {
+    await queryInterface.createTable('store_transaction_inventories', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -28,7 +28,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true          
       },    
-      original_cost: {
+      original_cost_per_inv: {
         type: Sequelize.INTEGER,
         allowNull: true          
       },
@@ -42,40 +42,40 @@ module.exports = {
       },
     });
     // Add foreign key to store_transaction_id
-    await queryInterface.addConstraint('Store_Transaction_Inventories', {
+    await queryInterface.addConstraint('store_transaction_inventories', {
       fields: ['store_transaction_id'],
       type: 'foreign key',
       name: 'fk_store_transaction_inventories_store_transaction_id',
       references: {
-        table: 'Store_Transactions',
+        table: 'store_transactions',
         field: 'id',
       }
     })      
     // Add foreign key to inventory_id
-    await queryInterface.addConstraint('Store_Transaction_Inventories', {
+    await queryInterface.addConstraint('store_transaction_inventories', {
       fields: ['inventory_id'],
       type: 'foreign key',
       name: 'fk_store_transaction_inventories_inventory_id',
       references: {
-        table: 'Inventories',
+        table: 'inventories',
         field: 'id',
       }
     })      
     // Add foreign key to inventory_id
-    await queryInterface.addConstraint('Store_Transaction_Inventories', {
+    await queryInterface.addConstraint('store_transaction_inventories', {
       fields: ['inventory_size_id'],
       type: 'foreign key',
       name: 'fk_store_transaction_inventories_inventory_size_id',
       references: {
-        table: 'Inventory_Sizes',
+        table: 'inventory_sizes',
         field: 'id',
       }
     })     
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint('Store_Transaction_Inventories', 'fk_store_transaction_inventories_store_transaction_id');
-    await queryInterface.removeConstraint('Store_Transaction_Inventories', 'fk_store_transaction_inventories_inventory_id');
-    await queryInterface.removeConstraint('Store_Transaction_Inventories', 'fk_store_transaction_inventories_inventory_size_id');
-    await queryInterface.dropTable('Store_Transaction_Inventories');
+    await queryInterface.removeConstraint('store_transaction_inventories', 'fk_store_transaction_inventories_store_transaction_id');
+    await queryInterface.removeConstraint('store_transaction_inventories', 'fk_store_transaction_inventories_inventory_id');
+    await queryInterface.removeConstraint('store_transaction_inventories', 'fk_store_transaction_inventories_inventory_size_id');
+    await queryInterface.dropTable('store_transaction_inventories');
   }
 };

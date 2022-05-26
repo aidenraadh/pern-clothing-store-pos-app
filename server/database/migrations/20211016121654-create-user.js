@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('users', {
       id: {
         type: Sequelize.BIGINT,
         allowNull: false,
@@ -48,24 +48,24 @@ module.exports = {
     });
 
     // Add foreign key to role_id
-    await queryInterface.addConstraint('Users', {
+    await queryInterface.addConstraint('users', {
       fields: ['role_id'],
       type: 'foreign key',
       name: 'fk_users_role_id',
       references: {
-        table: 'Roles',
+        table: 'roles',
         field: 'id',
 
       }
     })
 
     // Add foreign key to owner_id
-    await queryInterface.addConstraint('Users', {
+    await queryInterface.addConstraint('users', {
       fields: ['owner_id'],
       type: 'foreign key',
       name: 'fk_users_owner_id',
       references: {
-        table: 'Owners',
+        table: 'owners',
         field: 'id',
 
       }
@@ -73,8 +73,8 @@ module.exports = {
     
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint('Users', 'fk_users_role_id');
-    await queryInterface.removeConstraint('Users', 'fk_users_owner_id');
-    await queryInterface.dropTable('Users');
+    await queryInterface.removeConstraint('users', 'fk_users_role_id');
+    await queryInterface.removeConstraint('users', 'fk_users_owner_id');
+    await queryInterface.dropTable('users');
   }
 };

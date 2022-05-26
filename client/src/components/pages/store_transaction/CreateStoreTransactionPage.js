@@ -239,11 +239,7 @@ function CreateStoreTransactionPage({loc}){
             icon={'done_circle'}
             iconColor={'blue'}
             title={"Success"}
-            body={
-                <p>
-                    {loc.succMsg}
-                </p>
-            }
+            body={<p>{loc.succMsg}</p>}
             confirmText={'Create new transaction'}
             cancelText={'View transactions'}
             cancelBtnColor={'blue'}

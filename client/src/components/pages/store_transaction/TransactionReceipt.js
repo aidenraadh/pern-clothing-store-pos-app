@@ -84,7 +84,7 @@ const formatTransactionInvs = (items, objType) => {
                 data.sizeName = item.size.name
                 data.amount = parseInt(item.amount)
                 data.cost = parseInt(item.cost / data.amount)
-                data.originalCost = parseInt(item.original_cost)           
+                data.originalCost = parseInt(item.original_cost_per_inv)           
                 break;
             default: throw new Error()
         }

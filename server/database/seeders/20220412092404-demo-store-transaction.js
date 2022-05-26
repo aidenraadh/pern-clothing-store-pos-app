@@ -47,7 +47,7 @@ module.exports = {
     // Seed store transaction inventories
     await StoreTransactionInventory.bulkCreate(inventory.sizes.map((size) => ({
       store_transaction_id: storeTrnsc.id, inventory_id: inventory.id, inventory_size_id: size.id,
-      amount: amountEachItem, cost: size.selling_price * amountEachItem, original_cost: size.selling_price      
+      amount: amountEachItem, cost: size.selling_price * amountEachItem, original_cost_per_inv: size.selling_price      
     })))    
   },
 

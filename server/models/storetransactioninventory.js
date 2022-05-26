@@ -24,11 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     inventory_size_id: DataTypes.BIGINT,
     amount: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
-    original_cost: DataTypes.INTEGER,
+    original_cost_per_inv: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'StoreTransactionInventory',
-    tableName: 'Store_Transaction_Inventories',
+    tableName: 'store_transaction_inventories',
     createdAt: 'created_at',
     updatedAt: 'updated_at',     
   });

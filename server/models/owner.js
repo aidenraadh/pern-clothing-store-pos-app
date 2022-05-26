@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Owner',
+    tableName: 'owners',
     paranoid: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',    

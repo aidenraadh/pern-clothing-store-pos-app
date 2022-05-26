@@ -51,7 +51,7 @@ module.exports = {
       type: 'foreign key',
       name: 'fk_inventory_transfers_inventory_id',
       references: {
-        table: 'Inventories',
+        table: 'inventories',
         field: 'id',
       }
     })       
@@ -61,7 +61,7 @@ module.exports = {
       type: 'foreign key',
       name: 'fk_inventory_transfers_inventory_size_id',
       references: {
-        table: 'Inventory_Sizes',
+        table: 'inventory_sizes',
         field: 'id',
       }
     })    
@@ -71,7 +71,7 @@ module.exports = {
       type: 'foreign key',
       name: 'fk_inventory_transfers_origin_store_id',
       references: {
-        table: 'Stores',
+        table: 'stores',
         field: 'id',
       }
     })    
@@ -81,7 +81,7 @@ module.exports = {
       type: 'foreign key',
       name: 'fk_inventory_transfers_destination_store_id',
       references: {
-        table: 'Stores',
+        table: 'stores',
         field: 'id',
       }
     })      

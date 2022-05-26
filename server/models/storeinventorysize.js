@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     amount: DataTypes.SMALLINT,
   }, {
     sequelize,
-    tableName: 'Store_Inventory_Sizes',    
+    tableName: 'store_inventory_sizes',    
     modelName: 'StoreInventorySize',
     timestamps: false,
   });

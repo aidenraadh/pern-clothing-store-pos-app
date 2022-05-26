@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Inventory_Sizes', {
+    await queryInterface.createTable('inventory_sizes', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -38,19 +38,19 @@ module.exports = {
     });
 
     // Add foreign key to inventory_id
-    await queryInterface.addConstraint('Inventory_Sizes', {
+    await queryInterface.addConstraint('inventory_sizes', {
       fields: ['inventory_id'],
       type: 'foreign key',
       name: 'fk_inventory_sizes_inventory_id',
       references: {
-        table: 'Inventories',
+        table: 'inventories',
         field: 'id',
 
       }
     })      
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint('Inventory_Sizes', 'fk_inventory_sizes_inventory_id');    
-    await queryInterface.dropTable('Inventory_Sizes');
+    await queryInterface.removeConstraint('inventory_sizes', 'fk_inventory_sizes_inventory_id');    
+    await queryInterface.dropTable('inventory_sizes');
   }
 };

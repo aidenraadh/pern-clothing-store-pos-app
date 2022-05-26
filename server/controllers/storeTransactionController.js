@@ -72,7 +72,7 @@ exports.index = async (req, res) => {
                 },              
                 {
                     model: StoreTransactionInventory, as: 'storeTrnscInvs', 
-                    attributes: ['id', 'amount', 'cost', 'original_cost'],
+                    attributes: ['id', 'amount', 'cost', 'original_cost_per_inv'],
                     include: [
                         // Get the inventories, including the soft deleted ones
                         {
@@ -139,7 +139,7 @@ exports.store = async (req, res) => {
             inventory_size_id: inv.sizeId,
             amount: inv.amount,
             cost: inv.cost,
-            original_cost: inv.originalCost
+            original_cost_per_inv: inv.originalCost
         })))
         // Update the store inventory size amount
         for(const inv of values.purchased_invs){
@@ -364,7 +364,7 @@ const getStoreTransaction = async (id, paranoid = true) => {
                 },              
                 {
                     model: StoreTransactionInventory, as: 'storeTrnscInvs', 
-                    attributes: ['id', 'amount', 'cost', 'original_cost'],
+                    attributes: ['id', 'amount', 'cost', 'original_cost_per_inv'],
                     include: [
                         // Get the inventories, including the soft deleted ones
                         {

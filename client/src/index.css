@@ -71,6 +71,7 @@
 }
 
 #login-page{
+	position: relative;
 	min-height: 100vh;
 }
 
@@ -79,11 +80,18 @@
 }
 
 #login-page .grid{
-	width: 28vw;
+	width: 30vw;
+	position: relative;
 }
 
 #login-page .grid .btn.btn-primary{
 	width: 100%;
+}
+
+#footer{
+	font-size: 1.44rem;
+	padding: 2.2rem;
+	background-color: #1E273E;
 }
 
 #profile-card .card-body > p{
@@ -103,13 +111,13 @@
 
 @media only screen and (max-width: 1100px){		
 	#login-page .grid{
-		width: 40vw;
+		width: 50vw;
 	}
 }
 
 @media only screen and (max-width: 700px){		
 	#login-page .grid{
-		width: 70vw;
+		width: 90vw;
 	}
 	#profile-card .card-body > p img{
 		margin: 6rem auto 2rem;
