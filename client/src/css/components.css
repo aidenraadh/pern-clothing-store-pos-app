@@ -363,7 +363,7 @@ All button in the group must be in the same size
 	z-index: 97;
 }
 .sidebar.shown{
-	max-width: 28rem;
+	max-width: 32rem;
 }
 
 .sidebar-items-container{
@@ -378,7 +378,7 @@ All button in the group must be in the same size
 }
 
 .sidebar .sidebar-item{
-	width: 28rem;
+	width: 32rem;
 	flex-shrink: 0;
 	display: flex;
 	align-items: center;

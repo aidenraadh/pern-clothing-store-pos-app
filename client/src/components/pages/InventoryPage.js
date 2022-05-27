@@ -96,9 +96,9 @@ function InventoryPage({inventory, dispatchInventory, user, loc}){
         setInvId(id)
         setInvName(name)
         dispatchInvSizes({payload: sizes})
-        setModalHeading(`Edit ${name}`)
+        setModalHeading(loc.editInv)
         setModalShown(true)
-    }, [])
+    }, [loc.editInv])
 
     const updateInventory = useCallback(() => {
         setDisableBtn(true)   
@@ -195,6 +195,7 @@ function InventoryPage({inventory, dispatchInventory, user, loc}){
                         confirmDeleteInventory={confirmDeleteInventory}
                     />,
                     <LoadMoreBtn 
+                        disableBtn={disableBtn}
                         canLoadMore={inventory.canLoadMore}
                         action={() => {getInventories(ACTIONS.APPEND)}}
                     />                                  
@@ -369,7 +370,7 @@ const sizesReducer = (state, action) => {
 const InventoryList = ({loc, inventories, editInventory, confirmDeleteInventory}) => {
     return (
         <Table
-            headings={['No', 'Name', 'Actions']}
+            headings={['No', loc.name, 'Actions']}
             body={inventories.map((inventory, key) => ([
                 (key + 1),
                 <span className="text-capitalize">{inventory.name}</span>,
@@ -396,11 +397,11 @@ const InventoryList = ({loc, inventories, editInventory, confirmDeleteInventory}
     )
 }
 
-const LoadMoreBtn = ({canLoadMore, action}) => {
+const LoadMoreBtn = ({canLoadMore, action, disableBtn}) => {
     return (
         canLoadMore ? 
         <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '0 auto'}} 
-        onClick={action}>
+        onClick={action} disabled={disableBtn}>
             Load More
         </button> : ''        
     )

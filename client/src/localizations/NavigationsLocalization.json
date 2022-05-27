@@ -1,6 +1,6 @@
 {
     "english": {
-        "inventory": "Inventories",
+        "inventories": "Inventories",
         "stores": "Stores",
         "storeInvs": "Store Inventories",
         "storeTrnscs": "Store Transactions",
@@ -8,8 +8,8 @@
     },
     "indonesian": {
         "inventories": "Inventori",
-        "stores": "Toko",
-        "storeInvs": "Inventori Toko",
+        "stores": "Toko dan Gudang",
+        "storeInvs": "Inventori Tersimpan",
         "storeTrnscs": "Transaksi Toko",
         "invTransfers": "Transfer Inventori"
     }

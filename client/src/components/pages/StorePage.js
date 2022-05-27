@@ -193,7 +193,8 @@ function StorePage({store, dispatchStore, user, loc}){
                     editStore={editStore}
                     confirmDeleteStore={confirmDeleteStore}
                 />
-                <LoadMoreBtn 
+                <LoadMoreBtn
+                    disableBtn={disableBtn}
                     canLoadMore={store.canLoadMore}
                     action={() => {getStores(ACTIONS.APPEND)}}
                 />                                 
@@ -316,11 +317,11 @@ const StoresTable = ({loc, stores, storeTypes, editStore, confirmDeleteStore}) =
     />
 }
 
-const LoadMoreBtn = ({canLoadMore, action}) => {
+const LoadMoreBtn = ({canLoadMore, action, disableBtn}) => {
     return (
         canLoadMore ? 
         <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
-        onClick={action}>
+        onClick={action} disabled={disableBtn}>
             Load More
         </button> : ''        
     )

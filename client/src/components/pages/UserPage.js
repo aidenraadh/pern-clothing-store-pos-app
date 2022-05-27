@@ -452,7 +452,7 @@ function UserPage(props){
     </>)
 }
 
-const UsersTable = ({appProps, roleId, getUsers, toggleCrtUser, toggleEdtUser, toggleDltUser}) => {
+const UsersTable = ({appProps, roleId, getUsers, disableBtn, toggleCrtUser, toggleEdtUser, toggleDltUser}) => {
     let addBtnText = ''
     let tableHeadings = ['Name']
     let tableBody = []
@@ -499,7 +499,8 @@ const UsersTable = ({appProps, roleId, getUsers, toggleCrtUser, toggleEdtUser, t
                 headings={tableHeadings}
                 body={tableBody}
             />,
-            <LoadMoreBtn 
+            <LoadMoreBtn
+                disableBtn={disableBtn}
                 canLoadMore={loadMoreBtnVis}
                 action={loadMoreBtnAction}
             />               
@@ -507,11 +508,11 @@ const UsersTable = ({appProps, roleId, getUsers, toggleCrtUser, toggleEdtUser, t
     )
 }
 
-const LoadMoreBtn = ({canLoadMore, action}) => {
+const LoadMoreBtn = ({canLoadMore, action, disableBtn}) => {
     return (
         canLoadMore ? 
         <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '0 auto'}} 
-        onClick={action}>
+        onClick={action} disabled={disableBtn}>
             Load More
         </button> : ''        
     )

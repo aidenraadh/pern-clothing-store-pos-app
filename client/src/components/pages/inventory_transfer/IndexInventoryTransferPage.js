@@ -134,16 +134,10 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                     confirmDeleteInvTransfer={confirmDeleteInvTransfer}
                 />
                 <LoadMoreBtn 
+                    disableBtn={disableBtn}
                     canLoadMore={invTransfer.canLoadMore}
                     action={() => {getInvTransfers(ACTIONS.APPEND)}}
-                />                  
-                {
-                    invTransfer.canLoadMore ? 
-                    <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
-                    onClick={() => {getInvTransfers(ACTIONS.APPEND)}}>
-                        Load More
-                    </button> : ''
-                }                
+                />                                
             </>}
         />
         <Modal
@@ -267,11 +261,11 @@ const InvTransfersTable = ({invTransfers, confirmDeleteInvTransfer, loc}) => {
     />
 }
 
-const LoadMoreBtn = ({canLoadMore, action}) => {
+const LoadMoreBtn = ({canLoadMore, action, disableBtn}) => {
     return (
         canLoadMore ? 
         <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
-        onClick={action}>
+        onClick={action} disabled={disableBtn}>
             Load More
         </button> : ''        
     )

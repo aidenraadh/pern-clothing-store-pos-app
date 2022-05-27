@@ -18,7 +18,7 @@
         "search": "Cari",
         "name": "Nama",
         "addInv": "+ Tambahkan",
-        "searchInvMsg1": "* Inventori yang ditampilkan hanya yang belum ada di toko",
+        "searchInvMsg1": "* Inventori yang ditampilkan hanya yang belum ada di ",
         "searchInvMsg2": "Maksimal ditampilkan:",
         "amount": "Jumlah",
         "noSizesFound": "Ukuran tidak ditemukan"

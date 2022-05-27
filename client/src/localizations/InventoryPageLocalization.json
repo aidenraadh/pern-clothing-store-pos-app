@@ -18,7 +18,9 @@
         "saveChanges": "Save changes",
         "emptyProductionSelling": "Uncomplete production price or selling price",
         "emptySizes": "Empty sizes",
-        "showAll": "Show all"
+        "showAll": "Show all",
+        "editInv": "Edit Inventory"
+
     },
     "indonesian": {
         "rowsShown": "Baris ditampilkan",
@@ -39,6 +41,7 @@
         "saveChanges": "Simpan perubahan",
         "emptyProductionSelling": "Harga produksi atau jual belum lengkap",
         "emptySizes": "Belum memiliki ukuran",
-        "showAll": "Tampilkan semua"        
+        "showAll": "Tampilkan semua",
+        "editInv": "Edit Inventori"
     }
 }

@@ -158,6 +158,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                     viewStoreInv={viewStoreInv}
                 />
                 <LoadMoreBtn 
+                    disableBtn={disableBtn}
                     canLoadMore={storeInv.canLoadMore}
                     action={() => {getStoreInvs(ACTIONS.APPEND)}}
                 />              
@@ -184,7 +185,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                             <span className='text-uppercase'>{size.sizeName}</span>                            
                         ]
                         // For admin, can change the amount of the size
-                        if(user.role.id === 2){
+                        if(parseInt(user.role_id) === 2){
                             row.push(
                                 <TextInput size={'md'}
                                     formAttr={{
@@ -313,14 +314,14 @@ const StoreInvs = ({loc, storeInvs, viewStoreInv}) => {
     return (<>
         <div className="inventories-container">
             <Table
-                headings={['No', loc.inventory, loc.store, loc.totalStored, 'Actions']}
+                headings={['No', loc.inventory, loc.storeOrStorage, loc.totalStored, 'Actions']}
                 body={storeInvs.map((storeInv, index) => [
                     (index + 1),
                     <span className='text-capitalize'>{storeInv.inventory.name}</span>, 
                     <span className='text-capitalize'>{storeInv.store.name}</span>, 
                     storeInv.total_amount ? formatNum(storeInv.total_amount) : 0,
                     <>
-                        <Button text={loc.view} size={'sm'} 
+                        <Button text={loc.view} type={'light'} size={'sm'} 
                             attr={{onClick: () => {viewStoreInv(index)}}}
                         />
                     </>
@@ -330,11 +331,11 @@ const StoreInvs = ({loc, storeInvs, viewStoreInv}) => {
     </>)
 }
 
-const LoadMoreBtn = ({canLoadMore, action}) => {
+const LoadMoreBtn = ({canLoadMore, action, disableBtn}) => {
     return (
         canLoadMore ? 
         <button type="button" className='text-blue block' style={{fontSize: '1.46rem', margin: '1rem auto 0'}} 
-        onClick={action}>
+        onClick={action} disabled={disableBtn}>
             Load More
         </button> : ''        
     )

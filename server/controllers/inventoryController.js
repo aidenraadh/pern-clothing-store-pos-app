@@ -1,6 +1,7 @@
 const models                   = require('../models/index')
 const Inventory                = models.Inventory
 const InventorySize            = models.InventorySize
+const StoreInventory           = models.StoreInventory
 const Sequelize                = require("sequelize")
 const {Op}                     = require("sequelize")
 const Joi                      = require('joi')
@@ -37,11 +38,11 @@ exports.index = async (req, res) => {
                 filters.requiredInvSizes = true
             }
             else if(queries.shows_only === 'empty_sizes'){
-                filters.whereInv = `"owner_id"=${req.user.owner_id} AND 
-                NOT EXISTS (SELECT id FROM "Inventory_Sizes" WHERE "inventory_id"="Inventory"."id")`
+                filters.whereInv = `"owner_id"=${req.user.owner_id} AND `+
+                `NOT EXISTS (SELECT id FROM "${InventorySize.tableName}" WHERE "inventory_id"="${Inventory.name}"."id")`
                 
                 if(queries.name){
-                    filters.whereInv = `"name" ILIKE "${queries.name}" AND `+filters.whereInv
+                    filters.whereInv = `"${Inventory.name}"."name" ILIKE '%${queries.name}%' AND `+filters.whereInv
                 }
                 filters.whereInv = Sequelize.literal(filters.whereInv)
             }
@@ -49,12 +50,12 @@ exports.index = async (req, res) => {
         if(queries.not_in_store){
             filters.whereInv = `"owner_id"=${req.user.owner_id} AND 
             NOT EXISTS (
-                SELECT id FROM "Store_Inventories" WHERE "inventory_id"="Inventory"."id"
+                SELECT id FROM "${StoreInventory.tableName}" WHERE "inventory_id"="${Inventory.name}"."id"
                 AND "store_id"=${queries.not_in_store}
             )`
             
             if(queries.name){
-                filters.whereInv = `"name" ILIKE "${queries.name}" AND `+filters.whereInv
+                filters.whereInv = `"${Inventory.name}"."name" ILIKE '%${queries.name}%' AND `+filters.whereInv
             }
             filters.whereInv = Sequelize.literal(filters.whereInv)
         }           

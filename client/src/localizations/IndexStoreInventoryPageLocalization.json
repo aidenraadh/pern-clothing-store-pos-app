@@ -15,7 +15,8 @@
         "quantity": "Quantity",
         "productionPrice": "Production price",
         "sellingPrice": "Selling price",       
-        "saveChanges": "Save changes"
+        "saveChanges": "Save changes",
+        "storeOrStorage": "Store"
     },
     "indonesian": {
         "searchInvInStore": "Cari inventori dalam toko",
@@ -33,6 +34,7 @@
         "quantity": "Jumlah",
         "productionPrice": "Harga Produksi",
         "sellingPrice": "Harga jual",      
-        "saveChanges": "Simpan perubahan"
+        "saveChanges": "Simpan perubahan",
+        "storeOrStorage": "Toko/Gudang"
     }
 }
