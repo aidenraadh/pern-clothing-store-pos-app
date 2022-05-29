@@ -2,7 +2,7 @@ const logger = require('../utils/logger')
 const models = require('../models/index')
 const JobModel = models.Job
 
-class SampleJob{
+class Job{
     constructor(){
         // The user ID initiating the job
         this.userId = null
@@ -29,31 +29,25 @@ class SampleJob{
      */       
     async setToFailJob()
     {
-        await JobModel.update(
-            {status: 3}, {where: {id: this.jobId}}
-        )
+        await JobModel.destroy({where: {id: this.jobId}})
     }    
-    /**
-     * Update the job's result initiated by a user and model job 
-     * @returns {void}
-     */    
-    async updateJobResult(result)
+    async getJob()
     {
-        await JobModel.update(
-            {result: result}, {where: {id: this.jobId}}
-        )
+        return await JobModel.findOne({
+            attributes: ['id', 'result', 'status'],
+            where: {id: this.jobId}
+        })
     }
     /**
      * Get all jobs initiated by a user and model job 
-     * that still processing or have been completed.
      * When the job is completed, remove it
      * @returns {array} - All jobs with status 'processing' or 'completed'
      */
-    async retrieveJobs()
+    async getAllJobs()
     {
         let jobs = await JobModel.findAll({
             attributes: ['id', 'result', 'status'],
-            where: {user_id: this.userId, model: this.modelName, status: [1,2]}
+            where: {user_id: this.userId, model: this.modelName}
         })
         const completedJobIds = jobs.filter(job => parseInt(job.status) === 2).map(job => job.id)
         if(completedJobIds.length){
@@ -65,17 +59,17 @@ class SampleJob{
     }
     /**
      * Create the job and process it
-     * @param {*} data - The data need for processing the job
+     * @param {*} payload - The data need for processing the job
      * @returns {integer} - The job ID
      */
-    async dispatch(data){
+    async dispatch(payload){
         const job = await JobModel.create({
             user_id: this.userId,
             model: this.modelName,
             status: 1,
         })
         this.jobId = job.id
-        this.process(data)
+        this.process(payload)
             .then(async () => {
                 await this.completeJob()
             })
@@ -87,4 +81,4 @@ class SampleJob{
     }
 }
 
-module.exports = SampleJob
+module.exports = Job

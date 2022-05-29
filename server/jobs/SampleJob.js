@@ -10,12 +10,19 @@ class SampleJob extends Job{
             this.userId = userId
             this.modelName = 'SampleJob'
 
-            this.process = async (data = null) => {
+            this.process = async (payload = null) => {
                 // Your process logic here
             }
         } catch (error) {
             throw new Error(error)
         }
+        this.process = async (payload = null) => {
+            try {
+                
+            } catch (error) {
+                throw new Error(error)
+            }
+        }         
     }
 }
 
@@ -25,9 +32,6 @@ module.exports = SampleJob
 This is a sample job
 
 To create your own job class copy-paste the content of this file
-
-Change the name of the class from SampleJob to yor JobName, 
-dont forget to change 'this.modelName' to 'JobName' as well
 
 1. Change the name of the class from SampleJob to yor YourJob, 
 dont forget to change 'this.modelName' to 'YourJob' as well

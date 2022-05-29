@@ -6,13 +6,50 @@ const InventoryController         = require('../controllers/InventoryController'
 const StoreInventoryController    = require('../controllers/StoreInventoryController')
 const StoreTransactionController  = require('../controllers/StoreTransactionController')
 const inventoryTransferController = require('../controllers/inventoryTransferController')
+const statisticController         = require('../controllers/statisticController')
 const isAuth                      = require('../middlewares/isAuth')
 const isNotAuth                   = require('../middlewares/isNotAuth')
 const authorize                   = require('../middlewares/authorize')
 
-rootRouter.post('/register', [
-    isNotAuth, AuthController.register
-])
+const sequelize                = require("sequelize")
+const {Op}                = require("sequelize")
+
+
+const models                   = require('../models/index')
+const Inventory                = models.Inventory
+const InventorySize            = models.InventorySize
+const Store            = models.Store
+const StoreInventory           = models.StoreInventory
+const logger = require('../utils/logger')
+
+
+rootRouter.get('/test', async (req, res) => {
+    try {
+        const sumStoreInvs = await StoreInventory.findAll({
+            attributes: [
+                [sequelize.fn('SUM', sequelize.col('total_amount')), 'amount']
+            ],
+            where: {store_id: 1},
+            include: [
+                {
+                    model: Store, as: 'store', attributes: [], required: true
+                }
+            ],
+            group: [`${StoreInventory.name}.id`],
+            limit: 400, 
+            offest: 0
+        })
+        console.log(sumStoreInvs)
+        // console.log(inv.map(inv => inv.id))
+        res.send({
+            data: 'asd'
+        })
+    } catch (error) {
+        logger.error(error, {errorObj: error})
+        res.status(500).send({message: error.message})   
+    }
+})
+
 rootRouter.post('/login', [
     isNotAuth, AuthController.login
 ])
@@ -106,5 +143,13 @@ rootRouter
     .post('/inventory-transfers', [
         isAuth, authorize('employee', 'admin'), inventoryTransferController.store
     ])      
+
+rootRouter
+    .get('/statistics/total-inventories', [
+        isAuth, authorize('admin'), statisticController.countInventories
+    ])  
+    .get('/statistics/sum-stored-inventories', [
+        isAuth, authorize('admin'), statisticController.sumStoredInventories
+    ])           
 
 module.exports = rootRouter

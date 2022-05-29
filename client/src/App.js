@@ -50,7 +50,9 @@ function App(){
     const [storeTrnsc, dispatchStoreTrnsc] = useReducer(storeTransactionReducer, STORETRNSC_INIT_STATE)
     const [invTransfer, dispatchInvTransfer] = useReducer(inventoryTransferReducer, INVTRANSFER_INIT_STATE)
     const [admin, dispatchAdmin] = useReducer(adminReducer, ADMIN_INIT_STATE)
-    const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)     
+    const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)    
+    const [totalInvs, setTotalInvs] = useState(undefined) 
+    const [totalStoredInvs, setTotalStoredInvs] = useState(undefined)
 
     const user = useMemo(() => {
         const user = getUser()
@@ -138,7 +140,8 @@ function App(){
                     <Switch>
                         <Route path="/login" exact component={LoginPage}/>
                         <ProtectedRoute path={`/${sidebarItems.dashboard.link}`} exact component={DashboardPage} props={{
-                            user: user
+                            user: user, totalInvs: totalInvs, setTotalInvs: setTotalInvs,
+                            totalStoredInvs: totalStoredInvs, setTotalStoredInvs: setTotalStoredInvs,
                         }}/>                        
                         <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
                             props={{

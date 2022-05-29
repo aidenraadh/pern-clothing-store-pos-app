@@ -70,6 +70,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                         ...storeInvSize,
                         sizeName: invSize.name, isChanged: false                            
                     }
+                    sizeDetails.amount = sizeDetails.amount ? sizeDetails.amount : ''
                     // For admin
                     if(parseInt(user.role_id) === 2){
                         sizeDetails.production_price = invSize.production_price ? invSize.production_price : ''

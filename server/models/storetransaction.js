@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     total_amount: DataTypes.INTEGER,
     total_cost: DataTypes.INTEGER,
     total_original_cost: DataTypes.INTEGER,
-    transaction_date: DataTypes.DATE,
+    transaction_date: DataTypes.DATEONLY,
   }, {
     sequelize,
     modelName: 'StoreTransaction',
