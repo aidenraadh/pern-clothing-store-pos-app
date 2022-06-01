@@ -20,6 +20,10 @@ exports.index = async (req, res) => {
         const queries = {...req.query}
         queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
         queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
+        queries.from = Joi.date().required().validate(queries.from)
+        queries.from = queries.from.error ? '' : queries.from.value        
+        queries.to = Joi.date().required().validate(queries.to)
+        queries.to = queries.to.error ? '' : queries.to.value          
         queries.name = Joi.string().required().trim().validate(queries.name)
         queries.name = queries.name.error ? '' : queries.name.value
         // When the user is employee, they can only see StoreTransaction from the store they're employed to
@@ -37,16 +41,22 @@ exports.index = async (req, res) => {
         const filters = {
             whereStoreTrnsc: {},
             whereInv: {},
-            limitOffset: {
-                limit: parseInt(req.query.limit) ? parseInt(req.query.limit) : 10,
-                offset: parseInt(req.query.offset) ? parseInt(req.query.offset) : 0                
-            }
+            limitOffset: {limit: queries.limit, offset: queries.offset}
         }
         if(queries.store_id){
             filters.whereStoreTrnsc.store_id = queries.store_id
         }
+        if(queries.from){
+            filters.whereStoreTrnsc.transaction_date = {[Op.gte]: queries.from}
+        }        
+        if(queries.to){
+            filters.whereStoreTrnsc.transaction_date = {
+                ...filters.whereStoreTrnsc.transaction_date,
+                [Op.lte]: queries.to
+            }
+        }          
         if(queries.name){
-            filters.whereInv.name = {[Op.iLike]: `%${where.name}%`} 
+            filters.whereInv.name = {[Op.iLike]: `%${queries.name}%`} 
         }  
         /*-------------------------------------------------*/   
         

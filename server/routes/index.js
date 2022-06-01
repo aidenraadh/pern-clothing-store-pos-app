@@ -11,36 +11,25 @@ const isAuth                      = require('../middlewares/isAuth')
 const isNotAuth                   = require('../middlewares/isNotAuth')
 const authorize                   = require('../middlewares/authorize')
 
-const sequelize                = require("sequelize")
-const {Op}                = require("sequelize")
+const {Op} = require("sequelize")
+const sequelize = require("sequelize")
 
+const Joi                      = require('joi')
 
 const models                   = require('../models/index')
 const Inventory                = models.Inventory
 const InventorySize            = models.InventorySize
 const Store            = models.Store
 const StoreInventory           = models.StoreInventory
+const StoreInventorySize           = models.StoreInventorySize
 const logger = require('../utils/logger')
 
 
 rootRouter.get('/test', async (req, res) => {
     try {
-        const sumStoreInvs = await StoreInventory.findAll({
-            attributes: [
-                [sequelize.fn('SUM', sequelize.col('total_amount')), 'amount']
-            ],
-            where: {store_id: 1},
-            include: [
-                {
-                    model: Store, as: 'store', attributes: [], required: true
-                }
-            ],
-            group: [`${StoreInventory.name}.id`],
-            limit: 400, 
-            offest: 0
-        })
-        console.log(sumStoreInvs)
-        // console.log(inv.map(inv => inv.id))
+        const {value, error} = Joi.date().validate('2020-02-12')
+        console.log(value)
+        console.log(error)
         res.send({
             data: 'asd'
         })
@@ -150,6 +139,9 @@ rootRouter
     ])  
     .get('/statistics/sum-stored-inventories', [
         isAuth, authorize('admin'), statisticController.sumStoredInventories
-    ])           
+    ])    
+    .get('/statistics/sum-production-prices', [
+        isAuth, authorize('admin'), statisticController.sumProdPrices
+    ])
 
 module.exports = rootRouter

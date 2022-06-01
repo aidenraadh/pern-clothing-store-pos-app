@@ -53,6 +53,7 @@ function App(){
     const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)    
     const [totalInvs, setTotalInvs] = useState(undefined) 
     const [totalStoredInvs, setTotalStoredInvs] = useState(undefined)
+    const [totalProdPrices, setTotalProdPrices] = useState(undefined)
 
     const user = useMemo(() => {
         const user = getUser()
@@ -142,6 +143,7 @@ function App(){
                         <ProtectedRoute path={`/${sidebarItems.dashboard.link}`} exact component={DashboardPage} props={{
                             user: user, totalInvs: totalInvs, setTotalInvs: setTotalInvs,
                             totalStoredInvs: totalStoredInvs, setTotalStoredInvs: setTotalStoredInvs,
+                            totalProdPrices: totalProdPrices, setTotalProdPrices: setTotalProdPrices
                         }}/>                        
                         <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
                             props={{

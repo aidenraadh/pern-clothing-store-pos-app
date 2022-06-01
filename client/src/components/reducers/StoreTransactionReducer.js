@@ -1,5 +1,8 @@
 import { getResFilters, saveResFilters } from "../Utils"
 
+import {format} from 'date-fns'
+
+
 const STATE_NAME = 'storeTrnsc'
 
 export const INIT_STATE = {
@@ -98,11 +101,16 @@ export const filterReducer = (state, action) => {
             if(payload.key === 'limit' || payload.key === 'store_id'){
                 payload.value = parseInt(payload.value)
             }
+            if(payload.key === 'from' || payload.key === 'to'){
+                payload.value = payload.value ? format(new Date(payload.value), 'yyyy-MM-dd') : ''
+            }            
             return {
                 ...state, [payload.key]: payload.value
             }          
         case ACTIONS.FILTERS.RESET:
             if(payload.filters){
+                payload.filters.from = payload.filters.from ? format(new Date(payload.filters.from), 'yyyy-MM-dd') : ''
+                payload.filters.to = payload.filters.to ? format(new Date(payload.filters.to), 'yyyy-MM-dd') : ''
                 return {
                     ...state, ...payload.filters
                 }; 
@@ -121,6 +129,8 @@ export const filterReducer = (state, action) => {
 export const getFilters = (isLoaded) => {
     const defaultFilters = {
         store_id: '',
+        from: '',
+        to: '',
         limit: 10, 
         offset: 0,    
     }
@@ -130,8 +140,10 @@ export const getFilters = (isLoaded) => {
     }
     else if(isLoaded === true){
         const recentFilters = getResFilters(STATE_NAME)
-
-        return {...defaultFilters, ...recentFilters}
+        const filters = {...defaultFilters, ...recentFilters}
+        filters.from = filters.from ? format(new Date(filters.from), 'yyyy-MM-dd') : ''
+        filters.to = filters.to ? format(new Date(filters.to), 'yyyy-MM-dd') : ''     
+        return filters
     }
     else{
         throw new Error()

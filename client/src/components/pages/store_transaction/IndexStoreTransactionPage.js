@@ -1,19 +1,39 @@
-import {useState, useEffect, useReducer, useCallback} from 'react'
+import {useState, useEffect, useReducer, useCallback, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {ACTIONS, filterReducer, getFilters} from '../../reducers/StoreTransactionReducer.js'
 import TransactionReceipt from './TransactionReceipt'
 import {api, errorHandler, formatNum, getQueryString} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import Table from '../../Table'
-import {Select} from '../../Forms'
+import {Radio, Select, TextInput} from '../../Forms'
 import {PlainCard} from '../../Cards'
 import {Modal, ConfirmPopup} from '../../Windows'
 import {Grid} from '../../Layouts'
-import {format} from 'date-fns'
+import {format, startOfMonth , endOfMonth, startOfYear, endOfYear } from 'date-fns'
 
 
 function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)  
+    const ranges = useMemo(() => {
+        const today = new Date()
+        return {
+            today: {
+                label: 'Today',
+                from: format(today, 'yyyy-MM-dd'), to: format(today, 'yyyy-MM-dd')
+            },
+            thisMonth: {
+                label: 'This month',
+                from: format(startOfMonth(today), 'yyyy-MM-dd'),
+                to: format(endOfMonth(today), 'yyyy-MM-dd')
+            },
+            thisYear: {
+                label: 'This year',
+                from: format(startOfYear(today), 'yyyy-MM-dd'),
+                to: format(endOfYear(today), 'yyyy-MM-dd')
+            },
+            custom: {label: 'Custom', from: '', to: ''}
+        }
+    }, [])
     /* Filters */
     const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(storeTrnsc.isLoaded))    
     const [filterModalShown, setFilterModalShown] = useState(false)
@@ -28,6 +48,18 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
     const [popupSuccMsg, setSuccPopupMsg] = useState('')      
     /* Confirm delete popup */
     const [confirmDeletePopupShown, setConfirmDeletePopupShown] = useState(false)
+
+    const [selectedRange, setSelectedRange] = useState(() => {
+        let value = ''
+        Object.entries(ranges).forEach(range => {
+            const from = range[1].from
+            const to = range[1].to
+            if(from === filters.from && to === filters.to){
+                value = range[0]
+            }
+        })
+        return value
+    })    
 
     const getStoreTrnscs = useCallback(actionType => {
         // Get the queries
@@ -140,7 +172,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
             toggleModal={() => {setViewStoreTrnscMdlShown(state => !state)}}
         />          
         <Modal
-            heading={'Filter'} size={'sm'}
+            heading={'Filter'}
             body={
                 <Grid numOfColumns={1} items={[
                     <Select label={loc.store} 
@@ -159,7 +191,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
                                 type: ACTIONS.FILTERS.UPDATE, payload: {key: 'store_id', value: e.target.value}
                             })}                            
                         }}
-                    />,                    
+                    />,
                     <Select label={loc.rowsShown} 
                         formAttr={{
                             value: filters.limit,
@@ -170,7 +202,43 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
                         options={[
                             {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
                         ]}
-                    />,
+                    />,               
+                    <section>
+                        <h6 className='text-medium text-dark-65' style={{fontSize: '1.64rem', marginBottom: '1rem'}}>Transaction Date</h6>
+                        <hr style={{marginBottom: '1rem'}}/>
+                        <div className='flex-row items-center flex-wrap'>
+                            {Object.entries(ranges).map((range, index) => (
+                                <Radio key={index} label={range[1].label} containerAttr={{style:{ margin: '0 1.4rem 1rem 0'}}}
+                                formAttr={{value: range[0],
+                                    checked: (range[0] === selectedRange ? true : false),
+                                    onChange: () => {
+                                        dispatchFilters({type: ACTIONS.FILTERS.UPDATE, payload: {
+                                            key: 'from', value: range[1].from
+                                        }})
+                                        dispatchFilters({type: ACTIONS.FILTERS.UPDATE, payload: {
+                                            key: 'to', value: range[1].to
+                                        }})
+                                        setSelectedRange(range[0])
+                                    }
+                                }}/>
+                            ))}
+                                                                       
+                        </div>
+                        <TextInput size={'md'} label={'From'} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
+                            type: 'date',
+                            value: filters.from,
+                            onChange: (e) => {dispatchFilters({
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'from', value: e.target.value}
+                            })}
+                        }}/>
+                        <TextInput size={'md'} label={'To'} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
+                            type: 'date',
+                            value: filters.to,
+                            onChange: (e) => {dispatchFilters({
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'to', value: e.target.value}
+                            })}
+                        }}/>                         
+                    </section>,                
                 ]}/>
             }        
             footer={
