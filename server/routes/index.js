@@ -143,5 +143,11 @@ rootRouter
     .get('/statistics/sum-production-prices', [
         isAuth, authorize('admin'), statisticController.sumProdPrices
     ])
+    .get('/statistics/sum-revenue', [
+        isAuth, authorize('admin'), statisticController.sumRevenue
+    ])    
+    .get('/statistics/sum-sold-inventories', [
+        isAuth, authorize('admin'), statisticController.sumSoldInventories
+    ])       
 
 module.exports = rootRouter

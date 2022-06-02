@@ -1,0 +1,42 @@
+{
+    "english": {
+        "totalCreatedInvs": "Total created inventories",
+        "storedInvs": "Stored Inventories",
+        "totalStoredInvs": "Total stored Inventories",
+        "prodPrices": "Production Prices",
+        "totalProdPrices": "Total production prices",
+        "calculateMsg": "Calculating please wait",
+        "revenue": "Revenue",
+        "soldInvs": "Sold Inventories",
+        "totalRevenue": "Total revenue",
+        "totalSoldInvs": "Total sold inventories",
+        "today": "Today",
+        "thisMonth": "This month",
+        "thisYear": "This year",
+        "custom": "Custom",
+        "from": "From",
+        "to": "To",
+        "calculate": "Calculate",
+        "trnscDate": "Transaction date"
+    },
+    "indonesian": {
+        "totalCreatedInvs": "Total inventori dibuat",
+        "storedInvs": "Inventori tersimpan",
+        "totalStoredInvs": "Total inventori tersimpan",
+        "prodPrices": "Harga Produksi",
+        "totalProdPrices": "Total harga produksi",
+        "calculateMsg": "Sedang menghitung, mohon ditunggu",
+        "revenue": "Pendapatan",
+        "soldInvs": "Inventori Terjual",
+        "totalRevenue": "Total pendapatan",
+        "totalSoldInvs": "Total inventori terjual",
+        "today": "Hari ini",
+        "thisMonth": "Bulan ini",
+        "thisYear": "Tahun ini",
+        "custom": "Custom",
+        "from": "Dari",
+        "to": "Hingga",
+        "calculate": "Hitung",
+        "trnscDate": "Tanggal Transaksi"
+    }
+}

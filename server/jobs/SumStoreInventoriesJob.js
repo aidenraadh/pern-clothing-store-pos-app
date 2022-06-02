@@ -44,18 +44,20 @@ class SumStoreInventoriesJob extends Job{
                     sumStoreInvBatches.push(async () => {
                         const currentJob = await this.getJob()
 
-                        const sumStoreInvs = await StoreInventory.findAll({
-                            attributes: [
-                                [sequelize.fn('SUM', sequelize.col('total_amount')), 'amount']
-                            ],
-                            where: {store_id: payload.storeId},
-                            limit: processedRowsPerBatch, 
-                            offest: (batch - 1) * processedRowsPerBatch
-                        })
+                        const sumStoreInvs = await models.sequelize.query(
+                            `SELECT SUM("total_amount") as sum FROM ( `+
+                            `SELECT "${StoreInventory.tableName}"."total_amount" `+
+                            `FROM "${StoreInventory.tableName}" WHERE `+
+                            `("${StoreInventory.tableName}"."deleted_at" IS NULL AND store_id=${payload.storeId}) `+
+                            `LIMIT ${processedRowsPerBatch} OFFSET ${(batch - 1) * processedRowsPerBatch}`+
+                            `) AS subquery`
+                        )
+                        const sum = sumStoreInvs[0][0] && sumStoreInvs[0][0].sum ? parseInt(sumStoreInvs[0][0].sum) : 0
+
                         currentJob.result = JSON.parse(currentJob.result)
                         currentJob.result = {
                             ...currentJob.result,
-                            sum: currentJob.result.sum + parseInt(sumStoreInvs[0].dataValues.amount)
+                            sum: currentJob.result.sum + sum
                         }
                         currentJob.result = JSON.stringify(currentJob.result)
                         await currentJob.save()  
@@ -74,38 +76,4 @@ class SumStoreInventoriesJob extends Job{
         }        
     }
 }
-/*
-    var myAsyncFuncs = [
-        async () => {
-            const store = await Store.findOne()
-            return Promise.resolve(store.name)  
-        },
-        async (val) => {
-            console.log('the val is ', val)
-            return Promise.resolve(val)
-        },
-        async(val) => {
-            console.log(x + 1)
-            console.log('the val is ', val)
-            return Promise.resolve(val)
-        },
-        async (val) => {
-            console.log('the val is ', val)
-            return Promise.resolve(val)
-        }
-    ];
-
-    const calc = (prev, curr) => {
-        return prev.then(curr)
-    }
-    let total = 0
-    await myAsyncFuncs.reduce(calc, Promise.resolve())
-    .then(result => {
-        console.log('RESULT is ' + total)  // prints "RESULT is 7"
-    })
-    .catch(error => {
-        total = 'Error bruuuh'
-    })
-    console.log('sending result')
-*/
 module.exports = SumStoreInventoriesJob

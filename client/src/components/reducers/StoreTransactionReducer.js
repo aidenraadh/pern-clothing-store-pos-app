@@ -1,7 +1,5 @@
 import { getResFilters, saveResFilters } from "../Utils"
-
 import {format} from 'date-fns'
-
 
 const STATE_NAME = 'storeTrnsc'
 

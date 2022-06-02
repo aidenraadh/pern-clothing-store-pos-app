@@ -1,17 +1,37 @@
-import {useState, useEffect, useReducer, useCallback} from 'react'
+import {useState, useEffect, useReducer, useCallback, useMemo} from 'react'
 import {ACTIONS, filterReducer, getFilters} from '../../reducers/InventoryTransferReducer'
 import {api, errorHandler, getQueryString, keyHandler, formatNum} from '../../Utils.js'
 import {Button} from '../../Buttons'
-import {TextInput, Select} from '../../Forms'
+import {TextInput, Select, Radio} from '../../Forms'
 import {PlainCard} from '../../Cards'
 import {Modal, ConfirmPopup} from '../../Windows'
 import {Grid} from '../../Layouts'
 import Table from '../../Table'
-import {format} from 'date-fns'
+import {format, startOfMonth , endOfMonth, startOfYear, endOfYear } from 'date-fns'
 import { Link } from 'react-router-dom'
 
 function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
+    const ranges = useMemo(() => {
+        const today = new Date()
+        return {
+            today: {
+                label: loc.today,
+                from: format(today, 'yyyy-MM-dd'), to: format(today, 'yyyy-MM-dd')
+            },
+            thisMonth: {
+                label: loc.thisMonth,
+                from: format(startOfMonth(today), 'yyyy-MM-dd'),
+                to: format(endOfMonth(today), 'yyyy-MM-dd')
+            },
+            thisYear: {
+                label: loc.thisYear,
+                from: format(startOfYear(today), 'yyyy-MM-dd'),
+                to: format(endOfYear(today), 'yyyy-MM-dd')
+            },
+            custom: {label: loc.custom, from: '', to: ''}
+        }
+    }, [loc.today, loc.thisMonth, loc.thisYear, loc.custom])    
     /* Create/edit invTransfer */
     const [invTransferIndex, setInvTransferIndex] = useState('')
     /* Delete invTransfer */
@@ -24,7 +44,19 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
     const [popupErrMsg, setErrPopupMsg] = useState('')   
     /* Success Popup */
     const [succPopupShown, setSuccPopupShown] = useState(false)
-    const [popupSuccMsg, setSuccPopupMsg] = useState('')       
+    const [popupSuccMsg, setSuccPopupMsg] = useState('')    
+    
+    const [selectedRange, setSelectedRange] = useState(() => {
+        let value = ''
+        Object.entries(ranges).forEach(range => {
+            const from = range[1].from
+            const to = range[1].to
+            if(from === filters.from && to === filters.to){
+                value = range[0]
+            }
+        })
+        return value
+    })       
 
     const getInvTransfers = useCallback((actionType) => {
         // Get the queries
@@ -142,7 +174,6 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
         />
         <Modal
             heading={'Filter'}
-            size={'sm'}
             body={
                 <Grid numOfColumns={1} items={[
                     <Select label={loc.originStore} 
@@ -194,7 +225,45 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                         options={[
                             {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
                         ]}
-                    />                                    
+                    />,
+                    <section>
+                        <h6 className='text-medium text-dark-65 text-capitalize' style={{fontSize: '1.56rem', marginBottom: '1rem'}}>
+                            {loc.trnscDate}
+                        </h6>
+                        <hr style={{marginBottom: '1rem'}}/>
+                        <div className='flex-row items-center wrap'>
+                            {Object.entries(ranges).map((range, index) => (
+                                <Radio key={index} label={range[1].label} containerAttr={{style:{ margin: '0 1.4rem 1rem 0'}}}
+                                formAttr={{value: range[0],
+                                    checked: (range[0] === selectedRange ? true : false),
+                                    onChange: () => {
+                                        dispatchFilters({type: ACTIONS.FILTERS.UPDATE, payload: {
+                                            key: 'from', value: range[1].from
+                                        }})
+                                        dispatchFilters({type: ACTIONS.FILTERS.UPDATE, payload: {
+                                            key: 'to', value: range[1].to
+                                        }})
+                                        setSelectedRange(range[0])
+                                    }
+                                }}/>
+                            ))}
+                                                                       
+                        </div>
+                        <TextInput size={'md'} label={loc.from} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
+                            type: 'date', disabled: selectedRange !== 'custom' ? true : false,
+                            value: filters.from,
+                            onChange: (e) => {dispatchFilters({
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'from', value: e.target.value}
+                            })}
+                        }}/>
+                        <TextInput size={'md'} label={loc.to} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
+                            type: 'date', disabled: selectedRange !== 'custom' ? true : false,
+                            value: filters.to,
+                            onChange: (e) => {dispatchFilters({
+                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'to', value: e.target.value}
+                            })}
+                        }}/>                         
+                    </section>,                                               
                 ]}/>
             }  
             footer={

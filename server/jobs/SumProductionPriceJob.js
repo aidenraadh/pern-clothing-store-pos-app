@@ -48,7 +48,7 @@ class SumProductionPriceJob extends Job{
                             `FROM "${StoreInventorySize.tableName}" `+
                             `INNER JOIN "${StoreInventory.tableName}" `+
                             `ON "${StoreInventory.tableName}"."id"="${StoreInventorySize.tableName}"."store_inventory_id" `+
-                            `AND ("${StoreInventory.tableName}"."deleted_at" IS NULL AND "${StoreInventory.tableName}"."store_id"=1) `+
+                            `AND ("${StoreInventory.tableName}"."deleted_at" IS NULL AND "${StoreInventory.tableName}"."store_id"=${payload.storeId}) `+
                             `INNER JOIN "${InventorySize.tableName}" `+
                             `ON "${InventorySize.tableName}"."id"="${StoreInventorySize.tableName}"."inventory_size_id" AND`+
                             `("${InventorySize.tableName}"."deleted_at" IS NULL) `+

@@ -30,7 +30,7 @@ module.exports = {
       },
       transfer_date: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },                        
       created_at: {
         allowNull: false,

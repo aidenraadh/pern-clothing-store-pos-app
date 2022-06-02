@@ -11,29 +11,28 @@ import {Modal, ConfirmPopup} from '../../Windows'
 import {Grid} from '../../Layouts'
 import {format, startOfMonth , endOfMonth, startOfYear, endOfYear } from 'date-fns'
 
-
 function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)  
     const ranges = useMemo(() => {
         const today = new Date()
         return {
             today: {
-                label: 'Today',
+                label: loc.today,
                 from: format(today, 'yyyy-MM-dd'), to: format(today, 'yyyy-MM-dd')
             },
             thisMonth: {
-                label: 'This month',
+                label: loc.thisMonth,
                 from: format(startOfMonth(today), 'yyyy-MM-dd'),
                 to: format(endOfMonth(today), 'yyyy-MM-dd')
             },
             thisYear: {
-                label: 'This year',
+                label: loc.thisYear,
                 from: format(startOfYear(today), 'yyyy-MM-dd'),
                 to: format(endOfYear(today), 'yyyy-MM-dd')
             },
-            custom: {label: 'Custom', from: '', to: ''}
+            custom: {label: loc.custom, from: '', to: ''}
         }
-    }, [])
+    }, [loc.today, loc.thisMonth, loc.thisYear, loc.custom])
     /* Filters */
     const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(storeTrnsc.isLoaded))    
     const [filterModalShown, setFilterModalShown] = useState(false)
@@ -204,9 +203,11 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
                         ]}
                     />,               
                     <section>
-                        <h6 className='text-medium text-dark-65' style={{fontSize: '1.64rem', marginBottom: '1rem'}}>Transaction Date</h6>
+                        <h6 className='text-medium text-dark-65 text-capitalize' style={{fontSize: '1.56rem', marginBottom: '1rem'}}>
+                            {loc.trnscDate}
+                        </h6>
                         <hr style={{marginBottom: '1rem'}}/>
-                        <div className='flex-row items-center flex-wrap'>
+                        <div className='flex-row items-center wrap'>
                             {Object.entries(ranges).map((range, index) => (
                                 <Radio key={index} label={range[1].label} containerAttr={{style:{ margin: '0 1.4rem 1rem 0'}}}
                                 formAttr={{value: range[0],
@@ -224,15 +225,15 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
                             ))}
                                                                        
                         </div>
-                        <TextInput size={'md'} label={'From'} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
-                            type: 'date',
+                        <TextInput size={'md'} label={loc.from} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
+                            type: 'date', disabled: selectedRange !== 'custom' ? true : false,
                             value: filters.from,
                             onChange: (e) => {dispatchFilters({
                                 type: ACTIONS.FILTERS.UPDATE, payload: {key: 'from', value: e.target.value}
                             })}
                         }}/>
-                        <TextInput size={'md'} label={'To'} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
-                            type: 'date',
+                        <TextInput size={'md'} label={loc.to} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
+                            type: 'date', disabled: selectedRange !== 'custom' ? true : false,
                             value: filters.to,
                             onChange: (e) => {dispatchFilters({
                                 type: ACTIONS.FILTERS.UPDATE, payload: {key: 'to', value: e.target.value}

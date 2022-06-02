@@ -12,7 +12,13 @@
         "deleteMsg": "Are you sure want to remove this transfer? All transfered inventories will be returned to the origin store",
         "delete": "Delete",
         "remove": "Remove",
-        "cancel": "Cancel"        
+        "cancel": "Cancel",
+        "today": "Today",
+        "thisMonth": "This month",
+        "thisYear": "This year",
+        "custom": "Custom",
+        "from": "From",
+        "to": "To"        
     },
     "indonesian": {
         "searchInv": "Cari inventori",
@@ -27,6 +33,12 @@
         "deleteMsg": "Hapus transfer ini? Semua inventori yang ditransfer akan dikembalikan ke toko asalnya",
         "delete": "Hapus",
         "remove": "Hapus",
-        "cancel": "Batal"          
+        "cancel": "Batal",
+        "today": "Hari ini",
+        "thisMonth": "Bulan ini",
+        "thisYear": "Tahun ini",
+        "custom": "Custom",
+        "from": "Dari",
+        "to": "Hingga"           
     }
 }

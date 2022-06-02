@@ -21,6 +21,10 @@ exports.index = async (req, res) => {
         const queries = {...req.query}
         queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
         queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
+        queries.from = Joi.date().required().validate(queries.from)
+        queries.from = queries.from.error ? '' : queries.from.value        
+        queries.to = Joi.date().required().validate(queries.to)
+        queries.to = queries.to.error ? '' : queries.to.value          
         queries.name = Joi.string().required().trim().validate(queries.name)
         queries.name = queries.name.error ? '' : queries.name.value
         // When the user is employee, they can only see InventoryTransfer 
@@ -53,7 +57,16 @@ exports.index = async (req, res) => {
         }       
         if(queries.destination_store_id){
             filters.whereInvTransfer.destination_store_id = queries.destination_store_id      
-        }           
+        }       
+        if(queries.from){
+            filters.whereInvTransfer.transfer_date = {[Op.gte]: queries.from}
+        }        
+        if(queries.to){
+            filters.whereInvTransfer.transfer_date = {
+                ...filters.whereInvTransfer.transfer_date,
+                [Op.lte]: queries.to
+            }
+        }              
         if(queries.name){
             filters.whereInv.name = {[Op.iLike]: `%${queries.name}%`}
         }

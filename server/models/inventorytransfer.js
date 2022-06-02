@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     amount: DataTypes.INTEGER,
     origin_store_id: DataTypes.BIGINT,
     destination_store_id: DataTypes.BIGINT,
-    transfer_date: DataTypes.DATE,
+    transfer_date: DataTypes.DATEONLY,
   }, {
     sequelize,
     modelName: 'InventoryTransfer',

@@ -12,8 +12,13 @@
         "createTransaction": "+ New transaction",
         "removeTrnscMsg": "Are you sure want to remove this transaction? All sold inventories will be returned to the original store",
         "remove": "Remove",
-        "cancel": "Cancel" 
-
+        "cancel": "Cancel" ,
+        "today": "Today",
+        "thisMonth": "This month",
+        "thisYear": "This year",
+        "custom": "Custom",
+        "from": "From",
+        "to": "To"
     },
     "indonesian": {
         "store": "Toko",
@@ -28,6 +33,12 @@
         "createTransaction": "+ Buat transaksi",
         "removeTrnscMsg": "Hapus transaksi ini? Semua inventori yang terjual akan dikembalikan ke toko asalnya",
         "remove": "Hapus",
-        "cancel": "Batal"  
+        "cancel": "Batal",
+        "today": "Hari ini",
+        "thisMonth": "Bulan ini",
+        "thisYear": "Tahun ini",
+        "custom": "Custom",
+        "from": "Dari",
+        "to": "Hingga"        
     }
 }

@@ -39,7 +39,8 @@ import {
     NavigationsLocalization,
     ProfilePageLocalization,
     IndexInventoryTransferPageLocalization,
-    CreateInventoryTransferPageLocalization
+    CreateInventoryTransferPageLocalization,
+    DashboardPageLocalization
 } from './localizations/index.js'
 
 function App(){
@@ -54,6 +55,8 @@ function App(){
     const [totalInvs, setTotalInvs] = useState(undefined) 
     const [totalStoredInvs, setTotalStoredInvs] = useState(undefined)
     const [totalProdPrices, setTotalProdPrices] = useState(undefined)
+    const [totalRevenue, setTotalRevenue] = useState(undefined)
+    const [totalSoldInvs, setTotalSoldInvs] = useState(undefined)
 
     const user = useMemo(() => {
         const user = getUser()
@@ -141,9 +144,12 @@ function App(){
                     <Switch>
                         <Route path="/login" exact component={LoginPage}/>
                         <ProtectedRoute path={`/${sidebarItems.dashboard.link}`} exact component={DashboardPage} props={{
-                            user: user, totalInvs: totalInvs, setTotalInvs: setTotalInvs,
+                            user: user, loc: DashboardPageLocalization[languageName],
+                            totalInvs: totalInvs, setTotalInvs: setTotalInvs,
                             totalStoredInvs: totalStoredInvs, setTotalStoredInvs: setTotalStoredInvs,
-                            totalProdPrices: totalProdPrices, setTotalProdPrices: setTotalProdPrices
+                            totalProdPrices: totalProdPrices, setTotalProdPrices: setTotalProdPrices,
+                            totalRevenue: totalRevenue, setTotalRevenue: setTotalRevenue,
+                            totalSoldInvs: totalSoldInvs, setTotalSoldInvs: setTotalSoldInvs
                         }}/>                        
                         <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
                             props={{
