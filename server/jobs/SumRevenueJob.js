@@ -51,18 +51,18 @@ class SumRevenueJob extends Job{
                         const currentJob = await this.getJob()
                         let timeRange = ''
                         if(payload.from !== ''){
-                            timeRange += `"${StoreTransaction.tableName}"."transaction_date" >= ${payload.from}`
+                            timeRange += `"${StoreTransaction.tableName}"."transaction_date" >= '${payload.from}'`
                         }
                         if(payload.to !== ''){
-                            timeRange = timeRange !== '' ? ' AND ' : ''
-                            timeRange += `"${StoreTransaction.tableName}"."transaction_date" <= ${payload.to}`
+                            timeRange = timeRange !== '' ? `${timeRange} AND ` : ''
+                            timeRange += `"${StoreTransaction.tableName}"."transaction_date" <= '${payload.to}'`
                         }
                         const sumRevenue = await models.sequelize.query(
                             `SELECT SUM("total_cost") as sum FROM ( `+
                             `SELECT "${StoreTransaction.tableName}"."total_cost" `+
                             `FROM "${StoreTransaction.tableName}" WHERE `+
                             `"${StoreTransaction.tableName}"."deleted_at" IS NULL AND store_id=${payload.storeId} `+
-                            (timeRange !== '' ? `AND (${timeRange})`: '')+
+                            (timeRange !== '' ? `AND (${timeRange}) `: '')+
                             `LIMIT ${processedRowsPerBatch} OFFSET ${(batch - 1) * processedRowsPerBatch}`+
                             `) AS subquery`
                         )

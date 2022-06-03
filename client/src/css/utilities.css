@@ -89,7 +89,7 @@
 */
 .grid{
 	display: grid;
-	grid-gap: 1.4rem;
+	grid-gap: 1.6rem;
 }
 .grid.grid-1{
 	grid-template-columns: auto;

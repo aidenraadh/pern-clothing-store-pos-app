@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, useReducer } from 'react'
 import {Redirect} from 'react-router-dom'
 import { Button } from '../Buttons'
 import {SimpleCard, PlainCard, StatsCard} from '../Cards'
 import { Radio, TextInput } from '../Forms'
 import {Grid} from '../Layouts'
-import { api, errorHandler, formatNum } from '../Utils'
+import { api, errorHandler, formatNum, getQueryString } from '../Utils'
 import {format, startOfMonth , endOfMonth, startOfYear, endOfYear } from 'date-fns'
 import { Modal } from '../Windows'
 
@@ -16,10 +16,6 @@ const timeoutIds = {
 }
 
 function DashboardPage(props){
-    const [processSumStoredInvs , setProcessSumStoredInvs] = useState(false)
-    const [processSumProdPrices , setProcessSumProdPrices] = useState(false)
-    const [processSumRevenue , setProcessSumRevenue] = useState(false)
-    const [processSumSoldInvs , setProcessSumSoldInvs] = useState(false)
     const ranges = useMemo(() => {
         const today = new Date()
         return {
@@ -39,8 +35,8 @@ function DashboardPage(props){
             },
             custom: {label: props.loc.custom, from: '', to: ''}
         }
-    }, [props.loc.today, props.loc.thisMonth, props.loc.thisYear, props.loc.custom])  
-      
+    }, [props.loc.today, props.loc.thisMonth, props.loc.thisYear, props.loc.custom])      
+    /* Revenue time range */
     const [revenueTimeRange, setRevenueTimeRange] = useState({
         from: props.totalRevenue && props.totalRevenue.storeRevenues.length ? (
             props.totalRevenue.storeRevenues[0].from
@@ -49,20 +45,9 @@ function DashboardPage(props){
             props.totalRevenue.storeRevenues[0].to
         ) : ranges.today.to,
     })         
-    const [selectedRevenueTimeRange, setSelectedRevenueTimeRange] = useState(() => {
-        let value = ''
-        Object.entries(ranges).forEach(range => {
-            const from = range[1].from
-            const to = range[1].to
-            if(from === revenueTimeRange.from && to === revenueTimeRange.to){
-                value = range[0]
-            }
-        })
-        return value
-    })     
-    /* Revenue time range modal */
+    const [selectedRevenueTimeRange, setSelectedRevenueTimeRange] = useState('')     
     const [rvnTimeRangeModalShown, setRvnTimeRangeModalShown] = useState(false)
-
+    /* Sold inventories time range */
     const [soldInvsTimeRange, setSoldInvsTimeRange] = useState({
         from: props.totalSoldInvs && props.totalSoldInvs.stores.length ? (
             props.totalSoldInvs.stores[0].from
@@ -71,18 +56,7 @@ function DashboardPage(props){
             props.totalSoldInvs.stores[0].to
         ) : ranges.today.to,
     })     
-    const [selectedSoldInvsTimeRange, setSelectedSoldInvsTimeRange] = useState(() => {
-        let value = ''
-        Object.entries(ranges).forEach(range => {
-            const from = range[1].from
-            const to = range[1].to
-            if(from === soldInvsTimeRange.from && to === soldInvsTimeRange.to){
-                value = range[0]
-            }
-        })
-        return value
-    })      
-    /* Sold inventories time range modal */
+    const [selectedSoldInvsTimeRange, setSelectedSoldInvsTimeRange] = useState('')      
     const [soldInvsTimeRangeModalShown, setSoldInvsTimeRangeModalShown] = useState(false)    
 
 
@@ -99,8 +73,8 @@ function DashboardPage(props){
     }, [props])
 
     const sumStoredInvs = useCallback((initialReq = false) => {
-        setProcessSumStoredInvs(true)
-        const delay = initialReq ? 0 : 2000
+        props.setTotalStoredInvs(null)
+        const delay = initialReq ? 0 : 3000
         timeoutIds.sumStoredInvs = setTimeout(() => {
             api.get('/statistics/sum-stored-inventories')
                 .then(response => {
@@ -108,7 +82,6 @@ function DashboardPage(props){
                         sumStoredInvs()
                     }
                     else{
-                        setProcessSumStoredInvs(false)
                         props.setTotalStoredInvs(response.data.sumStoredInvs)
                     }
                 })
@@ -117,8 +90,8 @@ function DashboardPage(props){
     }, [props])    
 
     const sumProdPrices = useCallback((initialReq = false) => {
-        setProcessSumProdPrices(true)
-        const delay = initialReq ? 0 : 2000
+        props.setTotalProdPrices(null)
+        const delay = initialReq ? 0 : 3000
         timeoutIds.sumStoredInvs = setTimeout(() => {
             api.get('/statistics/sum-production-prices')
                 .then(response => {
@@ -126,7 +99,6 @@ function DashboardPage(props){
                         sumProdPrices()
                     }
                     else{
-                        setProcessSumProdPrices(false)
                         props.setTotalProdPrices(response.data.sumProdPrices)
                     }
                 })
@@ -135,79 +107,109 @@ function DashboardPage(props){
     }, [props])       
 
     const sumRevenue = useCallback((initialReq = false) => {
-        setProcessSumRevenue(true)
-        const delay = initialReq ? 0 : 2000
+        props.setTotalRevenue(null)
+        const delay = initialReq ? 0 : 3000
         timeoutIds.sumRevenue = setTimeout(() => {
-            api.get('/statistics/sum-revenue')
+            api.get(`/statistics/sum-revenue${getQueryString(revenueTimeRange)}`)
                 .then(response => {
                     if(response.data.sumRevenue === undefined){
                         sumRevenue()
                     }
                     else{
-                        setProcessSumRevenue(false)
                         const totalSumRevenue = {...response.data.sumRevenue}
-                        response.data.sumRevenue.storeRevenues.forEach((storeRevenue, index) => {
-                            totalSumRevenue.storeRevenues[index].from = storeRevenue.from ? format(storeRevenue.from, 'yyyy-MM-dd') : ''
-                            totalSumRevenue.storeRevenues[index].to = storeRevenue.to ? format(storeRevenue.to, 'yyyy-MM-dd') : ''
-                        })
-                        props.setTotalRevenue(totalSumRevenue)
+                        if(totalSumRevenue.storeRevenues.length){
+                            setRevenueTimeRange({
+                                from: totalSumRevenue.storeRevenues[0].from,
+                                to: totalSumRevenue.storeRevenues[0].to,
+                            })
+                        }                          
+                        props.setTotalRevenue(totalSumRevenue)                      
                     }
                 })
                 .catch(error => { errorHandler(error) })
         }, delay)
-    }, [props])   
+    }, [props, revenueTimeRange])   
     
     const sumSoldInvs = useCallback((initialReq = false) => {
-        setProcessSumSoldInvs(true)
-        const delay = initialReq ? 0 : 2000
+        props.setTotalSoldInvs(null)
+        const delay = initialReq ? 0 : 3000
         timeoutIds.sumSoldInvs = setTimeout(() => {
-            api.get('/statistics/sum-sold-inventories')
+            api.get(`/statistics/sum-sold-inventories${getQueryString(soldInvsTimeRange)}`)
                 .then(response => {
                     if(response.data.sumSoldInvs === undefined){
                         sumSoldInvs()
                     }
                     else{
-                        setProcessSumSoldInvs(false)
                         const totalSoldInvs = {...response.data.sumSoldInvs}
-                        response.data.sumSoldInvs.stores.forEach((store, index) => {
-                            totalSoldInvs.stores[index].from = store.from ? format(store.from, 'yyyy-MM-dd') : ''
-                            totalSoldInvs.stores[index].to = store.to ? format(store.to, 'yyyy-MM-dd') : ''
-                        })
+                        if(totalSoldInvs.stores.length){
+                            setSoldInvsTimeRange({
+                                from: totalSoldInvs.stores[0].from,
+                                to: totalSoldInvs.stores[0].to,
+                            })
+                        } 
                         props.setTotalSoldInvs(totalSoldInvs)
                     }
                 })
                 .catch(error => { errorHandler(error) })
         }, delay)
-    }, [props])      
+    }, [props, soldInvsTimeRange])      
 
     useEffect(() => {
         if(props.totalInvs === undefined){ countInvs() }
     }, [props.totalInvs, countInvs])
 
     useEffect(() => {
-        if(props.totalStoredInvs === undefined && processSumStoredInvs === false){
+        if(props.totalStoredInvs === undefined){
             sumStoredInvs(true)
         }
-    }, [props.totalStoredInvs, sumStoredInvs, processSumStoredInvs])    
+    }, [props.totalStoredInvs, sumStoredInvs])    
 
     useEffect(() => {
-        if(props.totalProdPrices === undefined && processSumProdPrices === false){
+        if(props.totalProdPrices === undefined){
             sumProdPrices(true)
         }
-    }, [props.totalProdPrices, sumProdPrices, processSumProdPrices])    
+    }, [props.totalProdPrices, sumProdPrices])    
 
     useEffect(() => {
-        if(props.totalRevenue === undefined && processSumRevenue === false){
+        if(props.totalRevenue === undefined){
             sumRevenue(true)
         }
-    }, [props.totalRevenue, sumRevenue, processSumRevenue])        
+    }, [props.totalRevenue, sumRevenue])        
 
     useEffect(() => {
-        if(props.totalSoldInvs === undefined && processSumSoldInvs === false){
+        if(props.totalSoldInvs === undefined){
             sumSoldInvs(true)
         }
-    }, [props.totalSoldInvs, sumSoldInvs, processSumSoldInvs])       
-
+    }, [props.totalSoldInvs, sumSoldInvs])     
+    
+    // If revenueTimeRange changed, change also selectedRevenueTimeRange
+    useEffect(() => {
+        setSelectedRevenueTimeRange(() => {
+            let value = 'custom'
+            Object.entries(ranges).forEach(range => {
+                const from = range[1].from
+                const to = range[1].to
+                if(from === revenueTimeRange.from && to === revenueTimeRange.to){
+                    value = range[0]
+                }
+            })
+            return value            
+        })
+    }, [revenueTimeRange, ranges])    
+    // If soldInvsTimeRange changed, change also selectedSoldInvsTimeRange
+    useEffect(() => {
+        setSelectedSoldInvsTimeRange(() => {
+            let value = 'custom'
+            Object.entries(ranges).forEach(range => {
+                const from = range[1].from
+                const to = range[1].to
+                if(from === soldInvsTimeRange.from && to === soldInvsTimeRange.to){
+                    value = range[0]
+                }
+            })
+            return value            
+        })
+    }, [soldInvsTimeRange, ranges])        
 
     useEffect(() => {
         return () => {
@@ -234,10 +236,10 @@ function DashboardPage(props){
             <SimpleCard
                 heading={props.loc.revenue}
                 action={<>
-                    <Button type={'light'} size={'sm'} iconName={'update'} iconOnly={true} 
+                    <Button  size={'sm'} iconName={'update'} iconOnly={true} 
                         text={'Refresh'}
                         attr={{
-                            disabled: processSumRevenue,
+                            disabled: props.totalRevenue ? false : true,
                             onClick: () => {sumRevenue(true)}
                         }} 
                     />                  
@@ -251,10 +253,16 @@ function DashboardPage(props){
                     </p>
                 }
                 body={<>
-                    {props.totalRevenue === undefined ?
+                    {props.totalRevenue === undefined || props.totalRevenue === null ?
                         <p className='text-center text-dark-50' style={{fontSize: '1.46rem', padding: '1rem'}}>
                             {props.loc.calculateMsg}
                         </p> : 
+                        <>
+                        <section className='flex-row items-center content-end' style={{marginBottom: '1.4rem'}}>
+                            <Button size={'sm'} text={'Filter'} attr={{
+                                onClick: () => {setRvnTimeRangeModalShown(true)}
+                            }}/>
+                        </section>
                         <Grid numOfColumns={3} items={props.totalRevenue.storeRevenues.map((storeRevenue, index) => ([
                             <StatsCard key={index} type={'light'}
                                 number={'Rp. '+formatNum(storeRevenue.sum)}
@@ -262,17 +270,18 @@ function DashboardPage(props){
                                 title={<span className='text-capitalize'>{storeRevenue.storeName}</span>}
                                 subTitle={''}
                             />
-                        ]))}/>                                            
+                        ]))}/>   
+                        </>                                         
                     }
                 </>}
             />,     
             <SimpleCard
                 heading={props.loc.soldInvs}
                 action={<>
-                    <Button type={'light'} size={'sm'} iconName={'update'} iconOnly={true} 
+                    <Button  size={'sm'} iconName={'update'} iconOnly={true} 
                         text={'Refresh'}
                         attr={{
-                            disabled: processSumSoldInvs,
+                            disabled: props.totalSoldInvs ? false : true,
                             onClick: () => {sumSoldInvs(true)}
                         }} 
                     />                  
@@ -286,10 +295,16 @@ function DashboardPage(props){
                     </p>
                 }
                 body={<>
-                    {props.totalSoldInvs === undefined ?
+                    {props.totalSoldInvs === undefined || props.totalSoldInvs === null ?
                         <p className='text-center text-dark-50' style={{fontSize: '1.46rem', padding: '1rem'}}>
                             {props.loc.calculateMsg}
                         </p> : 
+                        <>
+                        <section className='flex-row items-center content-end' style={{marginBottom: '1.4rem'}}>
+                            <Button size={'sm'} text={'Filter'} attr={{
+                                onClick: () => {setSoldInvsTimeRangeModalShown(true)}
+                            }}/>
+                        </section>                        
                         <Grid numOfColumns={3} items={props.totalSoldInvs.stores.map((store, index) => ([
                             <StatsCard key={index} type={'light'}
                                 number={formatNum(store.sum)}
@@ -297,14 +312,15 @@ function DashboardPage(props){
                                 title={<span className='text-capitalize'>{store.storeName}</span>}
                                 subTitle={''}
                             />
-                        ]))}/>                                            
+                        ]))}/>   
+                        </>                                         
                     }
                 </>}
             />,                       
             <SimpleCard
                 heading={props.loc.storedInvs}
                 body={<>
-                    {props.totalStoredInvs === undefined ? 
+                    {props.totalStoredInvs === undefined || props.totalStoredInvs === null ? 
                         <p className='text-center text-dark-50' style={{fontSize: '1.46rem', padding: '1rem'}}>
                             {props.loc.calculateMsg}
                         </p> : 
@@ -319,10 +335,10 @@ function DashboardPage(props){
                     }                  
                 </>}
                 action={<>
-                    <Button type={'light'} size={'sm'} iconName={'update'} iconOnly={true} 
+                    <Button  size={'sm'} iconName={'update'} iconOnly={true} 
                         text={'Refresh'}
                         attr={{
-                            disabled: processSumStoredInvs,
+                            disabled: props.totalStoredInvs ? false : true,
                             onClick: () => {sumStoredInvs(true)}
                         }} 
                     />                  
@@ -339,10 +355,10 @@ function DashboardPage(props){
             <SimpleCard
                 heading={props.loc.prodPrices}
                 action={<>
-                    <Button type={'light'} size={'sm'} iconName={'update'} iconOnly={true} 
+                    <Button  size={'sm'} iconName={'update'} iconOnly={true} 
                         text={'Refresh'}
                         attr={{
-                            disabled: processSumProdPrices,
+                            disabled: props.totalProdPrices ? false : true,
                             onClick: () => {sumProdPrices(true)}
                         }} 
                     />                  
@@ -356,7 +372,7 @@ function DashboardPage(props){
                     </p>
                 }
                 body={<>
-                    {props.totalProdPrices === undefined ?
+                    {props.totalProdPrices === undefined || props.totalProdPrices === null ?
                         <p className='text-center text-dark-50' style={{fontSize: '1.46rem', padding: '1rem'}}>
                             {props.loc.calculateMsg}
                         </p> : 
@@ -373,14 +389,10 @@ function DashboardPage(props){
             />,                                 
         ]}/>
         <Modal
-            heading={'Filter'}
+            heading={'Filter '+props.loc.trnscDate}
             body={
                 <Grid numOfColumns={1} items={[             
                     <section>
-                        <h6 className='text-medium text-dark-65 text-capitalize' style={{fontSize: '1.56rem', marginBottom: '1rem'}}>
-                            {props.loc.trnscDate}
-                        </h6>
-                        <hr style={{marginBottom: '1rem'}}/>
                         <div className='flex-row items-center wrap'>
                             {Object.entries(ranges).map((range, index) => (
                                 <Radio key={index} label={range[1].label} containerAttr={{style:{ margin: '0 1.4rem 1rem 0'}}}
@@ -388,7 +400,6 @@ function DashboardPage(props){
                                     checked: (range[0] === selectedRevenueTimeRange ? true : false),
                                     onChange: () => {
                                         setRevenueTimeRange({from: range[1].from, to: range[1].to})
-                                        setSelectedRevenueTimeRange(range[0])
                                     }
                                 }}/>
                             ))}
@@ -413,7 +424,7 @@ function DashboardPage(props){
             }        
             footer={
                 <Button size={'sm'} text={props.loc.calculate} attr={{
-                        disabled: processSumRevenue,
+                        disabled: props.totalRevenue ? false : true,
                         onClick: () => {
                             setRvnTimeRangeModalShown(false)
                             sumRevenue(true)
@@ -425,7 +436,7 @@ function DashboardPage(props){
             toggleModal={() => {setRvnTimeRangeModalShown(state => !state)}}
         />    
         <Modal
-            heading={'Filter'}
+            heading={'Filter'+props.loc.trnscDate}
             body={
                 <Grid numOfColumns={1} items={[             
                     <section>
@@ -440,11 +451,9 @@ function DashboardPage(props){
                                     checked: (range[0] === selectedSoldInvsTimeRange ? true : false),
                                     onChange: () => {
                                         setSoldInvsTimeRange({from: range[1].from, to: range[1].to})
-                                        setSelectedSoldInvsTimeRange(range[0])
                                     }
                                 }}/>
-                            ))}
-                                                                       
+                            ))}                                   
                         </div>
                         <TextInput size={'md'} label={props.loc.from} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
                             type: 'date', disabled: selectedSoldInvsTimeRange !== 'custom' ? true : false,
@@ -465,7 +474,7 @@ function DashboardPage(props){
             }        
             footer={
                 <Button size={'sm'} text={props.loc.calculate} attr={{
-                        disabled: processSumSoldInvs,
+                        disabled: props.totalSoldInvs ? false : true,
                         onClick: () => {
                             setSoldInvsTimeRangeModalShown(false)
                             sumSoldInvs(true)
@@ -478,5 +487,4 @@ function DashboardPage(props){
         />                 
     </>)  
 }
-
 export default DashboardPage

@@ -141,9 +141,9 @@ exports.sumRevenue = async (req, res) => {
         }
         const queries = {...req.query}
         queries.from = Joi.date().required().validate(queries.from)
-        queries.from = queries.from.error ? '' : queries.from.value        
+        queries.from = queries.from.error ? '' : req.query.from 
         queries.to = Joi.date().required().validate(queries.to)
-        queries.to = queries.to.error ? '' : queries.to.value      
+        queries.to = queries.to.error ? '' : req.query.to
         const stores = await Store.findAll({
             attributes: ['id', 'name'], where: {owner_id: req.user.owner_id, type_id: 1}
         })
@@ -191,9 +191,9 @@ exports.sumSoldInventories = async (req, res) => {
         }
         const queries = {...req.query}
         queries.from = Joi.date().required().validate(queries.from)
-        queries.from = queries.from.error ? '' : queries.from.value        
+        queries.from = queries.from.error ? '' : req.query.from 
         queries.to = Joi.date().required().validate(queries.to)
-        queries.to = queries.to.error ? '' : queries.to.value      
+        queries.to = queries.to.error ? '' : req.query.to  
         const stores = await Store.findAll({
             attributes: ['id', 'name'], where: {owner_id: req.user.owner_id, type_id: 1}
         })
