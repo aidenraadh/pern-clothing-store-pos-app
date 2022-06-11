@@ -1,0 +1,38 @@
+{
+    "english": {
+        "admin": "Admin",
+        "employee": "Employee",
+        "name": "Name",
+        "store": "Store",
+        "role": "Role",
+        "edit": "Edit",
+        "delete": "Delete",
+        "saveChanges": "Save changes",
+        "remove": "Remove",
+        "cancel": "Cancel",
+        "addAdmin": "+ Add admin",
+        "createNewAdmin": "Create New Admin",
+        "createNewEmployee": "Create New Employee",
+        "editEmployee": "Edit Pegawai",
+        "addEmployee": "+ Add employee",
+        "removeUserMsg": "Are you sure want to remove this user?"
+    },
+    "indonesian": {
+        "admin": "Admin",
+        "employee": "Pegawai",        
+        "name": "Nama",
+        "store": "Toko",
+        "role": "Role",
+        "edit": "Edit",
+        "delete": "Hapus",
+        "saveChanges": "Simpan perubahan",
+        "remove": "Hapus",
+        "cancel": "Batal",        
+        "addAdmin": "+ Buat admin",
+        "createNewAdmin": "Buat Admin Baru",
+        "createNewEmployee": "Buat Pegawai Baru",
+        "editEmployee": "Edit Employee",
+        "addEmployee": "+ Buat Pegawai",
+        "removeUserMsg": "Anda yakin ingin menghapus pegawai ini?"
+    }
+}

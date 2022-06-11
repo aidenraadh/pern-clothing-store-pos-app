@@ -1,6 +1,7 @@
-import {useState, useEffect, useReducer, useCallback} from 'react'
+import {useState, useEffect, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import {ACTIONS, filterReducer, getFilters} from './../../reducers/StoreInventoryReducer'
+import {useDispatch, useSelector} from 'react-redux'
+import {append, replace, updateFilters, syncFilters, reset} from '../../../features/storeInventorySlice'
 import {api, errorHandler, getQueryString, formatNum, keyHandler} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, Select, Checkbox} from '../../Forms'
@@ -9,14 +10,15 @@ import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 import Table from '../../Table'
 
-function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
+function IndexStoreInventoryPage({user, loc}){
+    const storeInv = useSelector(state => state.storeInv)
+    const dispatch = useDispatch()        
     const [disableBtn , setDisableBtn] = useState(false)
     /* Edit store inventory */
     const [storeInvIndex, setStoreInvIndex] = useState('')
     const [storeInvSizes, setStoreInvSizes] = useState([])
     const [modalShown, setModalShown] = useState(false)   
     /* Filters */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(storeInv.isLoaded))    
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -25,34 +27,37 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
     const [succPopupShown, setSuccPopupShown] = useState(false)
     const [popupSuccMsg, setSuccPopupMsg] = useState('')        
 
-    const getStoreInvs = useCallback((actionType) => {
-        // Get the queries
-        const queries = {...filters}
-        // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-        if(storeInv.isLoaded){
-            setDisableBtn(true)
+    const getStoreInvs = useCallback(actionType => {
+        let queries = {}
+        // When the state is reset, set the offset to 0
+        if(actionType === reset){
+            queries = {...storeInv.filters}
+            queries.offset = 0
         }
+        // When the state is loaded more, increase the offset by the limit
+        else if(actionType === append){
+            queries = {...storeInv.lastFilters}
+            queries.offset += queries.limit 
+        }
+        setDisableBtn(true)
         api.get(`/store-inventories${getQueryString(queries)}`)
            .then(response => {
-                if(storeInv.isLoaded){
-                    setDisableBtn(false)
-                    setFilterModalShown(false)
-                }                     
+               const responseData = response.data
+                setDisableBtn(false)
+                setFilterModalShown(false)                   
                 setStoreInvSizes([])     
-                dispatchStoreInv({type: actionType, payload: response.data})  
-                dispatchFilters({type: ACTIONS.FILTERS.RESET, payload: {
-                    filters: response.data.filters
-                }})              
+                dispatch(actionType({
+                    storeInvs: responseData.storeInvs,
+                    stores: responseData.stores,
+                    filters: responseData.filters
+                }))                                
            })
            .catch(error => {
-                if(storeInv.isLoaded){
-                    setDisableBtn(false)
-                    setFilterModalShown(false)
-                }   
+                setDisableBtn(false)
+                setFilterModalShown(false)
                 errorHandler(error) 
            })
-    }, [storeInv, filters, dispatchStoreInv])    
+    }, [storeInv, dispatch])    
 
     const viewStoreInv = useCallback((index) => {
         const targetStoreInv = storeInv.storeInvs[index]
@@ -94,10 +99,9 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                 updatedSizes: storeInvSizes
             })
             .then(response => {
-                dispatchStoreInv({
-                    type: ACTIONS.REPLACE, 
-                    payload: {storeInv: response.data.storeInv, index: storeInvIndex}
-                })                 
+                dispatch(replace({
+                    storeInv: response.data.storeInv, index: storeInvIndex
+                }))                
                 setSuccPopupMsg(response.data.message)
                 setDisableBtn(false)
                 setModalShown(false)    
@@ -110,13 +114,21 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                     setErrPopupMsg(error.response.data.message)                     
                 }})                  
             })
-    }, [storeInvIndex, storeInvSizes, dispatchStoreInv, storeInv])   
+    }, [storeInvIndex, storeInvSizes, dispatch, storeInv])   
 
     useEffect(() => {
         if(storeInv.isLoaded === false){
-            getStoreInvs(ACTIONS.RESET)
+            getStoreInvs(reset)
         }
     }, [storeInv, getStoreInvs])
+
+    useEffect(() => {
+        return () => {
+            // Make sure sync 'filters' and 'lastFilters' before leaving this page
+            // so when user enter this page again, the 'filters' is the same as 'lastFilters'
+            dispatch(syncFilters())
+        }
+    }, [dispatch])      
 
     // When the store resource is not set yet
     // Return loading UI
@@ -140,16 +152,16 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                 <div className='flex-row items-center'>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: loc.searchInvInStore, 
-                            onChange: e => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'name', value: e.target.value}
-                            })},
-                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStoreInvs(ACTIONS.RESET)})}
+                        formAttr={{value: storeInv.filters.name, placeholder: loc.searchInvInStore, 
+                            onChange: e => {dispatch(updateFilters([
+                                {key: 'name', value: e.target.value}
+                            ]))},
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStoreInvs(reset)})}
                         }} 
                     />   
                     <Button text={loc.search} size={'sm'} attr={{disabled: disableBtn,
                             style: {flexShrink: '0'},
-                            onClick: () => {getStoreInvs(ACTIONS.RESET)}
+                            onClick: () => {getStoreInvs(reset)}
                         }}
                     />                                       
                 </div>
@@ -161,7 +173,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                 <LoadMoreBtn 
                     disableBtn={disableBtn}
                     canLoadMore={storeInv.canLoadMore}
-                    action={() => {getStoreInvs(ACTIONS.APPEND)}}
+                    action={() => {getStoreInvs(append)}}
                 />              
             </>}
         />
@@ -238,10 +250,10 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                     const items = [
                         <Select label={loc.rowsShown} 
                             formAttr={{
-                                value: filters.limit,
-                                onChange: e => {dispatchFilters({
-                                    type: ACTIONS.FILTERS.UPDATE, payload: {key: 'limit', value: e.target.value}
-                                })}                                   
+                                value: storeInv.filters.limit,
+                                onChange: e => {dispatch(updateFilters([
+                                    {key: 'limit', value: e.target.value}
+                                ]))}                                   
                             }}
                             options={[
                                 {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
@@ -249,22 +261,20 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
                         />,
                         <Checkbox label={loc.showOnlyEmptySizes}
                             formAttr={{
-                                defaultChecked: filters.empty_size_only,
-                                onChange: (e) => {dispatchFilters({
-                                    type: ACTIONS.FILTERS.UPDATE, payload: {
-                                    key: 'empty_size_only', value: filters.empty_size_only
-                                }}
-                            )}
+                                defaultChecked: storeInv.filters.empty_size_only,
+                                onChange: (e) => {dispatch(updateFilters([
+                                    {key: 'empty_size_only', value: storeInv.filters.empty_size_only}
+                                ]))}
                         }}/>                        
                     ]
                     if(user.role.name === 'admin'){
                         items.unshift(
                             <Select label={loc.store} 
                                 formAttr={{
-                                    value: filters.store_id,
-                                    onChange: e => {dispatchFilters({
-                                        type: ACTIONS.FILTERS.UPDATE, payload: {key: 'store_id', value: e.target.value}
-                                    })}                                       
+                                    value: storeInv.filters.store_id,
+                                    onChange: e => {dispatch(updateFilters([
+                                        {key: 'store_id', value: e.target.value}
+                                    ]))}                                       
                                 }}
                                 options={(() => {
                                     const options = [{value: '', text: loc.allStores}]
@@ -283,7 +293,7 @@ function IndexStoreInventoryPage({storeInv, dispatchStoreInv, user, loc}){
             footer={
                 <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStoreInvs(ACTIONS.RESET)}
+                        onClick: () => {getStoreInvs(reset)}
                     }}
                 />                
             }

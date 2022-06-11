@@ -1,5 +1,6 @@
-import {useState, useEffect, useReducer, useCallback} from 'react'
-import {ACTIONS, filterReducer, getFilters} from '../reducers/StoreReducer'
+import {useState, useEffect, useCallback} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {append, prepend, replace, remove, updateFilters, syncFilters, reset} from '../../features/storeSlice'
 import {api, errorHandler, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
@@ -8,7 +9,9 @@ import {Modal, ConfirmPopup} from '../Windows'
 import {Grid} from '../Layouts'
 import Table from '../Table'
 
-function StorePage({store, dispatchStore, user, loc}){
+function StorePage({user, loc}){
+    const store = useSelector(state => state.store)
+    const dispatch = useDispatch()        
     const [disableBtn , setDisableBtn] = useState(false)
     /* Create/edit store */
     const [storeIndex, setStoreIndex] = useState('')
@@ -17,10 +20,9 @@ function StorePage({store, dispatchStore, user, loc}){
     const [modalHeading, setModalHeading] = useState('')
     const [modalShown, setModalShown] = useState(false)
     /* Filters */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(store.isLoaded))    
+    const [filterModalShown, setFilterModalShown] = useState(false)
     /* Delete store */
     const [popupShown, setPopupShown] = useState(false)  
-    const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
     const [popupErrMsg, setErrPopupMsg] = useState('')   
@@ -29,33 +31,35 @@ function StorePage({store, dispatchStore, user, loc}){
     const [popupSuccMsg, setSuccPopupMsg] = useState('')       
 
     const getStores = useCallback(actionType => {
-        // Get the queries
-        const queries = {...filters}
-        // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-
-        if(store.isLoaded){
-            setDisableBtn(true)
+        let queries = {}
+        // When the state is reset, set the offset to 0
+        if(actionType === reset){
+            queries = {...store.filters}
+            queries.offset = 0
         }
+        // When the state is loaded more, increase the offset by the limit
+        else if(actionType === append){
+            queries = {...store.lastFilters}
+            queries.offset += queries.limit 
+        }
+        setDisableBtn(true)
         api.get(`/stores${getQueryString(queries)}`)
            .then(response => {
-                if(store.isLoaded){
-                    setDisableBtn(false)
-                    setFilterModalShown(false)
-                }                          
-                dispatchStore({type: actionType, payload: response.data})
-                dispatchFilters({type: ACTIONS.FILTERS.RESET, payload: {
-                    filters: response.data.filters
-                }})             
+                const responseData = response.data
+                setDisableBtn(false)
+                setFilterModalShown(false)                  
+                dispatch(actionType({
+                    stores: responseData.stores,
+                    storeTypes: responseData.storeTypes,
+                    filters: responseData.filters
+                }))                            
            })
            .catch(error => {
-                if(store.isLoaded){
-                    setDisableBtn(false)
-                    setFilterModalShown(false)
-                }   
+                setDisableBtn(false)
+                setFilterModalShown(false)                 
                 errorHandler(error) 
            })
-    }, [store, filters, dispatchStore])  
+    }, [store, dispatch])  
 
     const createStore = useCallback(() => {
         setStoreIndex('')
@@ -73,10 +77,7 @@ function StorePage({store, dispatchStore, user, loc}){
         .then(response => {
             setDisableBtn(false)
             setModalShown(false)           
-            dispatchStore({
-                type: ACTIONS.PREPEND, 
-                payload: {stores: response.data.store}
-            })
+            dispatch(prepend({ stores: response.data.store }))
         })
         .catch(error => {
             setDisableBtn(false)
@@ -85,7 +86,7 @@ function StorePage({store, dispatchStore, user, loc}){
                 setErrPopupMsg(error.response.data.message)                      
             }})           
         })           
-    }, [storeName, dispatchStore, storeTypeId])    
+    }, [storeName, dispatch, storeTypeId])    
 
     const editStore = useCallback(index => {
         // Get the store 
@@ -95,7 +96,7 @@ function StorePage({store, dispatchStore, user, loc}){
         setStoreTypeId(targetStore ? targetStore.type_id : '')
         setModalHeading(`Edit ${targetStore ? targetStore.name : ''}`)
         setModalShown(true)
-    }, [store.stores])
+    }, [store])
 
     const updateStore = useCallback(() => {
         // Get the store 
@@ -104,15 +105,12 @@ function StorePage({store, dispatchStore, user, loc}){
         api.put(`/stores/${targetStore.id}`, {
             name: storeName, typeId: storeTypeId,
         })     
-            .then(response => {
-                dispatchStore({
-                    type: ACTIONS.REPLACE, 
-                    payload: {store: response.data.store, index: storeIndex}
-                })                 
+            .then(response => {   
                 setDisableBtn(false)   
                 setSuccPopupMsg(response.data.message)   
                 setModalShown(false)
                 setSuccPopupShown(true)     
+                dispatch(replace({ store: response.data.store, index: storeIndex }))            
             })
             .catch(error => {
                 setDisableBtn(false)
@@ -121,7 +119,7 @@ function StorePage({store, dispatchStore, user, loc}){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })        
-    }, [storeName, storeIndex, storeTypeId, store.stores, dispatchStore])  
+    }, [storeName, storeIndex, storeTypeId, store, dispatch])  
 
     const confirmDeleteStore = useCallback(index => {
         setStoreIndex(index)
@@ -133,13 +131,10 @@ function StorePage({store, dispatchStore, user, loc}){
         const targetStore = store.stores[storeIndex]        
 
         api.delete(`/stores/${targetStore.id}`)     
-            .then(response => {        
-                dispatchStore({
-                    type: ACTIONS.REMOVE, 
-                    payload: {indexes: storeIndex}
-                })                
+            .then(response => {                      
                 setSuccPopupMsg(response.data.message)
                 setSuccPopupShown(true)
+                dispatch(remove({ indexes: storeIndex }))
             })
             .catch(error => {
                 setDisableBtn(false)
@@ -148,13 +143,21 @@ function StorePage({store, dispatchStore, user, loc}){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })          
-    }, [storeIndex, dispatchStore, store.stores])
+    }, [storeIndex, dispatch, store])
 
     useEffect(() => {
         if(store.isLoaded === false){
-            getStores(ACTIONS.RESET)
+            getStores(reset)
         }
     }, [store, getStores])    
+
+    useEffect(() => {
+        return () => {
+            // Make sure sync 'filters' and 'lastFilters' before leaving this page
+            // so when user enter this page again, the 'filters' is the same as 'lastFilters'
+            dispatch(syncFilters())
+        }
+    }, [dispatch])     
 
     // When the store resource is not set yet
     // Return loading UI
@@ -174,16 +177,16 @@ function StorePage({store, dispatchStore, user, loc}){
                 <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: loc.searchStore, 
-                            onChange: e => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'name', value: e.target.value}
-                            })},
-                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStores(ACTIONS.RESET)})}
+                        formAttr={{value: store.filters.name, placeholder: loc.searchStore, 
+                            onChange: e => {dispatch(updateFilters([
+                                {key: 'name', value: e.target.value}
+                            ]))},
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getStores(reset)})}
                         }} 
                     />   
                     <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
-                        onClick: () => {getStores(ACTIONS.RESET)}
+                        onClick: () => {getStores(reset)}
                     }}/>                                       
                 </div>            
                 <StoresTable 
@@ -196,7 +199,7 @@ function StorePage({store, dispatchStore, user, loc}){
                 <LoadMoreBtn
                     disableBtn={disableBtn}
                     canLoadMore={store.canLoadMore}
-                    action={() => {getStores(ACTIONS.APPEND)}}
+                    action={() => {getStores(append)}}
                 />                                 
             </>}
         />
@@ -243,10 +246,10 @@ function StorePage({store, dispatchStore, user, loc}){
             body={<>
                 <Select label={loc.rowsShown} 
                     formAttr={{
-                        value: filters.limit,
-                        onChange: e => {dispatchFilters({
-                            type: ACTIONS.FILTERS.UPDATE, payload: {key: 'limit', value: e.target.value}
-                        })}                            
+                        value: store.filters.limit,
+                        onChange: e => {dispatch(updateFilters([
+                            {key: 'limit', value: e.target.value}
+                        ]))}                            
                     }}
                     options={[
                         {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
@@ -256,7 +259,7 @@ function StorePage({store, dispatchStore, user, loc}){
             footer={
                 <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStores(ACTIONS.RESET)}
+                        onClick: () => {getStores(reset)}
                     }}
                 />                
             }

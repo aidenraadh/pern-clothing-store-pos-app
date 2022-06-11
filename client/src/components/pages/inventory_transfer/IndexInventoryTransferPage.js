@@ -1,5 +1,6 @@
-import {useState, useEffect, useReducer, useCallback, useMemo} from 'react'
-import {ACTIONS, filterReducer, getFilters} from '../../reducers/InventoryTransferReducer'
+import {useState, useEffect, useCallback, useMemo} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {append, remove, updateFilters, syncFilters, reset} from '../../../features/inventoryTransferSlice'
 import {api, errorHandler, getQueryString, keyHandler, formatNum} from '../../Utils.js'
 import {Button} from '../../Buttons'
 import {TextInput, Select, Radio} from '../../Forms'
@@ -10,7 +11,9 @@ import Table from '../../Table'
 import {format, startOfMonth , endOfMonth, startOfYear, endOfYear } from 'date-fns'
 import { Link } from 'react-router-dom'
 
-function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc}){
+function IndexInventoryTransferPage({user, loc}){
+    const invTransfer = useSelector(state => state.invTransfer)
+    const dispatch = useDispatch()        
     const [disableBtn , setDisableBtn] = useState(false)
     const ranges = useMemo(() => {
         const today = new Date()
@@ -37,7 +40,6 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
     /* Delete invTransfer */
     const [popupShown, setPopupShown] = useState(false)
     /* Filter invTransfer */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(invTransfer.isLoaded)) 
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Error Popup */
     const [errPopupShown, setErrPopupShown] = useState(false)
@@ -46,54 +48,37 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
     const [succPopupShown, setSuccPopupShown] = useState(false)
     const [popupSuccMsg, setSuccPopupMsg] = useState('')    
     
-    const [selectedRange, setSelectedRange] = useState(() => {
-        let value = ''
-        Object.entries(ranges).forEach(range => {
-            const from = range[1].from
-            const to = range[1].to
-            if(from === filters.from && to === filters.to){
-                value = range[0]
-            }
-        })
-        return value
-    })       
+    const [selectedRange, setSelectedRange] = useState('custom')       
 
-    const getInvTransfers = useCallback((actionType) => {
-        // Get the queries
-        const queries = {...filters}
-        // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-
-        if(invTransfer.isLoaded){
-            setDisableBtn(true)
+    const getInvTransfers = useCallback(actionType => {
+        let queries = {}
+        // When the state is reset, set the offset to 0
+        if(actionType === reset){
+            queries = {...invTransfer.filters}
+            queries.offset = 0
+        }
+        // When the state is loaded more, increase the offset by the limit
+        else if(actionType === append){
+            queries = {...invTransfer.lastFilters}
+            queries.offset += queries.limit 
         }
         api.get(`/inventory-transfers${getQueryString(queries)}`)
            .then(response => {
                const responseData = response.data
-               // When the user is employee, they cant search the inventory transfer from another store
-               // they're not employed
-               if(invTransfer.isLoaded){
-                   setDisableBtn(false)
-                   setFilterModalShown(false)
-                }                          
-               dispatchInvTransfer({type: actionType, payload: responseData})
-               if(responseData.filters){
-                    if(user.role.name === 'employee'){
-                        responseData.filters.origin_store_id = user.storeEmployee.store_id
-                    }                   
-               }
-               dispatchFilters({
-                   type: ACTIONS.FILTERS.RESET, payload: {filters: responseData.filters}
-                })                
+               setDisableBtn(false)
+               setFilterModalShown(false)          
+               dispatch(actionType({
+                invTransfers: responseData.invTransfers,
+                stores: responseData.stores,
+                filters: responseData.filters
+               }))                                              
            })
            .catch(error => {
-                if(invTransfer.isLoaded){
-                    setDisableBtn(false)
-                    setFilterModalShown(false)
-                }   
+                setDisableBtn(false)
+                setFilterModalShown(false)
                 errorHandler(error) 
            })
-    }, [filters, invTransfer, dispatchInvTransfer, user])  
+    }, [invTransfer, dispatch])  
 
     const confirmDeleteInvTransfer = useCallback(index => {
         setInvTransferIndex(index)
@@ -105,11 +90,10 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
         const targetInvTransfer = invTransfer.invTransfers[invTransferIndex]        
 
         api.delete(`/inventory-transfers/${targetInvTransfer.id}`)     
-            .then(response => {        
-                dispatchInvTransfer({
-                    type: ACTIONS.REMOVE, 
-                    payload: {indexes: invTransferIndex}
-                })                
+            .then(response => {                     
+                dispatch(remove({
+                    indexes: invTransferIndex
+                }))                  
                 setSuccPopupMsg(response.data.message)
                 setSuccPopupShown(true)
             })
@@ -120,13 +104,32 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })          
-    }, [invTransferIndex, dispatchInvTransfer, invTransfer.invTransfers])
+    }, [invTransferIndex, dispatch, invTransfer])
 
     useEffect(() => {
+        setSelectedRange(state => {
+            let value = state
+            Object.entries(ranges).forEach(range => {
+                const from = range[1].from
+                const to = range[1].to
+                if(from === invTransfer.filters.from && to === invTransfer.filters.to){
+                    value = range[0]
+                }
+            })
+            return value            
+        })        
         if(invTransfer.isLoaded === false){
-            getInvTransfers(ACTIONS.RESET)
+            getInvTransfers(reset)
         }
-    }, [invTransfer, getInvTransfers])        
+    }, [invTransfer, getInvTransfers, ranges])   
+    
+    useEffect(() => {
+        return () => {
+            // Make sure sync 'filters' and 'lastFilters' before leaving this page
+            // so when user enter this page again, the 'filters' is the same as 'lastFilters'
+            dispatch(syncFilters())
+        }
+    }, [dispatch])     
 
     // When the invTransfer resource is not set yet
     // Return loading UI
@@ -148,16 +151,16 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                 <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
-                        formAttr={{value: filters.name, placeholder: loc.searchInv, 
-                            onChange: e => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'name', value: e.target.value}
-                            })},
-                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInvTransfers(ACTIONS.RESET)})}
+                        formAttr={{value: invTransfer.filters.name, placeholder: loc.searchInv, 
+                            onChange: e => {dispatch(updateFilters([
+                                {key: 'name', value: e.target.value}
+                            ]))},
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInvTransfers(reset)})}
                         }} 
                     />   
                     <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
                         style: {flexShrink: '0'},
-                        onClick: () => {getInvTransfers(ACTIONS.RESET)}
+                        onClick: () => {getInvTransfers(reset)}
                     }}/>                                       
                 </div>            
                 <InvTransfersTable 
@@ -168,7 +171,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                 <LoadMoreBtn 
                     disableBtn={disableBtn}
                     canLoadMore={invTransfer.canLoadMore}
-                    action={() => {getInvTransfers(ACTIONS.APPEND)}}
+                    action={() => {getInvTransfers(append)}}
                 />                                
             </>}
         />
@@ -179,11 +182,10 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                     <Select label={loc.originStore} 
                         formAttr={{
                             disabled: (user.role.name === 'employee' ? true : false),
-                            value: filters.origin_store_id,
-                            onChange: e => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, 
-                                payload: {key: 'origin_store_id', value: e.target.value}
-                            })}                            
+                            value: invTransfer.filters.origin_store_id,
+                            onChange: e => {dispatch(updateFilters([
+                                {key: 'origin_store_id', value: e.target.value}
+                            ]))}                            
                         }}
                         options={(() => {
                             const options = [{value: '', text: 'All'}]
@@ -198,11 +200,10 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                     />,
                     <Select label={loc.destinationStore} 
                         formAttr={{
-                            value: filters.destination_store_id,
-                            onChange: e => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, 
-                                payload: {key: 'destination_store_id', value: e.target.value}
-                            })}                            
+                            value: invTransfer.filters.destination_store_id,
+                            onChange: e => {dispatch(updateFilters([
+                                {key: 'destination_store_id', value: e.target.value}
+                            ]))}                            
                         }}
                         options={(() => {
                             const options = [{value: '', text: 'All'}]
@@ -217,10 +218,10 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                     />,     
                     <Select label={loc.rowsShown} 
                         formAttr={{
-                            value: filters.limit,
-                            onChange: e => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'limit', value: e.target.value}
-                            })}                            
+                            value: invTransfer.filters.limit,
+                            onChange: e => {dispatch(updateFilters([
+                                {key: 'limit', value: e.target.value}
+                            ]))}                            
                         }}
                         options={[
                             {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
@@ -237,13 +238,10 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                                 formAttr={{value: range[0],
                                     checked: (range[0] === selectedRange ? true : false),
                                     onChange: () => {
-                                        dispatchFilters({type: ACTIONS.FILTERS.UPDATE, payload: {
-                                            key: 'from', value: range[1].from
-                                        }})
-                                        dispatchFilters({type: ACTIONS.FILTERS.UPDATE, payload: {
-                                            key: 'to', value: range[1].to
-                                        }})
-                                        setSelectedRange(range[0])
+                                        dispatch(updateFilters([
+                                            {key: 'from', value: range[1].from},
+                                            {key: 'to', value: range[1].to}
+                                        ]))
                                     }
                                 }}/>
                             ))}
@@ -251,17 +249,17 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
                         </div>
                         <TextInput size={'md'} label={loc.from} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
                             type: 'date', disabled: selectedRange !== 'custom' ? true : false,
-                            value: filters.from,
-                            onChange: (e) => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'from', value: e.target.value}
-                            })}
+                            value: invTransfer.filters.from,
+                            onChange: (e) => {dispatch(updateFilters([
+                                {key: 'from', value: e.target.value}
+                            ]))}
                         }}/>
                         <TextInput size={'md'} label={loc.to} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
                             type: 'date', disabled: selectedRange !== 'custom' ? true : false,
-                            value: filters.to,
-                            onChange: (e) => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'to', value: e.target.value}
-                            })}
+                            value: invTransfer.filters.to,
+                            onChange: (e) => {dispatch(updateFilters([
+                                {key: 'to', value: e.target.value}
+                            ]))}
                         }}/>                         
                     </section>,                                               
                 ]}/>
@@ -269,7 +267,7 @@ function IndexInventoryTransferPage({invTransfer, dispatchInvTransfer, user, loc
             footer={
                 <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getInvTransfers(ACTIONS.RESET)}
+                        onClick: () => {getInvTransfers(reset)}
                     }}
                 />                
             }

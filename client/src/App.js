@@ -1,4 +1,4 @@
-import {useState, useReducer, useMemo} from "react";
+import {useState, useMemo} from "react";
 import ErrorBoundary from './components/ErrorBoundary'
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'
 
@@ -6,14 +6,6 @@ import ProtectedRoute from './components/ProtectedRoute'
 import {isAuth, getUser} from './components/Auth'
 import Navigations from './components/Navigations'
 import {UserThumbnail} from './components/Misc'
-
-import {inventoryReducer, INIT_STATE as INV_INIT_STATE} from "./components/reducers/InventoryReducer";
-import {storeReducer, INIT_STATE as STORE_INIT_STATE} from "./components/reducers/StoreReducer";
-import {storeInventoryReducer, INIT_STATE as STOREINV_INIT_STATE} from "./components/reducers/StoreInventoryReducer";
-import {storeTransactionReducer, INIT_STATE as STORETRNSC_INIT_STATE} from "./components/reducers/StoreTransactionReducer";
-import {inventoryTransferReducer, INIT_STATE as INVTRANSFER_INIT_STATE} from "./components/reducers/InventoryTransferReducer";
-import {adminReducer, INIT_STATE as ADMIN_INIT_STATE} from "./components/reducers/AdminReducer";
-import {employeeReducer, EMPLOYEE_INIT_STATE} from "./components/reducers/EmployeeReducer";
 
 import DashboardPage from './components/pages/DashboardPage'
 import LoginPage from './components/pages/LoginPage'
@@ -40,18 +32,12 @@ import {
     ProfilePageLocalization,
     IndexInventoryTransferPageLocalization,
     CreateInventoryTransferPageLocalization,
-    DashboardPageLocalization
+    DashboardPageLocalization,
+    UserPageLocalization
 } from './localizations/index.js'
 
 function App(){
     const [sidebarShown, setSidebarShown] = useState(false)
-    const [inventory, dispatchInventory] = useReducer(inventoryReducer, INV_INIT_STATE)
-    const [store, dispatchStore] = useReducer(storeReducer, STORE_INIT_STATE)
-    const [storeInv, dispatchStoreInv] = useReducer(storeInventoryReducer, STOREINV_INIT_STATE)
-    const [storeTrnsc, dispatchStoreTrnsc] = useReducer(storeTransactionReducer, STORETRNSC_INIT_STATE)
-    const [invTransfer, dispatchInvTransfer] = useReducer(inventoryTransferReducer, INVTRANSFER_INIT_STATE)
-    const [admin, dispatchAdmin] = useReducer(adminReducer, ADMIN_INIT_STATE)
-    const [employee, dispatchEmployee] = useReducer(employeeReducer, EMPLOYEE_INIT_STATE)    
     const [totalInvs, setTotalInvs] = useState(undefined) 
     const [totalStoredInvs, setTotalStoredInvs] = useState(undefined)
     const [totalProdPrices, setTotalProdPrices] = useState(undefined)
@@ -153,44 +139,37 @@ function App(){
                         }}/>                        
                         <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
                             props={{
-                                user: user, inventory: inventory, dispatchInventory: dispatchInventory,
-                                loc: InventoryPageLocalization[languageName]
+                                user: user, loc: InventoryPageLocalization[languageName]
                             }}
                         />
                         <ProtectedRoute path={`/${sidebarItems.store.link}`} exact component={StorePage}
                             props={{
                                 user: user, loc: StorePageLocalization[languageName], 
-                                store: store, dispatchStore: dispatchStore
                             }}
                         />     
                         <ProtectedRoute path={`/${sidebarItems.store_inventory.link}`} exact component={IndexStoreInventoryPage}
                             props={{
                                 user: user, loc: IndexStoreInventoryPageLocalization[languageName],
-                                storeInv: storeInv, dispatchStoreInv: dispatchStoreInv
                             }}
                         />        
                         <ProtectedRoute path={`/${sidebarItems.store_inventory.link}/create`} exact 
                             component={CreateStoreInventoryPage} props={{
-                                user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv,
-                                loc: CreateStoreInventoryPageLocalization[languageName]
+                                user: user, loc: CreateStoreInventoryPageLocalization[languageName]
                             }}
                         /> 
                         <ProtectedRoute path={`/${sidebarItems.store_transaction.link}`} exact 
                             component={IndexStoreTransactionPage} props={{
-                                user: user, storeTrnsc: storeTrnsc, dispatchStoreTrnsc: dispatchStoreTrnsc,
-                                loc: IndexStoreTransactionPageLocalization[languageName]
+                                user: user, loc: IndexStoreTransactionPageLocalization[languageName]
                             }}
                         />                                                  
                         <ProtectedRoute path={`/${sidebarItems.store_transaction.link}/create`} exact 
                             component={CreateStoreTransactionPage} props={{
-                                user: user, storeInv: storeInv, dispatchStoreInv: dispatchStoreInv,
-                                loc: CreateStoreTransactionPageLocalization[languageName]
+                                user: user, loc: CreateStoreTransactionPageLocalization[languageName]
                             }}
                         />                      
                         <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}`} exact 
                         component={IndexInventoryTransferPage} props={{
-                            user: user, invTransfer: invTransfer, dispatchInvTransfer: dispatchInvTransfer,
-                            loc: IndexInventoryTransferPageLocalization[languageName]
+                            user: user, loc: IndexInventoryTransferPageLocalization[languageName]
                         }}/>              
                         <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}/create`} exact 
                             component={CreateInventoryTransferPage} props={{
@@ -198,10 +177,7 @@ function App(){
                             }}
                         />                                   
                         <ProtectedRoute path={`/${sidebarItems.user.link}`} exact component={UserPage}
-                            props={{
-                                user: user, admin: admin, dispatchAdmin: dispatchAdmin, employee: employee,
-                                dispatchEmployee: dispatchEmployee
-                            }}
+                            props={{user: user, loc: UserPageLocalization[languageName]}}
                         />       
                         <ProtectedRoute path={`/profile`} exact component={ProfilePage} props={{
                             user: user, loc: ProfilePageLocalization[languageName]

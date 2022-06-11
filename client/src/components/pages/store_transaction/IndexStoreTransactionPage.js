@@ -1,6 +1,7 @@
-import {useState, useEffect, useReducer, useCallback, useMemo} from 'react'
+import {useState, useEffect, useCallback, useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import {ACTIONS, filterReducer, getFilters} from '../../reducers/StoreTransactionReducer.js'
+import {useDispatch, useSelector} from 'react-redux'
+import {append, remove, updateFilters, syncFilters, reset} from '../../../features/storeTransactionSlice'
 import TransactionReceipt from './TransactionReceipt'
 import {api, errorHandler, formatNum, getQueryString} from '../../Utils.js'
 import {Button} from '../../Buttons'
@@ -11,7 +12,9 @@ import {Modal, ConfirmPopup} from '../../Windows'
 import {Grid} from '../../Layouts'
 import {format, startOfMonth , endOfMonth, startOfYear, endOfYear } from 'date-fns'
 
-function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
+function IndexStoreTransactionPage({user, loc}){
+    const storeTrnsc = useSelector(state => state.storeTrnsc)
+    const dispatch = useDispatch()        
     const [disableBtn , setDisableBtn] = useState(false)  
     const ranges = useMemo(() => {
         const today = new Date()
@@ -34,7 +37,6 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
         }
     }, [loc.today, loc.thisMonth, loc.thisYear, loc.custom])
     /* Filters */
-    const [filters, dispatchFilters] = useReducer(filterReducer, getFilters(storeTrnsc.isLoaded))    
     const [filterModalShown, setFilterModalShown] = useState(false)
     /* Transaction details */
     const [storeTrnscIndex, setStoreTrnscIndex] = useState('')
@@ -48,45 +50,38 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
     /* Confirm delete popup */
     const [confirmDeletePopupShown, setConfirmDeletePopupShown] = useState(false)
 
-    const [selectedRange, setSelectedRange] = useState(() => {
-        let value = ''
-        Object.entries(ranges).forEach(range => {
-            const from = range[1].from
-            const to = range[1].to
-            if(from === filters.from && to === filters.to){
-                value = range[0]
-            }
-        })
-        return value
-    })    
+    const [selectedRange, setSelectedRange] = useState('custom')    
 
     const getStoreTrnscs = useCallback(actionType => {
-        // Get the queries
-        const queries = {...filters}
-        // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-        if(storeTrnsc.isLoaded){
-            setDisableBtn(true)
+        let queries = {}
+        // When the state is reset, set the offset to 0
+        if(actionType === reset){
+            queries = {...storeTrnsc.filters}
+            queries.offset = 0
         }
+        // When the state is loaded more, increase the offset by the limit
+        else if(actionType === append){
+            queries = {...storeTrnsc.lastFilters}
+            queries.offset += queries.limit 
+        }
+        setDisableBtn(true)
         api.get(`/store-transactions${getQueryString(queries)}`)
            .then(response => {
-                if(storeTrnsc.isLoaded){
-                    setDisableBtn(false)
-                    setFilterModalShown(false)
-                }                          
-                dispatchStoreTrnsc({type: actionType, payload: response.data})  
-                dispatchFilters({type: ACTIONS.FILTERS.RESET, payload: {
-                    filters: response.data.filters
-                }})            
+                const responseData = response.data
+                setDisableBtn(false)
+                setFilterModalShown(false)                             
+                dispatch(actionType({
+                    storeTrnscs: responseData.storeTrnscs,
+                    stores: responseData.stores,
+                    filters: responseData.filters
+                }))                      
            })
            .catch(error => {
-                if(storeTrnsc.isLoaded){
-                    setDisableBtn(false)
-                    setFilterModalShown(false)
-                }   
+                setDisableBtn(false)
+                setFilterModalShown(false) 
                 errorHandler(error) 
            })
-    }, [storeTrnsc, filters, dispatchStoreTrnsc])
+    }, [storeTrnsc, dispatch])
 
     const viewStoreTrnsc = useCallback(index => {
         setStoreTrnscIndex(index)
@@ -103,12 +98,11 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
         const targetStoreTrnsc = storeTrnsc.storeTrnscs[storeTrnscIndex]
         api.delete(`/store-transactions/${targetStoreTrnsc.id}`)
            .then(response => {           
+                dispatch(remove({
+                    indexes: storeTrnscIndex
+                }))                
                 setStoreTrnscIndex('')
                 setSuccPopupMsg(response.data.message)             
-                dispatchStoreTrnsc({
-                    type: ACTIONS.REMOVE, 
-                    payload: {indexes: storeTrnscIndex}
-                })
                 setSuccPopupShown(true)
 
            })
@@ -119,13 +113,33 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
                     setErrPopupMsg(error.response.data.message)                      
                 }})  
            })        
-    }, [storeTrnsc.storeTrnscs, storeTrnscIndex, dispatchStoreTrnsc])
+    }, [storeTrnsc, storeTrnscIndex, dispatch])
 
     useEffect(() => {
         if(storeTrnsc.isLoaded === false){
-            getStoreTrnscs(ACTIONS.RESET)
+            getStoreTrnscs(reset)
         }
-    }, [getStoreTrnscs, storeTrnsc.isLoaded])
+        // Update selected range whenever 'from' or 'to' filters is updated
+        setSelectedRange(state => {
+            let value = state
+            Object.entries(ranges).forEach(range => {
+                const from = range[1].from
+                const to = range[1].to
+                if(from === storeTrnsc.filters.from && to === storeTrnsc.filters.to){
+                    value = range[0]
+                }
+            })
+            return value            
+        })
+    }, [getStoreTrnscs, storeTrnsc, ranges])
+
+    useEffect(() => {
+        return () => {
+            // Make sure sync 'filters' and 'lastFilters' before leaving this page
+            // so when user enter this page again, the 'filters' is the same as 'lastFilters'
+            dispatch(syncFilters())
+        }
+    }, [dispatch])      
 
     if(storeTrnsc.isLoaded === false){
         return 'Loading...'
@@ -154,7 +168,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
                 />
                 <LoadMoreBtn
                     canLoadMore={storeTrnsc.canLoadMore}
-                    action={() => {getStoreTrnscs(ACTIONS.APPEND)}}
+                    action={() => {getStoreTrnscs(append)}}
                 />
             </>}
         />
@@ -185,18 +199,18 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
                             return options
                         })()}
                         formAttr={{
-                            value: filters.store_id,
-                            onChange: e => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'store_id', value: e.target.value}
-                            })}                            
+                            value: storeTrnsc.filters.store_id,
+                            onChange: e => {dispatch(updateFilters([
+                                {key: 'store_id', value: e.target.value}
+                            ]))}                            
                         }}
                     />,
                     <Select label={loc.rowsShown} 
                         formAttr={{
-                            value: filters.limit,
-                            onChange: e => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'limit', value: e.target.value}
-                            })}                            
+                            value: storeTrnsc.filters.limit,
+                            onChange: e => {dispatch(updateFilters([
+                                {key: 'limit', value: e.target.value}
+                            ]))}                            
                         }}
                         options={[
                             {value: 10, text: 10}, {value: 20, text: 20}, {value: 30, text: 30}
@@ -212,32 +226,27 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
                                 <Radio key={index} label={range[1].label} containerAttr={{style:{ margin: '0 1.4rem 1rem 0'}}}
                                 formAttr={{value: range[0],
                                     checked: (range[0] === selectedRange ? true : false),
-                                    onChange: () => {
-                                        dispatchFilters({type: ACTIONS.FILTERS.UPDATE, payload: {
-                                            key: 'from', value: range[1].from
-                                        }})
-                                        dispatchFilters({type: ACTIONS.FILTERS.UPDATE, payload: {
-                                            key: 'to', value: range[1].to
-                                        }})
-                                        setSelectedRange(range[0])
-                                    }
+                                    onChange: () => {dispatch(updateFilters([
+                                        {key: 'from', value: range[1].from},
+                                        {key: 'to', value: range[1].to}
+                                    ]))}
                                 }}/>
                             ))}
                                                                        
                         </div>
                         <TextInput size={'md'} label={loc.from} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
                             type: 'date', disabled: selectedRange !== 'custom' ? true : false,
-                            value: filters.from,
-                            onChange: (e) => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'from', value: e.target.value}
-                            })}
+                            value: storeTrnsc.filters.from,
+                            onChange: (e) => {dispatch(updateFilters([
+                                {key: 'from', value: e.target.value}
+                            ]))}
                         }}/>
                         <TextInput size={'md'} label={loc.to} containerAttr={{style: {marginBottom: '1rem'}}} formAttr={{
                             type: 'date', disabled: selectedRange !== 'custom' ? true : false,
-                            value: filters.to,
-                            onChange: (e) => {dispatchFilters({
-                                type: ACTIONS.FILTERS.UPDATE, payload: {key: 'to', value: e.target.value}
-                            })}
+                            value: storeTrnsc.filters.to,
+                            onChange: (e) => {dispatch(updateFilters([
+                                {key: 'to', value: e.target.value}
+                            ]))}
                         }}/>                         
                     </section>,                
                 ]}/>
@@ -245,7 +254,7 @@ function IndexStoreTransactionPage({storeTrnsc, dispatchStoreTrnsc, user, loc}){
             footer={
                 <Button size={'sm'} text={loc.search} attr={{
                         disabled: disableBtn,
-                        onClick: () => {getStoreTrnscs(ACTIONS.RESET)}
+                        onClick: () => {getStoreTrnscs(reset)}
                     }}
                 />                
             }

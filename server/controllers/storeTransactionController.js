@@ -21,9 +21,9 @@ exports.index = async (req, res) => {
         queries.limit = parseInt(queries.limit) ? parseInt(queries.limit) : 10
         queries.offset = parseInt(queries.offset) ? parseInt(queries.offset) : 0  
         queries.from = Joi.date().required().validate(queries.from)
-        queries.from = queries.from.error ? '' : queries.from.value        
+        queries.from = queries.from.error ? '' : req.query.from     
         queries.to = Joi.date().required().validate(queries.to)
-        queries.to = queries.to.error ? '' : queries.to.value          
+        queries.to = queries.to.error ? '' : req.query.to
         queries.name = Joi.string().required().trim().validate(queries.name)
         queries.name = queries.name.error ? '' : queries.name.value
         // When the user is employee, they can only see StoreTransaction from the store they're employed to

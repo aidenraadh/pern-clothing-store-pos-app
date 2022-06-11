@@ -1,13 +1,11 @@
 import axios from 'axios'
 import {logout} from './Auth'
 
-const hostname = window.location.hostname
-
 export const api = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL || '/api',
     withCredentials: true,
     headers: {
-        Authorization: localStorage.getItem(`${hostname}_jwt_token`)
+        Authorization: localStorage.getItem(`jwt_token`)
     }    
 })
 
@@ -31,43 +29,6 @@ export const errorHandler = (error, handler = {}) => {
 	else{
 		alert(error.response.data.message)
 	}
-}
-
-/**
- * Save the resource's index filters
- * @param {string} key - The filter key of the resource
- * @param {object} filters - Key-value pairs of the filters
- */
-
-export const saveResFilters = (key, filters) => {
-	let resourceFilters = localStorage.getItem(`${hostname}_resource_filters`)
-	filters = filters ? {...filters} : {}
-	// Create resource_filter storage if it not exist
-	if(!resourceFilters){
-		resourceFilters = {}
-	}
-	else{
-		resourceFilters = JSON.parse(resourceFilters)
-	}
-	resourceFilters[key] = {...filters}
-	localStorage.setItem(`${hostname}_resource_filters`, JSON.stringify(resourceFilters))
-}
-
-/**
- * Get the resource's filters
- * @param {*} key - The filter key of the resource
- * @returns {object} - The resource's filters
- */
-
-export const getResFilters = (key) => {
-	let resourceFilters = localStorage.getItem(`${hostname}_resource_filters`)
-	if(!resourceFilters){
-		resourceFilters = {}
-	}
-	else{
-		resourceFilters = JSON.parse(resourceFilters)
-	}
-	return resourceFilters[key] ? resourceFilters[key] : {}
 }
 
 /**

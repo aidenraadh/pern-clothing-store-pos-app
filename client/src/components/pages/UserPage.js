@@ -1,14 +1,13 @@
-import {useState, useEffect, useCallback, useMemo, useReducer} from 'react'
+import {useState, useEffect, useCallback, useMemo} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {
-    ACTIONS as ADMIN_ACTIONS, 
-    filterReducer as adminFilterReducer, 
-    getFilters as getAdminFilters
-} from '../reducers/AdminReducer'
+    append as appendAdmins, prepend as prependAdmins,
+    syncFilters as syncAdminFilters, reset as resetAdmins
+} from '../../features/adminSlice'
 import {
-    ACTIONS as EMPLOYEE_ACTIONS, 
-    filterReducer as employeeFilterReducer, 
-    getFilters as getEmployeeFilters    
-} from '../reducers/EmployeeReducer'
+    append as appendEmployees, prepend as prependEmployees,
+    remove as removeEmployees, syncFilters as syncEmployeeFilters, reset as resetEmployees
+} from '../../features/employeeSlice'
 import {api, errorHandler, getQueryString, keyHandler} from '../Utils.js'
 import {Button} from '../Buttons'
 import {TextInput, Select} from '../Forms'
@@ -17,24 +16,13 @@ import {Modal, ConfirmPopup} from '../Windows'
 import Table from '../Table'
 import {TabbedCard} from '../Cards'
 
-function UserPage(props){
+function UserPage({user, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
+    const admin = useSelector(state => state.admin)
+    const employee = useSelector(state => state.employee)
+    const dispatch = useDispatch()      
     const [stores, setStores] = useState(null)
-    const [roles, setRoles] = useState(null)
-    /* Admin */
-    const admin = props.admin
-    const dispatchAdmin = props.dispatchAdmin
-    /* Filter admin */
-    const [adminFilters, dispatchAdminFilters] = useReducer(adminFilterReducer, getAdminFilters(
-        props.admin.isLoaded
-    ))
-    /* Employee */
-    const employee = props.employee
-    const dispatchEmployee = props.dispatchEmployee
-    /* Filter employee */
-    const [employeeFilters, dispatchEmployeeFilters] = useReducer(employeeFilterReducer, getEmployeeFilters(
-        props.employee.isLoaded
-    ))     
+    const [roles, setRoles] = useState(null)    
     /* Create, update, delete user */
     const [userIndex, setUserIndex] = useState('')
     const [storeId, setStoreId] = useState('')
@@ -55,67 +43,61 @@ function UserPage(props){
     const [popupSuccMsg, setSuccPopupMsg] = useState('') 
     const [popupSuccCallback, setPopupSuccCallback] = useState(() => {})         
     
-    const getAdmins = useCallback((actionType) => {
-        // Get the queries
-        const queries = {...adminFilters}
-        // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === ADMIN_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-
-        if(admin.isLoaded){
-            setDisableBtn(true)
+    const getAdmins = useCallback(actionType => {
+        let queries = {}
+        // When the state is reset, set the offset to 0
+        if(actionType === resetAdmins){
+            queries = {...admin.filters}
+            queries.offset = 0
         }
+        // When the state is loaded more, increase the offset by the limit
+        else if(actionType === appendAdmins){
+            queries = {...admin.lastFilters}
+            queries.offset += queries.limit 
+        }
+        setDisableBtn(true)
         api.get(`/users${getQueryString(queries)}`)
            .then(response => {
-                if(admin.isLoaded){
-                    setDisableBtn(false)
-                }
-                dispatchAdmin({type: actionType, payload: {
-                    admins: response.data.users,
-                    filters: response.data.filters,
-                }})
-                dispatchAdminFilters({type: ADMIN_ACTIONS.FILTERS.RESET, payload: {
-                    filters: response.data.filters
-                }})
+                const responseData = response.data
+                dispatch(actionType({
+                    admins: responseData.users,
+                    filters: responseData.filters,
+                }))
+                setDisableBtn(false)
            })
            .catch(error => {
-                if(admin.isLoaded){
-                    setDisableBtn(false)
-                }   
+                setDisableBtn(false)      
                 errorHandler(error) 
            })
-    }, [admin, adminFilters ,dispatchAdmin]) 
+    }, [admin, dispatch]) 
 
     const getEmployees = useCallback(actionType => {
-        // Get the queries
-        const queries = {...employeeFilters}
-        // When the inventory is refreshed, set the offset to 0
-        queries.offset = actionType === EMPLOYEE_ACTIONS.RESET ? 0 : (queries.offset + queries.limit)
-
-        if(employee.isLoaded){
-            setDisableBtn(true)
+        let queries = {}
+        // When the state is reset, set the offset to 0
+        if(actionType === resetEmployees){
+            queries = {...employee.filters}
+            queries.offset = 0
         }
+        // When the state is loaded more, increase the offset by the limit
+        else if(actionType === appendEmployees){
+            queries = {...employee.lastFilters}
+            queries.offset += queries.limit 
+        }
+        setDisableBtn(true)
         api.get(`/users${getQueryString(queries)}`)
            .then(response => {
-                if(employee.isLoaded){
-                    setDisableBtn(false)
-                    // setEmployeefilterModalShown(false)
-                }
-                dispatchEmployee({type: actionType, payload: {
-                    employees: response.data.users,
-                    filters: response.data.filters,
-                }})
-                dispatchEmployeeFilters({type: EMPLOYEE_ACTIONS.FILTERS.RESET, payload: {
-                    filters: response.data.filters
-                }})
+                const responseData = response.data
+                setDisableBtn(false)
+                dispatch(actionType({
+                    employees: responseData.users,
+                    filters: responseData.filters
+                }))                 
            })
            .catch(error => {
-                if(employee.isLoaded){
-                    setDisableBtn(false)
-                    // setEmployeefilterModalShown(false)
-                }   
+                setDisableBtn(false) 
                 errorHandler(error) 
            })
-    }, [employeeFilters, employee, dispatchEmployee])
+    }, [employee, dispatch])
 
     const getEmployeeStores = useCallback(() => {
         api.get(`/users/employee-stores`)
@@ -143,11 +125,11 @@ function UserPage(props){
 
         switch(targetRoleId){
             case 2: // Admin
-                heading = 'Create New Admin'
+                heading = loc.createNewAdmin
                 targetRoleId = 2
                 break;
             case 3: // Employee
-                heading = 'Create New Employee'
+                heading = loc.createNewEmployee
                 defaultStoreId = stores === null ? '' : stores[0].id
                 targetRoleId = 3
                 break;   
@@ -160,25 +142,22 @@ function UserPage(props){
         setStoreId(defaultStoreId)
         setCrtModalHeading(heading)
         setCrtModalShown(true)
-    }, [stores])
+    }, [stores, loc])
 
     const storeUser = useCallback(() => {
         const data = {
             name: name, email: email, roleId: roleId, storeId: storeId
         }
-        let dispatchFunction = null
         let reducerAction = ''
         let userArrayKey = ''
 
         switch(userRoleId){
             case 2: // Admin
-                reducerAction = ADMIN_ACTIONS.PREPEND;
-                dispatchFunction = dispatchAdmin
+                reducerAction = prependAdmins;
                 userArrayKey = 'admins'
                 break;
             case 3: // Employee
-                reducerAction = EMPLOYEE_ACTIONS.PREPEND;
-                dispatchFunction = dispatchEmployee   
+                reducerAction = prependEmployees;
                 userArrayKey = 'employees'             
                 break;    
             default: throw new Error();    
@@ -186,10 +165,9 @@ function UserPage(props){
         setDisableBtn(true)
         api.post('/users', data)
             .then(response => {        
-                dispatchFunction({
-                    type: reducerAction, 
-                    payload: {[userArrayKey]: response.data.user}
-                })
+                dispatch(reducerAction({
+                    [userArrayKey]: response.data.user
+                }))
                 setDisableBtn(false)
                 setCrtModalShown(false)                   
             })
@@ -200,7 +178,7 @@ function UserPage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})           
             })  
-    }, [roleId, userRoleId, name, email, storeId, dispatchAdmin, dispatchEmployee])
+    }, [roleId, userRoleId, name, email, storeId, dispatch])
 
     const editUser = useCallback((targetRoleId, index) => {
         let user = null
@@ -211,7 +189,7 @@ function UserPage(props){
             case 3: // Employee
                 user = employee.employees[index]
                 storeId = user.storeEmployee.store.id
-                heading = 'Edit Employee'
+                heading = loc.editEmployee
                 break;   
             default: throw new Error();             
         }
@@ -221,7 +199,7 @@ function UserPage(props){
         setStoreId(storeId)
         setUpdModalHeading(heading)
         setUpdModalShown(true)
-    }, [employee])
+    }, [employee, loc])
 
     const updateUser = useCallback(() => {
         let userId = ''
@@ -263,24 +241,21 @@ function UserPage(props){
     }, [])
 
     const deleteUser = useCallback(() => {
-        let dispatchFunction = null
         let reducerAction = ''
         let userId = ''
         
         switch(userRoleId){
             case 3: // Employee
                 userId = employee.employees[userIndex].id;
-                dispatchFunction = dispatchEmployee;
-                reducerAction = EMPLOYEE_ACTIONS.REMOVE;
+                reducerAction = removeEmployees;
                 break;
             default: throw new Error();
         }        
         api.delete(`/users/${userId}`)     
             .then(response => {        
-                dispatchFunction({
-                    type: reducerAction, 
-                    payload: {indexes: userIndex}
-                })                
+                dispatch(reducerAction({
+                    indexes: userIndex
+                }))               
                 setSuccPopupMsg(response.data.message) 
                 setPopupSuccCallback(() => {})
                 setSuccPopupShown(true) 
@@ -292,11 +267,11 @@ function UserPage(props){
                     setErrPopupMsg(error.response.data.message)                      
                 }})               
             })          
-    }, [employee, userIndex, userRoleId, dispatchEmployee])    
+    }, [employee, userIndex, userRoleId, dispatch])    
     
     const CreateUserForms = useMemo(() => {
         const body = [
-            <TextInput label={'Name'} size={'md'} formAttr={{
+            <TextInput label={loc.name} size={'md'} formAttr={{
                 value: name,
                 onChange: (e) => {setName(e.target.value)},
                 onKeyUp: (e) => {keyHandler(e, 'Enter', storeUser)}
@@ -310,7 +285,7 @@ function UserPage(props){
         switch(userRoleId){
             case 3: // Employee
                 body.push(
-                    <Select size={'md'} label={'Store'}
+                    <Select size={'md'} label={loc.store}
                         options={stores === null ? [] : stores.map(store => ({
                             value: store.id, text: store.name,
                         }))}
@@ -324,11 +299,11 @@ function UserPage(props){
             default: body.push()              
         }
         return <Grid numOfColumns={1} items={body}/>
-    }, [name, userRoleId, stores, storeId, email, storeUser])    
+    }, [name, userRoleId, stores, storeId, email, storeUser, loc])    
 
     const UpdateUserForms = useMemo(() => {
         const body = [
-            <Select size={'md'} label={'Role'}
+            <Select size={'md'} label={loc.role}
                 options={roles === null ? [] : roles.map(role => ({
                     value: role.id, text: role.name,
                 }))}
@@ -340,7 +315,7 @@ function UserPage(props){
         ]        
         if(parseInt(roleId) === 3){
             body.push(
-                <Select size={'md'} label={'Store'}
+                <Select size={'md'} label={loc.store}
                     options={stores === null ? [] : stores.map(store => ({
                         value: store.id, text: store.name,
                     }))}
@@ -352,16 +327,16 @@ function UserPage(props){
             )
         }
         return <Grid numOfColumns={1} items={body}/>
-    }, [roles, roleId, stores, storeId])    
+    }, [roles, roleId, stores, storeId, loc])    
 
     // Get admins if its not set yet
     useEffect(() => {
-        if(admin.admins === null){ getAdmins(ADMIN_ACTIONS.RESET) }      
+        if(admin.isLoaded === false){ getAdmins(resetAdmins) }      
     }, [admin, getAdmins])    
 
     // Get employees if its not set yet
     useEffect(() => {
-        if(employee.isLoaded === false){ getEmployees(EMPLOYEE_ACTIONS.RESET) }           
+        if(employee.isLoaded === false){ getEmployees(resetEmployees) }           
     }, [employee, getEmployees])       
 
     // Get stores if its not set yet
@@ -374,21 +349,30 @@ function UserPage(props){
         if(roles === null){ getUserRoles() }          
     }, [roles, getUserRoles])        
 
-    if(admin.admins === null || employee.isLoaded === false || stores === null){
+    useEffect(() => {
+        return () => {
+            // Make sure sync 'filters' and 'lastFilters' before leaving this page
+            // so when user enter this page again, the 'filters' is the same as 'lastFilters'
+            dispatch(syncAdminFilters())
+            dispatch(syncEmployeeFilters())
+        }
+    }, [dispatch])      
+
+    if(admin.isLoaded === false || employee.isLoaded === false || stores === null){
         return 'Loading...'
     }
 
     return (<>
     <TabbedCard 
         tabs={[ 
-            {link: 'Admin', panelID: 'admin', panelContent:
-                <UsersTable appProps={props} roleId={2} 
-                    getUsers={getAdmins} toggleCrtUser={createUser}
+            {link: loc.admin, panelID: 'admin', panelContent:
+                <UsersTable userState={admin} disableBtn={disableBtn} loc={loc}
+                    getUsers={() => {getAdmins(appendAdmins)}} toggleCrtUser={createUser}
                 />
             },
-            {link: 'Employee', panelID: 'employee', panelContent:
-                <UsersTable appProps={props} roleId={3} 
-                    getUsers={getEmployees} toggleCrtUser={createUser} 
+            {link: loc.employee, panelID: 'employee', panelContent:
+                <UsersTable userState={employee} disableBtn={disableBtn} loc={loc}
+                    getUsers={() => {getEmployees(appendEmployees)}} toggleCrtUser={createUser} 
                     toggleEdtUser={editUser} toggleDltUser={confirmDeleteUser}
                 />
             },										
@@ -401,7 +385,7 @@ function UserPage(props){
         body={CreateUserForms}
         shown={crtModalShown}
         footer={
-            <Button text={'Save change'} size={'sm'} attr={{
+            <Button text={loc.saveChanges} size={'sm'} attr={{
                 disabled: disableBtn,
                 onClick: () => {storeUser()}
             }}/>
@@ -414,7 +398,7 @@ function UserPage(props){
         body={UpdateUserForms}
         shown={updModalShown}
         footer={
-            <Button text={'Save change'} size={'sm'} attr={{
+            <Button text={loc.saveChanges} size={'sm'} attr={{
                 disabled: disableBtn,
                 onClick: () => {updateUser()}
             }}/>
@@ -424,9 +408,9 @@ function UserPage(props){
     <ConfirmPopup
         icon={'warning_1'}
         title={'Warning'}
-        body={'Are you sure want to remove this user?'}
-        confirmText={'Remove'}
-        cancelText={'Cancel'}
+        body={loc.removeUserMsg}
+        confirmText={loc.remove}
+        cancelText={loc.cancel}
         shown={dltPopupShown} togglePopup={() => {setDltPopupShown(state => !state)}} 
         confirmCallback={deleteUser}
     />    
@@ -452,39 +436,36 @@ function UserPage(props){
     </>)
 }
 
-const UsersTable = ({appProps, roleId, getUsers, disableBtn, toggleCrtUser, toggleEdtUser, toggleDltUser}) => {
+const UsersTable = ({userState, disableBtn, loc, getUsers, toggleCrtUser, toggleEdtUser, toggleDltUser}) => {
+    const roleId = userState.lastFilters.role_id
+    const canLoadMore = userState.canLoadMore
     let addBtnText = ''
-    let tableHeadings = ['Name']
+    let tableHeadings = ['No.', loc.name]
     let tableBody = []
-    let loadMoreBtnVis
-    let loadMoreBtnAction
 
     switch(roleId){
         case 2: // Admin
-            addBtnText = '+ Add admin'
-            tableBody = appProps.admin.admins.map(admin => ([admin.name]));
-            loadMoreBtnVis = appProps.admin.canLoadMore
-            loadMoreBtnAction = () => {getUsers(ADMIN_ACTIONS.APPEND)}
+            addBtnText = loc.addAdmin
+            tableBody = userState.admins.map((admin, index) => ([(index + 1), admin.name]));
             break;
         case 3: // Employee
-            addBtnText = '+ Add employee'
-            tableHeadings.push('Store', 'Actions')
-            tableBody = appProps.employee.employees.map((employee, index) => ([
+            addBtnText = loc.addEmployee
+            tableHeadings.push(loc.store, 'Actions')
+            tableBody = userState.employees.map((employee, index) => ([
+                (index + 1), 
                 <span className='text-capitalize'>{employee.name}</span>, 
                 <span className='text-capitalize'>{employee.storeEmployee.store.name}</span>,
 
                 <div className='flex-row items-center'>
-                    <Button size={'sm'} text={'Edit'} attr={{
+                    <Button size={'sm'} text={loc.edit} attr={{
                         onClick: () => {toggleEdtUser(roleId, index)},
                         style: {marginRight: '1rem'}
                     }}/>
-                    <Button size={'sm'} color={'red'} text={'Remove'} attr={{
+                    <Button size={'sm'} color={'red'} text={loc.remove} attr={{
                         onClick: () => {toggleDltUser(roleId, index)}
                     }}/>                                    
                 </div>
             ]));
-            loadMoreBtnVis = appProps.employee.canLoadMore
-            loadMoreBtnAction = () => {getUsers(EMPLOYEE_ACTIONS.APPEND)}            
             break; 
         default: throw new Error();           
     }
@@ -501,8 +482,8 @@ const UsersTable = ({appProps, roleId, getUsers, disableBtn, toggleCrtUser, togg
             />,
             <LoadMoreBtn
                 disableBtn={disableBtn}
-                canLoadMore={loadMoreBtnVis}
-                action={loadMoreBtnAction}
+                canLoadMore={canLoadMore}
+                action={getUsers}
             />               
         ]}/>
     )
