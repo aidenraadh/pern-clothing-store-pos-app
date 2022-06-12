@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, useReducer } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {Redirect} from 'react-router-dom'
 import { Button } from '../Buttons'
 import {SimpleCard, PlainCard, StatsCard} from '../Cards'
@@ -36,6 +36,14 @@ function DashboardPage(props){
             custom: {label: props.loc.custom, from: '', to: ''}
         }
     }, [props.loc.today, props.loc.thisMonth, props.loc.thisYear, props.loc.custom])      
+
+    const [process, setProcess] = useState({
+        totalInvs: props.totalInvs ? 1 : 0,
+        totalStoredInvs: props.totalStoredInvs ? 1 : 0,
+        totalProdPrices: props.totalProdPrices ? 1 : 0,
+        totalRevenue: props.totalRevenue ? 1 : 0,
+        totalSoldInvs: props.totalSoldInvs ? 1 : 0,
+    })
     /* Revenue time range */
     const [revenueTimeRange, setRevenueTimeRange] = useState({
         from: props.totalRevenue && props.totalRevenue.storeRevenues.length ? (
@@ -61,6 +69,8 @@ function DashboardPage(props){
 
 
     const countInvs = useCallback(() => {
+        props.setTotalInvs(undefined)
+        setProcess(state => ({...state, totalInvs: 1}))
         // setDisableBtn(true)
         api.get('/statistics/total-inventories')
             .then(response => {
@@ -73,7 +83,8 @@ function DashboardPage(props){
     }, [props])
 
     const sumStoredInvs = useCallback((initialReq = false) => {
-        props.setTotalStoredInvs(null)
+        props.setTotalStoredInvs(undefined)
+        setProcess(state => ({...state, totalStoredInvs: 1}))
         const delay = initialReq ? 0 : 3000
         timeoutIds.sumStoredInvs = setTimeout(() => {
             api.get('/statistics/sum-stored-inventories')
@@ -90,7 +101,8 @@ function DashboardPage(props){
     }, [props])    
 
     const sumProdPrices = useCallback((initialReq = false) => {
-        props.setTotalProdPrices(null)
+        props.setTotalProdPrices(undefined)
+        setProcess(state => ({...state, totalProdPrices: 1}))
         const delay = initialReq ? 0 : 3000
         timeoutIds.sumStoredInvs = setTimeout(() => {
             api.get('/statistics/sum-production-prices')
@@ -107,7 +119,8 @@ function DashboardPage(props){
     }, [props])       
 
     const sumRevenue = useCallback((initialReq = false) => {
-        props.setTotalRevenue(null)
+        setProcess(state => ({...state, totalRevenue: 1}))
+        props.setTotalRevenue(undefined)
         const delay = initialReq ? 0 : 3000
         timeoutIds.sumRevenue = setTimeout(() => {
             api.get(`/statistics/sum-revenue${getQueryString(revenueTimeRange)}`)
@@ -122,7 +135,7 @@ function DashboardPage(props){
                                 from: totalSumRevenue.storeRevenues[0].from,
                                 to: totalSumRevenue.storeRevenues[0].to,
                             })
-                        }                          
+                        }
                         props.setTotalRevenue(totalSumRevenue)                      
                     }
                 })
@@ -131,7 +144,8 @@ function DashboardPage(props){
     }, [props, revenueTimeRange])   
     
     const sumSoldInvs = useCallback((initialReq = false) => {
-        props.setTotalSoldInvs(null)
+        props.setTotalSoldInvs(undefined)
+        setProcess(state => ({...state, totalSoldInvs: 1}))
         const delay = initialReq ? 0 : 3000
         timeoutIds.sumSoldInvs = setTimeout(() => {
             api.get(`/statistics/sum-sold-inventories${getQueryString(soldInvsTimeRange)}`)
@@ -155,32 +169,26 @@ function DashboardPage(props){
     }, [props, soldInvsTimeRange])      
 
     useEffect(() => {
-        if(props.totalInvs === undefined){ countInvs() }
-    }, [props.totalInvs, countInvs])
+        if(process.totalInvs === 0){ countInvs() }
+    }, [process, countInvs])
 
     useEffect(() => {
-        if(props.totalStoredInvs === undefined){
-            sumStoredInvs(true)
-        }
-    }, [props.totalStoredInvs, sumStoredInvs])    
+        if(process.totalStoredInvs === 0){ sumStoredInvs(true) }
+    }, [process, sumStoredInvs])    
 
     useEffect(() => {
-        if(props.totalProdPrices === undefined){
-            sumProdPrices(true)
-        }
-    }, [props.totalProdPrices, sumProdPrices])    
+        if(process.totalProdPrices === 0){ sumProdPrices(true) }
+    }, [process, sumProdPrices])    
 
     useEffect(() => {
-        if(props.totalRevenue === undefined){
-            sumRevenue(true)
-        }
-    }, [props.totalRevenue, sumRevenue])        
+        if(process.totalRevenue === 0){ sumRevenue(true) }
+    }, [process, sumRevenue])        
 
     useEffect(() => {
-        if(props.totalSoldInvs === undefined){
+        if(process.totalSoldInvs === 0){
             sumSoldInvs(true)
         }
-    }, [props.totalSoldInvs, sumSoldInvs])     
+    }, [process, sumSoldInvs])     
     
     // If revenueTimeRange changed, change also selectedRevenueTimeRange
     useEffect(() => {
@@ -209,14 +217,14 @@ function DashboardPage(props){
             })
             return value            
         })
-    }, [soldInvsTimeRange, ranges])        
+    }, [soldInvsTimeRange, ranges])       
 
     useEffect(() => {
         return () => {
             // Clear all timeout
             for (const key in timeoutIds) {
                 clearTimeout(timeoutIds[key])
-            }
+            }                                              
         };
     }, [])
 
@@ -253,7 +261,7 @@ function DashboardPage(props){
                     </p>
                 }
                 body={<>
-                    {props.totalRevenue === undefined || props.totalRevenue === null ?
+                    {props.totalRevenue === undefined ?
                         <p className='text-center text-dark-50' style={{fontSize: '1.46rem', padding: '1rem'}}>
                             {props.loc.calculateMsg}
                         </p> : 
@@ -295,7 +303,7 @@ function DashboardPage(props){
                     </p>
                 }
                 body={<>
-                    {props.totalSoldInvs === undefined || props.totalSoldInvs === null ?
+                    {props.totalSoldInvs === undefined ?
                         <p className='text-center text-dark-50' style={{fontSize: '1.46rem', padding: '1rem'}}>
                             {props.loc.calculateMsg}
                         </p> : 
@@ -320,7 +328,7 @@ function DashboardPage(props){
             <SimpleCard
                 heading={props.loc.storedInvs}
                 body={<>
-                    {props.totalStoredInvs === undefined || props.totalStoredInvs === null ? 
+                    {props.totalStoredInvs === undefined ? 
                         <p className='text-center text-dark-50' style={{fontSize: '1.46rem', padding: '1rem'}}>
                             {props.loc.calculateMsg}
                         </p> : 
@@ -372,7 +380,7 @@ function DashboardPage(props){
                     </p>
                 }
                 body={<>
-                    {props.totalProdPrices === undefined || props.totalProdPrices === null ?
+                    {props.totalProdPrices === undefined ?
                         <p className='text-center text-dark-50' style={{fontSize: '1.46rem', padding: '1rem'}}>
                             {props.loc.calculateMsg}
                         </p> : 

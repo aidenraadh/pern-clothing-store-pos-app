@@ -53,15 +53,12 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 	}
 
 	.sidebar{
-		width: 28rem;
-		max-width: 28rem;
 		overflow-y: auto;
 		background-color: #131628;
 		transform: translateX(-100%);
 	}
 
 	.sidebar.shown{
-		width: 28rem;
 		transform: translateX(0);
 	}	
 
