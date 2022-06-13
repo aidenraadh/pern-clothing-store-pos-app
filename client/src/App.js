@@ -1,8 +1,8 @@
 import {useState, useMemo} from "react";
 import ErrorBoundary from './components/ErrorBoundary'
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 
-import ProtectedRoute from './components/ProtectedRoute'
+import Protected from './components/Protected'
 import {isAuth, getUser} from './components/Auth'
 import Navigations from './components/Navigations'
 import {UserThumbnail} from './components/Misc'
@@ -43,6 +43,8 @@ function App(){
     const [totalProdPrices, setTotalProdPrices] = useState(undefined)
     const [totalRevenue, setTotalRevenue] = useState(undefined)
     const [totalSoldInvs, setTotalSoldInvs] = useState(undefined)
+
+    const userAuth = isAuth()
 
     const user = useMemo(() => {
         const user = getUser()
@@ -86,7 +88,6 @@ function App(){
             icon: 'group', text: 'Users', link: 'users'
         },         
     }
-    const userAuth = isAuth()
 
     return (
         <ErrorBoundary>
@@ -127,63 +128,72 @@ function App(){
                     /> : ''       
                 )}
                 <div id="app" className={userAuth ? 'authenticated': ''}>
-                    <Switch>
-                        <Route path="/login" exact component={LoginPage}/>
-                        <ProtectedRoute path={`/${sidebarItems.dashboard.link}`} exact component={DashboardPage} props={{
-                            user: user, loc: DashboardPageLocalization[languageName],
-                            totalInvs: totalInvs, setTotalInvs: setTotalInvs,
-                            totalStoredInvs: totalStoredInvs, setTotalStoredInvs: setTotalStoredInvs,
-                            totalProdPrices: totalProdPrices, setTotalProdPrices: setTotalProdPrices,
-                            totalRevenue: totalRevenue, setTotalRevenue: setTotalRevenue,
-                            totalSoldInvs: totalSoldInvs, setTotalSoldInvs: setTotalSoldInvs
-                        }}/>                        
-                        <ProtectedRoute path={`/${sidebarItems.inventory.link}`} exact component={InventoryPage}
-                            props={{
-                                user: user, loc: InventoryPageLocalization[languageName]
-                            }}
-                        />
-                        <ProtectedRoute path={`/${sidebarItems.store.link}`} exact component={StorePage}
-                            props={{
-                                user: user, loc: StorePageLocalization[languageName], 
-                            }}
-                        />     
-                        <ProtectedRoute path={`/${sidebarItems.store_inventory.link}`} exact component={IndexStoreInventoryPage}
-                            props={{
-                                user: user, loc: IndexStoreInventoryPageLocalization[languageName],
-                            }}
-                        />        
-                        <ProtectedRoute path={`/${sidebarItems.store_inventory.link}/create`} exact 
-                            component={CreateStoreInventoryPage} props={{
-                                user: user, loc: CreateStoreInventoryPageLocalization[languageName]
-                            }}
-                        /> 
-                        <ProtectedRoute path={`/${sidebarItems.store_transaction.link}`} exact 
-                            component={IndexStoreTransactionPage} props={{
-                                user: user, loc: IndexStoreTransactionPageLocalization[languageName]
-                            }}
-                        />                                                  
-                        <ProtectedRoute path={`/${sidebarItems.store_transaction.link}/create`} exact 
-                            component={CreateStoreTransactionPage} props={{
-                                user: user, loc: CreateStoreTransactionPageLocalization[languageName]
-                            }}
-                        />                      
-                        <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}`} exact 
-                        component={IndexInventoryTransferPage} props={{
-                            user: user, loc: IndexInventoryTransferPageLocalization[languageName]
-                        }}/>              
-                        <ProtectedRoute path={`/${sidebarItems.inventory_transfer.link}/create`} exact 
-                            component={CreateInventoryTransferPage} props={{
-                                user: user, loc: CreateInventoryTransferPageLocalization[languageName]
-                            }}
-                        />                                   
-                        <ProtectedRoute path={`/${sidebarItems.user.link}`} exact component={UserPage}
-                            props={{user: user, loc: UserPageLocalization[languageName]}}
-                        />       
-                        <ProtectedRoute path={`/profile`} exact component={ProfilePage} props={{
-                            user: user, loc: ProfilePageLocalization[languageName]
-                        }}/>                                                                                                                
-                        <Route path={'*'} component={NotFoundPage}/>
-                    </Switch>                    
+                    <Routes>
+                        <Route path="/login" exact element={<LoginPage isAuth={userAuth}/>}/>
+                        <Route path={`/${sidebarItems.dashboard.link}`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <DashboardPage
+                                    user={user} loc={DashboardPageLocalization[languageName]}
+                                    totalInvs={totalInvs} setTotalInvs={setTotalInvs}
+                                    totalStoredInvs={totalStoredInvs} setTotalStoredInvs={setTotalStoredInvs}
+                                    totalProdPrices={totalProdPrices} setTotalProdPrices={setTotalProdPrices}
+                                    totalRevenue={totalRevenue} setTotalRevenue={setTotalRevenue}
+                                    totalSoldInvs={totalSoldInvs} setTotalSoldInvs={setTotalSoldInvs}                             
+                                />
+                            </Protected>
+                        }/>                     
+                        <Route path={`/${sidebarItems.inventory.link}`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <InventoryPage user={user} loc={InventoryPageLocalization[languageName]}/>
+                            </Protected>
+                        }/>         
+                        <Route path={`/${sidebarItems.store.link}`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <StorePage user={user} loc={StorePageLocalization[languageName]}/>
+                            </Protected>
+                        }/>         
+                        <Route path={`/${sidebarItems.store_inventory.link}`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <IndexStoreInventoryPage user={user} loc={IndexStoreInventoryPageLocalization[languageName]}/>
+                            </Protected>
+                        }/>        
+                        <Route path={`/${sidebarItems.store_inventory.link}/create`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <CreateStoreInventoryPage user={user} loc={CreateStoreInventoryPageLocalization[languageName]}/>
+                            </Protected>
+                        }/>       
+                        <Route path={`/${sidebarItems.store_transaction.link}`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <IndexStoreTransactionPage user={user} loc={IndexStoreTransactionPageLocalization[languageName]}/>
+                            </Protected>
+                        }/>    
+                        <Route path={`/${sidebarItems.store_transaction.link}/create`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <CreateStoreTransactionPage user={user} loc={CreateStoreTransactionPageLocalization[languageName]}/>
+                            </Protected>
+                        }/>    
+                        <Route path={`/${sidebarItems.inventory_transfer.link}`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <IndexInventoryTransferPage user={user} loc={IndexInventoryTransferPageLocalization[languageName]}/>
+                            </Protected>
+                        }/>     
+                       <Route path={`/${sidebarItems.inventory_transfer.link}/create`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <CreateInventoryTransferPage user={user} loc={CreateInventoryTransferPageLocalization[languageName]}/>
+                            </Protected>
+                        }/>   
+                        <Route path={`/${sidebarItems.user.link}`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <UserPage user={user} loc={UserPageLocalization[languageName]}/>
+                            </Protected>
+                        }/>        
+                        <Route path={`/profile`} exact element={
+                            <Protected isAuth={userAuth}>
+                                <ProfilePage user={user} loc={ProfilePageLocalization[languageName]}/>
+                            </Protected>
+                        }/>     
+                        <Route path={`*`} element={<NotFoundPage/>}/>                                                                                                                                                                                                                                 
+                    </Routes>                    
                 </div>      
             </Router>
         </ErrorBoundary>

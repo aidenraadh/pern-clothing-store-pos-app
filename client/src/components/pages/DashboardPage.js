@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import {Redirect} from 'react-router-dom'
+import {Navigate} from 'react-router-dom'
 import { Button } from '../Buttons'
 import {SimpleCard, PlainCard, StatsCard} from '../Cards'
 import { Radio, TextInput } from '../Forms'
@@ -169,19 +169,19 @@ function DashboardPage(props){
     }, [props, soldInvsTimeRange])      
 
     useEffect(() => {
-        if(process.totalInvs === 0){ countInvs() }
+        if(process.totalInvs === 0){countInvs() }
     }, [process, countInvs])
 
     useEffect(() => {
-        if(process.totalStoredInvs === 0){ sumStoredInvs(true) }
+        if(process.totalStoredInvs === 0){sumStoredInvs(true) }
     }, [process, sumStoredInvs])    
 
     useEffect(() => {
-        if(process.totalProdPrices === 0){ sumProdPrices(true) }
+        if(process.totalProdPrices === 0){sumProdPrices(true) }
     }, [process, sumProdPrices])    
 
     useEffect(() => {
-        if(process.totalRevenue === 0){ sumRevenue(true) }
+        if(process.totalRevenue === 0){sumRevenue(true) }
     }, [process, sumRevenue])        
 
     useEffect(() => {
@@ -229,7 +229,7 @@ function DashboardPage(props){
     }, [])
 
     if(props.user.role.name === 'employee'){
-        return <Redirect to={'/store-inventories'}/>
+        return <Navigate to={'/store-inventories'}/>
     }
     return (<>
         <Grid numOfColumns={1} items={[

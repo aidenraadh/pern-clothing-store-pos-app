@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:16-alpine
 
 WORKDIR /app
 
@@ -9,5 +9,3 @@ RUN npm install
 COPY . .
 
 CMD ["npm","start"]
-
-# Run with docker run --name client_container --env-file ./.env  -p 3000:3000 -v C:\xampp\htdocs\clothing-store-pos\client\src:/app/src client_image

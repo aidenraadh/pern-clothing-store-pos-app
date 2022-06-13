@@ -50,8 +50,8 @@ function Navigations(props){
 				<ul className="sidebar-items-container">
 				{props.sidebarItems.map((item, key) => (
 					<li key={key}>
-						<NavLink to={`/${item.link ? item.link : ''}`} exact 
-						className={'sidebar-item'} activeClassName={'active'}> 
+						<NavLink to={`/${item.link ? item.link : ''}`} exact="true"
+						className={({isActive}) => (`sidebar-item`+(isActive ? ' active': ''))}> 
 							<SVGIcons name={item.icon ? item.icon : 'layers'} color={''} />
 							<span className="text">{item.text ? item.text : 'Menu'}</span> 
 						</NavLink> 						

@@ -96,7 +96,7 @@ function InventoryPage({user, loc}){
         setInvIndex(index)
         setInvId(id)
         setInvName(name)
-        dispatchInvSizes({payload: sizes})
+        dispatchInvSizes({payload: {sizes: sizes}})
         setModalHeading(loc.editInv)
         setModalShown(true)
     }, [loc.editInv])
@@ -162,6 +162,10 @@ function InventoryPage({user, loc}){
             dispatch(syncFilters())
         }
     }, [dispatch])      
+
+    useEffect(() => {
+        // console.log(invSizes)
+    }, [invSizes])
    
 
     // When the inventory resource is not set yet
@@ -238,7 +242,7 @@ function InventoryPage({user, loc}){
                                         onChange: (e) => {
                                             dispatchInvSizes({type: 'update', payload: {
                                                 index: index, key: 'production_price', 
-                                                value: formatNum(e.target.value, true)
+                                                value: e.target.value
                                             }})
                                         }
                                     }} 
@@ -248,7 +252,7 @@ function InventoryPage({user, loc}){
                                         onChange: (e) => {
                                             dispatchInvSizes({type: 'update', payload: {
                                                 index: index, key: 'selling_price', 
-                                                value: formatNum(e.target.value, true)
+                                                value: e.target.value
                                             }})
                                         }
                                     }} 
@@ -353,25 +357,27 @@ function InventoryPage({user, loc}){
 }
 
 const sizesReducer = (state, action) => {
-    switch(action.type){
+    const type = action.type
+    const payload = {...action.payload}
+    switch(type){
         case 'add': return [
                 ...state, {name: '', production_price: '', selling_price: ''}
             ]; 
         case 'remove': return (() => {
                 let sizes = [...state]
-                sizes.splice(action.payload.index, 1)
+                sizes.splice(payload.index, 1)
                 return sizes
             })()
         case 'update': return (() => {
                 let sizes = [...state]
-                for(const key in sizes[action.payload.index]){
-                    if(key === action.payload.key){
-                        sizes[action.payload.index][key] = action.payload.value
-                    }
+                let {index, key, value} = {...payload}
+                if(key === 'production_price' || key === 'selling_price'){
+                    value = formatNum(value, true)
                 }
+                sizes[index] = {...sizes[index], [key]: value}
                 return sizes
             })()
-        default: return action.payload;
+        default: return payload.sizes;
     }
 }
 
