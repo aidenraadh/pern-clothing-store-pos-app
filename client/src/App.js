@@ -127,7 +127,7 @@ function App(){
                         })()}	
                     /> : ''       
                 )}
-                <div id="app" className={userAuth ? 'authenticated': ''}>
+                <div id="app" className={userAuth ? '': 'unauthenticated'}>
                     <Routes>
                         <Route path="/login" exact element={<LoginPage isAuth={userAuth}/>}/>
                         <Route path={`/${sidebarItems.dashboard.link}`} exact element={

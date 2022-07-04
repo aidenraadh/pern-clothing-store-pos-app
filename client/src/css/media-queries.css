@@ -1,7 +1,10 @@
 @media only screen and (min-width: 1281px) {
   html {
-    font-size: 0.74125vw;
+    font-size: 0.6677vw;
   }
+  #app{
+	padding: 9.6rem 16rem 14rem 18rem;
+  }  
 }
 
 /* html font size is 9.14px at 375 px, 1.6rem = 14.6px */
@@ -35,7 +38,7 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 */
 
 @media only screen and (max-width: 1100px){	
-	#app.authenticated{
+	#app{
 		padding: 9.6rem 4vw 18rem;
 	}
 
@@ -74,13 +77,6 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 		width: 50vw;
 	}	
 
-	#login-page .login-forms{
-		width: 50vw;
-	}
-	#login-page::before{
-		background-size: 40% auto;
-	}
-
 	.floating-btn{
 		right: 7vw;
 		bottom: 6rem;
@@ -113,7 +109,7 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 */
 
 @media only screen and (max-width: 700px){
-	#app.authenticated{
+	#app{
 		padding: 9.6rem 3vw 10rem;
 	}
 	.sidebar{
@@ -128,26 +124,6 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 	.modal .modal-content, .modal.sm .modal-content{
 		width: 92vw;
 	}
-	.content-sized-modal.modal .modal-content{
-		width: 92vw !important;
-	}
-
-	.grid.grid-3{
-		grid-template-columns: auto auto;
-	}
-
-	.grid.collapsed-on-tablet{
-		grid-template-columns: auto;
-	}	
-
-	#login-page {
-		background-size: 50% auto;
-	}	
-	
-	#login-page .login-forms{
-		width: 80vw;
-	}
-
 	.table-stats{
 		width: 100%;
 	}
@@ -166,18 +142,6 @@ html font size is 8.75px at 375 px, 1.6rem = 14px
 }
 
 @media only screen and (max-width: 600px){
-	#hotel-stats .grid-3{
-		grid-template-columns: 100%;
-	}
-
-	.make-booking-card .card-body > .rooms,
-	.make-booking-card .card-body > .services{
-		width: 100%;
-		float: none;
-	}
-	.grid.collapsed-on-mobile{
-		grid-template-columns: auto;
-	}	
 }
 
 @media only screen and (max-width: 500px){

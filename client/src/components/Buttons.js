@@ -23,9 +23,9 @@ export function Button(props){
 
 Button.defaultProps = {
 	tag: 'button', text: 'Button',
-	size: 'lg', // 'lg'|'md'|'sm'
+	size: 'md', // 'lg'|'md'|'sm'
 	type: 'primary', // 'prmiary'|'light'
-	color: 'blue', // 'red'|'blue'|'yellow'|'green'|'purple'
+	color: 'blue', // 'red'|'blue'|'orange'|'green'|'purple'
 	iconName: '', // String
 	iconOnly: false, // Boolean
 	attr: {},

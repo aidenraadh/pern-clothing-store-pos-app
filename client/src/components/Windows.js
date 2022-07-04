@@ -56,7 +56,7 @@ export function Modal(props){
 Modal.defaultProps = {
     heading: 'Heading', // String|JSX
     body: 'Lorem ipsum', // String|JSX
-    size: '',
+    size: '', // String 'sm' or ''
     footer: '', // String|JSX
     footerAlign: '', // String|JSX - 'left'|'center'|'right'
     shown: false, // Boolean - Must from parent's state
@@ -127,8 +127,8 @@ export function ConfirmPopup(props){
 ConfirmPopup.defaultProps = {
     icon: '', // String
     iconColor: 'blue', // String
-    title: 'Lorem ipsum', // String|JSX
-    body: 'Lorem ipsum', // String|JSX
+    title: 'Heading', // String|JSX
+    body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit', // String|JSX
     confirmText: 'Yes', // String|JSX
     cancelText: '', // String|JSX
     confirmBtnColor: 'blue', // String

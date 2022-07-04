@@ -4,6 +4,10 @@
 @import 'css/utilities.css';
 @import 'css/media-queries.css';
 
+#app.unauthenticated{
+	padding: 0;
+}
+
 .load-more-btn{
 	margin: 2rem auto 0;
 }

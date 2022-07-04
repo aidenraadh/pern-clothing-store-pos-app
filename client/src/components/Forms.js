@@ -209,10 +209,10 @@ SelectAddon.defaultProps = {
 }
 
 export function Checkbox(props){
-	const classes = `multi-choice checkbox ${props.type}` +
+	const classes = `multi-choice checkbox ${props.size} ${props.type}` +
 		(props.classes ? ` ${props.classes}` : props.classes)
 
-	let formAttr = {...props.formAttr, value: props.value}
+	let formAttr = {...props.formAttr}
 	if(props.formName){
 		formAttr = {...formAttr,
 			id: props.formName, name: props.formName, 
@@ -231,6 +231,7 @@ export function Checkbox(props){
 
 Checkbox.defaultProps = {
 	formName: '', // String
+	size: 'md', // String - 'sm'|'md'|'lg'
 	type: 'outline', // String - 'outline'|'basic'
 	label: '', // String|JSX
 	value: '', // String
@@ -240,7 +241,7 @@ Checkbox.defaultProps = {
 }
 
 export function Radio(props){
-	const classes = `multi-choice radio ${props.type}` + 
+	const classes = `multi-choice radio ${props.size} ${props.type}` + 
 		(props.classes ? ` ${props.classes}` : props.classes)
 
 	let formAttr = {...props.formAttr}
@@ -264,6 +265,39 @@ export function Radio(props){
 Radio.defaultProps = {
 	formName: '', // String
 	type: 'outline', // String - 'outline'|'basic'
+	size: 'md', // String - 'sm'|'md'|'lg'
+	label: '', // String|JSX
+	value: '', // String
+	classes: '', // String
+	containerAttr: {}, // Object
+	formAttr: {}, // Object
+}
+
+export function Switch(props){
+	const classes = `multi-choice switch ${props.size}` + 
+		(props.classes ? ` ${props.classes}` : props.classes)
+
+	let formAttr = {...props.formAttr}
+	if(props.formName){
+		formAttr = {...formAttr,
+			id: props.formName, name: props.formName, 
+		}
+	}		
+
+	return (
+		<label className={classes} {...props.containerAttr}>
+			<span className="choice-name">{props.label ? props.label : props.value}</span>
+			<input type="checkbox" {...formAttr}/>
+			<span className="checkmark">
+				<span></span>
+			</span>
+		</label>
+	)//
+}
+
+Switch.defaultProps = {
+	formName: '', // String
+	size: 'md', // String - 'sm'|'md'|'lg'
 	label: '', // String|JSX
 	value: '', // String
 	classes: '', // String

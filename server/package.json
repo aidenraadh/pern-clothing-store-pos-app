@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Simple MERN app with JWT authentication",
+  "description": "PWA for managing multiple clothing stores",
   "main": "index.js",
   "scripts": {
     "start": "node index",

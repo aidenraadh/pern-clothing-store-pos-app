@@ -16,7 +16,7 @@ This is the layout styles of the button
 .btn{
 	display: inline-block;
 	position: relative;
-	padding: 0.6em 1.2em;
+	padding: 0.54em 1.2em;
 	text-align: center;
 	font-size: 1.38rem;
 	border-radius: 0.55rem;
@@ -149,6 +149,13 @@ This is the layout styles of the button
 	background-color: #7337EE;
 }
 
+.btn-primary.black{
+	background-color: rgba(24,28,50,0.9);
+}
+
+.btn-primary.black:hover, .btn-primary.black.active{
+	background-color: rgba(24,28,50,1);
+}
 
 /*
 ----- PRIMARY BUTTON -----
@@ -220,6 +227,16 @@ This is the layout styles of the button
 	background-color: #8950FC;
 }
 
+.btn-light.black, .btn-light.black .path{
+	color: #181C32;
+	fill: #181C32;
+	background-color: rgba(24,28,50,0.14);
+}
+
+.btn-light.black:hover, .btn-light.black.active{
+	background-color: #181C32;
+}
+
 /*
 ----- BUTTONS GROUP -----
 All button in the group must be in the same size
@@ -258,11 +275,7 @@ All button in the group must be in the same size
 
 /*
 <nav>
-	<div class="topbar">
-		<a href=#
-		className="topbar-item app-brand flex-row content-center items-center">
-			img
-		</a>	
+	<div class="topbar">	
 		<ul class="left-widgets">
 			<button type="show-sidebar-btn>Show</button>
 			<li class="topbar-item">
@@ -314,13 +327,6 @@ All button in the group must be in the same size
 	z-index: 96;
 }
 
-.topbar .app-brand{
-	order: 2;
-}
-.topbar .app-brand > img{
-	width: 16rem;
-}
-
 .topbar .left-widgets, .topbar .right-widgets{
 	display: flex;
 	align-items: center;
@@ -332,7 +338,7 @@ All button in the group must be in the same size
 }
 
 .topbar .right-widgets{
-	order: 3;
+	order: 2;
 }
 
 .topbar ul{
@@ -382,7 +388,7 @@ All button in the group must be in the same size
 	flex-shrink: 0;
 	display: flex;
 	align-items: center;
-	padding: 1.6rem 2rem 1.6rem 1.2rem;
+	padding: 1.48rem 2rem 1.48rem 1.2rem;
 	color: #FFFFFF;
 }
 
@@ -408,32 +414,45 @@ All button in the group must be in the same size
 	transform: rotate(-180deg);
 }
 
-.sidebar-item .svg-icon > svg{
+.sidebar-item .menu-icon > svg,
+.sidebar-item .expand-icon > svg{
 	width: 1.8em;
 }
 
-.sidebar-item .svg-icon .path{
+.sidebar-item .menu-icon .path{
 	fill: #494B74;
 	transition: fill 0.3s;
 }
 
-.sidebar-item.active .svg-icon .path,
-.sidebar-item:hover .svg-icon .path,
-.sidebar-item:focus .svg-icon .path
+.sidebar-item.active .menu-icon .path,
+.sidebar-item:hover .menu-icon .path,
+.sidebar-item:focus .menu-icon .path
 {
 	fill: #3699FF;
 }
 
-.sidebar-item .svg-icon .stroke{
+.sidebar-item .menu-icon .stroke{
 	stroke: #494B74;
 	transition: stroke 0.3s;
 }
 
-.sidebar-item.active .svg-icon .stroke,
-.sidebar-item:hover .svg-icon .stroke,
-.sidebar-item:focus .svg-icon .stroke
+.sidebar-item.active .menu-icon .stroke,
+.sidebar-item:hover .menu-icon .stroke,
+.sidebar-item:focus .menu-icon .stroke
 {
 	stroke: #3699FF;
+}
+
+.sidebar-item .expand-icon{
+	margin: 0 0 0 auto;
+}
+
+.sidebar-item .expand-icon svg{
+	transition: transform 0.3s;
+}
+
+.sidebar-item .expand-icon .path{
+	fill: #3699FF;
 }
 
 .sidebar-item .text{
@@ -454,130 +473,117 @@ All button in the group must be in the same size
 	color: #FFFFFF;
 }
 
+.sidebar .sub-items{
+	list-style-type: none;
+	max-height: 0;
+	transition: max-height 0.3s;
+	overflow: hidden;
+}
+
+.sidebar .sub-items .sidebar-item{
+	padding-left: 5.4rem;
+}
+
 /*
 |--------------------------------------------------------------------------
-| Dropdowns
+| Dropdown
 |--------------------------------------------------------------------------
 */
 
-/* 
-<div class="dropdown bottom|right|left|top">
-    <button type="button" class="dropdown-toggle">Dropdown</button>
-    <section class="dropdown-menu">
-        <a class="dropdown-item" href="#">Item 1</a>
-        <a class="dropdown-item" href="#">Item 2</a>
-        <a class="dropdown-item" href="#">Item 3</a>
-		<a class="dropdown-item" href="#">Item 4</a>
-		<hr> <!-- optional -->
-		<a class="dropdown-item" href="#">Item 5</a>
-		<a class="dropdown-item" href="#">Item 6</a>
-    </section>
-</div>
- */
-
 .dropdown{
-    position: relative;
-    display: inline-block;
-    overflow: visible;
+	display: inline-block;
 }
 
-.dropdown-menu{
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    min-width: 20rem;
+.dropdown .tooltip{
+    background: #FFFFFF;
+    color: #3F4254;
+    font-size: 1.38rem;
     border-radius: 0.55rem;
-    background-color: #FFFFFF;
-    box-shadow: 0px 0px 30px 0px rgba(82, 63, 105, 0.05);
-    opacity: 0;
-    visibility: hidden;
-    transition-property: opacity, transform;
-	transition-duration: 0.3s, 0.3s;
+    box-shadow: 0px 0px 30px 0px rgb(82 63 105 / 5%);
+    display: none;
+	opacity: 1;
 	z-index: 95;
+	transition: opacity 300ms;
 }
 
-.dropdown-menu > hr{
+.dropdown .tooltip[data-show]{
 	display: block;
-	width: 100%;
-	height: 0.1rem;
-	border: none;
-	background-color: #D9D9D9;
 }
 
-.dropdown.bottom .dropdown-menu{
-	top: 126%; left: 0;
-	transform: translateY(4%);
+.dropdown .tooltip.hidden{
+	opacity: 0;
 }
 
-.dropdown.bottom.pull-left .dropdown-menu{
-	left: 0;
+.dropdown .list{
+	list-style-type: none;
 }
 
-.dropdown.bottom.pull-right .dropdown-menu{
-	left: auto;
+.dropdown .list > li{
+	transition: background-color 200ms;
+}
+
+.dropdown .list > li:hover{
+	background-color: #F3F6F9;
+}
+
+.dropdown .list > li > *{
+	display: inline-block;
+	padding: 1.3rem 1.62rem;
+}
+
+.dropdown .dropdown-btn .btn-text{
+	position: relative;
+	padding-right: 1.28em;
+}
+
+.dropdown .dropdown-btn.icon-only .btn-text{
+	padding-right: 0;
+}
+
+.dropdown .dropdown-btn .btn-text::after{
+	content: '';
+	position: absolute;
+	top: 0.32em;
 	right: 0;
+	display: block;
+	width: 0.56em;
+	height: 0.56em;
+	border-bottom: 0.14em solid white;
+	border-right: 0.14em solid white;
+	transform: rotate(45deg);
 }
 
-.dropdown.right .dropdown-menu{
-	top: 0; left: 126%;
-	transform: translateX(4%);
+.dropdown .dropdown-btn.btn-primary .btn-text::after,
+.dropdown .dropdown-btn.btn.btn-light:hover .btn-text::after{
+	border-bottom: 0.14em solid white;
+	border-right: 0.14em solid white;
 }
 
-.dropdown.right.pull-top .dropdown-menu{
-	top: 0;
+.dropdown .dropdown-btn.btn-light.blue .btn-text::after{
+	border-bottom: 0.14em solid #3699FF;
+	border-right: 0.14em solid #3699FF;
 }
 
-.dropdown.right.pull-bottom .dropdown-menu{
-	top: auto;
-	bottom: 0;
+.dropdown .dropdown-btn.btn-light.green .btn-text::after{
+	border-bottom: 0.14em solid #1BC5BD;
+	border-right: 0.14em solid #1BC5BD;
 }
 
-.dropdown.left .dropdown-menu{
-	top: 0; right: 126%;
-	transform: translateX(-4%);
+.dropdown .dropdown-btn.btn-light.red .btn-text::after{
+	border-bottom: 0.14em solid #F64E60;
+	border-right: 0.14em solid #F64E60;
 }
 
-.dropdown.left.pull-top .dropdown-menu{
-	top: 0;
+.dropdown .dropdown-btn.btn-light.orange .btn-text::after{
+	border-bottom: 0.14em solid #FFA800;
+	border-right: 0.14em solid #FFA800;
 }
 
-.dropdown.left.pull-bottom .dropdown-menu{
-	top: auto;
-	bottom: 0;
+.dropdown .dropdown-btn.btn-light.purple .btn-text::after{
+	border-bottom: 0.14em solid #8950FC;
+	border-right: 0.14em solid #8950FC;
 }
 
-.dropdown.top .dropdown-menu{
-	bottom: 126%; left: 0;
-	transform: translateY(-4%);
-}
-
-.dropdown.top.pull-left .dropdown-menu{
-	left: 0;
-}
-
-.dropdown.top.pull-right .dropdown-menu{
-	left: auto;
-	right: 0;
-}
-
-.dropdown-item{
-    display: inline-block;
-    padding: 0.8rem 1rem;
-	cursor: pointer;
-	text-align: left;
-    font-size: 1.5rem;
-    transition: background-color 0.2s ease;
-}
-
-.dropdown-item:hover{
-    background-color: #f7f8fa;
-}
-
-.dropdown-menu.shown{
-    visibility: visible;
-    opacity: 1;
-    transform: translate(0);
-}
 /*
 |--------------------------------------------------------------------------
 | Table
@@ -627,8 +633,16 @@ All button in the group must be in the same size
 .table-container th, .table-container td{
 	font-size: inherit;
 	text-align: left;
-	padding: 0.8em;
+	padding: 1.16em;
 	white-space: nowrap; 
+}
+
+.table-container th:first-child, .table-container td:first-child{
+	padding-left: 0;
+}
+
+.table-container th:last-child, .table-container td:last-child{
+	padding-right: 0;
 }
 
 .table-container th{
@@ -881,6 +895,18 @@ All button in the group must be in the same size
   	cursor: pointer;
 }
 
+.multi-choice.sm{
+	font-size: 1.58rem;
+}
+
+.multi-choice.md{
+	font-size: 1.78rem;
+}
+
+.multi-choice.lg{
+	font-size: 2rem;
+}
+
 .multi-choice input{
   	position: absolute;
   	opacity: 0;
@@ -890,7 +916,7 @@ All button in the group must be in the same size
 }
 
 .multi-choice .choice-name{
-	font-size: 1.42rem;
+	font-size: 1.48rem;
 	padding-left: 0.4em;
 	order: 2;
 }
@@ -940,7 +966,7 @@ All button in the group must be in the same size
 	width: 0.67em; height: 0.33em;
   	border-left: 0.134em solid;
 	border-bottom: 0.134em solid;
-	transform: rotate(-45deg);
+	transform: rotate(-45deg) translate(0.06em, -0.04em);
 }
 
 .multi-choice.checkbox.basic .checkmark > span{
@@ -969,6 +995,34 @@ All button in the group must be in the same size
 
 .multi-choice input:checked ~ .checkmark > span{
 	opacity: 1;
+}
+
+.multi-choice.switch .checkmark{
+	justify-content: start;
+	width: 2.6em;
+	padding: 0.26em;
+	border-radius: 6em;
+	background-color: #EBEDF3;
+	transition: background-color 0.2s ease;	
+}
+
+.multi-choice.switch .checkmark > span{
+	opacity: 1;
+	border-radius: 50%;
+	width: 1em;
+	height: 1em;
+	background-color: #FFFFFF;
+	/* transform: translateX(100%); */
+	transform: translateX(0);
+	transition: transform 0.3s;
+}
+
+.multi-choice.switch input:checked ~ .checkmark{
+	background-color: #3699FF;
+}
+
+.multi-choice.switch input:checked ~ .checkmark > span{
+	transform: translateX(1.12em);
 }
 
 /*
@@ -1209,74 +1263,6 @@ All button in the group must be in the same size
 
 /*
 |--------------------------------------------------------------------------
-| Kanban Board
-|--------------------------------------------------------------------------
-*/
-
-.kanban-board .heading{
-	padding: 1.4rem 1.8rem;
-	border-radius: 0.55rem 0.55rem 0 0;
-	font-size: 1.56rem;
-	background-color: #F3F6F9;
-}
-
-.kanban-board .body{
-	padding: 1.4rem 1.8rem;
-	border-radius: 0 0 0.55rem 0.55rem;
-	background-color: #F3F6F9;
-}
-
-.kanban-board.primary .heading{
-	color: #FFFFFF;
-}
-
-.kanban-board.primary.blue .heading{
-	background-color: #3699ff;
-}
-
-.kanban-board.primary.green .heading{
-	background-color: #1BC5BD;
-}
-
-.kanban-board.primary.red .heading{
-	background-color: #F64E60;
-}
-
-.kanban-board.primary.orange .heading{
-	background-color: #FFA800;
-}
-
-.kanban-board.primary.purple .heading{
-	background-color: #8950FC;
-}
-
-.kanban-board.light.blue .heading{
-	color: #3699ff;
-	background-color: #E1F0FF;
-}
-
-.kanban-board.light.green .heading{
-	color: #1BC5BD;
-	background-color: #C9F7F5;
-}
-
-.kanban-board.light.red .heading{
-	color: #F64E60;
-	background-color: #FFE2E5;
-}
-
-.kanban-board.light.orange .heading{
-	color: #FFA800;
-	background-color: #FFF4DE;
-}
-
-.kanban-board.light.purple .heading{
-	color: #8950FC;
-	background-color: rgba(137,80,252,0.14);
-}
-
-/*
-|--------------------------------------------------------------------------
 | SVG Icons
 |--------------------------------------------------------------------------
 */
@@ -1297,7 +1283,7 @@ All button in the group must be in the same size
 }
 
 .svg-icon .path.fade{
-	opacity: 0.3
+	opacity: 0.4
 }
 
 .svg-icon.blue .path{
@@ -1569,6 +1555,7 @@ All button in the group must be in the same size
 
 .modal-header .cls-modal{
   	font-size: 2.6rem;
+	padding-left: 1.2rem;
 }
 
 .modal-header .heading{
@@ -1672,47 +1659,6 @@ All button in the group must be in the same size
 
 /*
 |--------------------------------------------------------------------------
-| Media Viewer
-|--------------------------------------------------------------------------
-*/
-
-.media-viewer{
-	position: fixed;
-	top: 0; left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,0.3);
-	opacity: 0;
-	visibility: hidden;
-	transition: opacity 0.3s ease;
-	z-index: 98;
-}
-
-.media-viewer.shown{
-	opacity: 1;
-	visibility: visible;
-}
-
-.media-viewer > button{
-	position: absolute;
-	top: 2rem; right: 2rem;
-	font-size: 3.6rem;
-}
-
-.media-viewer > .media{
-	max-width: 40vw;
-	max-height: 90vh;
-	overflow-y: auto;
-}
-
-.media-viewer > .media > *{
-	display: block;
-	width: 100%;
-	object-fit: cover;
-}
-
-/*
-|--------------------------------------------------------------------------
 | Section Header
 |--------------------------------------------------------------------------
 */
@@ -1743,124 +1689,6 @@ All button in the group must be in the same size
 
 .section-header .header-actions > *:first-child{
 	margin-left: 0;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Loading Screen
-|--------------------------------------------------------------------------
-*/
-
-.loading-screen{
-	position: fixed; top: 0; left: 0;
-	width: 100vw; height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	background-color: rgba(0,0,0,0.3);
-	opacity: 0;
-	visibility: hidden;
-	z-index: 99;
-	transition: opacity 0.3s;
-}
-
-.loading-screen.dark-overlay{
-	background-color: rgba(0,0,0,0.3);
-}
-
-.loading-screen.transparent-overlay{
-	background-color: transparent;
-}
-
-.loading-screen.visible{
-	visibility: visible;
-}
-
-.loading-screen.shown{
-	opacity: 1;
-}
-
-.loading-screen .loading-text{
-	display: inline-block;
-	margin-bottom: 1rem;
-	font-size: 1.8rem;
-	color: #FFFFFF;
-}
-
-/* Ripple loading screen */
-
-/* 
-<div class="loading-screen" aria-hidden="true">
-	<span class="loading-text">Please wait...</span> <!-- Optional -->
-	<div class="lds-ripple">
-		<div></div>
-		<div></div>
-	</div>	
-</div>
- */
-
-.lds-ripple{
-	display: inline-block;
-	position: relative;
-	width: 8rem;
-	height: 8rem;
-	transform: scale(0.4);
-	transition: transform 0.3s;
-}
-
-.loading-screen.shown .lds-ripple{
-	transform: scale(0.8);
-}
-
-.lds-ripple div{
-	position: absolute;
-	border: 0.4rem solid #fff;
-	border-radius: 50%;
-	animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-}
-
-.lds-ripple.white div{
-	border-color: #FFFFFF;
-}
-
-.lds-ripple.blue div{
-	border-color: #3699FF;
-}
-
-.lds-ripple div:nth-child(2){
-	animation-delay: -0.5s;
-}
-
-@keyframes lds-ripple{
-	0%{
-		top: 3.6rem;
-	  	left: 3.6rem;
-	  	width: 0;
-	  	height: 0;
-	  	opacity: 1;
-	}
-	100%{
-		top: 0;
-	  	left: 0;
-	  	width: 7.2rem;
-	  	height: 7.2rem;
-	  	opacity: 0;
-	}
-}
-
-.footer{
-	border-top: 1px dashed #DBDBDB;
-	padding: 1.6rem 3.2rem;
-	width: 100%;
-	font-size: 1.44rem;
-	line-height: 2.4em;
-	color: #DBDBDB;
-}
-
-.footer a{
-	text-decoration: underline;
-	color: #6993FF;
 }
 
 /*
@@ -2128,3 +1956,16 @@ All button in the group must be in the same size
 .accordion.solid.expanded .body-wrapper{
 	border: 0.1rem solid #D9D9D9;
 } */
+
+/*
+|--------------------------------------------------------------------------
+| Separator
+|--------------------------------------------------------------------------
+*/
+
+.separator{
+	display: block;
+	background-color: #D9D9D9;
+	height: 0.1rem;	
+	border: none
+}

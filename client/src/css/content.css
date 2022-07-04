@@ -18,8 +18,8 @@ body{
   	background-color: #EEF0F8;
 }
 
-#app.authenticated{
-	padding: 9.6rem 3rem 14rem 10rem;
+#app{
+	padding: 9.6rem 3.6rem 14rem 8.8rem;
 }
 
 code {

@@ -38,7 +38,7 @@ clipboard_check,share
 --------------- GENERAL ---------------
 
 other, search, trash, update, visible, hidden,
-settings, gen017, half_star, star
+settings, gen017, half_star, star, gen041, gen035, gen034
 
 --------------- FILES ---------------
 
@@ -63,10 +63,10 @@ hanger
 */
 
 export default function SVGIcons(props){
-	const color = (props.color ? props.color : '');
+	const classes = `svg-icon ${props.color}` + (props.classes ? ` ${props.classes}` : '')
 	const icons = {
 		book: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -77,7 +77,7 @@ export default function SVGIcons(props){
 			</span>				
 		),
 		cart: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -88,7 +88,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		dollar: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -99,9 +99,8 @@ export default function SVGIcons(props){
 				</svg>
 			</span>		
 		),
-		// Communication
 		group: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <polygon points="0 0 24 0 24 24 0 24"/>
@@ -112,7 +111,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		user: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <polygon points="0 0 24 0 24 24 0 24"/>
@@ -123,7 +122,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		add_user: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <polygon points="0 0 24 0 24 24 0 24"/>
@@ -134,7 +133,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		remove_user: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <polygon points="0 0 24 0 24 24 0 24"/>
@@ -145,7 +144,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		call: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -155,7 +154,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		other: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -167,7 +166,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		sign_in: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -179,7 +178,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		sign_out: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -191,7 +190,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		blocks: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -202,7 +201,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		layers: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <polygon points="0 0 24 0 24 24 0 24"/>
@@ -213,7 +212,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		search: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -224,7 +223,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		image: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none">
 			        <polygon points="0 0 24 0 24 24 0 24"/>
@@ -234,7 +233,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		cupboard: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 			    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			        <g stroke="none" strokeWidth="1" fill="none">
 			            <rect x="0" y="0" width="24" height="24"/>
@@ -245,7 +244,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		door_open: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -256,7 +255,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		commode_1: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -267,7 +266,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		trash: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" {...props.attr}>
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -278,7 +277,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		update: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
     				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
     				    <rect x="0" y="0" width="24" height="24"/>
@@ -288,7 +287,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		visible: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -299,7 +298,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		hidden: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -311,7 +310,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		settings: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -322,7 +321,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		import: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -334,7 +333,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		write: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -345,7 +344,7 @@ export default function SVGIcons(props){
 			</span>		
 		),
 		briefcase: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 				        <rect x="0" y="0" width="24" height="24"/>
@@ -356,7 +355,7 @@ export default function SVGIcons(props){
 			</span>							
 		),
 		check: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <polygon points="0 0 24 0 24 24 0 24"/>
@@ -366,7 +365,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		close: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
@@ -378,7 +377,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		stop: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -388,7 +387,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		library: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -399,7 +398,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		sale_1: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -410,7 +409,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		sale_2: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -423,7 +422,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		mail: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -433,7 +432,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		clipboard_list: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -450,7 +449,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		clipboard_check: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -463,7 +462,7 @@ export default function SVGIcons(props){
 
 		),
 		clock: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 			    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 			        <rect x="0" y="0" width="24" height="24"/>
@@ -475,7 +474,7 @@ export default function SVGIcons(props){
 
 		),
 		export: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -487,7 +486,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		angle_down: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<polygon points="0 0 24 0 24 24 0 24"/>
@@ -497,7 +496,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		angle_left: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<polygon points="0 0 24 0 24 24 0 24"/>
@@ -507,7 +506,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		arrow_to_bottom: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<polygon points="0 0 24 0 24 24 0 24"/>
@@ -519,7 +518,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		angle_up: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<polygon points="0 0 24 0 24 24 0 24"/>
@@ -529,7 +528,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		bullet_list: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -540,7 +539,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		calendar: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" {...props.attr}>
 					<path className="stroke" d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 					<path className="stroke" d="M16 2V6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -550,7 +549,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		box_2: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -561,7 +560,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		hanger: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -571,7 +570,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		home: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -581,7 +580,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		home_2: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 					<path className="stroke" d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="#2C3038" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 					<path className="stroke" d="M9 22V12H15V22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -589,7 +588,7 @@ export default function SVGIcons(props){
 			</span>	
 		),
 		price_2: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -603,7 +602,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		sort_1: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -614,7 +613,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		sort_2: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -624,7 +623,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		sort_3: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -634,7 +633,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		share: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -645,7 +644,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		angle_double_up: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<polygon points="0 0 24 0 24 24 0 24"/>
@@ -656,7 +655,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		angle_double_right: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<polygon points="0 0 24 0 24 24 0 24"/>
@@ -667,7 +666,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		done_circle: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -678,7 +677,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		article: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -689,7 +688,7 @@ export default function SVGIcons(props){
 			</span>			
 		),	
 		warning_1: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -701,7 +700,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		warning_2: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -713,7 +712,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		error_circle: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -724,7 +723,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		ecm004: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 					<path className="path fade" d="M18 10V20C18 20.6 18.4 21 19 21C19.6 21 20 20.6 20 20V10H18Z"/>
 					<path className="path fade" d="M11 10V17H6V10H4V20C4 20.6 4.4 21 5 21H12C12.6 21 13 20.6 13 20V10H11Z"/>
@@ -738,7 +737,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		ecm009: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 					<path className="path fade" d="M3 13H10C10.6 13 11 13.4 11 14V21C11 21.6 10.6 22 10 22H3C2.4 22 2 21.6 2 21V14C2 13.4 2.4 13 3 13Z"/>
 					<path className="path" d="M7 16H6C5.4 16 5 15.6 5 15V13H8V15C8 15.6 7.6 16 7 16Z"/>
@@ -752,7 +751,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		gen017: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 					<path className='path fade' d="M5 8.04999L11.8 11.95V19.85L5 15.85V8.04999Z"/>
 					<path className='path' d="M20.1 6.65L12.3 2.15C12 1.95 11.6 1.95 11.3 2.15L3.5 6.65C3.2 6.85 3 7.15 3 7.45V16.45C3 16.75 3.2 17.15 3.5 17.25L11.3 21.75C11.5 21.85 11.6 21.85 11.8 21.85C12 21.85 12.1 21.85 12.3 21.75L20.1 17.25C20.4 17.05 20.6 16.75 20.6 16.45V7.45C20.6 7.15 20.4 6.75 20.1 6.65ZM5 15.85V7.95L11.8 4.05L18.6 7.95L11.8 11.95V19.85L5 15.85Z"/>
@@ -760,7 +759,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		half_star: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 					<g stroke="none" strokeWidth="1" fillRule="evenodd" fill='none'>
 						<polygon points="0 0 24 0 24 24 0 24"/>
@@ -771,7 +770,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		star: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<polygon points="0 0 24 0 24 24 0 24"/>
@@ -781,7 +780,7 @@ export default function SVGIcons(props){
 			</span>
 		),
 		couch: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<path className="path fade" d="M6,20 L4,20 C4,17.2385763 6.23857625,16 9,16 L15,16 C17.7614237,16 20,17.2385763 20,20 L18,20 C18,18.3431458 16.6568542,18 15,18 L9,18 C7.34314575,18 6,18.3431458 6,20 Z" fillRule="nonzero"/>
@@ -792,7 +791,7 @@ export default function SVGIcons(props){
 			</span>			
 		),
 		bed: (
-			<span className={"svg-icon "+color} aria-hidden="true">
+			<span className={classes} aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" {...props.attr}>
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
 					<rect x="0" y="0" width="24" height="24"/>
@@ -803,7 +802,42 @@ export default function SVGIcons(props){
 				</svg>
 			</span>			
 		),
+		gen041: (
+			<span className={classes} aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg"  {...props.attr} viewBox="0 0 24 24" fill="none">
+					<rect className="path fade" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"/>
+					<rect className="path" x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="currentColor"/>
+					<rect className="path" x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor"/>
+				</svg>
+			</span>
+		),
+		gen035: (
+			<span className={classes} aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" {...props.attr} viewBox="0 0 24 24" fill="none">
+					<rect className="path fade" opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+					<rect className="path" x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="currentColor"/>
+					<rect className="path" x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor"/>
+				</svg>
+			</span>
+		),
+		gen034: (
+			<span className={classes} aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" {...props.attr} viewBox="0 0 24 24" fill="none">
+					<rect className="path fade" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+					<rect className="path" x="7" y="15.3137" width="12" height="2" rx="1" transform="rotate(-45 7 15.3137)" fill="currentColor"/>
+					<rect className="path" x="8.41422" y="7" width="12" height="2" rx="1" transform="rotate(45 8.41422 7)" fill="currentColor"/>
+				</svg>
+			</span>
+		),
 	};
-
+	if(props.getNames){
+		return <span>{Object.keys(icons).toString()}</span>
+	}
 	return icons[props.name];
+}
+
+SVGIcons.defaultProps = {
+	classes: '',
+	attr: {},
+	getNames: false,
 }
