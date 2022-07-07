@@ -9,7 +9,7 @@ import Table from '../../Table'
 import SVGIcons from '../../SVGIcons'
 import {format} from 'date-fns'
 
-function CreateInventoryTransferPage({user, loc}){
+function CreateInventoryTransferPage({user, setPageHeading, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     const [stores, setStores] = useState(null)
     const [transferDate, setTransferDate] = useState(format(new Date(), 'yyyy-MM-dd'))
@@ -145,7 +145,11 @@ function CreateInventoryTransferPage({user, loc}){
     useEffect(() => {
         dispatchAddedInvs({type: 'reset'})
         setSearchedStoreInvs([])
-    }, [originStoreId])           
+    }, [originStoreId])          
+    
+    useEffect(() => {
+        setPageHeading({title: 'Inventory Tranfers', icon: 'share'})
+    }, [])
 
     // When the invTransfer resource is not set yet
     // Return loading UI

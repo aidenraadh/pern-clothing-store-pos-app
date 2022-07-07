@@ -10,7 +10,7 @@ import Table from '../Table'
 import {Grid} from '../Layouts'
 import SVGIcons from '../SVGIcons'
 
-function InventoryPage({user, loc}){
+function InventoryPage({user, setPageHeading, loc}){
     const inventory = useSelector(state => state.inventory)
     const dispatch = useDispatch()    
     const [disableBtn , setDisableBtn] = useState(false)
@@ -66,7 +66,7 @@ function InventoryPage({user, loc}){
         setInvIndex('')
         setInvId('')
         setInvName('')
-        dispatchInvSizes({payload: []})
+        dispatchInvSizes({type: 'empty'})
         setModalHeading('Create New Inventory')      
         setModalShown(true)
     }, [])
@@ -96,7 +96,7 @@ function InventoryPage({user, loc}){
         setInvIndex(index)
         setInvId(id)
         setInvName(name)
-        dispatchInvSizes({payload: {sizes: sizes}})
+        dispatchInvSizes({type: 'fill', payload: sizes})
         setModalHeading(loc.editInv)
         setModalShown(true)
     }, [loc.editInv])
@@ -164,9 +164,8 @@ function InventoryPage({user, loc}){
     }, [dispatch])      
 
     useEffect(() => {
-        // console.log(invSizes)
-    }, [invSizes])
-   
+        setPageHeading({title: 'Inventories', icon: 'hanger'})
+    }, [])
 
     // When the inventory resource is not set yet
     // Return loading UI
@@ -182,37 +181,35 @@ function InventoryPage({user, loc}){
             <Button text={`+ ${loc['new']}`} size={'sm'} attr={{onClick: createInventory}}/>
         </section>
         <PlainCard
-            body={
-                <Grid numOfColumns={1} items={[
-                    <div className='flex-row items-center'>
-                        <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
-                            iconName={'search'}
-                            formAttr={{value: inventory.filters.name, placeholder: loc.searchInventory, 
-                                onChange: (e) => {dispatch(updateFilters([
-                                    {key: 'name', value: e.target.value}
-                                ]))},
-                                onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInventories(reset)})}   
-                            }} 
-                        />   
-                        <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
-                                style: {flexShrink: '0'},
-                                onClick: () => {getInventories(reset)}
-                            }}
-                        />                                       
-                    </div>,
-                    <InventoryList 
-                        loc={loc}
-                        inventories={inventory.inventories} 
-                        editInventory={editInventory}
-                        confirmDeleteInventory={confirmDeleteInventory}
-                    />,
-                    <LoadMoreBtn 
-                        disableBtn={disableBtn}
-                        canLoadMore={inventory.canLoadMore}
-                        action={() => {getInventories(append)}}
-                    />                                  
-                ]}/>
-            }
+            body={<>
+                <div className='flex-row items-center'>
+                    <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
+                        iconName={'search'}
+                        formAttr={{value: inventory.filters.name, placeholder: loc.searchInventory, 
+                            onChange: (e) => {dispatch(updateFilters([
+                                {key: 'name', value: e.target.value}
+                            ]))},
+                            onKeyUp: (e) => {keyHandler(e, 'Enter', () => {getInventories(reset)})}   
+                        }} 
+                    />   
+                    <Button size={'sm'} text={loc.search} attr={{disabled: disableBtn,
+                            style: {flexShrink: '0'},
+                            onClick: () => {getInventories(reset)}
+                        }}
+                    />                                       
+                </div>
+                <InventoryList 
+                    loc={loc}
+                    inventories={inventory.inventories} 
+                    editInventory={editInventory}
+                    confirmDeleteInventory={confirmDeleteInventory}
+                />
+                <LoadMoreBtn 
+                    disableBtn={disableBtn}
+                    canLoadMore={inventory.canLoadMore}
+                    action={() => {getInventories(append)}}
+                /> 
+            </>}
         />
         <Modal
             heading={modalHeading}
@@ -360,6 +357,12 @@ const sizesReducer = (state, action) => {
     const type = action.type
     const payload = {...action.payload}
     switch(type){
+        case 'fill':
+            const sizes = []
+            for (const key in payload) {
+                sizes.push(payload[key])
+            }
+            return sizes;         
         case 'add': return [
                 ...state, {name: '', production_price: '', selling_price: ''}
             ]; 
@@ -377,7 +380,8 @@ const sizesReducer = (state, action) => {
                 sizes[index] = {...sizes[index], [key]: value}
                 return sizes
             })()
-        default: return payload.sizes;
+        case 'empty': return []
+        default: throw new Error('Invalid action type');
     }
 }
 

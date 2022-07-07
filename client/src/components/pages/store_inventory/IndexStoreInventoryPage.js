@@ -10,7 +10,7 @@ import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 import Table from '../../Table'
 
-function IndexStoreInventoryPage({user, loc}){
+function IndexStoreInventoryPage({user, setPageHeading, loc}){
     const storeInv = useSelector(state => state.storeInv)
     const dispatch = useDispatch()        
     const [disableBtn , setDisableBtn] = useState(false)
@@ -128,7 +128,11 @@ function IndexStoreInventoryPage({user, loc}){
             // so when user enter this page again, the 'filters' is the same as 'lastFilters'
             dispatch(syncFilters())
         }
-    }, [dispatch])      
+    }, [dispatch])  
+    
+    useEffect(() => {
+        setPageHeading({title: 'Store Inventories', icon: 'gen017'})
+    }, [])
 
     // When the store resource is not set yet
     // Return loading UI

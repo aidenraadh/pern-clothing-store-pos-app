@@ -16,7 +16,7 @@ import {Modal, ConfirmPopup} from '../Windows'
 import Table from '../Table'
 import {TabbedCard} from '../Cards'
 
-function UserPage({user, loc}){
+function UserPage({user, setPageHeading, loc}){
     const [disableBtn , setDisableBtn] = useState(false)
     const admin = useSelector(state => state.admin)
     const employee = useSelector(state => state.employee)
@@ -356,7 +356,11 @@ function UserPage({user, loc}){
             dispatch(syncAdminFilters())
             dispatch(syncEmployeeFilters())
         }
-    }, [dispatch])      
+    }, [dispatch])     
+    
+    useEffect(() => {
+        setPageHeading({title: 'Users', icon: 'group'})
+    }, [])
 
     if(admin.isLoaded === false || employee.isLoaded === false || stores === null){
         return 'Loading...'
@@ -469,24 +473,22 @@ const UsersTable = ({userState, disableBtn, loc, getUsers, toggleCrtUser, toggle
             break; 
         default: throw new Error();           
     }
-    return (
-        <Grid numOfColumns={1} items={[
-            <section className='flex-row content-end'>
-                <Button size={'sm'} text={addBtnText} attr={{
-                    onClick: () => {toggleCrtUser(roleId)}
-                }}/>
-            </section>,
-            <Table
-                headings={tableHeadings}
-                body={tableBody}
-            />,
-            <LoadMoreBtn
-                disableBtn={disableBtn}
-                canLoadMore={canLoadMore}
-                action={getUsers}
-            />               
-        ]}/>
-    )
+    return (<>
+        <section className='flex-row content-end'>
+            <Button size={'sm'} text={addBtnText} attr={{
+                onClick: () => {toggleCrtUser(roleId)}
+            }}/>
+        </section>
+        <Table
+            headings={tableHeadings}
+            body={tableBody}
+        />
+        <LoadMoreBtn
+            disableBtn={disableBtn}
+            canLoadMore={canLoadMore}
+            action={getUsers}
+        />      
+    </>)
 }
 
 const LoadMoreBtn = ({canLoadMore, action, disableBtn}) => {

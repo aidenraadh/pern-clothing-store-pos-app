@@ -220,6 +220,7 @@ function DashboardPage(props){
     }, [soldInvsTimeRange, ranges])       
 
     useEffect(() => {
+        props.setPageHeading({title: 'Dashboard', icon: 'layers'})
         return () => {
             // Clear all timeout
             for (const key in timeoutIds) {
@@ -227,10 +228,6 @@ function DashboardPage(props){
             }                                              
         };
     }, [])
-
-    if(props.user.role.name === 'employee'){
-        return <Navigate to={'/store-inventories'}/>
-    }
     return (<>
         <Grid numOfColumns={1} items={[
             <PlainCard

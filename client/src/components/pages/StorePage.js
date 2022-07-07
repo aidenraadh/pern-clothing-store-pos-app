@@ -9,7 +9,7 @@ import {Modal, ConfirmPopup} from '../Windows'
 import {Grid} from '../Layouts'
 import Table from '../Table'
 
-function StorePage({user, loc}){
+function StorePage({user, setPageHeading, loc}){
     const store = useSelector(state => state.store)
     const dispatch = useDispatch()        
     const [disableBtn , setDisableBtn] = useState(false)
@@ -159,6 +159,10 @@ function StorePage({user, loc}){
         }
     }, [dispatch])     
 
+    useEffect(() => {
+        setPageHeading({title: 'Stores', icon: 'ecm004'})
+    }, [])
+
     // When the store resource is not set yet
     // Return loading UI
     if(store.isLoaded === false){
@@ -174,7 +178,7 @@ function StorePage({user, loc}){
         </section>
         <PlainCard 
             body={<>
-                <div className='flex-row items-center' style={{marginBottom: '2rem'}}>
+                <div className='flex-row items-center'>
                     <TextInput size={'sm'} containerAttr={{style: {width: '100%', marginRight: '1.2rem'}}} 
                         iconName={'search'}
                         formAttr={{value: store.filters.name, placeholder: loc.searchStore, 

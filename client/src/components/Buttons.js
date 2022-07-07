@@ -25,7 +25,7 @@ Button.defaultProps = {
 	tag: 'button', text: 'Button',
 	size: 'md', // 'lg'|'md'|'sm'
 	type: 'primary', // 'prmiary'|'light'
-	color: 'blue', // 'red'|'blue'|'orange'|'green'|'purple'
+	color: 'blue', // 'red'|'blue'|'orange'|'green'|'purple'|'black'
 	iconName: '', // String
 	iconOnly: false, // Boolean
 	attr: {},

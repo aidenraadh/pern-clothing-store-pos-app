@@ -6,6 +6,7 @@ import {UserThumbnail} from './Misc.js';
 function Navigations(props){
     const location = useLocation()
 	const toggleSidebar = props.toggleSidebar
+	const topbarRef = useRef()
 	const subItemRefs = useRef({}) 
 	// Contains key and links all side bar item that has sub items
 	const subItemData = useRef((() => {
@@ -14,7 +15,7 @@ function Navigations(props){
 			if(item.subMenu !== undefined){
 				data.push({
 					key: itemKey.toString(),
-					links: item.subMenu.map(subItem => subItem.link)
+					links: item.subMenu.map(subItem => subItem.path)
 				})
 			}
 		})
@@ -92,85 +93,107 @@ function Navigations(props){
 		}
 	}, [props.sidebarShown, activeSubItemKey])
 
-	return (
-		<nav>
-			{/*----------- Topbar -----------*/}
-			<section className="topbar">
-				<div className="left-widgets">
-					<button type="button" className="topbar-item show-sidebar-btn"
-					onClick={() => {props.toggleSidebar(state => !state)}}>
-						<SVGIcons
-							name={'article'} color={'blue'}
-							attr={{style: {width: '3rem'}}}
-						/>
-					</button>
-					<ul>
-						{props.leftWidgets.map((item, key) => (
-							<li key={key}>{item}</li>
-						))}
-					</ul>				
-				</div>
-				<ul className="right-widgets">
-					{props.rightWidgets.map((item, key) => (
-						<li key={key} className='topbar-item'>{item}</li>
-					))}
-				</ul>
-			</section>
+	useEffect(() => {
+		window.onscroll = e => {
+			if(document.body.scrollTop > 0 || document.documentElement.scrollTop > 0){
+				if(!topbarRef.current.classList.contains('shadowed')){
+					topbarRef.current.classList.add('shadowed')
+				}				
+			}
+			else{
+				topbarRef.current.classList.remove('shadowed')
+			}
+		}
+	}, [])
 
-			{/*----------- Sidebar -----------*/}
-			<section className={'sidebar'+(props.sidebarShown ? ' shown' : '')}>
-				<button type="button" className="sidebar-item toggle-sidebar-btn"
+	return (<>
+		{/*----------- Toolbar -----------*/}
+		<header className='toolbar'>
+			<h1 className='page-heading'>
+				{
+					props.pageHeading.icon === '' ? '' :
+					<SVGIcons name={props.pageHeading.icon} color={'blue'}/>
+				}
+				<span className='title text-semi-bold'>{props.pageHeading.title}</span>
+			</h1>
+			<section></section>
+		</header>	
+		{/*----------- Topbar -----------*/}
+		<section className="topbar" ref={topbarRef}>
+			<div className="left-widgets">
+				<button type="button" className="topbar-item show-sidebar-btn"
 				onClick={() => {props.toggleSidebar(state => !state)}}>
 					<SVGIcons
-						name={'angle_double_right'} color={'blue'}
+						name={'article'} color={'blue'}
 						attr={{style: {width: '3rem'}}}
 					/>
-				</button>								
-				<ul className="sidebar-items-container">
-				{props.sidebarItems.map((item, itemKey) => {
-					if(item.subMenu !== undefined){
-						return (
-							<li key={itemKey}>
-								<button className={`sidebar-item${activeSubItemKey === itemKey.toString() ? ' active' : ''}`}
-								onClick={() => {toggleSubItemHeight(`${itemKey}`)}}
-								type='button'>
-									<SVGIcons classes={'menu-icon'} name={item.icon} color={''} />
-									<span className="text">{item.text}</span> 
-									<SVGIcons classes={'expand-icon'} name='angle_down' attr={{style: {
-										transform: `rotate(${subItemsHeights[`${itemKey}`] ? '0deg' : '-90deg'})`
-									}}}/>
-								</button>			
-								<ul className='sub-items' ref={el => (subItemRefs.current[`${itemKey}`] = el)} 
-								style={{maxHeight: subItemsHeights[`${itemKey}`]}}>
-									{item.subMenu.map((subItem, subItemKey) => (
-										<li key={subItemKey}>
-											<NavLink className={({isActive}) => (`sidebar-item`+(isActive ? ' active': ''))} 
-											to={subItem.link} exact="true"> 
-												<span className="text">{subItem.text}</span> 
-											</NavLink> 																		
-										</li>										
-									))}
-								</ul>											
-							</li>							
-						)
-					}
+				</button>
+				<ul>
+					{props.leftWidgets.map((item, key) => (
+						<li key={key}>{item}</li>
+					))}
+				</ul>				
+			</div>
+			<ul className="right-widgets">
+				{props.rightWidgets.map((item, key) => (
+					<li key={key} className='topbar-item'>{item}</li>
+				))}
+			</ul>
+		</section>
+		{/*----------- Sidebar -----------*/}
+		<aside className={'sidebar'+(props.sidebarShown ? ' shown' : '')}>
+			<button type="button" className="sidebar-item toggle-sidebar-btn"
+			onClick={() => {props.toggleSidebar(state => !state)}}>
+				<SVGIcons
+					name={'angle_double_right'} color={'blue'}
+					attr={{style: {width: '3rem'}}}
+				/>
+			</button>								
+			<ul className="sidebar-items-container">
+			{props.sidebarItems.map((item, itemKey) => {
+				if(item.subMenu !== undefined){
 					return (
 						<li key={itemKey}>
-							<NavLink to={item.link} exact="true"
-							className={({isActive}) => (`sidebar-item`+(isActive ? ' active': ''))}> 
+							<button className={`sidebar-item${activeSubItemKey === itemKey.toString() ? ' active' : ''}`}
+							onClick={() => {toggleSubItemHeight(`${itemKey}`)}}
+							type='button'>
 								<SVGIcons classes={'menu-icon'} name={item.icon} color={''} />
 								<span className="text">{item.text}</span> 
-							</NavLink> 						
+								<SVGIcons classes={'expand-icon'} name='angle_down' attr={{style: {
+									transform: `rotate(${subItemsHeights[`${itemKey}`] ? '0deg' : '-90deg'})`
+								}}}/>
+							</button>			
+							<ul className='sub-menu' ref={el => (subItemRefs.current[`${itemKey}`] = el)} 
+							style={{maxHeight: subItemsHeights[`${itemKey}`]}}>
+								{item.subMenu.map((subItem, subItemKey) => (
+									<li key={subItemKey}>
+										<NavLink className={({isActive}) => (`sidebar-item`+(isActive ? ' active': ''))} 
+										to={subItem.path} exact="true"> 
+											<span className="text">{subItem.text}</span> 
+										</NavLink> 																		
+									</li>										
+								))}
+							</ul>											
 						</li>							
-					)					
-				})}	
-				</ul>		
-			</section>
-		</nav>	
-	)	
+					)
+				}
+				return (
+					<li key={itemKey}>
+						<NavLink to={item.path} exact="true"
+						className={({isActive}) => (`sidebar-item`+(isActive ? ' active': ''))}> 
+							<SVGIcons classes={'menu-icon'} name={item.icon} color={''} />
+							<span className="text">{item.text}</span> 
+						</NavLink> 						
+					</li>							
+				)					
+			})}	
+			</ul>		
+		</aside>
+	</>)	
 }
 
 Navigations.defaultProps = {
+	pageHeading: {title: '', icon: ''},
 	leftWidgets: [], // Array of string or JSX
 	rightWidgets: [
 		<UserThumbnail 

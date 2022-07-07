@@ -1,4 +1,4 @@
-import {useState, useReducer, useCallback, useMemo} from 'react'
+import {useState, useReducer, useCallback, useMemo, useEffect} from 'react'
 import {format} from 'date-fns'
 import TransactionReceipt from './TransactionReceipt'
 import {api, errorHandler, formatNum, keyHandler} from '../../Utils.js'
@@ -10,7 +10,7 @@ import {Grid} from '../../Layouts'
 import {Modal, ConfirmPopup} from '../../Windows'
 import SVGIcons from '../../SVGIcons'
 
-function CreateStoreTransactionPage({loc}){
+function CreateStoreTransactionPage({loc, setPageHeading}){
     const [disableBtn , setDisableBtn] = useState(false)
     const [transactionDate, setTransactionDate] = useState(format(new Date(), 'yyyy-MM-dd'))
     const [addedInvs, dispatchAddedInvs] = useReducer(addedInvsReducer, [])
@@ -131,6 +131,10 @@ function CreateStoreTransactionPage({loc}){
             />  
         )
     }, [addedInvs, dispatchAddedInvs, loc.amount, loc.size, loc.inventory, loc.price])    
+
+    useEffect(() => {
+        setPageHeading({title: 'Store Transactions', icon: 'cart'})
+    }, [])
 
     return (<>
         <SimpleCard

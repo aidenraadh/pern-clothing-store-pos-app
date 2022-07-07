@@ -8,7 +8,7 @@ import {Grid} from '../../Layouts'
 import Table from '../../Table'
 import SVGIcons from '../../SVGIcons.js'
 
-function CreateStoreInventoryPage({loc}){
+function CreateStoreInventoryPage({loc, setPageHeading}){
     const [disableBtn , setDisableBtn] = useState(false)
     const [stores, setStores] = useState(null)
     const [storeId, setStoreId] = useState('')
@@ -152,6 +152,10 @@ function CreateStoreInventoryPage({loc}){
         setSearchedInvs([])
         dispatchAddedInvs({type: 'reset'})
     }, [storeId])
+
+    useEffect(() => {
+        setPageHeading({title: 'Store Inventories', icon: 'gen017'})
+    }, [])
 
 
     // When the stores is not set yet return loading UI

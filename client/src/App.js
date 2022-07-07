@@ -38,6 +38,7 @@ import {
 
 function App(){
     const [sidebarShown, setSidebarShown] = useState(false)
+    const [pageHeading, setPageHeading] = useState({title: '', icon: ''})
     const [totalInvs, setTotalInvs] = useState(undefined) 
     const [totalStoredInvs, setTotalStoredInvs] = useState(undefined)
     const [totalProdPrices, setTotalProdPrices] = useState(undefined)
@@ -64,30 +65,29 @@ function App(){
         return languages[user.language_id].name
     }, [user])
 
-
     const sidebarItems = {  
         dashboard: {
-            icon: 'layers', text: 'Dashboard', link: ''
+            icon: 'layers', text: 'Dashboard', path: ''
         },                
         inventory: {
-            icon: 'hanger', text: NavigationsLocalization[languageName].inventories, link: 'inventories'
+            icon: 'hanger', text: NavigationsLocalization[languageName].inventories, path: 'inventories'
         },
         store: {
-            icon: 'ecm004', text: NavigationsLocalization[languageName].stores, link: 'stores'
+            icon: 'ecm004', text: NavigationsLocalization[languageName].stores, path: 'stores'
         },
         store_inventory: {
-            icon: 'gen017', text: NavigationsLocalization[languageName].storeInvs, link: 'store-inventories'
+            icon: 'gen017', text: NavigationsLocalization[languageName].storeInvs, path: 'store-inventories'
         },
         store_transaction: {
-            icon: 'cart', text: NavigationsLocalization[languageName].storeTrnscs, link: 'store-transactions'
+            icon: 'cart', text: NavigationsLocalization[languageName].storeTrnscs, path: 'store-transactions'
         },        
         inventory_transfer: {
-            icon: 'share', text: NavigationsLocalization[languageName].invTransfers, link: 'inventory-transfers'
+            icon: 'share', text: NavigationsLocalization[languageName].invTransfers, path: 'inventory-transfers'
         },          
         user: {
-            icon: 'group', text: 'Users', link: 'users'
+            icon: 'group', text: 'Users', path: 'users'
         },         
-    }
+    }    
 
     return (
         <ErrorBoundary>
@@ -95,6 +95,7 @@ function App(){
                 {(
                     userAuth ?
                     <Navigations
+                        pageHeading={pageHeading}
                         sidebarShown={sidebarShown}
                         toggleSidebar={setSidebarShown}
                         rightWidgets={[
@@ -129,10 +130,11 @@ function App(){
                 )}
                 <div id="app" className={userAuth ? '': 'unauthenticated'}>
                     <Routes>
-                        <Route path="/login" exact element={<LoginPage isAuth={userAuth}/>}/>
-                        <Route path={`/${sidebarItems.dashboard.link}`} exact element={
+                        <Route path="/login" exact element={<LoginPage isAuth={userAuth} user={user}/>}/>
+                        <Route path={`/${sidebarItems.dashboard.path}`} exact element={
                             <Protected isAuth={userAuth}>
                                 <DashboardPage
+                                    setPageHeading={setPageHeading}
                                     user={user} loc={DashboardPageLocalization[languageName]}
                                     totalInvs={totalInvs} setTotalInvs={setTotalInvs}
                                     totalStoredInvs={totalStoredInvs} setTotalStoredInvs={setTotalStoredInvs}
@@ -142,54 +144,84 @@ function App(){
                                 />
                             </Protected>
                         }/>                     
-                        <Route path={`/${sidebarItems.inventory.link}`} exact element={
+                        <Route path={`/${sidebarItems.inventory.path}`} exact element={
                             <Protected isAuth={userAuth}>
-                                <InventoryPage user={user} loc={InventoryPageLocalization[languageName]}/>
+                                <InventoryPage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={InventoryPageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>         
-                        <Route path={`/${sidebarItems.store.link}`} exact element={
+                        <Route path={`/${sidebarItems.store.path}`} exact element={
                             <Protected isAuth={userAuth}>
-                                <StorePage user={user} loc={StorePageLocalization[languageName]}/>
+                                <StorePage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={StorePageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>         
-                        <Route path={`/${sidebarItems.store_inventory.link}`} exact element={
+                        <Route path={`/${sidebarItems.store_inventory.path}`} exact element={
                             <Protected isAuth={userAuth}>
-                                <IndexStoreInventoryPage user={user} loc={IndexStoreInventoryPageLocalization[languageName]}/>
+                                <IndexStoreInventoryPage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={IndexStoreInventoryPageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>        
-                        <Route path={`/${sidebarItems.store_inventory.link}/create`} exact element={
+                        <Route path={`/${sidebarItems.store_inventory.path}/create`} exact element={
                             <Protected isAuth={userAuth}>
-                                <CreateStoreInventoryPage user={user} loc={CreateStoreInventoryPageLocalization[languageName]}/>
+                                <CreateStoreInventoryPage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={CreateStoreInventoryPageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>       
-                        <Route path={`/${sidebarItems.store_transaction.link}`} exact element={
+                        <Route path={`/${sidebarItems.store_transaction.path}`} exact element={
                             <Protected isAuth={userAuth}>
-                                <IndexStoreTransactionPage user={user} loc={IndexStoreTransactionPageLocalization[languageName]}/>
+                                <IndexStoreTransactionPage
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={IndexStoreTransactionPageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>    
-                        <Route path={`/${sidebarItems.store_transaction.link}/create`} exact element={
+                        <Route path={`/${sidebarItems.store_transaction.path}/create`} exact element={
                             <Protected isAuth={userAuth}>
-                                <CreateStoreTransactionPage user={user} loc={CreateStoreTransactionPageLocalization[languageName]}/>
+                                <CreateStoreTransactionPage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={CreateStoreTransactionPageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>    
-                        <Route path={`/${sidebarItems.inventory_transfer.link}`} exact element={
+                        <Route path={`/${sidebarItems.inventory_transfer.path}`} exact element={
                             <Protected isAuth={userAuth}>
-                                <IndexInventoryTransferPage user={user} loc={IndexInventoryTransferPageLocalization[languageName]}/>
+                                <IndexInventoryTransferPage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={IndexInventoryTransferPageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>     
-                       <Route path={`/${sidebarItems.inventory_transfer.link}/create`} exact element={
+                       <Route path={`/${sidebarItems.inventory_transfer.path}/create`} exact element={
                             <Protected isAuth={userAuth}>
-                                <CreateInventoryTransferPage user={user} loc={CreateInventoryTransferPageLocalization[languageName]}/>
+                                <CreateInventoryTransferPage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={CreateInventoryTransferPageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>   
-                        <Route path={`/${sidebarItems.user.link}`} exact element={
+                        <Route path={`/${sidebarItems.user.path}`} exact element={
                             <Protected isAuth={userAuth}>
-                                <UserPage user={user} loc={UserPageLocalization[languageName]}/>
+                                <UserPage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={UserPageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>        
                         <Route path={`/profile`} exact element={
                             <Protected isAuth={userAuth}>
-                                <ProfilePage user={user} loc={ProfilePageLocalization[languageName]}/>
+                                <ProfilePage 
+                                    user={user} setPageHeading={setPageHeading}
+                                    loc={ProfilePageLocalization[languageName]}
+                                />
                             </Protected>
                         }/>     
                         <Route path={`*`} element={<NotFoundPage/>}/>                                                                                                                                                                                                                                 

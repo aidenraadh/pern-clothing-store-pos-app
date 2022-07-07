@@ -1,4 +1,4 @@
-import {useState, useCallback, useMemo}  from "react"
+import {useState, useCallback, useMemo, useEffect}  from "react"
 import {api, errorHandler} from '../Utils'
 import {saveUser, logout} from '../Auth'
 import {Button} from '../Buttons'
@@ -7,7 +7,7 @@ import {TextInput, Select, TextInputWithBtn} from '../Forms'
 import {SimpleCard} from '../Cards'
 import {Grid} from '../Layouts'
 
-function ProfilePage({user, loc}){
+function ProfilePage({user, setPageHeading, loc}){
     const languages = useMemo(() => (
         JSON.parse(localStorage.getItem('languages'))
     ), [])
@@ -49,6 +49,10 @@ function ProfilePage({user, loc}){
             }})           
         })   
     }, [name, languageId, oldPassword, newPassword, setUpdProfileModal, setDisableBtn])
+
+    useEffect(() => {
+        setPageHeading({title: 'Profile', icon: 'user'})
+    }, [])
 
     if(!user){
         return 'Loading ...'

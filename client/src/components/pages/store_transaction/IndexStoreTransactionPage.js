@@ -12,7 +12,7 @@ import {Modal, ConfirmPopup} from '../../Windows'
 import {Grid} from '../../Layouts'
 import {format, startOfMonth , endOfMonth, startOfYear, endOfYear } from 'date-fns'
 
-function IndexStoreTransactionPage({user, loc}){
+function IndexStoreTransactionPage({user, setPageHeading, loc}){
     const storeTrnsc = useSelector(state => state.storeTrnsc)
     const dispatch = useDispatch()        
     const [disableBtn , setDisableBtn] = useState(false)  
@@ -140,6 +140,10 @@ function IndexStoreTransactionPage({user, loc}){
             dispatch(syncFilters())
         }
     }, [dispatch])      
+
+    useEffect(() => {
+        setPageHeading({title: 'Store Transactions', icon: 'cart'})
+    }, [])
 
     if(storeTrnsc.isLoaded === false){
         return 'Loading...'

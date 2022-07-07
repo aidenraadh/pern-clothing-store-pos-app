@@ -11,7 +11,7 @@ import Table from '../../Table'
 import {format, startOfMonth , endOfMonth, startOfYear, endOfYear } from 'date-fns'
 import { Link } from 'react-router-dom'
 
-function IndexInventoryTransferPage({user, loc}){
+function IndexInventoryTransferPage({user, setPageHeading, loc}){
     const invTransfer = useSelector(state => state.invTransfer)
     const dispatch = useDispatch()        
     const [disableBtn , setDisableBtn] = useState(false)
@@ -130,6 +130,10 @@ function IndexInventoryTransferPage({user, loc}){
             dispatch(syncFilters())
         }
     }, [dispatch])     
+
+    useEffect(() => {
+        setPageHeading({title: 'Inventory Transfers', icon: 'share'})
+    }, [])
 
     // When the invTransfer resource is not set yet
     // Return loading UI

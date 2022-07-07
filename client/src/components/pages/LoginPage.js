@@ -27,6 +27,11 @@ const bg2Style = {
     opacity: '0.86' 
 }
 
+const redirectPath = {
+    admin: '/',
+    employee: '/store-inventories'
+}
+
 const LoginPage = (props) => {
     const [disableBtn , setDisableBtn] = useState(false)
     const [email, setEmail] = useState('')
@@ -43,8 +48,9 @@ const LoginPage = (props) => {
                 email: email, password: password
             })
             .then(response => {
+                const userRole = response.data.user.role.name.toLowerCase()
                 localStorage.setItem('languages', JSON.stringify(response.data.languages))
-                login(response, '/')
+                login(response, redirectPath[userRole])
             })
             .catch(error => {
                 setDisableBtn(false)
@@ -62,7 +68,7 @@ const LoginPage = (props) => {
     
     // When the user already authenticated
     if(props.isAuth){
-        return <Navigate to={'/'}/>
+        return <Navigate to={redirectPath[props.user.role.name]}/>
     }
     return (<>
         <div id="login-page" className="flex-col items-center content-center" style={backgroundStyle}>      
